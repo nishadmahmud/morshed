@@ -1,0 +1,60 @@
+import { Store } from 'lucide-react';
+import { MessageCircle, MonitorPlay, Settings, Smartphone } from 'lucide-react';
+import Link from 'next/link';
+import React from 'react';
+
+const OurFeatures = () => {
+    const services = [
+      {
+        icon: Smartphone,
+        title: "Outfit Finder",
+        description: "Find Outfit For Gadgets",
+        link : '/'
+      },
+        {
+          icon: Store,
+          title: "Store Locator",
+          description: "Find Store for Your Gadgets",
+          link : '/store'
+        },
+        {
+          icon: MonitorPlay,
+          title: "Complain/Advice",
+          description: "We Value your Feedback",
+          link : 'https://www.facebook.com/Perfectgadgetb'
+        },
+        {
+          icon: MessageCircle,
+          title: "Online Support",
+          description: "Get Support on WhatsApp",
+          link : 'https://wa.me/+8801888679991'
+        },
+       
+      ]
+    return (
+    <section className="lg:py-7 lg:mt-20 w-11/12 mx-auto py-10 lg:pt-0">
+      <div className="grid md:gap-6 gap-3 grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
+        {services.map((service, index) => (
+         <Link 
+         href={service.link} 
+         key={index}
+         className="block group"
+       >
+         <div className="flex items-center lg:items-start gap-1 rounded-xl border bg-[#F16724] p-3 lg:p-6 shadow-md transition-all duration-200  hover:scale-[1.02]">
+           <div className="rounded-full p-1 text-black shrink-0  group-hover:text-white transition-colors">
+             <service.icon className="h-6 w-6 text-[#ffffff]" />
+           </div>
+           <div className="flex-1">
+             <h3 className="font-semibold text-[#ffffff] lg:line-clamp-1 text-xs md:text-lg ">{service.title}</h3>
+             <p className="text-sm hidden lg:block text-white line-clamp-2">{service.description}</p>
+           </div>
+         </div>
+       </Link>
+          
+        ))}
+      </div>
+    </section>
+    );
+};
+
+export default OurFeatures;
