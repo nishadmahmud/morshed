@@ -24,11 +24,10 @@ export default function Component() {
           <div className="relative flex-shrink-0">
           
             <div className="h-16 w-16 overflow-hidden relative rounded-full border-2 border-white">
-               <Link target='_blank' href={'tel:+880 1711-292348'}>
+               <Link target='_blank' href={'tel:+8801711157290'}>
                <Image
                 src={avatar}
                 alt="avatar"
-
                 fill={true}
                 style={{objectFit : 'contain'}}
               />

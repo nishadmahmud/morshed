@@ -34,7 +34,7 @@ export default function Footer() {
 
               <div className="flex flex-wrap gap-2 mt-5">
                 {[
-                  { icon: FaWhatsapp, href: "https://wa.me/+ +8801725171313" },
+                  { icon: FaWhatsapp, href: "https://wa.me/+8801725171313" },
                   { icon: FaFacebook, href: "https://www.facebook.com/Perfectgadgetb" },
                   { icon: FaTiktok, href: "#tiktok" }, // Behance
                   { icon: FaInstagram, href: "#instagram" },

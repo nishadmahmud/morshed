@@ -205,14 +205,14 @@ const Header = ({data}) => {
     <FaChevronDown className="text-xs text-[#555555] cursor-pointer" />
 
     {showCategory && (
-      <div className="bg-white absolute left-0 rounded-sm transition ease-out py-3 top-[1.2rem] z-[100] shadow-lg">
+      <div className="bg-white absolute -left-3.5 rounded-sm transition ease-out py-3 top-[1rem] z-50 h-80 overflow-y-auto shadow-lg">
         {data?.data && data?.data.length > 0 &&
           data.data.map((item) => (
             <Link 
               onClick={() => setShowCategory(false)} 
               href={`category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(item?.name)}&total=${encodeURIComponent(item?.product_count)}`} 
               key={item?.category_id} 
-              className="text-[#555555] hover:bg-[#F16724] hover:text-white transition-all ease-in-out py-2 rounded-sm text-start text-sm pl-3 w-36 flex flex-col"
+              className="text-[#555555] hover:bg-[#F16724] hover:text-white transition-all ease-in-out py-2 rounded-sm text-start text-sm pl-5 w-40 flex flex-col"
             >
               {item?.name}
             </Link>
