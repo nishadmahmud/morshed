@@ -150,14 +150,14 @@ const Header = ({data}) => {
           <div className={`w-full z-50 text-white  transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] shadow-lg mt-0`}>
           <TopHeader></TopHeader>
             {/* desktop menu */}
-           <div className='flex gap-16 justify-between items-center bg-[#F16724] text-[#ffffff] p-3 py-2'>
+           <div className='flex gap-16 justify-between items-center bg-[#0e0e0e] text-[#ffffff] p-3 py-2'>
 
            <div className="lg:hidden block ml-4" onClick={toggleSidebar}>
           <Menu className="text-[#ffffff] text-right text-xl" />
         </div>
 
             <div
-        className={`fixed top-0 left-0 h-full w-3/5 max-w-xs bg-[#ffffff] text-black p-5  shadow-lg z-50 transform transition-transform duration-300 ${
+        className={`fixed top-0 left-0 w-3/5 max-w-xs bg-[#ffffff] text-black p-5  shadow-lg z-50 transform transition-transform duration-300 overflow-y-auto h-full ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
@@ -173,8 +173,8 @@ const Header = ({data}) => {
         </div>
         <ul className="mt-4 space-y-4 px-3">
         {
-          data?.data.slice(0,7).map((item,idx) => {
-              return <Link key={idx}  onClick={() => setIsOpen(false)}  href={`/category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(item?.name)}&total=${encodeURIComponent(item?.product_count)}`} className={`text-black text-sm text-nowrap hover:text-[FF8800] transition ease-in-out hover:font-semibold flex items-center gap-1 `}> 
+          data?.data.map((item,idx) => {
+              return <Link key={idx}  onClick={() => setIsOpen(false)}  href={`/category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(item?.name)}&total=${encodeURIComponent(item?.product_count)}`} className={`text-black text-sm text-nowrap hover:text-[FF8800] transition ease-in-out hover:font-semibold flex items-center gap-1`}> 
               {item.name}
               </Link>
           })
@@ -194,7 +194,7 @@ const Header = ({data}) => {
             <div className='hidden relative md:flex lg:flex lg:flex-1 lg:justify-center'>
 
                 <div className='hidden lg:grid grid-cols-5'>
-                <div className='rounded-l-md mr-1.5 bg-white p-3'>
+                <div className='rounded-l-md mr-1.5 bg-white p-3 border border-[#F16724]'>
                 <div 
     ref={categoryRef} 
     onMouseEnter={() => setShowCategory(true)} 
@@ -227,10 +227,10 @@ const Header = ({data}) => {
 
                 {/* <hr className='absolute left-36 top-6 border border-gray-300  w-5 rotate-90 '/> */}
 
-                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3   border-2 border-l-0  outline-none text-black bg-white text-sm  col-span-3'/>
+                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3 border border-[#F16724] outline-none text-black bg-white text-sm  col-span-3'/>
                
             
-                <button className='ml-1.5 bg-[#ffffff] p-3 right-2 w-2/6 text-[#F16724] rounded-r-md text-sm'> <IoSearchSharp size={24}></IoSearchSharp></button>
+                <button className='ml-1.5 border border-[#F16724] bg-[#ffffff] p-3 right-2 w-2/6 text-[#070707] rounded-r-md text-sm'> <IoSearchSharp size={24}></IoSearchSharp></button>
                 
                 
                 </div>
@@ -246,7 +246,7 @@ const Header = ({data}) => {
            
             <div className='items-center gap-3 hidden lg:flex'>
             
-                <Link className=' bg-white md:border border-[#F16724] pr-3 p-2 rounded-full' href='/offer'>
+                <Link className=' bg-[#ffffff] md:border border-[#F16724] pr-3 p-2 rounded-full' href='/offer'>
             <div  className='flex items-center'>
                 <div className="relative p-1 rounded-full hover:text-blue-500">
                     <Gift size={17} className='text-[#F16724] cursor-pointer'/>
@@ -256,10 +256,10 @@ const Header = ({data}) => {
              </div>
                 </Link>
 
-             <div onClick={() => setOpenCart(!openCart)} className='flex  items-center md:border border-white bg-white px-2 p-1 pr-3 rounded-full cursor-pointer'>
+             <div onClick={() => setOpenCart(!openCart)} className='flex  items-center md:border border-[#F16724] bg-[#ffffff] px-2 p-1 pr-3 rounded-full cursor-pointer'>
                 <div className="relative p-1 rounded-full" >
-                    <LiaShoppingCartSolid size={25} className='cursor-pointer text-[#F16724]'/>
-                    <p className='bg-[#FFF3E5] h-fit  text-[#F16724] w-fit px-1 rounded-full text-xs absolute top-1 right-1'>{total}</p>
+                    <LiaShoppingCartSolid size={25} className='cursor-pointer text-[#bababa]'/>
+                    <p className='bg-[#F16724] h-fit  text-[#ffffff] w-fit px-1 rounded-full text-[8px] absolute top-1 right-1'>{total}</p>
                     </div>
                     <div>
                     <p className='text-[#F16724] hidden md:block  text-xs font-semibold '>Cart</p> 
@@ -271,7 +271,7 @@ const Header = ({data}) => {
             <div>
             {
               email ? 
-              <div onMouseEnter={handleUserInfo} onMouseLeave={() => setShowUserInfo(false)} className='lg:flex items-center lg:border bg-white border-white px-2 p-2 rounded-full lg:mr-2.5 cursor-pointer hidden'>
+              <div onMouseEnter={handleUserInfo} onMouseLeave={() => setShowUserInfo(false)} className='lg:flex items-center lg:border bg-[#ffffff] border-[#F16724] px-2 p-2 rounded-full lg:mr-2.5 cursor-pointer hidden'>
                   <div className='p-1 rounded-full hidden lg:block'>
                       <CircleUser  size={18} className='text-[#F16724]'/>
                   </div>

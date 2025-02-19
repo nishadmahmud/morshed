@@ -12,7 +12,7 @@ import noImg from '/public/no-image.jpg'
 
 export default function Footer() {
   return (
-    <footer className="bg-[#ffffff] py-12 pt-20 px-6">
+    <footer className="bg-[#080808] py-12 pt-20 px-6">
 
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-8">
@@ -30,7 +30,7 @@ export default function Footer() {
             
             <div className="space-y-2">
 
-              <p className="font-semibold text-lg text-[#000000]">Join us</p>
+              <p className="font-semibold text-lg text-[#ffffff]">Join us</p>
 
               <div className="flex flex-wrap gap-2 mt-5">
                 {[
@@ -47,7 +47,7 @@ export default function Footer() {
                     target="_blank"
                     className=" rounded-full  flex items-center justify-center  transition-colors"
                   >
-                    <Icon className=" text-black text-3xl border border-black rounded-full p-1" />
+                    <Icon className=" text-white text-3xl border border-white rounded-full p-1" />
                   </Link>
                 ))}
             </div>
@@ -75,34 +75,34 @@ export default function Footer() {
 
           {/* Company Section */}
           <div>
-            <h3 className="font-bold text-lg text-[#000000] mb-4 uppercase">Company</h3>
+            <h3 className="font-bold text-lg text-[#ffffff] mb-4 uppercase">Company</h3>
             <ul className="space-y-2">
-              <li><Link href="/about-us" className="text-black hover:underline">About Us</Link></li>
-              <li><Link href="/brands" className="text-black hover:underline">Our Brands</Link></li>
-              <li><Link href="/orderTracking" className="text-black hover:underline">Order Tracking</Link></li>
+              <li><Link href="/about-us" className="text-white hover:underline">About Us</Link></li>
+              <li><Link href="/brands" className="text-white hover:underline">Our Brands</Link></li>
+              <li><Link href="/orderTracking" className="text-white hover:underline">Order Tracking</Link></li>
             </ul>
           </div>
 
           {/* Help Center Section */}
           <div>
-            <h3 className="font-bold text-lg text-[#000000] mb-4 uppercase">Help Center</h3>
+            <h3 className="font-bold text-lg text-[#ffffff] mb-4 uppercase">Help Center</h3>
             <ul className="space-y-2">
-              <li><Link href="/faq" className="text-black hover:underline">FAQ</Link></li>
-              <li><Link href="tel:+8801725171313" className="text-black hover:underline">Support Center</Link></li>
-              <li><Link href="https://wa.me/+8801725171313" className="text-black hover:underline">Feedback</Link></li>
+              <li><Link href="/faq" className="text-white hover:underline">FAQ</Link></li>
+              <li><Link href="tel:+8801725171313" className="text-white hover:underline">Support Center</Link></li>
+              <li><Link href="https://wa.me/+8801725171313" className="text-white hover:underline">Feedback</Link></li>
             </ul>
           </div>
 
           {/* Terms section  */}
           <div className="space-y-8">
             <div>
-              <h3 className="font-bold text-[#000000] text-lg mb-4 uppercase">Terms & Conditions</h3>
+              <h3 className="font-bold text-[#ffffff] text-lg mb-4 uppercase">Terms & Conditions</h3>
               <ul className="space-y-2">
-                <li><Link href="/delivery-terms-and-conditions" className="text-black hover:underline">Terms & Conditions</Link></li>
-                <li><Link href="/refundPolicy" className="text-black hover:underline">Refund Policy</Link></li>
-                <li><Link href="/privacyPolicy" className="text-black hover:underline">Privacy Policy</Link></li>
-                <li><Link href="/warrantyPloicy" className="text-black hover:underline">Warranty Policy</Link></li>
-                <li><Link href="/exchangePolicy" className="text-black hover:underline">Exchange Policy</Link></li>
+                <li><Link href="/delivery-terms-and-conditions" className="text-white hover:underline">Terms & Conditions</Link></li>
+                <li><Link href="/refundPolicy" className="text-white hover:underline">Refund Policy</Link></li>
+                <li><Link href="/privacyPolicy" className="text-white hover:underline">Privacy Policy</Link></li>
+                <li><Link href="/warrantyPloicy" className="text-white hover:underline">Warranty Policy</Link></li>
+                <li><Link href="/exchangePolicy" className="text-white hover:underline">Exchange Policy</Link></li>
                
               </ul>
             </div>
@@ -115,9 +115,9 @@ export default function Footer() {
            
               
             <div className="space-y-2">
-                <div className="flex items-center gap-2 border border-black p-2 rounded-md">
-                  <Phone size={25} className="w-7 h-7 border-r border-black text-black pr-2" />
-                  <Link href="tel:+8801725171313" className="text-black hover:underline text-xs">
+                <div className="flex items-center gap-2 border border-white p-2 rounded-md">
+                  <Phone size={25} className="w-7 h-7 border-r border-white text-white pr-2" />
+                  <Link href="tel:+8801725171313" className="text-white hover:underline text-xs">
                   +8801725171313
                   </Link>
                 </div>
@@ -128,10 +128,10 @@ export default function Footer() {
                   </Link>
                 </div> */}
                 <Link className="pt-2" target="_blank" href='https://maps.app.goo.gl/yLk4iW6GenCbn8BG8'>
-                <div className="flex mt-1.5 items-center border gap-2  border-[#000000] p-2 rounded-md">
-                  <MapPin size={45} className=" border-r text-black border-black pr-2" />
+                <div className="flex mt-1.5 items-center border gap-2  border-[#ffffff] p-2 rounded-md">
+                  <MapPin size={45} className=" border-r text-white border-white pr-2" />
 
-                  <p className="text-black text-[10px]">
+                  <p className="text-white text-[10px]">
                   Level 4, Block A, Shop 038A,West Court. Jamuna Future Park Dhaka., Dhaka, Bangladesh, 1212
                   </p>
                 </div>

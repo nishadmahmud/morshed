@@ -490,25 +490,25 @@ const Page = ({ params }) => {
         ))
           :
           [
-                    { label: "Brand", value: "Apple" },
-                    { label: "Model", value: "iPhone 16" },
-                    { label: "Network", value: "GSM / CDMA / HSPA / EVDO / LTE / 5G" },
-                    { label: "Dimensions", value: "147.6 x 71.6 x 7.8 mm" },
-                    { label: "Weight", value: "179 g" },
-                    { label: "SIM", value: "Nano-SIM and eSIM - International" },
-                    { label: "Display Type", value: "Super Retina XDR OLED | 120Hz | HDR10 | Dolby Vision | 2000 nits" },
-                    { label: "Display Size", value: "6.1 inches" },
-                    { label: "Display Resolution", value: "1179 x 2556 pixels" },
-                    { label: "OS", value: "iOS 18" },
-                    { label: "Chipset", value: "Apple A18 (3 nm)" },
-                    { label: "CPU", value: "Hexa-core" },
-                    { label: "Memory", value: "RAM: 8GB; Storage: 128GB | 256GB | 512GB" },
-                    { label: "Main Camera", value: "48 MP(wide) | 12 MP (ultrawide) |Dual-LED dual-tone flash, HDR (photo/panorama) | 4K, 1080p, Dolby Vision HDR, Cinematic mode, Night mode, Macro Photography" },
-                    { label: "Selfie Camera", value: "12 MP (wide) | HDR | Cinematic mode | 4K@24/25/30/60fps, 1080p@30/60/120fps" },
-                    { label: "Sound", value: "Built-in stereo speaker | Spatial Audio playback | Dolby Digital | Dolby Digital Plus | Dolby Atmos" },
-                    { label: "Battery Info", value: "Li-Ion 3500 mAh | Non-removable | Up to 30W Wired Charging | 25W wireless (MagSafe) | 15W wireless (Qi2) | 7.5W wireless (Qi)" },
-                    { label: "Sensors", value: "Face ID, accelerometer, gyro, proximity, compass, barometer" },
-          ].map((item, index) => (
+            { label: "Brand", value: "N/A" },
+            { label: "Model", value: "N/A" },
+            { label: "Network", value: "N/A" },
+            { label: "Dimensions", value: "N/A" },
+            { label: "Weight", value: "N/A" },
+            { label: "SIM", value: "N/A" },
+            { label: "Display Type", value: "N/A" },
+            { label: "Display Size", value: "N/A" },
+            { label: "Display Resolution", value: "N/A" },
+            { label: "OS", value: "N/A" },
+            { label: "Chipset", value: "N/A" },
+            { label: "CPU", value: "N/A" },
+            { label: "Memory", value: "N/A" },
+            { label: "Main Camera", value: "N/A" },
+            { label: "Selfie Camera", value: "N/A" },
+            { label: "Sound", value: "N/A" },
+            { label: "Battery Info", value: "N/A" },
+            { label: "Sensors", value: "N/A" },
+  ].map((item, index) => (
             <tr key={index} className="border-b">
               <td className="py-2 font-semibold border pl-3 ">{item.label}</td>
               <td className="py-2 pl-3 border">{item.value}</td>

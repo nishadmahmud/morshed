@@ -2,73 +2,62 @@ import React, { useState } from "react";
 import axios from "axios";
 
 const Chatbot = () => {
-  const [messages, setMessages] = useState([{ text: "Hello! Ask me about gadgets.", sender: "bot" }]);
+  const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
+  const API_KEY = "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"; // Replace with your OpenAI API key
 
- 
-  const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const sendMessage = async () => {
+    if (!input.trim()) return;
 
-const handleSendMessage = async () => {
-  if (!input.trim()) return;
+    const userMessage = { role: "user", content: input };
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
+    setInput("");
 
-  const newMessages = [...messages, { text: input, sender: "user" }];
-  setMessages(newMessages);
-
-  let attempts = 3;
-  let delayTime = 1000;
-
-  while (attempts > 0) {
     try {
       const response = await axios.post(
         "https://api.openai.com/v1/chat/completions",
         {
-          model: "gpt-3.5-turbo",
-          messages: [{ role: "user", content: input }],
+          model: "gpt-3.5-turbo", // Change from "gpt-4" to "gpt-3.5-turbo"
+          messages: updatedMessages,
         },
         {
           headers: {
-            Authorization: `Bearer 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`,
             "Content-Type": "application/json",
+            Authorization: `Bearer ${API_KEY}`,
           },
         }
       );
-
-      const botReply = response.data.choices[0].message.content;
-      setMessages([...newMessages, { text: botReply, sender: "bot" }]);
-      break; // Exit loop if request is successful
+      
+    
+      console.log("API Response:", response.data); // Log response to check errors
+      const botMessage = { role: "assistant", content: response.data.choices[0].message.content };
+      setMessages([...updatedMessages, botMessage]);
     } catch (error) {
-      console.error("Error:", error.response ? error.response.data : error);
-
-      if (error.response && error.response.status === 429) {
-        attempts -= 1;
-        await delay(delayTime);
-        delayTime *= 2; // Increase wait time exponentially
-      } else {
-        setMessages([...newMessages, { text: "Sorry, something went wrong.", sender: "bot" }]);
-        break;
-      }
+      console.error("Error:", error.response ? error.response.data : error.message);
     }
-  }
-
-  setInput("");
-};
-
-  
-  
+    
+  };
 
   return (
-    <div className="chat-container">
-      <div className="chat-box">
+    <div style={{ width: "300px", margin: "auto", padding: "10px", border: "1px solid gray" }}>
+      <div style={{ height: "300px", overflowY: "auto", padding: "10px" }}>
         {messages.map((msg, index) => (
-          <div key={index} className={`chat-message ${msg.sender}`}>
-            {msg.text}
+          <div key={index} style={{ textAlign: msg.role === "user" ? "right" : "left" }}>
+            <strong>{msg.role === "user" ? "You: " : "Bot: "}</strong>
+            {msg.content}
           </div>
         ))}
       </div>
-      <div className="chat-input">
-        <input value={input} onChange={(e) => setInput(e.target.value)} placeholder="Ask about a gadget..." />
-        <button onClick={handleSendMessage}>Send</button>
-      </div>
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        onKeyPress={(e) => e.key === "Enter" && sendMessage()}
+        placeholder="Type a message..."
+        style={{ width: "80%", padding: "5px" }}
+      />
+      <button onClick={sendMessage} style={{ width: "18%" }}>Send</button>
     </div>
   );
 };
