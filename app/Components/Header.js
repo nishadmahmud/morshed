@@ -271,13 +271,13 @@ const Header = ({data}) => {
             <div>
             {
               email ? 
-              <div onMouseEnter={handleUserInfo} onMouseLeave={() => setShowUserInfo(false)} className='lg:flex items-center lg:border bg-[#ffffff] border-[#F16724] px-2 p-2 rounded-full lg:mr-2.5 cursor-pointer hidden'>
+              <div onClick={handleUserInfo} className='lg:flex items-center lg:border bg-[#ffffff] border-[#F16724] px-2 p-2 rounded-full lg:mr-2.5 cursor-pointer hidden'>
                   <div className='p-1 rounded-full hidden lg:block'>
                       <CircleUser  size={18} className='text-[#F16724]'/>
                   </div>
                   <div>
                   <p className='text-[#F16724] hidden lg:block text-xs font-semibold '>Account</p> 
-                  <p className='text-[#F16724] hidden lg:block font-semibold text-nowrap text-[10px]'>{user && user.first_name}</p>
+                  
                </div> 
               </div> :
               <div onClick={() => {setIsLoginModal(true)}} className=' items-center lg:border hidden lg:flex bg-white px-2 p-1.5 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
@@ -294,8 +294,8 @@ const Header = ({data}) => {
             </div>
                 {   
                     showUserInfo &&
-                    <div onMouseEnter={handleUserInfo} onMouseLeave={() => setShowUserInfo(false)} className={`bg-white shadow-lg absolute z-50 top-10 right-20 rounded-md`}>
-                        <p className='border-b cursor-pointer p-3 px-5 hover:text-blue-500'>{email}</p>
+                    <div onClick={handleUserInfo} onMouseLeave={() => setShowUserInfo(false)} className={`bg-white shadow-lg absolute z-50 top-10 right-20 rounded-md pt-3`}>
+                        <Link href="/profileDashboard" className='border-b cursor-pointer p-3 px-5 hover:text-blue-500'>Dashboard</Link>
                         <p onClick={handleLogout} className='p-3 px-5 cursor-pointer text-red-500 hover:font-semibold'>Logout</p>
                     </div>
                 }
