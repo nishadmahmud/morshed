@@ -30,7 +30,7 @@ const CheckoutPage = () => {
  
 
     return (
-            <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-24 lg:pt-40 w-11/12 mx-auto'>
+            <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-5 lg:pt-10 w-11/12 mx-auto'>
             <div className='col-span-1 md:col-span-2 border-gray-300 border-r '>
                 <DeliveryForm cartItems={cartItems} cartTotal={Subtotal}/>
             </div>

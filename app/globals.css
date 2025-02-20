@@ -40,6 +40,23 @@ html{
 
 /* chatbot css */
 
+/* -----react chat bot------ */
+.react-chatbot-kit-chat-bot-message{
+  background-color:#F16724;
+}
+
+.react-chatbot-kit-chat-bot-message-arrow{
+ border-right: #F16724;
+}
+.react-chatbot-kit-chat-btn-send{
+  background:linear-gradient(90deg, rgba(163,72,28,1) 25%, rgba(251,120,56,1) 100%);
+}
+
+.react-chatbot-kit-chat-input{
+  background: linear-gradient(90deg, rgba(251,120,56,1) 25%, rgba(163,72,28,1) 100%);
+  border-color: #F16724;
+}
+
 .chat-container {
   width: 350px;
   border-radius: 10px;

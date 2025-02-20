@@ -141,7 +141,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
      axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,orderSchema)
      .then((res) => {
        if(res.status === 200){
-        toast.success('order placed successfully');
+        toast.success('Order placed successfully!');
         localStorage.removeItem('cart');
         setTimeout(() => {
           router.push('/');

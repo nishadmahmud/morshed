@@ -103,16 +103,16 @@ const PaymentMethodForm = ({totalAmount,methodName,methods,selectedMethodId,setO
 
 
     const handleAmountCheck = () => {
-        console.log("jii");
-        toast.success("hello")
+       
+    
         const updatedMethodList = [...paymentMethodSelection];
         const totalPaidAmount = updatedMethodList.reduce((prev,curr) => {
           return  prev + curr.payment_amount
         } ,0);
         if((parseInt(totalAmount)  + 200) > totalPaidAmount){
-           return toast('Please Pay Full Amount')
+           return toast.error('Please Pay Full Amount')
         }else if(totalPaidAmount > (parseInt(totalAmount)  + 200)){
-            return toast('Please Pay Exact Amount')
+            return toast.error('Please Pay Exact Amount')
         }else{
             onClose();
         }

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import useStore from "../CustomHooks/useStore";
+import toast from "react-hot-toast";
 
 const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReload }) => {
   const [formData, setFormData] = useState({
@@ -36,6 +37,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
             router.push(intendedUrl);
           }else{
             router.push('/');
+            toast.success("Login Successful!")
           }
           onClose();
           setToken(res.data.token);
@@ -43,7 +45,9 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
           localStorage.setItem("user", JSON.stringify(res.data.customer));
         }
       })
-      .catch((error) => console.log(error));
+      .catch((error) => 
+      toast.error("Invalid Login Credentials!")
+      );
   };
   return (
     <div>

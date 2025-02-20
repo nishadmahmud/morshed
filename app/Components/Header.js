@@ -295,7 +295,7 @@ const Header = ({data}) => {
                 {   
                     showUserInfo &&
                     <div onClick={handleUserInfo} onMouseLeave={() => setShowUserInfo(false)} className={`bg-white shadow-lg absolute z-50 top-10 right-20 rounded-md pt-3`}>
-                        <Link href="/profileDashboard" className='border-b cursor-pointer p-3 px-5 hover:text-blue-500'>Dashboard</Link>
+                        <Link href="/profileDashboard" className='border-b cursor-pointer p-3 px-5 hover:text-[#F16724]'>Dashboard</Link>
                         <p onClick={handleLogout} className='p-3 px-5 cursor-pointer text-red-500 hover:font-semibold'>Logout</p>
                     </div>
                 }

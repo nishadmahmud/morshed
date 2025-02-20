@@ -3,6 +3,7 @@ import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
 import { userId } from "../(home)/page";
+import toast from "react-hot-toast";
 
 const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
   const [formData, setFormData] = useState({
@@ -35,8 +36,9 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
           password: "",
         });
         setIsRegistered(!isRegistered);
+        toast.success("Register Successfull!")
       })
-      .catch((error) => console.log(error));
+      .catch((error) => toast.error("Invalid Register Credentials!"));
   };
   return (
     <div className="">
