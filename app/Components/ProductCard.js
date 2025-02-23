@@ -74,7 +74,9 @@ const ProductCard = ({ product }) => {
               alt={product?.name}
               width={500}
               height={250}
-              objectFit="cover"
+              style={{
+                objectFit: 'cover',
+              }}
               quality={100}
             />
           </div>

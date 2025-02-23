@@ -29,7 +29,6 @@ const HeroSlider = ({ slider, banner }) => {
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
-  console.log(slider);
 
   return (
     <div className="lg:max-w-[98%] lg:mr-2 lg:pt-0 pt-3 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">

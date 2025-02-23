@@ -149,7 +149,7 @@ const Page = ({ params }) => {
       else{
           setFilteredItems(products?.data)
       }
-    },[sortBy,products?.data, filteredItems])
+    },[sortBy,products?.data])
 
 
     // if(!products?.data.length > 0) {
@@ -183,8 +183,8 @@ const Page = ({ params }) => {
         </div>
        
       </div> */}
-      <div className="grid md:grid-cols-4 lg:grid-cols-5 pt-36 gap-5">
-        <FilterProduct products={products} setFilteredItems={setFilteredItems}/>
+      <div className="grid md:grid-cols-4 lg:grid-cols-5 gap-5">
+        <FilterProduct products={products?.data} setFilteredItems={setFilteredItems}/>
 
         {/* products */}
         <div className="md:col-span-3 lg:col-span-4">

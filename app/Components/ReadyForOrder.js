@@ -19,7 +19,6 @@ const ReadyForOrder = () => {
     fetcher
   );
 
-  console.log(products);
 
   const { handleBuy, handleCart } = useStore();
   // Handle recent view when product card is clicked
