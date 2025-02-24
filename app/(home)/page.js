@@ -18,7 +18,8 @@ export const fetcher = (url) => fetch(url).then(res => res.json());
 
 export default async function Home() {
 
-  
+  const promotionRes = await fetch(`${process.env.NEXT_PUBLIC_API}/latest-ecommerce-offer-list/${userId}`);
+  const promotion = await promotionRes.json();
 
   const res = await fetch(`${process.env.NEXT_PUBLIC_API}/get-sliders/${userId}`,{cache : 'no-cache'});
   const slider = await res.json();
@@ -41,7 +42,7 @@ export default async function Home() {
 
   return (
     <>
-      <PromotionModal/>
+      <PromotionModal promotionBanner={promotion?.data}/>
       <HeroSlider slider={slider} banner={banner}/>
       <div>
         <FeaturedCategories categories={categories}/>

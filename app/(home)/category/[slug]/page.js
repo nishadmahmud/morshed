@@ -25,7 +25,6 @@ const Page = ({ params }) => {
   const {slug: id} = params;
   const {data : products,isLoading} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`,fetcher);
   const [filteredItems, setFilteredItems] = useState([]);
-  const { handleCart,handleBuy } = useStore();
   const [isChecked, setIsChecked] = useState(false);
   const [sortBy, setSortBy] = useState("");
   const contentRef = useRef(null);
@@ -109,8 +108,6 @@ const Page = ({ params }) => {
     }
   }
 
-  
-  console.log(filteredItems);
 
     useEffect(() => {
       if(sortBy === "low-to-high" && sortBy){

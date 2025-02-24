@@ -1,27 +1,22 @@
 'use client'
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import useStore from "../CustomHooks/useStore";
 import { IoClose } from 'react-icons/io5';
 import { userId } from '../(home)/page';
 import { FadeLoader, RotateLoader } from 'react-spinners';
 
-const PromotionModal = () => {
+const PromotionModal = ({promotionBanner}) => {
     const { isOpenPromoBanner, setIsOpenPromoBanner } = useStore();
-    const [offer, setOffer] = useState(null);
+
 
     useEffect(() => {
         setIsOpenPromoBanner(true);
     }, [setIsOpenPromoBanner]);
 
-    useEffect(() => {
-        fetch(`${process.env.NEXT_PUBLIC_API}/latest-ecommerce-offer-list/${userId}`)
-            .then((response) => response.json())
-            .then((data) => setOffer(data))
-            .catch((error) => console.error("Error fetching offer:", error));
-    }, []);
 
-    const lastImage = offer?.data?.length ? offer.data[offer.data.length - 1].image : null;
+
+    const lastImage = promotionBanner?.length ? promotionBanner[promotionBanner.length - 1].image : null;
 
     return (
         <div className={`modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center z-[9999] items-center px-4 ${isOpenPromoBanner ? '' : 'hidden'}`}>
@@ -37,7 +32,7 @@ const PromotionModal = () => {
                 {/* Image Container */}
                 <div className="relative aspect-[16/8] w-full h-full flex justify-center items-center justify-items-center">
                     {lastImage ? (
-                        <Image className='rounded-md' src={lastImage} alt='promo' fill style={{ objectFit: 'cover' }} />
+                        <Image className='rounded-md' src={lastImage} priority={true} alt='promo' fill style={{ objectFit: 'cover' }} />
                     ) : (
                        <div>
                          <FadeLoader color='#F16724'></FadeLoader>
