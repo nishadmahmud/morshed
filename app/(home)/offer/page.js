@@ -13,7 +13,7 @@ const Page = () => {
 
   
   return (
-    <div className="grid min-h-screen lg:grid-cols-3 md:grid-cols-2 w-11/12 lg:pt-0 pt-2 gap-5 mx-auto">
+    <div className="grid min-h-screen lg:grid-cols-3 md:grid-cols-2 w-11/12 lg:pt-0 pt-2 gap-5 mx-auto pb-5">
         {isLoading ? <Loader />
         : offers?.data && offers?.data.length > 0 ? 
         offers.data.map((offer,idx)=>(

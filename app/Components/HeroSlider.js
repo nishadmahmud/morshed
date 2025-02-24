@@ -36,7 +36,7 @@ const HeroSlider = ({ slider, banner }) => {
       {/* Grid Layout */}
       <div className="grid lg:grid-cols-2 items-center">
         {/* Slider Section */}
-        <div className="lg:col-span-5 w-full flex flex-col h-[25vh] justify-center overflow-hidden relative rounded-md lg:h-[76vh] mb-0.5">
+        <div className="lg:col-span-3 w-full flex flex-col h-[25vh] justify-center overflow-hidden relative rounded-md lg:h-[76vh] mb-0.5">
           <Swiper
             ref={swiperRef}
             slidesPerView={1}

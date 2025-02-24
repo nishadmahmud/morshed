@@ -10,9 +10,8 @@ const BannerSection = ({ banner }) => {
       <Heading title={"Featured Products"}></Heading>
       
       <div className="grid grid-cols-1 gap-10 md:grid-cols-1 lg:grid-cols-2 rounded-xl p-5 lg:p-10 mt-5 lg:m-0">
-        {/*
-         */}
-        <div className="relative aspect-[16/7]">
+       
+        <div className="relative lg:h-[50vh] h-[40vh]">
           {banner?.data && banner?.data[3] ? (
             <Image
               src={
@@ -55,7 +54,7 @@ const BannerSection = ({ banner }) => {
           )}
         </div>
 
-        <div className="relative w-full aspect-[16/7]">
+        <div className="relative w-full lg:h-[50vh] h-[40vh]">
           {banner?.data && banner?.data[4] ? (
             <Image
               src={

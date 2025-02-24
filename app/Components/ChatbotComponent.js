@@ -19,7 +19,7 @@ const ContactWidget = () => (
 );
 
 const OffersWidget = () => (
-  <div className="text-[#F16724]">
+  <div className="text-black">
     🎉 <strong>বিশেষ অফার!</strong>
     <br /> আমাদের অফার গুলো দেখতে <Link className="hover:underline font-medium text-blue-500" href="offer">এখানে</Link> ক্লিক করুন
   </div>

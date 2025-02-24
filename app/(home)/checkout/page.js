@@ -4,6 +4,7 @@ import useStore from '@/app/CustomHooks/useStore';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 
 const CheckoutPage = () => {
@@ -23,6 +24,7 @@ const CheckoutPage = () => {
         const storedToken = localStorage.getItem('token');
         if(!storedToken){
             router.push(`/?redirect=${intendedUrl}&login=false`);
+            toast.error("Please Login First!")
             setIsLoginModal(true);
         }
       }, [router, setIsLoginModal,token]);

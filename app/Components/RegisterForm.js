@@ -37,6 +37,7 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
         });
         setIsRegistered(!isRegistered);
         toast.success("Register Successfull!")
+        localStorage.setItem("user", JSON.stringify(formData));
       })
       .catch((error) => toast.error("Invalid Register Credentials!"));
   };

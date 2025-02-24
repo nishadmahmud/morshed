@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import useStore from "../CustomHooks/useStore";
 import { IoClose } from 'react-icons/io5';
 import { userId } from '../(home)/page';
-import { RotateLoader } from 'react-spinners';
+import { FadeLoader, RotateLoader } from 'react-spinners';
 
 const PromotionModal = () => {
     const { isOpenPromoBanner, setIsOpenPromoBanner } = useStore();
@@ -27,7 +27,7 @@ const PromotionModal = () => {
         <div className={`modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center z-[9999] items-center px-4 ${isOpenPromoBanner ? '' : 'hidden'}`}>
             <dialog
                 open
-                className="relative p-1.5 lg:p-3 rounded-lg flex flex-col justify-center bg-white text-black w-[90%] md:w-[90%] lg:w-[60%] h-auto"
+                className="relative p-1.5 lg:p-2 rounded-lg flex flex-col justify-center bg-white text-black w-[90%] md:w-[90%] lg:w-[60%] h-auto"
             >
                 {/* Close Button - Positioned absolutely */}
                 <div className="absolute top-1 right-1 bg-[#dc2626] p-1 rounded-md z-30">
@@ -35,12 +35,12 @@ const PromotionModal = () => {
                 </div>
 
                 {/* Image Container */}
-                <div className="relative aspect-[16/7] w-full h-full flex justify-center items-center justify-items-center">
+                <div className="relative aspect-[16/8] w-full h-full flex justify-center items-center justify-items-center">
                     {lastImage ? (
                         <Image className='rounded-md' src={lastImage} alt='promo' fill style={{ objectFit: 'cover' }} />
                     ) : (
                        <div>
-                         <RotateLoader  color='#F16724'></RotateLoader>
+                         <FadeLoader color='#F16724'></FadeLoader>
                        </div>
                     )}
                 </div>

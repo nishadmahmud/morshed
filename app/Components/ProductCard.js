@@ -11,7 +11,8 @@ import { MemoryStick } from "lucide-react"
 const ProductCard = ({ product }) => {
   const { handleCart, handleBuy } = useStore()
 
-   // Handle recent view when product card is clicked
+
+ // Handle recent view when product card is clicked
  const updateRecentViews = () => {
   if (!product?.id) return
 
@@ -24,7 +25,7 @@ const ProductCard = ({ product }) => {
   recentViews.unshift({
     id: product.id,
     name: product.name,
-    image: product.image_path || (product.images?.[0] || noImg),
+    image: product.image_path || (product.images?.[0] || noImg.src),
     price: product.retails_price,
     discount: product.discount || 0
   })
@@ -34,18 +35,8 @@ const ProductCard = ({ product }) => {
   
   localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
 }
-
   
-  useEffect(() => {
-    const recentViews = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
-    if (!recentViews.includes(product.id)) {
-      recentViews.push(product.id);
-      if (recentViews.length > 5) {
-        recentViews.shift();
-      }
-      localStorage.setItem('recentlyViewed', JSON.stringify(recentViews));
-    }
-  }, [product]);
+
 
   const discountedPrice = product?.discount
     ? (product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)
@@ -60,6 +51,16 @@ const ProductCard = ({ product }) => {
   product?.image_path ||
   (Array.isArray(product?.images) && product.images[0]) ||
   noImg;
+
+  const specs = product?.specifications || [];
+  console.log(specs);
+  const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
+  const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
+  console.log(batteryCapacity); 
+  
+  const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
+  const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
+  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description || "N/A";
 
 
   return (
@@ -80,7 +81,7 @@ const ProductCard = ({ product }) => {
           </div>
 
           {product?.discount && (
-            <p className="relative lg:bottom-72 -top-40 w-20 text-center left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-1 rounded-md">
+            <p className="relative lg:bottom-72 -top-64 w-20 text-center left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-1 rounded-md">
               SAVE {product?.discount}%
             </p>
           )}
@@ -112,25 +113,25 @@ const ProductCard = ({ product }) => {
       </Link>
 
       <div className="text-gray-600 px-5 grid mb-3 justify-items-start lg:grid-cols-2 gap-1">
-
-        <div className="flex items-start gap-1 text-xs">
-          <Battery size={15}></Battery>
-          6000 mah
-        </div>
-        <div className="flex items-start gap-1 text-xs">
-          <Cpu size={15}></Cpu>
-          Octa-core AI
-        </div>
-        <div className="flex items-start gap-1 text-xs">
-          <Camera size={15}></Camera>
-          108 mp
-        </div>
-        <div className="flex items-start gap-1 text-xs">
-          <MemoryStick size={15}></MemoryStick>
-          16 GB
-        </div>
-
+      
+      <div className="flex items-start gap-1 text-xs">
+        <Battery size={15}></Battery>
+        {batteryCapacity}
       </div>
+      <div className="flex items-start gap-1 text-xs">
+        <Cpu size={15}></Cpu>
+        {chipset}
+      </div>
+      <div className="flex items-start gap-1 text-xs">
+        <Camera size={15}></Camera>
+        {camera}
+      </div>
+      <div className="flex items-start gap-1 text-xs">
+        <MemoryStick size={15}></MemoryStick>
+        {storage}
+      </div>
+
+    </div>
       
       <div className='flex flex-col gap-2 items-center mt-0 mx-3 mb-3'>
           <button onClick={() => {handleBuy(product,1)}} className="border-[#F16724] text-nowrap border text-xs text-[#F16724] w-full px-[2px] py-1.5 rounded-md font-semibold  transition-colors">Buy Now</button>

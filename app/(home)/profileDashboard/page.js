@@ -10,6 +10,8 @@ const PersonalInfo = () => {
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
 
+    console.log(userInfo);
+
     if (userInfo) {
       setUser(userInfo);
       setEmail(userInfo?.email);
@@ -19,10 +21,7 @@ const PersonalInfo = () => {
 
   console.log(user);
 
-  // Ensure user is not null before accessing its properties
-  const nameParts = user?.name?.trim().split(" ") || [];
-  const firstName = nameParts[0] || "";
-  const lastName = nameParts.slice(1).join(" ") || "";
+  
 
   return (
     <>
@@ -33,7 +32,7 @@ const PersonalInfo = () => {
             <label className="block text-gray-700">First Name</label>
             <input
               type="text"
-              value={firstName}
+              value={user?.first_name}
               disabled
               className="w-full p-2 border rounded bg-gray-100 text-black"
             />
@@ -42,7 +41,7 @@ const PersonalInfo = () => {
             <label className="block text-gray-700">Last Name</label>
             <input
               type="text"
-              value={lastName}
+              value={user?.last_name}
               disabled
               className="w-full p-2 border rounded bg-gray-100 text-black"
             />
@@ -52,7 +51,7 @@ const PersonalInfo = () => {
           <label className="block text-gray-700">Mobile Number</label>
           <input
             type="text"
-            value={user?.mobile_number || ""}
+            value={user?.phone || "Phone no"}
             disabled
             className="w-full p-2 border rounded bg-gray-100 text-black"
           />
@@ -61,7 +60,7 @@ const PersonalInfo = () => {
           <label className="block text-gray-700">Email</label>
           <input
             type="email"
-            value={email || ""}
+            value={email || "email"}
             disabled
             className="w-full p-2 border rounded bg-gray-100 text-black"
           />

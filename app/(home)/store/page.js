@@ -1,32 +1,27 @@
+import Link from "next/link";
 import { FaMapMarkerAlt, FaPhone, FaClock, FaStore } from "react-icons/fa";
 
 const stores = [
   {
     name: "Jamuna Future Park",
-    address: "Basement 2, Shop 26",
-    phone: "09678148148",
-    hours: "11AM - 8PM (Wed-Mon)",
-    closed: "Tuesday Closed",
+    address: "Level 4, Block A, Shop 038, Jamuna Future Park, Dhaka",
+    phone: "+8801725171313",
+    hours: "11AM - 8PM",
+    map: "https://maps.app.goo.gl/AHAsBtMr2K7LmrRAA"
   },
   {
-    name: "Bashundhara City Shopping Complex",
-    address: "Level 6, Block D, Shop 72-73",
-    phone: "09678148148",
-    hours: "11AM - 8PM (Wed-Mon)",
-    closed: "Tuesday Closed",
+    name: "Jhenaidah Branch",
+    address: "Hossain Shaheed Suhrawardy Road, Old DC Court Mosque Market, Shop No. 102, Jhenaidah Sadar",
+    phone: "+8801725171313",
+    hours: "11AM - 8PM",
+    map: "https://maps.app.goo.gl/GKXjXbCXtuMQKhpz8"
   },
-  {
-    name: "Bashundhara City Shopping Complex",
-    address: "Level 6, Block D, Shop 72-73",
-    phone: "09678148148",
-    hours: "11AM - 8PM (Wed-Mon)",
-    closed: "Tuesday Closed",
-  },
+  
 ];
 
 export default function Page() {
   return (
-    <div className="mt-16 lg:pt-36">
+    <div className="pt-5 lg:pt-12">
 
         <div className="w-10/12 mb-4 mx-auto text-black">
         <h1 className="text-4xl font-semibold ">Find Our Stores</h1>
@@ -54,12 +49,16 @@ export default function Page() {
           <hr className="my-4" />
           <p className="text-gray-500">{store.closed}</p>
           <div className="mt-4 flex gap-2">
+            <Link href={store.map}>
             <button className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-orange-600">
               <FaMapMarkerAlt /> Show Map
             </button>
+            </Link>
+            <Link target="_blank" href="https://www.facebook.com/Perfectgadgetb">
             <button className="flex items-center gap-2 bg-orange-500 text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-orange-600">
               <FaStore /> Show Details
             </button>
+            </Link>
           </div>
         </div>
       ))}

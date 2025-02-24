@@ -5,8 +5,6 @@ import companyLogo from '/public/PerfectGadgetBD-logo (1) 1.png'
 import { FaBehance, FaFacebook, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa6"
 import { FaLinkedin, FaYoutube } from "react-icons/fa"
 import { Mail, MapPin, Phone } from "lucide-react"
-import playStore from '/public/google-logo.jpg'
-import appStore from '/public/apple-logo.jpg'
 import noImg from '/public/no-image.jpg'
 
 
@@ -52,23 +50,6 @@ export default function Footer() {
                 ))}
             </div>
 
-            <div className="flex gap-2 pt-2 mb-5 lg:mb-0">
-              {/* <img src="" alt="" /> */}
-              <Image 
-              src={playStore}
-              height={120}
-              width={120}
-              alt="play-store"
-              className="cursor-pointer rounded-md"
-              />
-              <Image 
-              src={appStore}
-              height={120}
-              width={120}
-              alt="app-store"
-              className="cursor-pointer rounded-md"
-              />
-            </div>
               
             </div>
           </div>

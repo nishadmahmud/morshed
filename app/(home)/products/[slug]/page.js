@@ -48,27 +48,8 @@ const Page = ({ params }) => {
 
   
 
-  useEffect(() => {
-    const handleRecentView = (item) => {
-      const getItem = localStorage.getItem('recentViewItems');
-      console.log(item);
-      let items = getItem ? JSON.parse(getItem) : [];
-      if(!items.some(existingItem => existingItem.id === item.id)){
-        if(items.length > 6){
-          items.pop();
-        }
-        items.unshift(item);
-      }
-      if(getItem){
-        setRecentItems(items);
-      }
-      localStorage.setItem('recentViewItems',JSON.stringify(items));
-    }
 
-    if(product?.data){
-      handleRecentView(product?.data);
-    }
-  },[product?.data])
+  
 
   // const matchWithCart = cartItems.filter(item => item.title === product.title);
   // console.log(matchWithCart);

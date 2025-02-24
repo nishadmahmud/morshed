@@ -5,12 +5,13 @@ import Image from 'next/image'
 import avatar from '/public/avatar.jpg'
 import ChatbotComponent from './ChatbotComponent';
 
+
 export default function Component() {
   const [isOpen, setIsOpen] = useState(false); // Track visibility
 
   return (
-    <div className="fixed cursor-pointer lg:bottom-20 bottom-28 right-4 z-[10000]">
-      {/* Toggle Button */}
+    <div className="fixed cursor-pointer lg:bottom-20 bottom-20 right-4 z-[10000]">
+     
       <button 
         onClick={() => setIsOpen(!isOpen)} 
         style={{
@@ -26,15 +27,13 @@ export default function Component() {
         <Image width={60} height={60} alt='logo' className='rounded-full' src={avatar} />
       </button>
 
-      {/* Chatbot Container */}
+     
       {isOpen && (
         <div 
           style={{
             position: "absolute",
             bottom: "0px",
-            right: "70px",
-            width: "275px",
-            height: "500px",
+            right: "65px",
             boxShadow: "0 4px 6px rgba(0,0,0,0.1)",
             borderRadius: "10px",
             overflow: "hidden",
@@ -45,6 +44,9 @@ export default function Component() {
           <ChatbotComponent />
         </div>
       )}
+     
+
+    
     </div>
   )
 }

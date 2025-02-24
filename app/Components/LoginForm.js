@@ -42,7 +42,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
           onClose();
           setToken(res.data.token);
           localStorage.setItem("token", res.data.token);
-          localStorage.setItem("user", JSON.stringify(res.data.customer));
+          
         }
       })
       .catch((error) => 
