@@ -132,7 +132,7 @@ const Page = ({ params }) => {
   
   
   return (
-    <div className="bg-white px-5 lg:p-8 mx-auto text-black max-w-7xl overflow-hidden sans">
+    <div className="bg-white px-5 lg:p-8 pt-10 mx-auto text-black max-w-7xl overflow-hidden sans">
       
       <div className="container mx-auto px-4 pb-8">
       {/* <div className="flex items-center text-sm mb-4">

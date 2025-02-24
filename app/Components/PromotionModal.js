@@ -4,7 +4,7 @@ import React, { useEffect } from 'react';
 import useStore from "../CustomHooks/useStore";
 import { IoClose } from 'react-icons/io5';
 import { userId } from '../(home)/page';
-import { FadeLoader, RotateLoader } from 'react-spinners';
+import { FadeLoader } from 'react-spinners';
 
 const PromotionModal = ({promotionBanner}) => {
     const { isOpenPromoBanner, setIsOpenPromoBanner } = useStore();
