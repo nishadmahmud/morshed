@@ -35,7 +35,7 @@ const HeroSlider = ({ slider, banner }) => {
       {/* Grid Layout */}
       <div className="grid lg:grid-cols-2 items-center">
         {/* Slider Section */}
-        <div className="lg:col-span-3 w-full flex flex-col h-[25vh] justify-center overflow-hidden relative rounded-md lg:h-[76vh] mb-0.5">
+        <div className="lg:col-span-3 w-full flex flex-col h-[25vh] justify-center overflow-hidden relative rounded-md lg:h-[76vh] md:h-[55vh] mb-0.5">
           <Swiper
             ref={swiperRef}
             slidesPerView={1}
@@ -83,7 +83,7 @@ const HeroSlider = ({ slider, banner }) => {
        {/* Banner Section */}
       <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 gap-2 mt-2 lg:mt-0 gap-y-3">
         {banner?.data?.[0] && (
-          <div className="w-full h-28 lg:h-[37vh] relative">
+          <div className="w-full h-28 lg:h-[37vh] md:h-[25vh] relative">
             <Image
               src={banner.data[0].image_path}
               fill
@@ -96,7 +96,7 @@ const HeroSlider = ({ slider, banner }) => {
         )}
 
         {banner?.data?.[1] && (
-          <div className="w-full h-28 lg:h-[37vh] relative">
+          <div className="w-full h-28 lg:h-[37vh] md:h-[25vh] relative">
             <Image
               src={banner.data[1].image_path || "No Img"}
               fill

@@ -21,7 +21,7 @@ const FeaturedProducts = ({ banner }) => {
   );
   const { handleBuy, handleCart } = useStore();
 
-   /// Handle recent view when product card is clicked
+   // Handle recent view when product card is clicked
     const updateRecentViews = () => {
      if (!product?.id) return
    
@@ -50,19 +50,21 @@ const FeaturedProducts = ({ banner }) => {
       <Heading title={'Flash Sale'} />
       <div className='mt-8 lg:mt-10'>
 
-      <div className='relative lg:hidden block w-11/12 mx-auto'>
+      <div className='relative row-span-4 lg:hidden block w-11/12 mx-auto'>
             <Image
-              src={bannerImage || noImg}
+             width={200}
+             height={200}
+              src={banner.data[2].image_path || noImg}
               alt='Newest Collection'
               layout='responsive'
               className='rounded-xl'
             />
           </div>
 
-          <div className='flex w-11/12 justify-between  mx-auto'>
+          <div className='flex w-11/12 justify-between  mx-auto gap-x-5'>
                {/* Product Grid */}
         <div>
-        <div className='grid grid-cols-2 lg:grid-cols-3 gap-7 mt-4 lg:mt-0'>
+        <div className='grid grid-cols-2 md:grid-cols-3 gap-7 gap-y-2 mt-4 lg:mt-0'>
           {isLoading
             ? Array.from({ length: 6 }).map((_, idx) => (
                 <CardSkeleton key={idx} />
@@ -87,10 +89,10 @@ const FeaturedProducts = ({ banner }) => {
 
                     <div
                     key={product.id}
-                    className='bg-gray-50 rounded-xl flex flex-col hover:shadow-md hover:scale-105 transition'
+                    className='bg-gray-50 rounded-xl flex flex-col hover:shadow-md hover:scale-105 transition md:mt-5'
                   >
                     <Link onClick={updateRecentViews} href={`products/${product.id}`} className='flex flex-col items-center flex-grow '>
-                      <div className='relative w-full'>
+                      <div className='relative h-36 w-40 mx-auto'>
                         <Image
                           src={product.image_path || noImg}
                           width={500}
@@ -105,7 +107,7 @@ const FeaturedProducts = ({ banner }) => {
                           </p>
                         )}
                       </div>
-                      <div className='my-2 p-4'>
+                      <div className='mt-2 px-4'>
                         <h3 className='text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-1'>{product.name}</h3>
                         <div>
                           {product.discount ? (
@@ -124,13 +126,13 @@ const FeaturedProducts = ({ banner }) => {
                       </div>
                     </Link>
       
-                    <div className="text-gray-600 px-5 grid mb-3 justify-items-start lg:grid-cols-2 gap-1">
+                    <div className="text-gray-600 px-5 grid mb-3 justify-items-start grid-cols-2 gap-1">
       
               <div className="flex items-start gap-1 text-xs">
                 <Battery size={15}></Battery>
                 {batteryCapacity}
               </div>
-              <div className="flex items-start gap-1 text-xs">
+              <div className="hidden md:flex items-start gap-1 text-xs">
                 <Cpu size={15}></Cpu>
                 {chipset}
               </div>
@@ -138,7 +140,7 @@ const FeaturedProducts = ({ banner }) => {
                 <Camera size={15}></Camera>
                 {camera}
               </div>
-              <div className="flex items-start gap-1 text-xs">
+              <div className="hidden md:flex items-start gap-1 text-xs">
                 <MemoryStick size={15}></MemoryStick>
                 {storage}
               </div>
@@ -176,13 +178,14 @@ const FeaturedProducts = ({ banner }) => {
         </div>
 
         {/* Banner Section */}
-        <div className='w-4/5 hidden lg:block col-span-1'>
-          <div className='relative '>
+        <div className='w-4/5 h-96 hidden lg:block row-span-4 col-span-1'>
+          <div className='relative'>
             <Image
-              src={bannerImage}
+            width={200}
+            height={400}
+              src={banner.data[2].image_path || noImg}
               alt='Newest Collection'
-              layout='responsive'
-              className='rounded-xl'
+              className='rounded-xl md:h-[100vh] w-full'
             />
           </div>
         </div>

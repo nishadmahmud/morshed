@@ -38,6 +38,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
           }else{
             router.push('/');
             toast.success("Login Successful!")
+            localStorage.setItem("user", JSON.stringify(formData));
           }
           onClose();
           setToken(res.data.token);

@@ -5,16 +5,18 @@ import Image from "next/image";
 import Link from "next/link";
 import useStore from "../CustomHooks/useStore";
 import useSWR from "swr";
-import { fetcher } from "../(home)/page";
+import { fetcher, userId } from "../(home)/page";
 import CardSkeleton from "./CardSkeleton";
 import noImg from "/public/no-image.jpg";
 import { Camera, MemoryStick, Cpu, Battery } from "lucide-react";
 
 const ReadyForOrder = () => {
   const { data: products, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}/public/products/165?page=1&limit=6`,
+    `${process.env.NEXT_PUBLIC_API}/public/products/${userId}?page=1&limit=6`,
     fetcher
   );
+
+  console.log(products);
 
   const { handleBuy, handleCart } = useStore();
 
@@ -88,7 +90,7 @@ const ReadyForOrder = () => {
                         onClick={() => updateRecentViews(product)}
                         href={`products/${product?.id}`}
                       >
-                        <div className="mx-auto">
+                        <div className="h-32 w-40 mx-auto">
                           <Image
                             src={product?.image_path || product?.images?.[0] || noImg}
                             height={500}
@@ -102,8 +104,8 @@ const ReadyForOrder = () => {
                             </p>
                           )}
                         </div>
-                        <div className="p-3 flex flex-col flex-grow px-4">
-                          <h3 className="text-sm font-semibold text-black mb-2 line-clamp-1 text-ellipsis">
+                        <div className="mt-10 flex flex-col flex-grow px-4">
+                          <h3 className="text-sm font-semibold text-black  line-clamp-1 text-ellipsis">
                             {product?.name}
                           </h3>
                           <div className="mt-auto">
@@ -132,22 +134,22 @@ const ReadyForOrder = () => {
                       </Link>
 
                       {/* Product specifications */}
-                      <div className="text-gray-600 px-5 grid mb-3 justify-items-start lg:grid-cols-2 gap-1">
+                      <div className="text-gray-600 px-5 grid mb-3 justify-items-start grid-cols-2 gap-1">
                         <div className="flex items-start gap-1 text-xs">
                           <Battery size={15} /> {batteryCapacity}
                         </div>
-                        <div className="flex items-start gap-1 text-xs">
+                        <div className="hidden md:flex items-start gap-1 text-xs">
                           <Cpu size={15} /> {chipset}
                         </div>
                         <div className="flex items-start gap-1 text-xs">
                           <Camera size={15} /> {camera}
                         </div>
-                        <div className="flex items-start gap-1 text-xs">
+                        <div className="hidden md:flex items-start gap-1 text-xs">
                           <MemoryStick size={15} /> {storage}
                         </div>
                       </div>
 
-                      <div className="grid grid-cols-1 justify-center items-center mb-5 mx-5 gap-2 bottom-2 pb-2">
+                      <div className="grid grid-cols-1 justify-center items-center mb-5 mx-5 gap-2 bottom-2">
                         <button
                           onClick={() => handleBuy(product, 1)}
                           className="border-[#F16724] border text-xs text-[#F16724] w-full py-1 rounded-md font-semibold transition-colors px-3"

@@ -65,32 +65,30 @@ const ProductCard = ({ product }) => {
 
   return (
     <div className="bg-gray-50 hover:shadow-md transition ease-in-out  border-opacity-60 rounded-lg flex flex-col poppins hover:scale-105"> 
-      <Link onClick={updateRecentViews} href={`/products/${product?.id}`} className="flex flex-col flex-grow">
-        <div>
-          <div className="relative w-full mx-auto" style={{ aspectRatio }}>
+      <Link onClick={updateRecentViews} href={`/products/${product?.id}`} >
+       
+          <div className="relative h-36 w-40 mx-auto">
             <Image
               src={
                 validImage
               }
               alt={product?.name}
-              width={500}
-              height={250}
-              style={{
-                objectFit: 'cover',
-              }}
+              width={800}
+              height={200}
+              className='object-cover '
               quality={100}
             />
           </div>
 
           {product?.discount && (
-            <p className="relative lg:bottom-72 lg:-top-64 md:-top-48 -top-40 w-20 text-center left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-1 rounded-md">
+            <p className="relative  md:-top-32 -top-40 w-20 text-center left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-1 rounded-md">
               SAVE {product?.discount}%
             </p>
           )}
-        </div>
+        
 
         <div className="lg:pb-4 pb-1 flex flex-col flex-grow px-4">
-          <h3 className="text-sm font-semibold text-black mb-2 line-clamp-1 text-ellipsis">
+          <h3 className="text-sm font-semibold text-black mb-1 line-clamp-1 text-ellipsis mt-8">
             {product?.name}
           </h3>
           <div className="mt-auto">
@@ -114,13 +112,13 @@ const ProductCard = ({ product }) => {
         </div>
       </Link>
 
-      <div className="text-gray-600 px-5 grid mb-3 justify-items-start lg:grid-cols-2 gap-1">
+      <div className="text-gray-600 px-5 grid mb-3 justify-items-start grid-cols-2 gap-1">
       
       <div className="flex items-start gap-1 text-xs">
         <Battery size={15}></Battery>
         {batteryCapacity}
       </div>
-      <div className="flex items-start gap-1 text-xs">
+      <div className="hidden md:flex items-start gap-1 text-xs">
         <Cpu size={15}></Cpu>
         {chipset}
       </div>
@@ -128,7 +126,7 @@ const ProductCard = ({ product }) => {
         <Camera size={15}></Camera>
         {camera}
       </div>
-      <div className="flex items-start gap-1 text-xs">
+      <div className="hidden md:flex items-start gap-1 text-xs">
         <MemoryStick size={15}></MemoryStick>
         {storage}
       </div>

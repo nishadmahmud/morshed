@@ -14,7 +14,7 @@ import ProductCard from './ProductCard';
 const NewArrival = () => {
     const {handleCart,handleBuy} = useStore();
     const {data : bestSellers,isLoading} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/best-sellers/${userId}`,fetcher);
-
+  console.log('best saller', bestSellers);
 
     return (
         <div className="mt-12">

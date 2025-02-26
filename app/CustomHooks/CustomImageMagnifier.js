@@ -23,7 +23,7 @@ const CustomImageMagnifier = ({ smallImageSrc, largeImageSrc, altText, smallImag
         style={{
           position: 'relative',
           display: 'inline-block',
-          cursor: 'pointer',
+          cursor: 'zoom-in',
         }}
         onMouseEnter={() => setIsHovering(true)}
         onMouseLeave={() => setIsHovering(false)}
@@ -46,13 +46,12 @@ const CustomImageMagnifier = ({ smallImageSrc, largeImageSrc, altText, smallImag
           style={{
             position: '',
             left:'10rem',
-            width: '200px', // fixed width of magnified image
-            height: '200px', // fixed height of magnified image
+            width: '300px', // fixed width of magnified image
+            height: '300px', // fixed height of magnified image
             backgroundImage: `url(${largeImageSrc})`,
             backgroundSize: '200% 200%', // zoom in effect
             backgroundPosition: `${mousePosition.left}% ${mousePosition.top}%`, // move with the mouse
             border: '2px solid #ccc',
-            boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
             overflow: 'hidden',
             borderRadius: '10px',
             pointerEvents: 'none',

@@ -51,7 +51,7 @@ const PersonalInfo = () => {
           <label className="block text-gray-700">Mobile Number</label>
           <input
             type="text"
-            value={user?.phone || "Phone no"}
+            value={user?.phone || "N/A"}
             disabled
             className="w-full p-2 border rounded bg-gray-100 text-black"
           />

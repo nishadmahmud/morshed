@@ -20,6 +20,11 @@ const Page = ({ params }) => {
   const [quantity,setQuantity] = useState(1);
   const [activeTab,setActiveTab] = useState('Specification');
   const [imageIndex,setImageIndex] = useState(0); 
+ 
+
+
+  
+
   
   useEffect(() => {
     setCartItems(getCartItems());
@@ -31,37 +36,14 @@ const Page = ({ params }) => {
 
   const {data : product} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${params.slug}`,fetcher);
 
-
-  // const getProductDetails =  useCallback(()  => {
-  //   axios.get(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${params.slug}`,)
-  //   .then(res => {
-  //     setProduct(res.data.data)
-  //   })
-  //   .catch(error => {
-  //     console.log(error);
-  //   })
-  // },[params.slug])
-
-  // useEffect(() => {
-  //   getProductDetails();
-  // },[getProductDetails])
-
   
 
-
-  
-
-  // const matchWithCart = cartItems.filter(item => item.title === product.title);
-  // console.log(matchWithCart);
 
   const [selectedColor, setSelectedColor] = useState('Space Black')
   const [selectedStorage, setSelectedStorage] = useState('');
 
   const [storages,setStorages] = useState(''); 
-
-  const colors = ['Space Black', 'Gold', 'Pink', 'Blue', 'White']
-
-  
+ 
 
   const isCartItem  = cartItems.find(item => item?.id === product?.data.id || undefined); 
 
@@ -92,56 +74,29 @@ const Page = ({ params }) => {
     setRecentProducts(storedProducts);
   }, []);
 
-  //  const handleMobileSlider = (idx) => {
-      
-  //     const updatedImages = [...images.slice(idx), ...images.slice(0, idx)];
-  //     setImages(updatedImages);
-  //     setImageIndex(0);
-  //   }
+console.log(product);
+const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails_price || 0);
 
-  //  console.log(product);
+
+  console.log(selectedSalePrice);
+
+
+  useEffect(() => {
+    if (selectedStorage && product?.data.imeis) {
+      const foundItem = product.data.imeis.find((item) => item.storage === selectedStorage);
+      if (foundItem) {
+        setSelectedSalePrice(foundItem.sale_price);
+      }
+    }
+  }, [selectedStorage, product]);
   
-  // isLoading && <p>Loading....</p>
-
-  // const [recentlyViewedProducts, setRecentlyViewedProducts] = useState([]);
-
-  // useEffect(() => {
-  //   // Retrieve the list of recently viewed product slugs from localStorage
-  //   const recentViews = JSON.parse(localStorage.getItem('recentlyViewed') || []);
-  //   if (recentViews.length > 0) {
-  //     // Fetch product details for each recently viewed slug
-  //     fetchProductsBySlugs(recentViews);
-  //   }
-  // }, []);
-
-  // const fetchProductsBySlugs = async (slugs) => {
-  //   try {
-  //     const fetchedProducts = await Promise.all(
-  //       slugs.map((slug) => 
-  //         axios.get(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${slug}`)
-  //           .then(res => res.data.data)
-  //       )
-  //     );
-  //     setRecentlyViewedProducts(fetchedProducts);
-  //   } catch (error) {
-  //     console.log("Error fetching products", error);
-  //   }
-  // };
-
-  // console.log(recentlyViewedProducts);
   
   
   return (
     <div className="bg-white px-5 lg:p-8 pt-10 mx-auto text-black max-w-7xl overflow-hidden sans">
       
       <div className="container mx-auto px-4 pb-8">
-      {/* <div className="flex items-center text-sm mb-4">
-        <Link href="/" className="text-orange-500 hover:underline">Home</Link>
-        <ChevronRight className="w-4 h-4 mx-2" />
-        <Link href="/phones" className="text-orange-500 hover:underline">Phones & Tablets</Link>
-        <ChevronRight className="w-4 h-4 mx-2" />
-        <span className="text-gray-500">iPhone 16</span>
-      </div> */}
+    
 
       <div className="flex flex-col md:flex-row flex-1 gap-8">
         <div className="relative">
@@ -225,17 +180,22 @@ const Page = ({ params }) => {
         <div>
           <h1 className="text-base sans lg:text-2xl font-semibold mb-2 lg:text-nowrap">{product?.data.name}</h1>
           
-          <div className="mb-4 flex items-center ">
-            {
-              product?.data.discount ? <div className="text-nowrap flex gap-2 items-center">
-                <span className="text-sm lg:text-2xl font-bold text-[#4e4b49] line-through">{product?.data.retails_price} ৳</span>
-                <span className=" sans lg:text-3xl font-bold text-[#F16724]">{product?.data.retails_price - ((product?.data.retails_price * product?.data.discount) / 100).toFixed(0)} ৳</span>
-              </div> :
-              <span className=" sans lg:text-3xl font-bold text-[#F16724]">{product?.data.retails_price} ৳</span>
-            }
-            
-            <h6 className="text-sm text-nowrap text-gray-800 font-semibold ml-2 px-4 py-2 bg-gray-200 ">Status: <span className="font-normal text-xs">{product?.data.status}</span> </h6>
-          </div>
+          <div className="mb-4 flex items-center">
+  {product?.data.discount ? (
+    <div className="text-nowrap flex gap-2 items-center">
+      <span className="text-sm lg:text-2xl font-bold text-[#4e4b49] line-through">
+        {selectedSalePrice} ৳
+      </span>
+      <span className="sans lg:text-3xl font-bold text-[#F16724]">
+        {(selectedSalePrice - ((selectedSalePrice * product?.data.discount) / 100)).toFixed(0)} ৳
+      </span>
+    </div>
+  ) : (
+    <span className="sans lg:text-3xl font-bold text-[#F16724]">{selectedSalePrice} ৳</span>
+  )}
+</div>
+
+
           <div className="mb-4 flex items-center flex-wrap lg:flex-nowrap gap-3">
             <p className="text-gray-800 text-sm  p-2 bg-gray-200 flex items-center text-nowrap gap-2"><Landmark size={16}/> EMI Available <Link target="_blank" href={'/Convenient Global EMI (for QR) (Updated- 05-01-22)(0)(0)(0).pdf'} className="text-blue-500 font-semibold">View Plans</Link></p>
             <p className="text-gray-800 text-sm text-nowrap bg-gray-200 p-2 "> Exchange <Link href={'/plans'} className="text-blue-500 font-semibold">View Plans</Link></p>
@@ -252,18 +212,7 @@ const Page = ({ params }) => {
           <div className="mb-4">
             <h3 className="font-semibold mb-2">Color: {selectedColor}</h3>
             <div className="flex space-x-2">
-              {/* {
-              product?.data?.color.length > 0 &&
-              product?.data?.color.map((color) => (
-                <button
-                  key={color}
-                  onClick={() => setSelectedColor(color)}
-                  className={`w-8 h-8 rounded-full border ${
-                    selectedColor === color ? 'border-blue-500' : 'border-gray-300'
-                  }`}
-                  style={{ backgroundColor: color.toLowerCase().replace(' ', '') }}
-                />
-              ))} */}
+              
             </div>
           </div>
           <div className="mb-4">
@@ -287,33 +236,7 @@ const Page = ({ params }) => {
               ))}
             </div>
           </div>
-          {/* <div className="flex space-x-4 mb-4 flex-wrap justify-start">
-            <div className="flex items-center border border-[#0F98BA] rounded-md overflow-hidden  ">
-              <button
-                onClick={quantity > 1 ? () => setQuantity(quantity - 1) : null}
-                className="px-4 py-2 text-[#0F98BA] font-semibold "
-              >
-                -
-              </button>
-              <div className="px-4 py-2 border-[#0F98BA] border-x text-[#0F98BA] font-semibold">
-                {quantity}
-              </div>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="px-4 py-2 text-[#0F98BA] font-semibold "
-              >
-                +
-              </button>
-            </div>
-            <div className="flex gap-4 mt-5 md:mt-5 lg:mt-0">
-              <button onClick={() => handleBuy(product?.data,quantity)} className="px-4 border border-transparent py-1 bg-[#F16724] text-white rounded-sm hover:bg-white hover:border-[#F16724]  hover:text-[#F16724]">Buy Now</button>
-
-              <button disabled={isCartItem !== undefined} variant="outline" className={`border px-4 py-1 border-[#F16724] text-[#F16724] hover:bg-[#F16724] hover:text-white  ${
-              isCartItem !== undefined ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ''}`} onClick={() => handleCart(product?.data,quantity)}>{isCartItem !== undefined ? 'Added' : 'Add to Cart'}</button>
-            </div>
-           
-          </div> */}
-
+         
           <div className="flex flex-wrap items-center gap-4 justify-start mb-4">
             {/* Quantity Controls */}
             <div className="flex items-center border border-[#0F98BA] rounded-md overflow-hidden">
@@ -357,84 +280,10 @@ const Page = ({ params }) => {
             </div>
           </div>
 
-          {/* <p className="text-sm text-gray-500">Apple Store 1 Year Warranty Support</p> */}
+         
         </div>
       </div>
 
-      {/* related products */}
-      {/* <div className="my-12">
-        <Heading title={'Related Products'}/>
-        <Swiper
-            slidesPerView={2}
-            spaceBetween={20}
-            navigation= {true}
-            loop={true}
-            modules={[Navigation]}
-            breakpoints={{
-              // Responsive breakpoints
-              640: {
-                slidesPerView: 2, // Show 2 slides for devices with width >= 640px
-                spaceBetween: 10, // Adjust space for mobile
-              },
-              768: {
-                slidesPerView: 3,
-                spaceBetween: 40,
-              },
-              1024: {
-                slidesPerView: 5, // Show 4 slides for devices with width >= 1024px
-                spaceBetween: 20, // Default space for larger screens
-              },
-            }}
-            className="trending-swiper"
-            >
-              {
-                relatedProducts.length > 0 ? (
-                  relatedProducts.slice(0,10).map((product, idx) => {
-                    return (
-                      <SwiperSlide key={idx} className="flex select-none justify-center">
-                        <div className="max-w-sm bg-white text-center border-gray-200 grid grid-rows-[auto,1fr,auto] gap-4 p-4 border rounded-lg ">
-                        <Link
-                          href={`/products/${product?.name}`}>
-                            <div className="flex items-center justify-center">
-                            <Image
-                              src={product?.image[0]}
-                              height="200"
-                              width="200"
-                              alt="mobile-phone"
-                              quality={75}
-                            />
-                            </div>
-                            <div>
-                              <h3 className="text-sm font-medium mb-2 text-black">
-                                {product?.name}
-                              </h3>
-        
-                              <p className="text-sm text-gray-800 font-bold mb-4">
-                                {product?.retails_price} ৳
-                              </p>
-                            </div>
-                        </Link>
-                        <div className='flex gap-2 flex-col md:flex-col lg:flex-row items-center'>
-                          <button onClick={(e) => {e.preventDefault(),handleBuy(product,quantity)}} className="border-[#ff8800] border text-xs text-[#ff8800] w-full px-[2px] py-1 rounded-md font-semibold  transition-colors">Buy Now</button>
-                          <button
-                              onClick={(e) => {e.preventDefault(),handleCart(product,1)}}
-                              className="bg-[#ff8800] border border-transparent text-xs text-white w-full px-[2px] py-1 rounded-md font-semibold  transition-colors"
-                              >
-                              Add to Cart
-                              </button>
-                        </div>
-                        </div> 
-                      </SwiperSlide>
-                      
-                    );
-                  })
-                ) : (
-                  <p>No products found</p>
-                )
-              }
-              
-        </Swiper>
-      </div> */}
 
     </div>
       

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { userId } from "../page";
 import axios from "axios";
 import noImg from '/public/no-image.jpg'
@@ -9,6 +9,7 @@ import noImg from '/public/no-image.jpg'
 const Page = () => {
   const [keyword1, setKeyword1] = useState("");
   const [keyword2, setKeyword2] = useState("");
+  const [products, setProduct] = useState([]);
   const [products1, setProducts1] = useState([]);
   const [products2, setProducts2] = useState([]);
   const [selectedProduct1, setSelectedProduct1] = useState(null);
@@ -22,8 +23,9 @@ const Page = () => {
       axios
         .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, { keyword, user_id: userId })
         .then((res) => {
-          const fetchedProducts = res.data.data?.data || [];
+          const fetchedProducts = res.data?.data?.data || [];
           setProducts(fetchedProducts);
+          setProduct(fetchedProducts);
         })
         .catch(() => setProducts([]));
     } else {
@@ -31,6 +33,22 @@ const Page = () => {
       setShowResults(false);
     }
   };
+
+  console.log(products);
+
+  const [hello, setHello] = useState([]);
+
+useEffect(() => {
+  if (products?.specifications?.length > 0) {
+    const names = products.specifications.map((dName) => dName.name); // Extract names
+    setHello(names); // Store as an array in state
+    console.log(names);
+  }
+}, [products]); // Runs when `products` changes
+
+console.log(selectedProduct1);
+
+
 
   const handleSelectProduct = (product, setSelectedProduct, setKeyword, setProducts, setShowResults) => {
     setSelectedProduct(product);
@@ -191,35 +209,34 @@ const Page = () => {
                 <th className="border border-gray-300 p-2">Product 2</th>
               </tr>
             </thead>
+
+
             <tbody>
-              <tr>
-                <td className="border border-gray-300 p-2">Name</td>
-                <td className="border border-gray-300 p-2">
-                  {selectedProduct1?.name || "N/A"}
-                </td>
-                <td className="border border-gray-300 p-2">
-                  {selectedProduct2?.name || "N/A"}
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 p-2">Processor</td>
-                <td className="border border-gray-300 p-2">
-                  {selectedProduct1?.processor || "N/A"}
-                </td>
-                <td className="border border-gray-300 p-2">
-                  {selectedProduct2?.processor || "N/A"}
-                </td>
-              </tr>
-              <tr>
-                <td className="border border-gray-300 p-2">Display</td>
-                <td className="border border-gray-300 p-2">
-                  {selectedProduct1?.display || "N/A"}
-                </td>
-                <td className="border border-gray-300 p-2">
-                  {selectedProduct2?.display || "N/A"}
-                </td>
-              </tr>
-            </tbody>
+  {selectedProduct1?.specifications?.length > 0 || selectedProduct2?.specifications?.length > 0 ? (
+    (selectedProduct1?.specifications || selectedProduct2?.specifications || []).map((spec, index) => {
+      const spec1 = selectedProduct1?.specifications?.find((s) => s.name === spec.name);
+      const spec2 = selectedProduct2?.specifications?.find((s) => s.name === spec.name);
+
+      return (
+        <tr key={index} className="border-b">
+          <td className="py-2 font-semibold border pl-3">
+            {spec.name.charAt(0).toUpperCase() + spec.name.slice(1)}
+          </td>
+          <td className="py-2 pl-3 border">{spec1?.description || "N/A"}</td>
+          <td className="py-2 pl-3 border">{spec2?.description || "N/A"}</td>
+        </tr>
+      );
+    })
+  ) : (
+    <tr>
+      <td colSpan="3" className="text-center py-3 border">No specifications available</td>
+    </tr>
+  )}
+</tbody>
+
+
+
+
           </table>
         </div>
       </div>

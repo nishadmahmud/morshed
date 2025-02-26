@@ -20,6 +20,7 @@ const DashboardLayout = ({ children }) => {
     setToken(null);
     setHasToken(false);
     setEmail(null);
+    location.reload()
     route.push("/");
   };
 
@@ -76,25 +77,25 @@ const DashboardLayout = ({ children }) => {
         <nav className="mt-6 space-y-4">
           <Link
             href="/profileDashboard"
-            className="text-white hover:text-gray-500 flex items-center gap-1"
+            className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <FileUser size={20} /> Personal Info
           </Link>
           <Link
             href="/profileDashboard/orders"
-            className="text-white hover:text-gray-500 flex items-center gap-1"
+            className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <ShoppingBag size={20} /> My Orders
           </Link>
           <Link
             href="/profileDashboard/address"
-            className="text-white hover:text-gray-500 flex items-center gap-1"
+            className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <MapPinHouse size={20} /> Address
           </Link>
           <Link
-            href="/profileDashboard/change-password"
-            className="text-white hover:text-gray-500 flex items-center gap-1"
+            href="/profileDashboard/updatePassword"
+            className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <KeyRound size={20} /> Change Password
           </Link>
