@@ -1,15 +1,16 @@
 "use client";
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import useStore from "@/app/CustomHooks/useStore";
 import {  FaWhatsapp } from "react-icons/fa6";
 import { Landmark } from "lucide-react";
 import Link from "next/link";
-import CustomImageMagnifier from "@/app/CustomHooks/CustomImageMagnifier";
 import useSWR from "swr";
 import { fetcher } from "../../page";
 import noImg from '/public/no-image.jpg'
-
+import MagnifiedImage from "@/app/Components/MagnifiedImage";
+import colornames from "colornames";
+import toast from "react-hot-toast";
 
 const Page = ({ params }) => {
   const { handleCart,getCartItems,refetch,setRefetch,handleBuy } = useStore();
@@ -21,10 +22,6 @@ const Page = ({ params }) => {
   const [activeTab,setActiveTab] = useState('Specification');
   const [imageIndex,setImageIndex] = useState(0); 
  
-
-
-  
-
   
   useEffect(() => {
     setCartItems(getCartItems());
@@ -36,10 +33,6 @@ const Page = ({ params }) => {
 
   const {data : product} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${params.slug}`,fetcher);
 
-  
-
-
-  const [selectedColor, setSelectedColor] = useState('Space Black')
   const [selectedStorage, setSelectedStorage] = useState('');
 
   const [storages,setStorages] = useState(''); 
@@ -57,7 +50,7 @@ const Page = ({ params }) => {
      setStorages(uniqueStorage)
     }
   },[product])
-
+console.log(colornames("Black"));
   useEffect(() => {
     const handleScroll = () => {
         setScroll(window.scrollY);
@@ -80,15 +73,74 @@ const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails
 
   console.log(selectedSalePrice);
 
+  const [selectedColor, setSelectedColor] = useState(product?.data?.color[0]); 
 
+
+  
+
+  console.log(selectedColor,selectedStorage);
+  
+  
   useEffect(() => {
-    if (selectedStorage && product?.data.imeis) {
-      const foundItem = product.data.imeis.find((item) => item.storage === selectedStorage);
-      if (foundItem) {
-        setSelectedSalePrice(foundItem.sale_price);
+    if (selectedStorage && selectedColor && product?.data?.imeis?.length > 0) {
+      const foundItem = product.data.imeis.find(
+        (item) => item.storage === selectedStorage && item.color === selectedColor
+      );
+
+      console.log(foundItem,'jhhj');
+
+      if (!foundItem) {
+
+        alert("Selected color is not available for the chosen storage.");
+        return
+        
+      } else {
+        setSelectedSalePrice(foundItem ? Number(foundItem.sale_price) || 0 : 0);
       }
+  
     }
-  }, [selectedStorage, product]);
+  }, [selectedStorage, selectedColor, product]);
+
+  const handleColorChange = (colorCode) => {
+  const foundItem = product?.data?.imeis?.find(
+    (item) => item.storage === selectedStorage && item.color === colorCode
+  );
+
+  if (!foundItem) {
+    toast.error("Selected color is not available for the chosen storage.");
+    return;
+  }
+
+  setSelectedColor(colorCode);
+};
+
+useEffect(() => {
+  if (product?.data?.color) {
+    const firstColorCode = Object.values(product.data.color)[0]; // Get the first color code
+    if (firstColorCode) {
+      setSelectedColor(firstColorCode);
+    }
+  }
+}, [product]);
+
+const handleStorageChange = (storage) => {
+  const foundItem = product?.data?.imeis?.find(
+    (item) => item.color === selectedColor && item.storage === storage
+  );
+
+  if (!foundItem) {
+    toast.error("Selected storage is not available for the chosen color.");
+    return;
+  }
+
+  setSelectedStorage(storage);
+};
+  
+  
+
+console.log(product?.data);
+  
+
   
   
   
@@ -96,29 +148,29 @@ const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails
     <div className="bg-white px-5 lg:p-8 pt-10 mx-auto text-black max-w-7xl overflow-hidden sans">
       
       <div className="container mx-auto px-4 pb-8">
-    
-
+  
       <div className="flex flex-col md:flex-row flex-1 gap-8">
         <div className="relative">
           {/* desktop */}
-          <div id="magnify" className="hidden  mb-4 col-span-1 border lg:flex justify-center rounded-2xl p-2 cursor-zoom-in fluid__image-container">
+          <div id="magnify" className="hidden  mb-4 col-span-1  lg:flex justify-center rounded-2xl p-2 cursor-zoom-in">
             { 
             product?.data.images?.length > 0 ? 
-            <div >
-              <CustomImageMagnifier
-                smallImageSrc={product?.data.images[0]}
-                largeImageSrc={product?.data.images[0]}
-                altText={product?.data.name}
-              />
-            </div> :
             <div>
-              <CustomImageMagnifier
-                smallImageSrc={product?.data.image_path}
-                largeImageSrc={product?.data.image_path}
-                altText={product?.data.name}
-              />
+              <MagnifiedImage image_path={product.data.images[imageIndex]} alt={product?.data.name}/>
+
+            </div> : 
+            product?.data?.image_path ?
+            <div>
+              <MagnifiedImage image_path={product.data.images[imageIndex]} alt={product?.data.name}/>
 
             </div>
+            : <Image
+            src={'https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg'}
+            height={300} 
+            width={300} 
+            alt={product?.data.name}
+            quality={75}
+          />
             }
           </div>
 
@@ -209,33 +261,41 @@ const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails
             <FaWhatsapp className="text-2xl" />
             <span>Message <br /> on WhatsApp</span>
           </Link>
+    
           <div className="mb-4">
-            <h3 className="font-semibold mb-2">Color: {selectedColor}</h3>
-            <div className="flex space-x-2">
-              
-            </div>
-          </div>
-          <div className="mb-4">
-            <h3 className="font-semibold mb-2">Storage: {selectedStorage ? `${selectedStorage}` : 'N/A'}</h3>
-            <div className="flex space-x-2">
-              { storages && storages.length > 0 &&
-              storages.map((storage) => (
-                storage ?
-                <button
-                  key={storage}
-                  onClick={() => setSelectedStorage(storage)}
-                  className={`px-4 py-2 rounded ${
-                    selectedStorage === storage
-                      ? 'bg-[#F16724] text-white'
-                      : 'bg-gray-200 text-gray-800'
-                  }`}
-                >
-                  {storage} 
-                </button>
-                : ''
-              ))}
-            </div>
-          </div>
+  <h3 className="font-semibold mb-2">Color: {selectedColor}</h3>
+  <div className="flex space-x-2">
+    {product?.data?.color &&
+      Object.entries(product.data.color).map(([colorName, colorCode]) => (
+        <button
+          key={colorName}
+          className={`w-8 h-8 rounded-full border-2 ${
+            selectedColor === colorCode ? "border-black" : "border-gray-300"
+          }`}
+          style={{ backgroundColor: colornames(colorCode) }}
+          onClick={() => handleColorChange(colorCode)} 
+        />
+      ))}
+  </div>
+</div>
+
+<div className="mb-4">
+  <h3 className="font-semibold mb-2">Storage: {selectedStorage ? `${selectedStorage}` : 'N/A'}</h3>
+  <div className="flex space-x-2">
+    {storages &&
+      storages.map((storage) => (
+        <button
+          key={storage}
+          onClick={() => handleStorageChange(storage)}
+          className={`px-4 py-2 rounded ${
+            selectedStorage === storage ? 'bg-[#F16724] text-white' : 'bg-gray-200 text-gray-800'
+          }`}
+        >
+          {storage} 
+        </button>
+      ))}
+  </div>
+</div>
          
           <div className="flex flex-wrap items-center gap-4 justify-start mb-4">
             {/* Quantity Controls */}
@@ -280,10 +340,8 @@ const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails
             </div>
           </div>
 
-         
         </div>
       </div>
-
 
     </div>
       
