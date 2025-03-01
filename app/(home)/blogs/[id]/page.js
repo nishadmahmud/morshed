@@ -5,19 +5,19 @@ import useStore from "@/app/CustomHooks/useStore";
 
 export default function BlogPost({ params }) {
   const {blogs} = useStore();
-  const blogsData = blogs.data || [];
-  const filteredBlogs = blogsData.filter(blog => String(blog.id) === String(params.id));
+  const blogsData = blogs?.data || [];
+  const filteredBlogs = blogsData?.filter(blog => String(blog.id) === String(params.id));
 
 
   return (
     <div className="w-9/12 mx-auto py-16">
-      {filteredBlogs.length > 0 ? (
-        filteredBlogs.map((blog) => (
+      {filteredBlogs?.length > 0 ? (
+        filteredBlogs?.map((blog) => (
           <div key={blog.id}>
            
             <Image
-              src={blog.image || "/placeholder.svg"}
-              alt={blog.title}
+              src={blog?.image || "/placeholder.svg"}
+              alt={blog?.title}
               width={800}
               height={200}
               className="w-full h-[50vh] lg:pt-36 mt-20 object-cover rounded-lg mb-6"
@@ -25,7 +25,7 @@ export default function BlogPost({ params }) {
              <h1 className="text-3xl text-black font-bold mb-4">{blog.title}</h1>
              <div
               className="text-lg text-black"
-              dangerouslySetInnerHTML={{ __html: blog.description }}
+              dangerouslySetInnerHTML={{ __html: blog?.description }}
             />
          
           </div>

@@ -270,26 +270,25 @@ const Header = ({data}) => {
 
             <div>
             {
-              email ? 
-              <div onClick={handleUserInfo} className='lg:flex items-center lg:border bg-[#ffffff] border-[#F16724] px-2 p-2 rounded-full lg:mr-2.5 cursor-pointer hidden'>
-                  <div className='p-1 rounded-full hidden lg:block'>
-                      <CircleUser  size={18} className='text-[#F16724]'/>
-                  </div>
-                  <div>
-                  <p className='text-[#F16724] hidden lg:block text-xs font-semibold '>Account</p> 
-                  
-               </div> 
-              </div> :
-              <div onClick={() => {setIsLoginModal(true)}} className=' items-center lg:border hidden lg:flex bg-white px-2 p-1.5 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
-                <div className='p-1 rounded-full hidden lg:block'>
-                  <CircleUser size={18} className='text-[#F16724] '/>
-                </div> 
-                <div>
-                  <p className='text-[#F16724] hidden lg:block text-sm font-semibold '>Account</p> 
-                 
-               </div> 
-              </div>
-             }   
+  email ? 
+  <div onClick={handleUserInfo} className='lg:flex items-center lg:border bg-[#ffffff] border-[#F16724] px-2 p-2 rounded-full lg:mr-2.5 cursor-pointer hidden'>
+      <div className='p-1 rounded-full hidden lg:block'>
+          <CircleUser  size={18} className='text-[#F16724]'/>
+      </div>
+      <div>
+      <p className='text-[#F16724] hidden lg:block text-xs font-semibold '>Account</p> 
+      
+   </div> 
+  </div> :
+  <div onClick={() => { setIsLoginModal(true) }} className='items-center lg:border hidden lg:flex bg-white px-2 p-1.5 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
+    <div className='p-1 rounded-full hidden lg:block'>
+      <CircleUser size={18} className='text-[#F16724]'/>
+    </div> 
+    <div>
+      <p className='text-[#F16724] hidden lg:block text-sm font-semibold '>Account</p> 
+    </div> 
+  </div>
+}  
              
             </div>
                 {   
@@ -322,25 +321,30 @@ const Header = ({data}) => {
                 : null
            }
 
-           {
-            isLoginModal ? 
-            <Modal 
-            content={isRegistered ? 
-            <LoginForm  
-            isLoginModal={isLoginModal} 
-            onClose = {handleModalClose}
-            setIsRegistered={setIsRegistered} 
-            setReload={setReload}
-            isRegistered={isRegistered}/> : 
-            <RegisterForm 
-            setIsRegistered={setIsRegistered} 
-            isLoginModal={isLoginModal} 
-            isRegistered={isRegistered} />} 
-            onClose = {handleModalClose}
-            setReload={setReload}
-            title={isRegistered ? "Sign In" : 'Sign Up'}/> : null
-           }
-
+{
+  isLoginModal && (
+    <Modal 
+      content={isRegistered ? 
+        <LoginForm  
+          isLoginModal={isLoginModal} 
+          onClose={handleModalClose}
+          setIsRegistered={setIsRegistered} 
+          setReload={setReload}
+          isRegistered={isRegistered} 
+        /> 
+        : 
+        <RegisterForm 
+          setIsRegistered={setIsRegistered} 
+          isLoginModal={isLoginModal} 
+          isRegistered={isRegistered} 
+        />
+      } 
+      onClose={handleModalClose}
+      setReload={setReload}
+      title={isRegistered ? "Sign In" : "Sign Up"}
+    />
+  )
+}
 
             {
                 searchBar ? 

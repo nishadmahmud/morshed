@@ -206,7 +206,7 @@ console.log(product?.data);
           {
               product?.data.discount ?
               <p className="text-white bg-[#F16724] rounded-md  absolute py-1 
-              px-[6px] text-sm -top-5 lg:top-3 left-12">SAVE {product.discount}%</p> : ''
+              px-[6px] text-sm -top-5 lg:top-3 left-12">SAVE {product?.data?.discount}%</p> : ''
           }
           <div className="flex justify-center space-x-2 mb-4 ">
                 {
@@ -263,10 +263,11 @@ console.log(product?.data);
           </Link>
     
           <div className="mb-4">
-  <h3 className="font-semibold mb-2">Color: {selectedColor}</h3>
+  <h3 className="font-semibold mb-2">Color: {selectedColor || "No color"}</h3>
   <div className="flex space-x-2">
-    {product?.data?.color &&
-      Object.entries(product.data.color).map(([colorName, colorCode]) => (
+  {product?.data?.color &&
+    Object.entries(product.data.color).map(([colorName, colorCode]) =>
+      colorCode ? ( // Check if colorCode exists
         <button
           key={colorName}
           className={`w-8 h-8 rounded-full border-2 ${
@@ -275,8 +276,10 @@ console.log(product?.data);
           style={{ backgroundColor: colornames(colorCode) }}
           onClick={() => handleColorChange(colorCode)} 
         />
-      ))}
-  </div>
+      ) : null
+    )}
+</div>
+
 </div>
 
 <div className="mb-4">

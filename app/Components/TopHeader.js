@@ -9,7 +9,7 @@ const TopHeader = () => {
         <div className="flex items-center text-xs gap-3">
           <Link className="hover:font-semibold hover:scale-105 transition ease-in-out" href="orderTracking" >Order Tracking</Link>
           <Link  className="hover:font-semibold hover:scale-105 transition ease-in-out"  href="offer" >Offer Details</Link>
-          <Link  className="hover:font-semibold hover:scale-105 transition ease-in-out"  href="/" >Blogs</Link>
+          <Link  className="hover:font-semibold hover:scale-105 transition ease-in-out"  href="/blogs" >Blogs</Link>
           
         </div>
 

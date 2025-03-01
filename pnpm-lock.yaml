@@ -23,6 +23,9 @@ importers:
       axios:
         specifier: ^1.7.7
         version: 1.7.9
+      colornames:
+        specifier: ^1.1.1
+        version: 1.1.1
       framer-motion:
         specifier: ^12.0.5
         version: 12.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -101,6 +104,9 @@ importers:
       string-to-color:
         specifier: ^2.2.2
         version: 2.2.2
+      string-to-hex-code-color:
+        specifier: ^1.0.8
+        version: 1.0.8
       swiper:
         specifier: ^11.2.1
         version: 11.2.1
@@ -2144,6 +2150,9 @@ packages:
 
   string-to-color@2.2.2:
     resolution: {integrity: sha512-XeA2goP7PNsSlz8RRn6KhYswnMf5Tl+38ajfy8n4oZJyMGC4qqKgHNHsZ/3qwvr42NRIjf9eSr721SyetDeMkA==}
+
+  string-to-hex-code-color@1.0.8:
+    resolution: {integrity: sha512-zXVHehGBVDR+zBJbsXRAgZt3pThVu0Dp6l/g+ubDBbIGlXnT6N9i/rb+AddzOsmQnQa4rJ/0EFCZBxqDYZyyXw==}
 
   string-width@4.2.3:
     resolution: {integrity: sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g==}
@@ -4649,6 +4658,8 @@ snapshots:
       lodash.trimstart: 4.5.1
       lodash.words: 4.2.0
       rgb-hex: 3.0.0
+
+  string-to-hex-code-color@1.0.8: {}
 
   string-width@4.2.3:
     dependencies:

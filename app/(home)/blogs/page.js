@@ -8,18 +8,17 @@ import { fetcher, userId } from "../page";
 import useStore from "@/app/CustomHooks/useStore";
 
 
-
-
-
 export default function Page() {
     const {blogs} = useStore();
+
+    console.log(blogs);
 
     return (
         <div className="w-9/12 mx-auto pt-40">
             <div className="flex justify-between gap-16">
             <div className="grid gap-8 md:grid-cols-2 w-11/12">
-                {blogs.data?.length > 0 ? (
-                    blogs.data.map((post) => (
+                {blogs?.data.length > 0 ? (
+                    blogs?.data?.map((post) => (
                         <div key={post.id} className="bg-white rounded-lg overflow-hidden w-full mx-auto">
                             <Image
                                 src={post.image || "/placeholder.svg"}

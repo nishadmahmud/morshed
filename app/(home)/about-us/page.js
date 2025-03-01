@@ -14,7 +14,7 @@ export default function Home() {
           <h2 className="text-2xl font-semibold  text-nowrap ">Who We Are</h2>
           <div>
             <p className="text-gray-600">
-                Apple Gadgets is a one-stop tech shop that offers tech enthusiasts authentic smartphones, gadgets, and
+                Perfect Gadgets BD is a one-stop tech shop that offers tech enthusiasts authentic smartphones, gadgets, and
                 devices at the best prices. We have been serving our customers since 2015, and we have never failed to
                 achieve the highest customer satisfaction by ensuring top-notch service through multichannel shopping
                 stores, online store, EMI facility, exchange offers, free home delivery, dedicated service centers, and many
@@ -63,7 +63,7 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-4">Pre-Order Anything</h3>
             <p className="text-gray-600 mb-4">
-              You can pre-order any device or accessory from Apple Gadgets by providing the product URL. Once you do,
+              You can pre-order any device or accessory from Perfect Gadgets BD by providing the product URL. Once you do,
               we&apos;ll confirm your order and make sure you get what you want.
             </p>
             <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
@@ -114,10 +114,10 @@ export default function Home() {
       <section className="px-4 py-8 bg-gray-50 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-semibold mb-4">
-            Free Shop Pickup : Discover Convenience with Free Shop Pickup at Apple Gadgets in Dhaka City.
+            Free Shop Pickup : Discover Convenience with Free Shop Pickup at Perfect Gadgets BD in Dhaka City.
           </h2>
           <p className="text-gray-600">
-            We are delighted to offer you a seamless and cost-free option for product pickup at Apple Gadgets. Make the
+            We are delighted to offer you a seamless and cost-free option for product pickup at Perfect Gadgets BD. Make the
             most of this convenient service by visiting our outlet situated in one of the most prominent locations in
             Dhaka city. Our outlet not only provides a diverse array of Apple products but also ensures a pleasant
             shopping experience. To help you make an informed decision and enhance your understanding of our outlets,
@@ -143,7 +143,7 @@ export default function Home() {
       {/* Blog Section */}
       <section className="px-4 py-8 bg-gray-50 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl text-black font-semibold mb-8">More from Mobile Club</h2>
+          <h2 className="text-2xl text-black font-semibold mb-8">More from Perfect Gadgets BD</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {blogs?.data.map((blog,i) => (
               <div key={i} className="bg-white text-black rounded-lg shadow-md overflow-hidden">

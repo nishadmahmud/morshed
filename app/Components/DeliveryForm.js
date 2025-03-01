@@ -8,6 +8,9 @@ import { fetcher, userId } from "../(home)/page";
 import Image from "next/image";
 import Modal from "./Modal";
 import PaymentMethodForm from "./PaymentMethodForm";
+import { ShoppingBag } from 'lucide-react';
+import { Headset } from "lucide-react";
+
 
 const DeliveryForm = ({cartItems,cartTotal}) => {
   const { data : paymentMethods, error } = useSWR(`${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`, fetcher);
@@ -141,11 +144,11 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
      axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,orderSchema)
      .then((res) => {
        if(res.status === 200){
-        toast.success('Order placed successfully!');
         localStorage.removeItem('cart');
         setTimeout(() => {
           router.push('/');
         },2000)
+        toast.success('Order placed successfully!');
       }
      })
      .catch(err => {
@@ -198,8 +201,8 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
 
 
   return (
-    <div className=" bg-white p-10 rounded-tl-lg rounded-bl-lg ">
-      {
+    <div className=" bg-white rounded-tl-lg rounded-bl-lg ">
+      {/* {
         userEmail ? <div className="border-b">
         <div className="flex items-center  cursor-pointer">
            <p className="hover:text-blue-500 ">Account</p>
@@ -207,18 +210,26 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
         <p>{userEmail}</p>
         </div> : <p>No user</p>
         
-      }
+      } */}
+
+      <div className="pr-6">
+      <div className="bg-[#ed6c2c] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs text-sm font-bangla flex items-center justify-center gap-2">
+      অর্ডার সংক্রান্ত যেকোনো প্রয়োজনে কথা বলুন আমাদের কাস্টমার সার্ভিস প্রতিনিধির সাথে <div className="flex items-center gap-1">
+      <Headset size={17}></Headset> 01725171313
+      </div>
+      </div>
+      </div>
        
-      <h2 className="text-2xl font-semibold my-4">Delivery</h2>
-      <form onSubmit={handleOrderComplete}>
+      <h2 className="text-2xl font-bold sans my-4 mb-5">Delivery</h2>
+      <form className="pr-6 pb-5" onSubmit={handleOrderComplete}>
         {/* Country/Region */}
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2">Country/Region</label>
+        <div className="mb-4 flex flex-col relative">
+        <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Country/Region</label>
           <select
             name="country"
             value={formData.country}
             onChange={handleChange}
-            className="block w-full bg-white p-2 border border-gray-300 rounded-lg outline-none focus:border-blue-300 focus:border-2"
+            className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
           >
             <option value="Bangladesh">Bangladesh</option>
             {/* Add other country options as needed */}
@@ -227,8 +238,9 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
 
         {/* First Name and Last Name */}
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <div >
-           
+
+          <div className="flex flex-col relative">
+          <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">First Name</label>
             <input
               type="text"
               name="firstName"
@@ -236,10 +248,12 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
               onChange={handleChange}
               placeholder="First name"
               required
-              className="block w-full bg-white outline-none focus:border-blue-400 focus:border-2 p-2 border border-gray-300 rounded-lg"
+              className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
             />
           </div>
-          <div >
+
+          <div className="flex flex-col relative">
+          <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Last Name</label>
             <input
               type="text"
               name="lastName"
@@ -247,13 +261,15 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
               onChange={handleChange}
               placeholder="Last name"
               required
-              className={`block w-full bg-white outline-none focus:border-blue-400 focus:border-2 p-2 border border-gray-300 rounded-lg `}
+              className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
             />
           </div>
         </div>
 
         {/* Address and Apartment */}
-        <div className="mb-4">
+        <div className="flex flex-col relative mb-4">
+
+        <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Address</label>
           <input
             type="text"
             name="address"
@@ -261,24 +277,26 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
             onChange={handleChange}
             placeholder="Address"
             required
-            className="block w-full bg-white outline-none focus:border-blue-400 focus:border-2 p-2 border border-gray-300 rounded-lg"
+            className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
           />
         </div>
-        <div className="mb-4">
-          
+        <div className="flex flex-col relative mb-4">
+
+        <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Apartment</label>
           <input
             type="text"
             name="apartment"
             value={formData.apartment}
             onChange={handleChange}
             placeholder="Apartment, suite, etc."
-            className="block w-full bg-white outline-none focus:border-blue-400 focus:border-2 p-2 border border-gray-300 rounded-lg"
+            className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
           />
         </div>
 
         {/* City and Postal Code */}
         <div className="grid grid-cols-2 gap-4 mb-4">
-          <div >
+          <div className="flex flex-col relative">
+          <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">City</label>
             <input
               type="text"
               name="city"
@@ -286,24 +304,26 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
               onChange={handleChange}
               placeholder="City"
               required
-              className="block w-full bg-white outline-none focus:border-blue-400 focus:border-2 p-2 border border-gray-300 rounded-lg"
+              className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
             />
           </div>
-          <div >
-        
+          <div className="flex flex-col relative">
+          <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Postal Code</label>
             <input
               type="text"
               name="postalCode"
               value={formData.postalCode}
               onChange={handleChange}
               placeholder="Postal code"
-              className="block w-full bg-white outline-none focus:border-blue-400 focus:border-2 p-2 border border-gray-300 rounded-lg"
+              className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
             />
           </div>
         </div>
 
         {/* Phone */}
-        <div className="mb-4 ">
+        <div className="flex flex-col relative mb-4">
+
+        <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Phone No.</label>
           <input
             type="tel"
             name="phone"
@@ -311,27 +331,28 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
             onChange={handleChange}
             placeholder="Phone"
             required
-            className="block w-full bg-white outline-none focus:border-blue-400 focus:border-2 p-2 border border-gray-300 rounded-lg"
+            className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
           />
         </div>
 
         {/* Shipping Method */}
         <div className="my-6 ">
-          <h3 className="text-xl font-bold mb-2">Shipping method</h3>
-          <div className="bg-[#F0F7FF] border border-blue-400 p-3 rounded-lg">
+          <h3 className="text-2xl font-bold sans my-4 mb-5">Shipping Method</h3>
+          <div className="bg-[#F0F7FF] border border-blue-400 p-3 rounded-sm">
             <span>BDT 200 depending on location</span>
-            <span className="float-right font-bold">200.00</span>
+            <span className="float-right font-semibold">৳200.00</span>
           </div>
         </div>
 
         {/* Payment Section */}
-        <h2 className="text-xl font-semibold mb-4">Payment</h2>
-        <p className="text-sm text-gray-500 mb-6">
+        <h2 className="text-2xl font-bold sans mt-4 mb-1">Payment Method</h2>
+        <p className="text-sm text-gray-500 mb-3">
           All transactions are secure and encrypted.
         </p>
-        <div className="mb-6 border border-gray-300 rounded-lg">
+
+        <div className="mb-6 border border-gray-300 rounded-sm">
           <div className="space-y-3">
-            <label className={`flex px-3 py-2 items-center ${payment === 'Cash' ? 'bg-[#F0F7FF] border border-blue-400' : ''}`}>
+            <label className={`flex overflow-hidden transition-all duration-300 px-3 py-2 items-center ${payment === 'Cash' ? 'bg-[#F0F7FF] border border-blue-400' : ''}`}>
               <input
                 type="radio"
                 name="payment"
@@ -375,7 +396,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
        
 
         {/* Billing Address */}
-        <h2 className="text-xl font-semibold mb-4">Billing Address</h2>
+        <h2 className="text-2xl font-bold sans mt-4 mb-4">Billing Address</h2>
         <div className="border rounded-b-lg">
         <div className={`px-4 py-3 ${billingSameAsShipping ? 'bg-[#F0F7FF] border border-blue-400' : ''} `}>
             <label className="flex items-center">
@@ -413,7 +434,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
               <select
               onChange={handleChange}
               value={formData.billCountry}
-                className="w-full bg-white border-gray-300 rounded-md p-2 outline-none"
+                className="w-full bg-white border-gray-300 rounded-sm p-2 outline-none"
                 name="billCountry"
                 required
               >
@@ -435,7 +456,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
                   First Name
                 </label>
                 <input
-                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-md "
+                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
                   type="text"
                   name="billFirstName"
                   onChange={handleChange}
@@ -448,7 +469,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
                   Last Name
                 </label>
                 <input
-                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-md "
+                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
                   type="text"
                   name="billLastName"
                   onChange={handleChange}
@@ -460,7 +481,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
             <div>
               <label className="block text-sm font-medium mb-1">Address</label>
               <input
-                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-md "
+                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
                 type="text"
                 name="billAddress"
                 onChange={handleChange}
@@ -473,7 +494,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
                 Apartment, suite, etc. (optional)
               </label>
               <input
-                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-md "
+                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
                 type="text"
                 name="billApartment"
                 onChange={handleChange}
@@ -484,7 +505,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
               <div className="w-1/2">
                 <label className="block text-sm font-medium mb-1">City</label>
                 <input
-                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-md "
+                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
                   type="text"
                   name="billCity"
                   onChange={handleChange}
@@ -497,7 +518,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
                   Postal Code (optional)
                 </label>
                 <input
-                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-md "
+                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
                   type="text"
                   name="billPostalCode"
                   onChange={handleChange}
@@ -510,7 +531,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
                 Phone (optional)
               </label>
               <input
-                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-md "
+                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
                 type="text"
                 name="billPhone"
                 onChange={handleChange}
@@ -526,8 +547,11 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
         {/* Conditional Billing Address */}
         
        
-        <button className="w-full bg-[#FF8800] py-3 rounded-lg text-white mt-6">
-          Complete Order
+        <button className="w-full font-medium transition ease-in-out bg-[#F16724] py-2 rounded-sm text-white mt-6">
+         <div className="hover:scale-105 transition ease-in-out flex items-center gap-1 justify-center">
+          <ShoppingBag size={22}></ShoppingBag> 
+          
+          Complete Order</div>
         </button>
       </form>
 
