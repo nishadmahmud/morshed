@@ -147,10 +147,10 @@ console.log(product?.data);
   
   return (
     <section className="bg-white">
-      <div className=" px-5 lg:p-8 pt-10 mx-auto text-black max-w-7xl overflow-hidden sans">
-      
-      <div className="container mx-auto px-4 pb-8">
+      <div className="px-5 lg:p-8 lg:pt-5 pt-8 mx-auto text-black max-w-7xl overflow-hidden sans">
+      <h1 className="text-base sans lg:text-xl font-semibold lg:hidden block lg:text-nowrap">{product?.data.name}</h1>
       <Breadcrumbs />
+      <div className="container mx-auto px-4 lg:pt-5 pb-8">
       <div className="flex flex-col md:flex-row flex-1 gap-8">
         <div className="relative">
           {/* desktop */}
@@ -177,7 +177,7 @@ console.log(product?.data);
           </div>
 
             {/* mobile */}
-          <div className="flex justify-center lg:hidden ">
+          <div className="flex justify-center lg:hidden mt-3">
             {
                product?.data.images?.length > 0 ? 
                ( <Image 
@@ -210,7 +210,7 @@ console.log(product?.data);
               <p className="text-white bg-[#F16724] rounded-md  absolute py-1 
               px-[6px] text-sm -top-5 lg:top-3 left-12">SAVE {product?.data?.discount}%</p> : ''
           }
-          <div className="flex justify-center space-x-2 mb-4 ">
+          <div className="flex justify-center space-x-2 lg:mb-4 mt-2">
                 {
                   product?.data.images &&  product?.data.images.length > 0 ?
                   product.data.images.map((image,idx) => {
@@ -232,40 +232,56 @@ console.log(product?.data);
         </div>
 
         <div>
-          <h1 className="text-base sans lg:text-2xl font-semibold mb-2 lg:text-nowrap">{product?.data.name}</h1>
+          <h1 className="text-base sans lg:text-xl font-semibold mb-2 hidden lg:block lg:text-nowrap">{product?.data.name}</h1>
           
-          <div className="mb-4 flex items-center">
-  {product?.data.discount ? (
+          <div className="mb-4 flex items-center gap-5">
+  <div className="bg-gray-200 px-4 rounded-sm text-xs py-1 flex items-center justify-center gap-1">
+    {
+      product?.data?.discount ? "Cash Discount Price:" : 
+      selectedSalePrice ? "Sale Price:" :
+      product?.data?.retails_price ? "Retail Price:" : "0"
+    }
     <div className="text-nowrap flex gap-2 items-center">
-      <span className="text-sm lg:text-2xl font-bold text-[#4e4b49] line-through font-bangla">
-        {selectedSalePrice? selectedSalePrice : product?.data?.retails_price} ৳
-      </span>
-      <span className="sans lg:text-3xl font-bold text-[#F16724] ">
-        {(selectedSalePrice - ((selectedSalePrice * product?.data.discount) / 100)).toFixed(0)} ৳
+     
+      {
+        product?.data?.discount ? (
+          <span className="sans text-sm font-bold text-[#4e4b49 line-through">
+            {(
+              (selectedSalePrice || product?.data?.retails_price || 0) - 
+              ((selectedSalePrice || product?.data?.retails_price || 0) * product?.data.discount) / 100
+            ).toFixed(0)} ৳
+          </span>
+        ) : ""
+      }
+       <span className="text-sm font-bold text-[#F16724] ]  font-bangla">
+        {selectedSalePrice || product?.data?.retails_price || 0} ৳
       </span>
     </div>
-  ) : (
-    <span className="sans lg:text-3xl font-bangla font-bold text-[#F16724]">{selectedSalePrice? selectedSalePrice : product?.data?.retails_price} ৳</span>
-  )}
+  </div>
+
+  <div className="bg-gray-200 px-4 rounded-sm text-xs py-1.5 flex items-center gap-1">
+    Product Code: <span>{id}</span>
+  </div>
 </div>
 
 
-          <div className="mb-4 flex items-center flex-wrap lg:flex-nowrap gap-3">
-            <p className="text-gray-800 text-sm  p-2 bg-gray-200 flex items-center text-nowrap gap-2"><Landmark size={16}/> EMI Available <Link target="_blank" href={'/Convenient Global EMI (for QR) (Updated- 05-01-22)(0)(0)(0).pdf'} className="text-blue-500 font-semibold">View Plans</Link></p>
-            <p className="text-gray-800 text-sm text-nowrap bg-gray-200 p-2 "> Exchange <Link href={'/plans'} className="text-blue-500 font-semibold">View Plans</Link></p>
+
+          <div className="mb-4 flex items-center  lg:flex-nowrap gap-3">
+            <p className="text-gray-800 text-xs  px-4 py-1.5 rounded-sm bg-gray-200 flex items-center text-nowrap gap-2"><Landmark size={16}/> EMI Available <Link target="_blank" href={'/Convenient Global EMI (for QR) (Updated- 05-01-22)(0)(0)(0).pdf'} className="text-blue-500 font-semibold">View Plans</Link></p>
+            <p className="text-gray-800 text-xs text-nowrap bg-gray-200 px-4 py-1.5 rounded-sm"> Exchange <Link href={'/plans'} className="text-blue-500 font-semibold">View Plans</Link></p>
           </div>
           <Link
             href="https://wa.me/+8801711157290" 
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center w-fit space-x-3 text-sm px-4 py-1 text-white font-semibold rounded-md bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 hover:text-white transition-colors duration-200 mb-3"
+            className="flex items-center w-fit space-x-3 text-xs px-4 py-1 text-white font-semibold rounded-md bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 hover:text-white transition-colors duration-200 mb-3"
           >
             <FaWhatsapp className="text-2xl" />
             <span>Message <br /> on WhatsApp</span>
           </Link>
     
           <div className="mb-4">
-  <h3 className="font-semibold mb-2">Color: {selectedColor || "No color"}</h3>
+  <h3 className="font-medium text-sm">Color: {selectedColor || "No color"}</h3>
   <div className="flex space-x-2">
   {product?.data?.color &&
     Object.entries(product.data.color).map(([colorName, colorCode]) =>
@@ -285,7 +301,7 @@ console.log(product?.data);
 </div>
 
 <div className="mb-4">
-  <h3 className="font-semibold mb-2">Storage: {selectedStorage ? `${selectedStorage}` : 'N/A'}</h3>
+  <h3 className="font-medium mb-1 text-sm">Storage: {selectedStorage ? `${selectedStorage}` : 'N/A'}</h3>
   <div className="flex space-x-2">
     {storages &&
       storages.map((storage) => (
@@ -302,21 +318,21 @@ console.log(product?.data);
   </div>
 </div>
          
-          <div className="flex flex-wrap items-center gap-4 justify-start mb-4">
+          <div className="flex md:flex-wrap items-center gap-4 justify-start mb-4">
             {/* Quantity Controls */}
             <div className="flex items-center border border-[#0F98BA] rounded-md overflow-hidden">
               <button
                 onClick={quantity > 1 ? () => setQuantity(quantity - 1) : null}
-                className="px-4 py-2 text-[#0F98BA] font-semibold"
+                className="md:px-4 px-3 md:py-2 py- text-[#0F98BA] font-semibold"
               >
                 -
               </button>
-              <div className="px-4 py-2 border-x border-[#0F98BA] text-[#0F98BA] font-semibold">
+              <div className="md:px-4 px-3 md:py-2 py- border-x border-[#0F98BA] text-[#0F98BA] font-semibold">
                 {quantity}
               </div>
               <button
                 onClick={() => setQuantity(quantity + 1)}
-                className="px-4 py-2 text-[#0F98BA] font-semibold"
+                className="md:px-4 px-3 md:py-2 py-1 text-[#0F98BA] font-semibold"
               >
                 +
               </button>
@@ -326,14 +342,14 @@ console.log(product?.data);
             <div className="flex gap-4">
             <button
                 onClick={() => handleBuy(product?.data, quantity)}
-                className="px-5 py-1 bg-[#F16724] text-white hover:bg-white hover:text-[#F16724] hover:border-[#F16724] rounded-md border border-transparent"
+                className="lg:px-5 px-2.5 py-0.5 text-sm  md:py-1 bg-[#F16724] text-white hover:bg-white hover:text-[#F16724] hover:border-[#F16724] rounded-sm border border-transparent"
               >
                 Buy Now
               </button>
 
               <button
                 disabled={isCartItem !== undefined}
-                className={`border border-[#F16724] px-4 py-1 bg-transparent text-black hover:bg-[#F16724] hover:text-white rounded-md ${
+                className={`border border-[#F16724] md:px-4 text-sm md:py-1 px-2.5 py-1 bg-transparent text-[#F16724] hover:bg-[#F16724] hover:text-white rounded-sm ${
                   isCartItem !== undefined
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     : ''
@@ -509,7 +525,7 @@ console.log(product?.data);
         </button>
 
         {/* Buy It Now Button */}
-        <button onClick={() => handleBuy(product?.data,quantity)}  className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded transition duration-300">
+        <button onClick={() => handleBuy(product?.data,quantity)}  className="bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-6 rounded-md transition duration-300">
           BUY IT NOW
         </button>
       </div>

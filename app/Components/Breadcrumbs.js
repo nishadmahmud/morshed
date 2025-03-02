@@ -9,7 +9,7 @@ const Breadcrumbs = () => {
   const pathArray = pathname.split("/").filter((path) => path);
 
   return (
-    <nav className="text-gray-800 text-sm my-4 font-medium">
+    <nav className="text-gray-800 text-sm my-4 font-medium mt-3 md:mt-4">
       <ul className="flex items-center space-x-2">
         <li>
           <Link href="/">

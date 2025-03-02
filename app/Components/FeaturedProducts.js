@@ -42,6 +42,13 @@ const FeaturedProducts = ({ banner }) => {
      localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
    }
 
+   const sanitizeSlug = (str) => {
+    return str
+      ?.toLowerCase()
+      .replace(/\s+/g, "-") // Replace spaces with dashes
+      .replace(/[^a-z0-9-]/g, ""); // Remove special characters
+  };
+
   return (
     <div className='lg:mt-24 mt-16 poppins w-11/12 mx-auto'>
       <Heading title={'Flash Sale'} />
@@ -76,7 +83,7 @@ const FeaturedProducts = ({ banner }) => {
 
                   return (
                     <div key={product.id} className='bg-white border border-gray-300 rounded-xl flex flex-col shadow-sm hover:scale-105 transition py-2'>
-                      <Link onClick={() => updateRecentViews(product)} href={`products/${product.id}`} className='flex flex-col'>
+                      <Link onClick={() => updateRecentViews(product)} href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`} className='flex flex-col'>
                         <div className='relative mx-auto'>
                           <Image
                             src={product.image_path || noImg}

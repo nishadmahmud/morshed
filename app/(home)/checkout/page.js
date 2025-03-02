@@ -79,7 +79,7 @@ const CheckoutPage = () => {
                                     
                                     <p className='absolute bg-[rgba(0,0,0,0.5)] text-[12px] text-white flex items-center justify-center w-6 h-6 -right-1 -top-2 rounded-full'>{item.quantity}</p>
                                     </div>
-                                    <h3 className='w-[225px] text-wrap'>{item.name}</h3>
+                                    <h3 className='md:w-[225px] w-44 line-clamp-2 text-ellipsis text-wrap'>{item.name}</h3>
                                    
                                 </div>
                                 <p>{item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price} ৳</p>

@@ -212,8 +212,8 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
         
       } */}
 
-      <div className="pr-6">
-      <div className="bg-[#ed6c2c] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs text-sm font-bangla flex items-center justify-center gap-2">
+      <div className="md:pr-6">
+      <div className="bg-[#ed6c2c] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs lg:text-sm text-xs font-bangla flex items-center justify-center gap-2">
       অর্ডার সংক্রান্ত যেকোনো প্রয়োজনে কথা বলুন আমাদের কাস্টমার সার্ভিস প্রতিনিধির সাথে <div className="flex items-center gap-1">
       <Headset size={17}></Headset> 01725171313
       </div>
@@ -221,7 +221,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
       </div>
        
       <h2 className="text-2xl font-bold sans my-4 mb-5">Delivery</h2>
-      <form className="pr-6 pb-5" onSubmit={handleOrderComplete}>
+      <form className="md:pr-6 pb-5" onSubmit={handleOrderComplete}>
         {/* Country/Region */}
         <div className="mb-4 flex flex-col relative">
         <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Country/Region</label>
