@@ -8,11 +8,7 @@ import { fetcher, userId } from '../(home)/page';
 import CardSkeleton from './CardSkeleton';
 import useStore from '../CustomHooks/useStore';
 import Link from 'next/link';
-import bannerImage from '/public/side-banner-1.png';
-import { Camera } from 'lucide-react';
-import { Cpu } from 'lucide-react';
-import { Battery } from 'lucide-react';
-import { MemoryStick } from 'lucide-react';
+import { Camera, Cpu, Battery, MemoryStick } from 'lucide-react';
 
 const FeaturedProducts = ({ banner }) => {
   const { data: bestDeals, isLoading } = useSWR(
@@ -21,176 +17,123 @@ const FeaturedProducts = ({ banner }) => {
   );
   const { handleBuy, handleCart } = useStore();
 
-   // Handle recent view when product card is clicked
-    const updateRecentViews = () => {
-     if (!product?.id) return
-   
-     let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
-     
-     // Remove existing entry if present
-     recentViews = recentViews.filter(p => p.id !== product.id)
-     
-     // Add new entry to beginning
-     recentViews.unshift({
-       id: product.id,
-       name: product.name,
-       image: product.image_path || (product.images?.[0] || noImg.src),
-       price: product.retails_price,
-       discount: product.discount || 0
-     })
-   
-     // Keep only last 5 items
-     if (recentViews.length > 6) recentViews.pop()
-     
-     localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
-   }
-
   return (
-    <div className='lg:mt-24 mt-16 poppins'>
+    <div className='lg:mt-24 mt-16 poppins w-11/12 mx-auto'>
       <Heading title={'Flash Sale'} />
-      <div className='mt-8 lg:mt-10'>
 
-      <div className='relative row-span-4 lg:hidden block w-11/12 mx-auto'>
+      <div className='lg:hidden flex mt-2'>
+          <div className='w-full h-full'>
             <Image
-             width={200}
-             height={200}
+              width={400}
+              height={600}
               src={banner.data[2].image_path || noImg}
               alt='Newest Collection'
-              layout='responsive'
-              className='rounded-xl'
+              className='rounded-xl object-cover w-full h-full'
             />
           </div>
+        </div>
 
-          <div className='flex w-11/12 justify-between  mx-auto gap-x-5'>
-               {/* Product Grid */}
-        <div>
-        <div className='grid grid-cols-2 md:grid-cols-3 gap-7 gap-y-2 mt-4 lg:mt-0'>
-          {isLoading
-            ? Array.from({ length: 6 }).map((_, idx) => (
-                <CardSkeleton key={idx} />
-              ))
-            : bestDeals?.data?.length > 0
-            ? bestDeals.data.slice(0, 6).map((product) =>
-              
-             {
-              const specs = product?.specifications || [];
-                  console.log(specs);
+      <div className='mt-8 lg:mt-10 flex flex-col lg:flex-row gap-6'>
+        
+        {/* Product Grid */}
+        <div className='flex-1'>
+          <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6'>
+            {isLoading
+              ? Array.from({ length: 6 }).map((_, idx) => <CardSkeleton key={idx} />)
+              : bestDeals?.data?.length > 0
+              ? bestDeals.data.slice(0, 6).map((product) => {
+                  const specs = product?.specifications || [];
                   const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
                   const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
-                  console.log(batteryCapacity); 
-                  
                   const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
                   const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
                   const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description || "N/A";
 
-
-                  return(
-
-
-                    <div
-                    key={product.id}
-                    className='bg-gray-50 rounded-xl flex flex-col hover:shadow-md hover:scale-105 transition md:mt-5'
-                  >
-                    <Link onClick={updateRecentViews} href={`products/${product.id}`} className='flex flex-col items-center flex-grow '>
-                      <div className='relative h-36 w-40 mx-auto'>
-                        <Image
-                          src={product.image_path || noImg}
-                          width={500}
-                          height={200}
-                          alt={product.name}
-                          className='object-cover'
-                          quality={100}
-                        />
-                        {product.discount && (
-                          <p className='absolute top-2 left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-2 rounded-md'>
-                            SAVE {product.discount}%
-                          </p>
-                        )}
-                      </div>
-                      <div className='mt-2 px-4'>
-                        <h3 className='text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-1'>{product.name}</h3>
-                        <div>
-                          {product.discount ? (
-                            <div className='flex gap-2 mb-1'>
-                              <span className='text-xl font-bold text-[#F16724]'>
-                              <span className="font-bangla text-xl">৳</span>{(product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)}
-                              </span>
-      
-                              <span className='text-sm font-bold text-gray-500 line-through'><span className="font-bangla text-xl">৳</span>{product.retails_price}</span>
-                              
-                            </div>
-                          ) : (
-                            <span className='text-xl font-bold text-[#F16724]'><span className="font-bangla text-sm">৳</span>{product.retails_price}</span>
+                  return (
+                    <div key={product.id} className='bg-gray-50 rounded-xl flex flex-col hover:shadow-md hover:scale-105 transition'>
+                      <Link href={`products/${product.id}`} className='flex flex-col'>
+                        <div className='relative mx-auto'>
+                          <Image
+                            src={product.image_path || noImg}
+                            width={500}
+                            height={200}
+                            alt={product.name}
+                            className='object-cover h-36 w-40'
+                            quality={100}
+                          />
+                          {product.discount && (
+                            <p className='absolute top-4 lg:top-2 left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-2 rounded-md'>
+                              SAVE {product.discount}%
+                            </p>
                           )}
                         </div>
+                        <div className='mt-6 px-4 my-2'>
+                          <h3 className='text-sm font-semibold text-black line-clamp-1 text-start'>{product.name}</h3>
+                          <div>
+                            {product.discount ? (
+                              <div className='flex gap-2 items-start justify-start'>
+                                <span className='text-xl font-bold text-[#F16724]'>
+                                  <span className="font-bangla text-xl">৳</span>{(product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)}
+                                </span>
+                                <span className='text-sm font-bold text-gray-500 line-through'>
+                                  <span className="font-bangla text-xl">৳</span>{product.retails_price}
+                                </span>
+                              </div>
+                            ) : (
+                              <span className='text-xl font-bold text-[#F16724]'>
+                                <span className="font-bangla text-sm">৳</span>{product.retails_price}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+
+                      <div className="text-gray-600 px-5 grid grid-cols-2 gap-1 mb-3">
+                        <div className="flex items-start gap-1 text-xs"><Battery size={15} /> {batteryCapacity}</div>
+                        <div className="hidden md:flex items-start gap-1 text-xs"><Cpu size={15} /> {chipset}</div>
+                        <div className="flex items-start gap-1 text-xs"><Camera size={15} /> {camera}</div>
+                        <div className="hidden md:flex items-start gap-1 text-xs"><MemoryStick size={15} /> {storage}</div>
                       </div>
-                    </Link>
-      
-                    <div className="text-gray-600 px-5 grid mb-3 justify-items-start grid-cols-2 gap-1">
-      
-              <div className="flex items-start gap-1 text-xs">
-                <Battery size={15}></Battery>
-                {batteryCapacity}
-              </div>
-              <div className="hidden md:flex items-start gap-1 text-xs">
-                <Cpu size={15}></Cpu>
-                {chipset}
-              </div>
-              <div className="flex items-start gap-1 text-xs">
-                <Camera size={15}></Camera>
-                {camera}
-              </div>
-              <div className="hidden md:flex items-start gap-1 text-xs">
-                <MemoryStick size={15}></MemoryStick>
-                {storage}
-              </div>
-      
-            </div>
-      
-                    <div className='flex flex-col gap-2 mt-auto px-4 pb-3'>
-                      <button
-                        onClick={() => handleBuy(product, 1)}
-                        className='border border-[#F16724] text-[#F16724] text-xs font-semibold lg:px-3 py-1.5 rounded-md w-full'
-                      >
-                        Buy Now
-                      </button>
-                      <button
-                        onClick={(e) => {
-                          e.preventDefault();
-                          handleCart(product, 1);
-                        }}
-                        className='bg-[#F16724] text-white text-xs font-semibold px-3 py-1.5 rounded-md w-full'
-                      >
-                        Add to Cart
-                      </button>
+
+                      <div className='flex flex-col gap-2 px-4 pb-3'>
+                        <button
+                          onClick={() => handleBuy(product, 1)}
+                          className='border border-[#F16724] text-[#F16724] text-xs font-semibold py-1.5 rounded-md w-full'
+                        >
+                          Buy Now
+                        </button>
+                        <button
+                          onClick={(e) => {
+                            e.preventDefault();
+                            handleCart(product, 1);
+                          }}
+                          className='bg-[#F16724] text-white text-xs font-semibold py-1.5 rounded-md w-full'
+                        >
+                          Add to Cart
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  
-                    )
-
-             } 
-             
-            )
-            : (
-              <p className='text-black text-center'>No products found</p>
-            )}
-        </div>
+                  );
+                })
+              : (
+                <p className='text-black text-center'>No products found</p>
+              )}
+          </div>
         </div>
 
-        {/* Banner Section */}
-        <div className='w-4/5 h-96 hidden lg:block row-span-4 col-span-1'>
-          <div className='relative'>
+        {/* Right-Side Banner */}
+        <div className='hidden lg:flex w-2/5'>
+          <div className='w-full h-full'>
             <Image
-            width={200}
-            height={400}
+              width={400}
+              height={600}
               src={banner.data[2].image_path || noImg}
               alt='Newest Collection'
-              className='rounded-xl md:h-[100vh] w-full'
+              className='rounded-xl object-cover w-full h-full'
             />
           </div>
         </div>
-          </div>
-       
+
       </div>
     </div>
   );

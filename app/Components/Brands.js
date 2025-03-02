@@ -7,7 +7,7 @@ const Brands = ({brands}) => {
     return (
 
 
-        <div className='lg:mt-20 mt-10'>
+        <div className='md:mt-20 mt-10'>
             <div>
                 <div className='h-5 w-10'>
                 </div>

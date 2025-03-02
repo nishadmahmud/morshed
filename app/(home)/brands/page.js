@@ -27,7 +27,7 @@ const Page = () => {
 
   return (
     <div className="md:px-12 p-5">
-      <div className="pt-40">
+      <div>
         <h3 className="text-black font-semibold text-3xl mb-5">All Brands</h3>
         <div className="flex flex-wrap gap-3 mb-5">
             <p onClick={() => setSelectedAlph('')} className={`text-base cursor-pointer   py-[2px] px-[3px] rounded-md hover:bg-[#12457f94] ${!selectAlph ? 'bg-[#12447F] text-white' : 'text-black'}`}>All</p>

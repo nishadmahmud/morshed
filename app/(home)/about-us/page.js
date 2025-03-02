@@ -3,11 +3,19 @@
 import useStore from "@/app/CustomHooks/useStore"
 import Image from "next/image"
 import Link from "next/link";
+import shop01 from '/public/shopPerfG.jpeg'
+import happyC01 from '/public/happyCustomer01.jpeg'
+import happyC02 from '/public/happyC02.jpeg'
+import happyC03 from '/public/happyC-03.jpeg'
+import allMember from '/public/allMembar.jpeg'
+
 
 export default function Home() {
   const {blogs} = useStore();
   return (
-    <main className="min-h-screen bg-white text-black pt-20  lg:pt-36">
+    <main className="min-h-screen bg-white text-black">
+
+      <Image className="w-full h-[55vh] object-cover" width={1000} height={500} src={shop01} alt="shopBanner"></Image>
       {/* Who We Are Section */}
       <section className="px-4 py-8 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto flex flex-col lg:flex-row gap-10">
@@ -42,21 +50,17 @@ export default function Home() {
               this service in collaboration with 31 banks, and you can spread payments over up to 36 months for your
               large purchase.
             </p>
-            <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-              Learn more
-            </button>
+           
           </div>
 
           {/* Exchange Card */}
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-4">Exchange and Upgrade</h3>
             <p className="text-gray-600 mb-4">
-              Upgrade to a new device with Apple Gadget&apos;s simple exchange system. Just swap your old device for a new
-              one.
+            Upgrade to a new device with Perfect Gadget&apos;s BD simple exchange system. Just swap your old device for a new one.  
+Enjoy a hassle-free trade-in process with instant evaluation and competitive exchange value.
             </p>
-            <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-              Learn more
-            </button>
+            
           </div>
 
           {/* Pre-Order Card */}
@@ -66,9 +70,7 @@ export default function Home() {
               You can pre-order any device or accessory from Perfect Gadgets BD by providing the product URL. Once you do,
               we&apos;ll confirm your order and make sure you get what you want.
             </p>
-            <button className="px-4 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors">
-              Learn more
-            </button>
+            
           </div>
         </div>
       </section>
@@ -76,9 +78,9 @@ export default function Home() {
       {/* Store Image Section */}
       <section className="px-4 py-8 md:px-6 lg:px-8">
         <div className="flex gap-5 items-center">
-          <div className="relative w-full aspect-square">
+          <div className="relative w-full h-80">
             <Image
-              src="/WhatsApp Image 2025-02-04 at 11.05.46_ba043f39.jpg"
+              src={happyC01}
               alt="Mobile Club Store Interior"
               fill={true}
               quality={100}
@@ -86,9 +88,9 @@ export default function Home() {
               className="w-full rounded-lg"
             />
           </div>
-          <div className="relative w-full aspect-square">
+          <div className="relative w-full h-80">
             <Image
-              src="/WhatsApp Image 2025-02-04 at 11.05.46_05a8b597.jpg"
+              src={happyC02}
               alt="Mobile Club Store Interior"
               fill={true}
               quality={100}
@@ -96,9 +98,9 @@ export default function Home() {
               className="w-full rounded-lg"
             />
           </div>
-          <div className="relative w-full aspect-square">
+          <div className="relative w-full h-80">
             <Image
-              src="/WhatsApp Image 2025-02-04 at 11.05.40_69506fe5.jpg"
+             src={happyC03}
               alt="Mobile Club Store Interior"
               fill={true}
               quality={100}
@@ -106,8 +108,8 @@ export default function Home() {
               className="w-full rounded-lg"
             />
           </div>
-            
         </div>
+            <h4 className="text-center font-medium text-xl mt-4">Our Happy Customer</h4>
       </section>
 
       {/* Free Shop Pickup Section */}
@@ -141,7 +143,7 @@ export default function Home() {
       </section> */}
 
       {/* Blog Section */}
-      <section className="px-4 py-8 bg-gray-50 md:px-6 lg:px-8">
+      {/* <section className="px-4 py-8 bg-gray-50 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl text-black font-semibold mb-8">More from Perfect Gadgets BD</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
@@ -163,7 +165,13 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
+
+      <div>
+        <Image alt="allMember" className="w-10/12 h-[35rem] mx-auto object-cover" src={allMember} width={1000} height={500}></Image>
+
+        <h6 className="p-4 text-center pb-5 shadow-lg px-5 rounded-sm text-xl font-medium">All Member</h6>
+      </div>
     </main>
   )
 }

@@ -81,7 +81,7 @@ const ProductCard = ({ product }) => {
           </div>
 
           {product?.discount && (
-            <p className="relative  md:-top-32 -top-40 w-20 text-center left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-1 rounded-md">
+            <p className="relative  md:-top-32 -top-36 w-20 text-center left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-1 rounded-md">
               SAVE {product?.discount}%
             </p>
           )}
