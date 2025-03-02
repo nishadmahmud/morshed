@@ -17,6 +17,31 @@ const FeaturedProducts = ({ banner }) => {
   );
   const { handleBuy, handleCart } = useStore();
 
+
+  // Handle recent view when product card is clicked
+    const updateRecentViews = (product) => {
+     if (!product?.id) return
+   
+     let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
+     
+     // Remove existing entry if present
+     recentViews = recentViews.filter(p => p.id !== product.id)
+     
+     // Add new entry to beginning
+     recentViews.unshift({
+       id: product.id,
+       name: product.name,
+       image: product.image_path || (product.images?.[0] || noImg.src),
+       price: product.retails_price,
+       discount: product.discount || 0
+     })
+   
+     // Keep only last 5 items
+     if (recentViews.length > 6) recentViews.pop()
+     
+     localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
+   }
+
   return (
     <div className='lg:mt-24 mt-16 poppins w-11/12 mx-auto'>
       <Heading title={'Flash Sale'} />
@@ -51,7 +76,7 @@ const FeaturedProducts = ({ banner }) => {
 
                   return (
                     <div key={product.id} className='bg-gray-50 rounded-xl flex flex-col hover:shadow-md hover:scale-105 transition'>
-                      <Link href={`products/${product.id}`} className='flex flex-col'>
+                      <Link onClick={() => updateRecentViews(product)} href={`products/${product.id}`} className='flex flex-col'>
                         <div className='relative mx-auto'>
                           <Image
                             src={product.image_path || noImg}

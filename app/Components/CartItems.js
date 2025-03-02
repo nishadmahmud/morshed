@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useEffect, useState } from "react";
 import useStore from "../CustomHooks/useStore";
@@ -9,10 +8,9 @@ import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 import { ShoppingBag } from "lucide-react";
-import noImg from '/public/no-image.jpg'
+
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 import { GiNotebook } from "react-icons/gi";
-import toast from "react-hot-toast";
 
 const CartItems = () => {
   const {
@@ -34,12 +32,12 @@ const CartItems = () => {
       setItems(getCartItems());
       setRefetch(false);
     }
-  }, [refetch, getCartItems, setRefetch]);
+  }, [refetch]);
 
   const handleRedirect = () => {
     isChecked
       ? (router.push("/checkout"), setOpenCart(!openCart))
-      : toast.error("Please Accept Terms & Conditions First");
+      : alert("Please Accept Terms & Conditions First");
   };
 
 
@@ -62,7 +60,7 @@ const CartItems = () => {
       ></div>
 
       <div className=" fixed bg-white text-black lg:max-w-96 max-w-64 top-0 right-0 flex flex-col h-screen overflow-y-scroll z-[9999]">
-        <div className="bg-[#F16724] text-white flex p-3 items-center">
+        <div className="bg-[#000000] text-white flex p-3 items-center">
           <IoClose
             onClick={() => setOpenCart(!openCart)}
             className="text-white bg-red-600 rounded-md p-0.5 text-xl cursor-pointer"
@@ -70,33 +68,33 @@ const CartItems = () => {
           />
           <p className="text-center flex-1 font-bold">Mini Cart</p>
         </div>
-        <div className="p-2 border-b-2 pb-28 pt-10 overflow-y-auto ">
+        <div className="p-5 border-b-2 h-1/3 overflow-y-auto space-y-4">
           {
             items?.map((item, idx) => {
               return (
 
-                <div key={idx} className="flex lg:h-full h-20 gap-2 items-center mt-5">
+                <div key={idx} className="flex lg:h-full h-20 gap-2 items-center">
 
                   {
                     item?.image_path ? 
                     <Image
                     src={item.image_path}
                     alt="cart-products"
-                    height={90}
-                    width={90}
+                    height={100}
+                    width={100}
                   />
                     :  
                     item?.images.length > 0 ? 
                     <Image
                     src={item.images[0]}
                     alt="cart-products"
-                    height={90}
-                    width={90}
+                    height={100}
+                    width={100}
                   /> :
                     <Image
-                    src={noImg}
-                    height={90}
-                    width={90}
+                    src={'https://i.ibb.co.com/vwGWVVb/Pixel-7-Pro-Hazel-6784.jpg'}
+                    height={100}
+                    width={100}
                     alt="mobile-phone"
                     quality={75}
                   />
@@ -104,11 +102,11 @@ const CartItems = () => {
                   
                   <div className="space-y-1 font-semibold">
 
-                    <p className="lg:text-md text-xs mt-4">{item?.name}</p>
+                    <p className="lg:text-md text-xs">{item?.name}</p>
 
                     <p>{item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price} ৳</p>
                     
-                    <div className="flex items-center border border-gray-300 h-10 rounded w-fit">
+                    <div className="flex items-center border border-gray-300 rounded w-fit">
                       <input
                         type="number"
                         value={item.quantity}
@@ -123,9 +121,9 @@ const CartItems = () => {
                             handleIncQuantity(item?.id, item.quantity)
                           }
 
-                          className="pt-2 px-2 border-b border-l border-gray-300"
+                          className="p-2 border-b border-l border-gray-300"
                         >
-                          <FaArrowUp className="text-xs"></FaArrowUp>
+                          <FaArrowUp size={15}></FaArrowUp>
 
                         </button>
                         <button
@@ -133,9 +131,9 @@ const CartItems = () => {
                             item.quantity> 0 &&  handleDncQuantity(item?.id, item.quantity)
                           }
 
-                          className="pb-2 px-2  border-l border-gray-300"
+                          className="p-2  border-l border-gray-300"
                         >
-                          <FaArrowDown className="text-xs"></FaArrowDown> 
+                          <FaArrowDown size={15}></FaArrowDown> 
 
                         </button>
                       </div>
@@ -156,7 +154,7 @@ const CartItems = () => {
           <p className="flex items-center gap-1 mb-2"> <GiNotebook size={25}></GiNotebook> Special instructions for seller</p>
           <textarea rows={3} className="border outline-none bg-white p-2 rounded-sm dark:bg-white w-full"></textarea>
 
-          <h5 className="flex justify-between items-center text-black font-bold lg:text-lg">
+          <h5 className="flex justify-between items-center text-black font-bold text-lg">
             Subtotal :{" "}
             <span className="text-[#4EB0BE] font-normal">
               {" "}
@@ -173,33 +171,33 @@ const CartItems = () => {
           
             <button
               onClick={() => setOpenCart(!openCart)}
-              className="lg:py-2 py-1 w-full bg-[#4d5959] text-white lg:mt-3 felx rounded-md items-center"
+              className="py-2 w-full bg-[#4d5959] text-white mt-3 felx rounded-md items-center"
             >
 
               View Cart
             </button>
           </Link>
-          <div className="flex gap-2 lg:mt-3 mt-2">
+          <div className="flex gap-2 mt-3">
             <input
               onChange={(e) => setIsChecked(e.target.checked)}
               type="checkbox"
               className="cursor-pointer bg-white dark:bg-white"
             />
-            <label className="text-sm lg:text-md">I agree with the terms and conditions.</label>
+            <label>I agree with the terms and conditions.</label>
           </div>
           <button
             onClick={() => {
               handleRedirect();
             }}
 
-            className="lg:py-2 py-1 w-full bg-[#4eb0be] text-white lg:mt-3 mt-2 rounded-md"
+            className="py-2 w-full bg-[#4eb0be] text-white mt-3 rounded-md"
 
           >
             Check Out
           </button>
           <Image
             src={
-              noImg
+              "https://www.custommacbd.com/cdn/shop/files/SSL_Commerz_Pay_With_logo_All_Size-01_320x.png?v=1614930139"
             }
             height={100}
             width={500}
@@ -215,7 +213,7 @@ const CartItems = () => {
         onClick={() => setOpenCart(!openCart)}
       ></div>
       <div className="fixed bg-white text-black w-96  top-0 right-0 flex flex-col h-screen overflow-y-scroll z-50">
-      <div className="bg-[#FF8800] text-white flex p-5 items-center justify-between">
+      <div className="bg-[#F16724] text-white flex p-5 items-center justify-between">
          
           <div className="flex items-center gap-1">
             <ShoppingCart size={20}></ShoppingCart>

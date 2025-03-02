@@ -21,7 +21,7 @@ const ReadyForOrder = () => {
   const { handleBuy, handleCart } = useStore();
 
  // Handle recent view when product card is clicked
-  const updateRecentViews = () => {
+  const updateRecentViews = (product) => {
    if (!product?.id) return
  
    let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
