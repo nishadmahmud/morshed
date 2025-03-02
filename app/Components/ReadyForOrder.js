@@ -44,6 +44,15 @@ const ReadyForOrder = () => {
    localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
  }
 
+ const sanitizeSlug = (str) => {
+  return str
+    ?.toLowerCase()
+    .replace(/\s+/g, "-") // Replace spaces with dashes
+    .replace(/[^a-z0-9-]/g, ""); // Remove special characters
+};
+
+
+console.log(products);
   return (
     <div className="lg:mt-20 mt-10">
       <Heading title={"Ready for Order"} />
@@ -84,11 +93,11 @@ const ReadyForOrder = () => {
                   return (
                     <div
                       key={product.id}
-                      className="bg-gray-50 border border-gray-100 hover:scale-105 hover:shadow-md transition rounded-xl overflow-hidden flex flex-col"
+                      className="bg-white border border-gray-300 hover:scale-105 shadow-sm transition rounded-xl overflow-hidden flex flex-col"
                     >
                       <Link
                         onClick={() => updateRecentViews(product)}
-                        href={`products/${product?.id}`}
+                        href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
                       >
                         <div className="h-32 w-40 mx-auto">
                           <Image

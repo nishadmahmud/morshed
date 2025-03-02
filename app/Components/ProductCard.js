@@ -62,10 +62,17 @@ const ProductCard = ({ product }) => {
   const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
   const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description || "N/A";
 
+  const sanitizeSlug = (str) => {
+    return str
+      ?.toLowerCase()
+      .replace(/\s+/g, "-") // Replace spaces with dashes
+      .replace(/[^a-z0-9-]/g, ""); // Remove special characters
+  };
+  
 
   return (
-    <div className="bg-gray-50 hover:shadow-md transition ease-in-out  border-opacity-60 rounded-lg flex flex-col poppins hover:scale-105"> 
-      <Link onClick={updateRecentViews} href={`/products/${product?.id}`} >
+    <div className="bg-white pb-2 border-gray-300 shadow-sm border transition ease-in-out  border-opacity-60 rounded-lg flex flex-col poppins hover:scale-105"> 
+      <Link onClick={updateRecentViews}  href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}>
        
           <div className="relative h-36 w-40 mx-auto">
             <Image
@@ -87,8 +94,8 @@ const ProductCard = ({ product }) => {
           )}
         
 
-        <div className="lg:pb-4 pb-1 flex flex-col flex-grow px-4">
-          <h3 className="text-sm font-semibold text-black mb-1 line-clamp-1 text-ellipsis mt-8">
+        <div className="lg:pb-2 pb-1 flex flex-col flex-grow px-4">
+          <h3 className="text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-3">
             {product?.name}
           </h3>
           <div className="mt-auto">

@@ -18,7 +18,7 @@ const TopBrandProducts = ({brands}) => {
     `${process.env.NEXT_PUBLIC_API}/public/brandwise-products/${tabIndex === 0 ? 0 : brands?.data[tabIndex - 1]?.id}/${userId}`,fetcher
   );
 
-
+console.log('product by brand', pdcByBrands);
 
   return (
     <div className="lg:mt-24 mt-12">
@@ -52,16 +52,16 @@ const TopBrandProducts = ({brands}) => {
         {[null, ...brands?.data.slice(0, 6)].map((_, index) => (
           <TabPanel key={index}>
             { isLoading ?
-            <div className='grid w-11/12 lg:w-10/12 gap-5 mx-auto grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
+            <div className='grid w-11/12 gap-5 mx-auto grid-cols-2 md:grid-cols-3 lg:grid-cols-5'>
                {
-                Array.from({length : 6}).map((_,idx) => {
+                Array.from({length : 5}).map((_,idx) => {
                   return  <CardSkeleton key={idx} />
                })
               }
                </div> : (
-              <div className="grid grid-cols-2 w-11/12 md:w-10/12 mx-auto md:grid-cols-3 lg:grid-cols-4 lg:gap-10 gap-5">
+              <div className="grid grid-cols-2 w-11/12 mx-auto md:grid-cols-3 lg:grid-cols-5 lg:gap-10 gap-5">
                 {pdcByBrands?.data.length > 0 ? (
-                  pdcByBrands?.data.slice(0,6).map((product) => (
+                  pdcByBrands?.data.slice(0,5).map((product) => (
                     <ProductCard key={product.id} product={product}/>
                   ))
                 ) : (

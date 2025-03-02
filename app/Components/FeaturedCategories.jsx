@@ -25,14 +25,14 @@ const FeaturedCategories = ({ categories }) => {
                 item?.name
               )}&total=${encodeURIComponent(item?.product_count)}`}
               key={idx}
-              className="group"
+              className="group "
             >
               <div className="flex flex-col items-center justify-between flex-grow text-black lg:h-30 py-1 
               group-hover:text-[#F16724] transition ease-in-out">
                 
                 {/* Image Wrapper */}
-                <div className="lg:p-10 p-4 flex items-center border-gray-300 shadow-sm group-hover:border-[#F16724]  relative lg:h-40 lg:w-40 rounded-md border 
-                transition-transform duration-300 group-hover:scale-105">
+                <div className="lg:p-10 p-4 flex items-center border-gray-200 shadow-sm group-hover:border-[#F16724]  relative lg:h-40 lg:w-40 rounded-md border 
+                transition-transform duration-300 group-hover:scale-105 bg-white">
                   <Image
                     src={item?.image_url ?? noImg}
                     alt={item?.name || "mobile-phone"}

@@ -46,8 +46,8 @@ const FeaturedProducts = ({ banner }) => {
     <div className='lg:mt-24 mt-16 poppins w-11/12 mx-auto'>
       <Heading title={'Flash Sale'} />
 
-      <div className='lg:hidden flex mt-2'>
-          <div className='w-full h-full'>
+      <div className='flex mt-5'>
+          <div className='w-full h-[50vh] object-cover'>
             <Image
               width={400}
               height={600}
@@ -62,7 +62,7 @@ const FeaturedProducts = ({ banner }) => {
         
         {/* Product Grid */}
         <div className='flex-1'>
-          <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 gap-6'>
+          <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6'>
             {isLoading
               ? Array.from({ length: 6 }).map((_, idx) => <CardSkeleton key={idx} />)
               : bestDeals?.data?.length > 0
@@ -75,7 +75,7 @@ const FeaturedProducts = ({ banner }) => {
                   const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description || "N/A";
 
                   return (
-                    <div key={product.id} className='bg-gray-50 rounded-xl flex flex-col hover:shadow-md hover:scale-105 transition'>
+                    <div key={product.id} className='bg-white border border-gray-300 rounded-xl flex flex-col shadow-sm hover:scale-105 transition py-2'>
                       <Link onClick={() => updateRecentViews(product)} href={`products/${product.id}`} className='flex flex-col'>
                         <div className='relative mx-auto'>
                           <Image
@@ -145,19 +145,7 @@ const FeaturedProducts = ({ banner }) => {
               )}
           </div>
         </div>
-
-        {/* Right-Side Banner */}
-        <div className='hidden lg:flex w-2/5'>
-          <div className='w-full h-full'>
-            <Image
-              width={400}
-              height={600}
-              src={banner.data[2].image_path || noImg}
-              alt='Newest Collection'
-              className='rounded-xl object-cover w-full h-full'
-            />
-          </div>
-        </div>
+ 
 
       </div>
     </div>

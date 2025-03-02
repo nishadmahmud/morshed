@@ -6,13 +6,15 @@ import {  FaWhatsapp } from "react-icons/fa6";
 import { Landmark } from "lucide-react";
 import Link from "next/link";
 import useSWR from "swr";
-import { fetcher } from "../../page";
 import noImg from '/public/no-image.jpg'
 import MagnifiedImage from "@/app/Components/MagnifiedImage";
 import colornames from "colornames";
 import toast from "react-hot-toast";
+import Breadcrumbs from "@/app/Components/Breadcrumbs";
+import { fetcher } from "@/app/(home)/page";
 
-const Page = ({ params }) => {
+
+const Page = ({params}) => {
   const { handleCart,getCartItems,refetch,setRefetch,handleBuy } = useStore();
   const [scroll,setScroll] = useState(0);
   // const [product,setProduct] = useState({});
@@ -21,7 +23,7 @@ const Page = ({ params }) => {
   const [quantity,setQuantity] = useState(1);
   const [activeTab,setActiveTab] = useState('Specification');
   const [imageIndex,setImageIndex] = useState(0); 
- 
+
   
   useEffect(() => {
     setCartItems(getCartItems());
@@ -31,7 +33,12 @@ const Page = ({ params }) => {
     }
   }, [refetch,setRefetch,getCartItems]);
 
-  const {data : product} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${params.slug}`,fetcher);
+  const { id } = params; // Get product ID from URL
+
+  const { data: product, error } = useSWR(
+    id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
+    fetcher
+  );
 
   const [selectedStorage, setSelectedStorage] = useState('');
 
@@ -132,23 +139,18 @@ const handleStorageChange = (storage) => {
     toast.error("Selected storage is not available for the chosen color.");
     return;
   }
-
   setSelectedStorage(storage);
 };
-  
-  
 
 console.log(product?.data);
   
-
-  
-  
   
   return (
-    <div className="bg-white px-5 lg:p-8 pt-10 mx-auto text-black max-w-7xl overflow-hidden sans">
+    <section className="bg-white">
+      <div className=" px-5 lg:p-8 pt-10 mx-auto text-black max-w-7xl overflow-hidden sans">
       
       <div className="container mx-auto px-4 pb-8">
-  
+      <Breadcrumbs />
       <div className="flex flex-col md:flex-row flex-1 gap-8">
         <div className="relative">
           {/* desktop */}
@@ -235,15 +237,15 @@ console.log(product?.data);
           <div className="mb-4 flex items-center">
   {product?.data.discount ? (
     <div className="text-nowrap flex gap-2 items-center">
-      <span className="text-sm lg:text-2xl font-bold text-[#4e4b49] line-through">
-        {selectedSalePrice} ৳
+      <span className="text-sm lg:text-2xl font-bold text-[#4e4b49] line-through font-bangla">
+        {selectedSalePrice? selectedSalePrice : product?.data?.retails_price} ৳
       </span>
-      <span className="sans lg:text-3xl font-bold text-[#F16724]">
+      <span className="sans lg:text-3xl font-bold text-[#F16724] ">
         {(selectedSalePrice - ((selectedSalePrice * product?.data.discount) / 100)).toFixed(0)} ৳
       </span>
     </div>
   ) : (
-    <span className="sans lg:text-3xl font-bold text-[#F16724]">{selectedSalePrice} ৳</span>
+    <span className="sans lg:text-3xl font-bangla font-bold text-[#F16724]">{selectedSalePrice? selectedSalePrice : product?.data?.retails_price} ৳</span>
   )}
 </div>
 
@@ -555,8 +557,10 @@ console.log(product?.data);
     </div>
 
 </div>
+    </section>
 
   );
 };
 
 export default Page;
+

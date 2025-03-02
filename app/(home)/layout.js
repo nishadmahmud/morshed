@@ -47,7 +47,7 @@ export default async function RootLayout({ children }) {
            <Header data={data}/>
           </div>
 
-          <div className="bg-[#ffffff] ">
+          <div className="bg-[#f7f7f7] ">
             {children}
             <AvatarChat />
           </div>

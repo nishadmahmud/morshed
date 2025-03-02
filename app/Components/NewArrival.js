@@ -19,15 +19,15 @@ const NewArrival = () => {
     return (
         <div className="mt-12">
           <Heading title={'Most Selling Products'}/>
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 w-11/12 lg:w-10/12 mx-auto">
+            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-5 w-11/12 mx-auto">
                 
                 {/* products */}
-                <div className="col-span-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 md:gap-10 md:col-span-3 gap-4 lg:col-span-4 mt-5">
+                <div className="col-span-1 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 md:gap-10 md:col-span-3 gap-4 lg:col-span-5 mt-5">
                 {
                     isLoading ?
-                    <div className='col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5'>
+                    <div className='col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
                       {
-                        Array.from({length : 6}).map((_,idx) => {
+                        Array.from({length : 5}).map((_,idx) => {
                           return  <CardSkeleton key={idx} />
                       })
                       }
