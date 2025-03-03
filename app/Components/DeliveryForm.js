@@ -96,7 +96,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
     status: 3,
   });
   
-
+console.log('order schema', orderSchema);
 
   const handleChange = (e) => {
     const {name,value} = e.target;

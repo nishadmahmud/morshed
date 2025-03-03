@@ -6,7 +6,7 @@ import Heading from "../CustomHooks/heading";
 
 const BannerSection = ({ banner }) => {
   return (
-    <div className="lg:mt-24 mt-10 lg:mb-20 relative ">
+    <div className="lg:mt-12 mt-10 lg:mb-10 relative ">
       
       <div className="grid grid-cols-1 lg:gap-10 md:grid-cols-1 gap-4 lg:grid-cols-2 rounded-xl p-5 lg:p-10 mt-5 lg:m-0">
        

@@ -48,8 +48,8 @@ export default async function Home() {
         <FeaturedCategories categories={categories}/>
         <OurFeatures />
         <ReadyForOrder />  
-        <BannerSection banner={banner}/>
         <FeaturedProducts banner={banner}/>
+        <BannerSection banner={banner}/>
         <NewArrival banner={banner}/> 
         <TopBrandProducts brands={brands}/> 
         <Brands brands={brands}/>    

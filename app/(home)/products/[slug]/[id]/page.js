@@ -115,7 +115,7 @@ const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails
 
   if (!foundItem) {
     toast.error("Selected color is not available for the chosen storage.");
-    return;
+   
   }
 
   setSelectedColor(colorCode);
@@ -208,7 +208,7 @@ console.log(product?.data);
           {
               product?.data.discount ?
               <p className="text-white bg-[#F16724] rounded-md  absolute py-1 
-              px-[6px] text-sm -top-5 lg:top-3 left-12">SAVE {product?.data?.discount}%</p> : ''
+              px-[6px] text-sm top-5 lg:top-3 left-12">SAVE {product?.data?.discount}%</p> : ''
           }
           <div className="flex justify-center space-x-2 lg:mb-4 mt-2">
                 {
@@ -234,8 +234,8 @@ console.log(product?.data);
         <div>
           <h1 className="text-base sans lg:text-xl font-semibold mb-2 hidden lg:block lg:text-nowrap">{product?.data.name}</h1>
           
-          <div className="mb-4 flex items-center gap-5">
-  <div className="bg-gray-200 px-4 rounded-sm text-xs py-1 flex items-center justify-center gap-1">
+          <div className="mb-4 flex flex-col items-center gap-5">
+  <div className="bg-gray-200 px-4 rounded-sm text-xs py-1 flex items-center w-9/12 md:w-full gap-1">
     {
       product?.data?.discount ? "Cash Discount Price:" : 
       selectedSalePrice ? "Sale Price:" :
@@ -259,8 +259,8 @@ console.log(product?.data);
     </div>
   </div>
 
-  <div className="bg-gray-200 px-4 rounded-sm text-xs py-1.5 flex items-center gap-1">
-    Product Code: <span>{id}</span>
+  <div className="bg-gray-200 px-4 rounded-sm text-xs py-1.5 flex items-center gap-1 w-9/12 md:w-full">
+    Product Code: <span className="font-semibold">{id}</span>
   </div>
 </div>
 

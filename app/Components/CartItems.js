@@ -11,6 +11,7 @@ import { ShoppingBag } from "lucide-react";
 
 import { FaArrowDown, FaArrowUp } from "react-icons/fa6";
 import { GiNotebook } from "react-icons/gi";
+import toast from "react-hot-toast";
 
 const CartItems = () => {
   const {
@@ -37,7 +38,7 @@ const CartItems = () => {
   const handleRedirect = () => {
     isChecked
       ? (router.push("/checkout"), setOpenCart(!openCart))
-      : alert("Please Accept Terms & Conditions First");
+      : toast.error("Please Accept Terms & Conditions First");
   };
 
 

@@ -50,8 +50,9 @@ const FeaturedProducts = ({ banner }) => {
   };
 
   return (
-    <div className='lg:mt-24 mt-16 poppins w-11/12 mx-auto'>
+    <div className='lg:mt-24 mt-16 poppins '>
       <Heading title={'Flash Sale'} />
+      <div className='w-11/12 mx-auto'>
 
       <div className='flex mt-5'>
           <div className='w-full h-[50vh] object-cover'>
@@ -155,6 +156,7 @@ const FeaturedProducts = ({ banner }) => {
  
 
       </div>
+    </div>
     </div>
   );
 };
