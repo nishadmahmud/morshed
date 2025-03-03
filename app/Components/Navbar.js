@@ -30,6 +30,8 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             setEmail(userInfo?.email);
         }
     }, []);
+
+    
 useEffect(() => {
         getCartItems();
         if(refetch){

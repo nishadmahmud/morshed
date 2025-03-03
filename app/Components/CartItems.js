@@ -49,7 +49,7 @@ const CartItems = () => {
       exit={{ x: "100%" }} 
       transition={{ duration: 0.3, ease: "easeInOut" }} 
 
-      className="fixed top-0 right-0 lg:w-96 w-64  h-full bg-white shadow-lg z-50 p-4"
+      className="fixed top-0 right-0 lg:w-96 w-72  h-full bg-white shadow-lg z-50 p-4"
 
     >
       {
@@ -59,7 +59,7 @@ const CartItems = () => {
         onClick={() => setOpenCart(!openCart)}
       ></div>
 
-      <div className=" fixed bg-white text-black lg:max-w-96 max-w-64 top-0 right-0 flex flex-col h-screen overflow-y-scroll z-[9999]">
+      <div className=" fixed bg-white text-black lg:max-w-96 max-w-72 top-0 right-0 flex flex-col h-screen overflow-y-scroll z-[9999]">
         <div className="bg-[#000000] text-white flex p-3 items-center">
           <IoClose
             onClick={() => setOpenCart(!openCart)}
@@ -68,33 +68,33 @@ const CartItems = () => {
           />
           <p className="text-center flex-1 font-bold">Mini Cart</p>
         </div>
-        <div className="p-5 border-b-2 h-1/3 overflow-y-auto space-y-4">
+        <div className="p-5 border-b-2 h-1/3 overflow-y-auto space-y-4 flex flex-col gap-y-4">
           {
             items?.map((item, idx) => {
               return (
 
-                <div key={idx} className="flex lg:h-full h-20 gap-2 items-center">
+                <div key={idx} className="flex lg:h-full h-16 gap-2 items-center md:pt-0 pt-5">
 
                   {
                     item?.image_path ? 
                     <Image
                     src={item.image_path}
                     alt="cart-products"
-                    height={100}
-                    width={100}
+                    height={80}
+                    width={80}
                   />
                     :  
                     item?.images.length > 0 ? 
                     <Image
                     src={item.images[0]}
                     alt="cart-products"
-                    height={100}
-                    width={100}
+                    height={80}
+                    width={80}
                   /> :
                     <Image
                     src={'https://i.ibb.co.com/vwGWVVb/Pixel-7-Pro-Hazel-6784.jpg'}
-                    height={100}
-                    width={100}
+                    height={80}
+                    width={80}
                     alt="mobile-phone"
                     quality={75}
                   />
@@ -102,17 +102,17 @@ const CartItems = () => {
                   
                   <div className="space-y-1 font-semibold">
 
-                    <p className="lg:text-md text-xs">{item?.name}</p>
+                    <p className="lg:text-lg text-xs text-ellipsis line-clamp-1">{item?.name}</p>
 
-                    <p>{item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price} ৳</p>
+                    <p className="md:text-sm text-xs text-[#F16724]">{item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price} ৳</p>
                     
-                    <div className="flex items-center border border-gray-300 rounded w-fit">
+                    <div className="flex items-center border border-gray-300 rounded md:h-auto h-10 w-fit">
                       <input
                         type="number"
                         value={item.quantity}
                         min={1}
 
-                        className="lg:w-12 lg:h-10 h-4 w-6 text-center bg-white dark:bg-white border-none focus:outline-none no-arrows"
+                        className="lg:w-12 lg:h-10 h-3 w-6 text-center bg-white dark:bg-white border-none focus:outline-none no-arrows"
 
                       />
                       <div className="flex flex-col justify-between ">
@@ -121,9 +121,9 @@ const CartItems = () => {
                             handleIncQuantity(item?.id, item.quantity)
                           }
 
-                          className="p-2 border-b border-l border-gray-300"
+                          className="md:p-2 px-2 md:py-1 py-0.5 border-b border-l border-gray-300 text-xs md:text-sm"
                         >
-                          <FaArrowUp size={15}></FaArrowUp>
+                          <FaArrowUp></FaArrowUp>
 
                         </button>
                         <button
@@ -131,9 +131,9 @@ const CartItems = () => {
                             item.quantity> 0 &&  handleDncQuantity(item?.id, item.quantity)
                           }
 
-                          className="p-2  border-l border-gray-300"
+                          className="md:p-2 md:py-1 px-2 py-0.5 border-b border-l border-gray-300 text-xs md:text-sm"
                         >
-                          <FaArrowDown size={15}></FaArrowDown> 
+                          <FaArrowDown></FaArrowDown> 
 
                         </button>
                       </div>
@@ -150,13 +150,13 @@ const CartItems = () => {
             })
            }
         </div>
-        <div className="p-5">
+        <div className="p-5 pt-2 h-[60vh]">
           <p className="flex items-center gap-1 mb-2"> <GiNotebook size={25}></GiNotebook> Special instructions for seller</p>
           <textarea rows={3} className="border outline-none bg-white p-2 rounded-sm dark:bg-white w-full"></textarea>
 
-          <h5 className="flex justify-between items-center text-black font-bold text-lg">
+          <h5 className="flex justify-between items-center text-black font-bold md:text-lg text-sm">
             Subtotal :{" "}
-            <span className="text-[#4EB0BE] font-normal">
+            <span className="text-[#F16724] font-semibold">
               {" "}
               {(items.reduce(
               (prev, curr) => prev + ((curr?.discount ?  (curr?.retails_price - ((curr?.retails_price * curr.discount) / 100).toFixed(0)) * curr.quantity  : curr?.retails_price * curr.quantity)),
@@ -190,7 +190,7 @@ const CartItems = () => {
               handleRedirect();
             }}
 
-            className="py-2 w-full bg-[#4eb0be] text-white mt-3 rounded-md"
+            className="py-2 w-full bg-[#F16724] text-white mt-3 mb-6 rounded-md"
 
           >
             Check Out

@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import { userId } from "../page";
 import axios from "axios";
 import noImg from '/public/no-image.jpg'
+import useStore from "@/app/CustomHooks/useStore";
 
 const Page = () => {
   const [keyword1, setKeyword1] = useState("");
@@ -36,7 +37,7 @@ const Page = () => {
 
   console.log(products);
 
-  const [hello, setHello] = useState([]);
+  const { handleBuy } = useStore()
 
 useEffect(() => {
   if (products?.specifications?.length > 0) {
@@ -88,14 +89,14 @@ console.log(selectedProduct1);
               onFocus={() => setShowResults1(true)}
               onBlur={() => setTimeout(() => setShowResults1(false), 200)}
               placeholder="Search for Product 1"
-              className="w-full p-2 border border-gray-200 focus:ring-1 text-black focus:ring-slate-200 bg-slate-50 rounded"
+              className="w-full p-2 border border-gray-200 focus:ring-1 text-black focus:ring-slate-200 bg-white px-3 rounded"
             />
             {showResults1 && products1.length > 0 && (
               <div className="mt-4 w-10/12 md:w-[25rem] text-black h-56 overflow-y-scroll absolute bg-white shadow-md border rounded">
                 {products1.map((product) => (
                   <div
                     key={product.id}
-                    className="flex items-center gap-4 p-2 border-b cursor-pointer"
+                    className="flex items-center gap-4 p-2 border-b bg-white cursor-pointer"
                     onClick={() => handleSelectProduct(product, setSelectedProduct1, setKeyword1, setProducts1, setShowResults1)}
                   >
                     <Image
@@ -105,13 +106,13 @@ console.log(selectedProduct1);
                       alt="product"
                       quality={75}
                     />
-                    <span>{product.name}</span>
+                    <span className="text-black text-ellipsis line-clamp-1">{product.name}</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <div className="p-3 border">
+          <div className="p-3 mt-1 pb-4 border bg-white mx-auto w-2/3">
             {selectedProduct1 ? (
               <div className="flex flex-col items-center">
                 <Image
@@ -121,13 +122,18 @@ console.log(selectedProduct1);
                   alt={selectedProduct1.name}
                   className="rounded"
                 />
-                <h3 className="mt-4 font-semibold text-black text-sm">{selectedProduct1.name}</h3>
+                <h3 className="mt-4 font-semibold text-black text-sm w-2/3 text-center mx-auto text-ellipsis line-clamp-2">{selectedProduct1.name}</h3>
+
+                <div className="flex items-center justify-center gap-2 mt-3">
+                <button onClick={() => {handleBuy(selectedProduct1,1)}} className="border-[#F16724] text-nowrap border text-xs text-[#F16724] w-full px-[8px] py-1.5 rounded font-semibold  transition-colors">Buy Now</button>
                 <button
-                  className="mt-1 px-3 py-1.5 bg-red-500 text-white rounded"
+                  className="px-2 text-sm py-1 bg-red-500 text-white rounded"
                   onClick={() => handleRemoveProduct(setSelectedProduct1, setShowResults1)}
                 >
                   Remove
                 </button>
+                </div>
+
               </div>
             ) : (
               <div className="text-center text-gray-500">No product selected</div>
@@ -148,7 +154,7 @@ console.log(selectedProduct1);
               onFocus={() => setShowResults2(true)}
               onBlur={() => setTimeout(() => setShowResults2(false), 200)}
               placeholder="Search for Product 2"
-              className="w-full p-2 border border-gray-200 focus:ring-1 text-black focus:ring-slate-200 bg-slate-50 rounded"
+              className="w-full p-2 border border-gray-200 focus:ring-1 text-black focus:ring-slate-200 bg-white rounded"
             />
             {showResults2 && products2.length > 0 && (
               <div className="mt-4 w-10/12 md:w-[25rem] text-black h-56 overflow-y-scroll absolute bg-white shadow-md border rounded">
@@ -165,13 +171,13 @@ console.log(selectedProduct1);
                       alt="product"
                       quality={75}
                     />
-                    <span className="text-black">{product.name}</span>
+                    <span className="text-black text-ellipsis line-clamp-1">{product.name}</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
-          <div className="p-3 border">
+          <div className="p-3 mt-1 pb-4 border bg-white mx-auto w-2/3">
             {selectedProduct2 ? (
               <div className="flex flex-col items-center">
                 <Image
@@ -181,13 +187,17 @@ console.log(selectedProduct1);
                   alt={selectedProduct2.name}
                   className="rounded"
                 />
-                <h3 className="mt-2 font-semibold text-black text-sm">{selectedProduct2.name}</h3>
+                <h3 className="mt-4 font-semibold text-black text-sm w-2/3 text-center mx-auto text-ellipsis line-clamp-2">{selectedProduct2.name}</h3>
+
+               <div className="flex items-center justify-center gap-2 mt-3">
+                <button onClick={() => {handleBuy(selectedProduct2,1)}} className="border-[#F16724] text-nowrap border text-xs text-[#F16724] w-full px-[8px] py-1.5 rounded font-semibold  transition-colors">Buy Now</button>
                 <button
-                  className="mt-1 px-3 py-1.5 bg-red-500 text-white rounded"
+                  className="px-2 text-sm py-1 bg-red-500 text-white rounded"
                   onClick={() => handleRemoveProduct(setSelectedProduct2, setShowResults2)}
                 >
                   Remove
                 </button>
+                </div>
               </div>
             ) : (
               <div className="text-center text-gray-500">No product selected</div>

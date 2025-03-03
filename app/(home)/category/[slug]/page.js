@@ -49,13 +49,13 @@ const Page = ({ params }) => {
     } else {
       setFilteredItems(products?.data);
     }
-  },[sortBy,products]);
+  },[sortBy,products, filteredItems]);
 
   return (
     <div className="md:px-12 p-5 relative">
       {/* Filter Toggle Button for Mobile */}
       <button 
-        className="md:hidden fixed bottom-20 left-5 bg-[#F16724] text-white p-2 rounded-lg z-50" 
+        className="md:hidden fixed bottom-24 left-7 bg-[#F16724] text-white p-2 rounded-lg z-50" 
         onClick={() => setIsFilterOpen(true)}
       >
         <FiFilter size={24} />
