@@ -268,7 +268,7 @@ console.log(product?.data);
 
           <div className="mb-4 flex items-center  lg:flex-nowrap gap-3">
             <p className="text-gray-800 text-xs  px-4 py-1.5 rounded-sm bg-gray-200 flex items-center text-nowrap gap-2"><Landmark size={16}/> EMI Available <Link target="_blank" href={'/Convenient Global EMI (for QR) (Updated- 05-01-22)(0)(0)(0).pdf'} className="text-blue-500 font-semibold">View Plans</Link></p>
-            <p className="text-gray-800 text-xs text-nowrap bg-gray-200 px-4 py-1.5 rounded-sm"> Exchange <Link href={'/plans'} className="text-blue-500 font-semibold">View Plans</Link></p>
+            <p className="text-gray-800 text-xs lg:mr-0 mr-2 text-nowrap bg-gray-200 px-4 py-1.5 rounded-sm"> Exchange <Link href={'/plans'} className="text-blue-500 font-semibold">View Plans</Link></p>
           </div>
           <Link
             href="https://wa.me/+8801711157290" 
@@ -475,7 +475,7 @@ console.log(product?.data);
                 />
               </div>
               <div className="text-center mt-2">
-                <h3 className="text-sm font-semibold">{product.name}</h3>
+                <h3 className="text-sm font-semibold text-ellipsis line-clamp-1">{product.name}</h3>
                 <p className="text-xs text-gray-500 font-semibold">{product.price} ৳</p>
               </div>
             </Link>

@@ -5,13 +5,15 @@ import { CgProfile } from "react-icons/cg";
 import { ShoppingCart, House, MapPinned, NotebookPen, Gift } from 'lucide-react';
 import Image from 'next/image';
 import noImg from '/public/no-image.jpg';
+import useStore from '../CustomHooks/useStore';
 
 const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
+    
     const [isHovered, setIsHovered] = useState(false);
     const categoryRef = useRef(null);
     const [showCategory, setShowCategory] = useState(false);
     const [email, setEmail] = useState(null);
-
+    const {getCartItems,refetch,setRefetch} = useStore();
     useEffect(() => {
         const handleCategoryClose = (event) => {
             if (categoryRef.current && !categoryRef.current.contains(event.target)) {
@@ -28,6 +30,18 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             setEmail(userInfo?.email);
         }
     }, []);
+useEffect(() => {
+        getCartItems();
+        if(refetch){
+            getCartItems();
+            setRefetch(false);
+        }
+    },[refetch,getCartItems, setRefetch])
+
+    const items =  getCartItems();
+    const total = items?.reduce((acc,curr) => acc += curr.quantity,0) || 0;
+
+    console.log(total);
 
     return (
         <div className='relative'>
@@ -63,6 +77,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                     
                     <div onClick={() => setOpenCart(!openCart)} className='flex flex-col items-center text-sm text-[#F16724] hover:text-white cursor-pointer'>
                         <ShoppingCart className='text-2xl' />
+                        <p className='bg-[#ffffff] z-[900] h-fit text-[#F16724] w-fit px-1 text-xs rounded-full absolute top-2 right-[9.2rem]'>{total}</p>
                         <span className='text-white'>Cart</span>
                     </div>
 

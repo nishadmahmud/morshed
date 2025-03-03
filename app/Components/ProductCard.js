@@ -101,18 +101,18 @@ const ProductCard = ({ product }) => {
           <div className="mt-auto">
             {product?.discount ? (
               <div className="flex items-center gap-2">
-                <span className="text-xl font-bold text-[#F16724]">
-                <span className="font-bangla text-xl">৳</span> {discountedPrice}
+                <span className="md:text-xl text-sm  font-bold text-[#F16724]">
+                <span className="font-bangla text-sm md:text-xl">৳</span> {discountedPrice}
                 </span>
                 
                 <span className="text-sm font-bold text-[#504f4d] line-through">
-                <span className="font-bangla text-sm">৳</span>{product?.retails_price} 
+                <span className="font-bangla md:text-xl text-sm">৳</span>{product?.retails_price} 
                 </span>
                 
               </div>
             ) : (
-              <span className="text-xl font-bold text-[#F16724]">
-                <span className="font-bangla text-xl">৳</span> {product?.retails_price} 
+              <span className="md:text-xl text-sm font-bold text-[#F16724]">
+                <span className="font-bangla text-sm lg:text-xl">৳</span> {product?.retails_price} 
               </span>
             )}
           </div>

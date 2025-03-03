@@ -120,12 +120,12 @@ console.log(products);
                           <div className="mt-auto">
                             {product?.discount ? (
                               <div className="flex justify-center items-center gap-2">
-                                <span className="text-xl font-bold text-[#F16724] line-through">
-                                  <span className="font-bangla text-xl">৳</span>
+                                <span className="text-sm lg:text-lg font-bold text-[#F16724] line-through">
+                                  <span className="font-bangla text-sm lg:text-lg">৳</span>
                                   {product?.retails_price}
                                 </span>
-                                <span className="text-xl font-bold text-[#F16724]">
-                                  <span className="font-bangla text-xl">৳</span>{" "}
+                                <span className="text-sm lg:text-lg font-bold text-[#F16724]">
+                                  <span className="font-bangla text-sm lg:text-lg">৳</span>{" "}
                                   {(
                                     product?.retails_price -
                                     (product?.retails_price * product?.discount) / 100
@@ -133,8 +133,8 @@ console.log(products);
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-xl font-bold text-[#F16724]">
-                                <span className="font-bangla text-xl">৳</span>{" "}
+                              <span className="text-sm lg:text-lg font-bold text-[#F16724]">
+                                <span className="font-bangla text-sm lg:text-lg">৳</span>{" "}
                                 {product?.retails_price}
                               </span>
                             )}
@@ -143,7 +143,7 @@ console.log(products);
                       </Link>
 
                       {/* Product specifications */}
-                      <div className="text-gray-600 px-5 grid mb-3 justify-items-start grid-cols-2 gap-1">
+                      <div className="text-gray-600 px-5 grid mb-3 mt-1 justify-items-start grid-cols-2 gap-1">
                         <div className="flex items-start gap-1 text-xs">
                           <Battery size={15} /> {batteryCapacity}
                         </div>

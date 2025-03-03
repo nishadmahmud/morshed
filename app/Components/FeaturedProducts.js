@@ -104,15 +104,15 @@ const FeaturedProducts = ({ banner }) => {
                           <div>
                             {product.discount ? (
                               <div className='flex gap-2 items-start justify-start'>
-                                <span className='text-xl font-bold text-[#F16724]'>
-                                  <span className="font-bangla text-xl">৳</span>{(product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)}
+                                <span className='text-sm md:text-xl font-bold text-[#F16724]'>
+                                  <span className="font-bangla text-sm md:text-xl">৳</span>{(product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)}
                                 </span>
-                                <span className='text-sm font-bold text-gray-500 line-through'>
-                                  <span className="font-bangla text-xl">৳</span>{product.retails_price}
+                                <span className='text-xs md:text-sm font-bold text-gray-500 line-through'>
+                                  <span className="font-bangla text-xs md:text-xl">৳</span>{product.retails_price}
                                 </span>
                               </div>
                             ) : (
-                              <span className='text-xl font-bold text-[#F16724]'>
+                              <span className='text-sm md:text-xl font-bold text-[#F16724]'>
                                 <span className="font-bangla text-sm">৳</span>{product.retails_price}
                               </span>
                             )}
