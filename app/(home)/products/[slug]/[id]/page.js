@@ -18,7 +18,6 @@ const Page = ({params}) => {
   const { handleCart,getCartItems,refetch,setRefetch,handleBuy } = useStore();
   const [scroll,setScroll] = useState(0);
   // const [product,setProduct] = useState({});
-  const [recentItems,setRecentItems] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [quantity,setQuantity] = useState(1);
   const [activeTab,setActiveTab] = useState('Specification');
@@ -464,7 +463,7 @@ console.log(product?.data);
       {recentProducts.length > 0 ? (
         <div className="grid gap-3 grid-cols-2">
           {recentProducts.map((product) => (
-            <Link key={product.id} href={`/products/${product.id}`} className="border p-2 rounded-md hover:shadow-md">
+            <Link key={product.id} href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`} className="border p-2 rounded-md hover:shadow-md">
               <div className="relative w-full h-[150px] flex justify-center items-center">
                 <Image
                   src={product.image || noImg}
