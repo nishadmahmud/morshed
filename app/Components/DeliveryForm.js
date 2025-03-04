@@ -69,7 +69,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
     delivery_info_id: 1,
     delivery_customer_name: formData.firstName + formData.lastName,
     delivery_customer_address: formData.address || formData.billAddress,
-    delivery_customer_phone: formData.phone || formData.billPhone,
+    delivery_customer_phone: formData.phone ? formData.phone : formData.billPhone,
     delivery_fee: 200,
     payment_method: [
       {
@@ -108,7 +108,7 @@ console.log('order schema', orderSchema);
       ['delivery_customer_address'] : formData.address || formData.billAddress,
       ['delivery_customer_address'] : formData.address || formData.billAddress,
       ['customer_phone'] :  formData.phone,
-      ['delivery_customer_phone'] : formData.billPhone  || formData.phone,
+      ['delivery_customer_phone'] : formData.billPhone ? formData.billPhone : formData.phone,
       ['customer_id'] : user?.id,
     }))
   };
