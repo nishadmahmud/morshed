@@ -38,7 +38,12 @@ const Page = ({params}) => {
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
     fetcher
   );
-
+  const sanitizeSlug = (str) => {
+    return str
+      ?.toLowerCase()
+      .replace(/\s+/g, "-") // Replace spaces with dashes
+      .replace(/[^a-z0-9-]/g, ""); // Remove special characters
+  };
   const [selectedStorage, setSelectedStorage] = useState('');
 
   const [storages,setStorages] = useState(''); 
@@ -65,13 +70,14 @@ console.log(colornames("Black"));
     return () => window.removeEventListener('scroll',handleScroll)  
    },[])
 
-
-   const [recentProducts, setRecentProducts] = useState([]);
-
+// get recent view products
+   const [recentProducts, setRecentProducts] = useState([])
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("recentlyViewed")) || [];
     setRecentProducts(storedProducts);
   }, []);
+
+
 
 console.log(product);
 const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails_price || 0);
