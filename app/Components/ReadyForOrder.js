@@ -107,11 +107,12 @@ console.log(products);
                             alt={product?.name}
                             quality={100}
                           />
-                          {product?.discount && (
+                          {product?.discount ? (
                             <p className="absolute top-2 left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-2 rounded-md">
                               SAVE {product?.discount || 0}%
                             </p>
-                          )}
+                          ) : ""
+                        }
                         </div>
                         <div className="mt-10 flex flex-col flex-grow px-4">
                           <h3 className="text-sm font-semibold text-black  line-clamp-1 text-ellipsis">

@@ -94,11 +94,11 @@ const FeaturedProducts = ({ banner }) => {
                             className='object-cover h-36 w-40'
                             quality={100}
                           />
-                          {product.discount && (
+                          {product.discount ? (
                             <p className='absolute top-4 lg:top-2 left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-2 rounded-md'>
                               SAVE {product.discount}%
                             </p>
-                          )}
+                          ) : ""}
                         </div>
                         <div className='mt-6 px-4 my-2'>
                           <h3 className='text-sm font-semibold text-black line-clamp-1 text-start'>{product.name}</h3>
