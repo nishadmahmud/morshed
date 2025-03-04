@@ -7,6 +7,13 @@ import useStore from "../CustomHooks/useStore";
 import toast from "react-hot-toast";
 
 const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReload }) => {
+  const userData = JSON.parse(localStorage.getItem("user"));
+
+  const customer_id = userData?.customer_id;
+  const first_name = userData?.first_name;
+  const last_name = userData?.last_name;
+  const phone = userData?.phone;
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -28,17 +35,15 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
     axios.post(`${process.env.NEXT_PUBLIC_API}/customer-login`, formData)
       .then((res) => {
         if (res.data.token) {
-          setFormData({
-            email: "",
-            password: "",
-          })
+          const updatedFormData = { ...formData, customer_id, first_name, last_name, phone };
+          setFormData(updatedFormData);
           setReload(true)
           if(intendedUrl){
             router.push(intendedUrl);
           }else{
             router.push('/');
             toast.success("Login Successful!")
-            localStorage.setItem("user", JSON.stringify(formData));
+            localStorage.setItem("user", JSON.stringify(updatedFormData));
           }
           onClose();
           setToken(res.data.token);

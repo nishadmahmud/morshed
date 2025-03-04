@@ -20,27 +20,30 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = {...formData,user_id : userId}
+    const payload = { ...formData, user_id: userId };
+  
     axios
       .post(`${process.env.NEXT_PUBLIC_API}/customer-registration`, payload, {
         headers: {
           "Content-Type": "application/json",
         },
       })
-      .then(() => {
-        setFormData({
-          first_name: "",
-          last_name: "",
-          phone : "",
-          email: "",
-          password: "",
-        });
+      .then((res) => {
+        const customer_id = res?.data?.data?.id;
+  
+        // Update formData with customer_id before saving it
+        const updatedFormData = { ...formData, customer_id: customer_id };
+        setFormData(updatedFormData);
+  
         setIsRegistered(!isRegistered);
-        toast.success("Register Successfull!")
-        localStorage.setItem("user", JSON.stringify(formData));
+        toast.success("Register Successful!");
+  
+        // Save the updated formData to localStorage
+        localStorage.setItem("user", JSON.stringify(updatedFormData));
       })
       .catch((error) => toast.error("Invalid Register Credentials!"));
   };
+  
   return (
     <div className="">
       <form className="lg:w-full w-11/12 mx-auto space-y-3 bg-transparent relative" onSubmit={handleSubmit}>

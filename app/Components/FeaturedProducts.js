@@ -72,9 +72,9 @@ const FeaturedProducts = ({ banner }) => {
         <div className='flex-1'>
           <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6'>
             {isLoading
-              ? Array.from({ length: 6 }).map((_, idx) => <CardSkeleton key={idx} />)
+              ? Array.from({ length: 10 }).map((_, idx) => <CardSkeleton key={idx} />)
               : bestDeals?.data?.length > 0
-              ? bestDeals.data.slice(0, 6).map((product) => {
+              ? bestDeals.data.slice(0, 10).map((product) => {
                   const specs = product?.specifications || [];
                   const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
                   const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";

@@ -1,7 +1,7 @@
 "use client"
 
 import useStore from "@/app/CustomHooks/useStore";
-import { FileUser, ShoppingBag, KeyRound, CircleUser, LogOut, MapPinHouse, X, Menu } from "lucide-react";
+import { FileUser, ShoppingBag, KeyRound, CircleUser, LogOut, X, Menu } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -20,7 +20,6 @@ const DashboardLayout = ({ children }) => {
     setToken(null);
     setHasToken(false);
     setEmail(null);
-    location.reload()
     route.push("/");
   };
 
@@ -34,7 +33,7 @@ const DashboardLayout = ({ children }) => {
   }, [email, reload]);
 
   return (
-    <div className="lg:flex w-11/12 mx-auto lg:h-screen relative">
+    <div className="md:flex md:w-11/12 mx-auto md:h-screen relative">
       {/* Mobile Menu Button */}
       <button
         className="md:hidden p-4 text-gray-700"
@@ -87,12 +86,7 @@ const DashboardLayout = ({ children }) => {
           >
             <ShoppingBag size={20} /> My Orders
           </Link>
-          <Link
-            href="/profileDashboard/address"
-            className="text-white hover:text-gray-300 flex items-center gap-1"
-          >
-            <MapPinHouse size={20} /> Address
-          </Link>
+         
           <Link
             href="/profileDashboard/updatePassword"
             className="text-white hover:text-gray-300 flex items-center gap-1"
@@ -101,7 +95,7 @@ const DashboardLayout = ({ children }) => {
           </Link>
           <div
             onClick={handleLogout}
-            className="text-white flex items-center gap-1 hover:text-red-600 cursor-pointer"
+            className="text-white hover:font-semibold transition ease-in-out flex items-center gap-1 hover:text-red-600 cursor-pointer"
           >
             <LogOut size={20} /> Logout
           </div>
@@ -109,7 +103,7 @@ const DashboardLayout = ({ children }) => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 lg:p-10 px-10 pb-10">{children}</div>
+      <div className="flex-1 lg:p-10 px-2 pb-10">{children}</div>
     </div>
   );
 };

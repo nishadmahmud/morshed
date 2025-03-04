@@ -17,7 +17,7 @@ const PersonalInfo = () => {
       setEmail(userInfo?.email);
       setReload(false);
     }
-  }, [reload]); // Removed `email` from dependencies to avoid unnecessary re-renders
+  }, [reload]);
 
   console.log(user);
 

@@ -22,6 +22,9 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
   const [user,setUser] = useState(null); 
   const router = useRouter(); 
   const [userEmail, setUserEmail] = useState(null);
+  const userData = JSON.parse(localStorage.getItem("user"));
+  const customer_id = userData?.customer_id;
+  const customer_phone = userData?.phone;
   const [formData, setFormData] = useState({
     country: "Bangladesh",
     email : userEmail || '',
@@ -69,7 +72,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
     delivery_info_id: 1,
     delivery_customer_name: formData.firstName + formData.lastName,
     delivery_customer_address: formData.address || formData.billAddress,
-    delivery_customer_phone: formData.phone ? formData.phone : formData.billPhone,
+    delivery_customer_phone: formData?.phone ? formData?.phone : 'N/A',
     delivery_fee: 200,
     payment_method: [
       {
@@ -87,9 +90,9 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
       }
     }),
     created_at: date,
-    customer_id: user?.id || null,
-    customer_name: `${formData.firstName} + ${formData.lastName}`,
-    customer_phone: formData.phone,
+    customer_id: customer_id || null,
+    customer_name: `${formData.firstName}+${formData.lastName}`,
+    customer_phone: customer_phone,
     sales_id: userId,
     user_id: userId,
     wholeseller_id: 1,
@@ -107,9 +110,9 @@ console.log('order schema', orderSchema);
       ['delivery_customer_name'] : `${formData.firstName}  ${formData.lastName}`,
       ['delivery_customer_address'] : formData.address || formData.billAddress,
       ['delivery_customer_address'] : formData.address || formData.billAddress,
-      ['customer_phone'] :  formData.phone,
-      ['delivery_customer_phone'] : formData.billPhone ? formData.billPhone : formData.phone,
-      ['customer_id'] : user?.id,
+      ['customer_phone'] : customer_phone,
+      ['delivery_customer_phone'] : formData?.phone ? formData?.phone : "N/A",
+      ['customer_id'] : customer_id,
     }))
   };
 

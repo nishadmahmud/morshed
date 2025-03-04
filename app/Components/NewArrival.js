@@ -27,14 +27,14 @@ const NewArrival = () => {
                     isLoading ?
                     <div className='col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5'>
                       {
-                        Array.from({length : 5}).map((_,idx) => {
+                        Array.from({length : 10}).map((_,idx) => {
                           return  <CardSkeleton key={idx} />
                       })
                       }
                       </div>  
                       :
                     bestSellers?.data.length > 0 ? 
-                    bestSellers?.data.slice(0, 8).map((product) => {
+                    bestSellers?.data.slice(0, 10).map((product) => {
                       return (
                        <ProductCard product={product} key={product.id}/>
                      );
