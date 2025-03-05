@@ -18,7 +18,6 @@ const MyOrders = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const userData = JSON.parse(localStorage.getItem("user"));
-
     const customer_id = userData?.customer_id;
 
     useEffect(() => {
@@ -33,7 +32,7 @@ const MyOrders = () => {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        type: '1',
+                        type: activeTab,
                         customer_id: customer_id,
                         limit: "10",
                     }),
