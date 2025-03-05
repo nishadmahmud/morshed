@@ -103,6 +103,7 @@ console.log(products);
                           <Image
                             src={product?.image_path || product?.images?.[0] || noImg}
                             height={500}
+                            unoptimized
                             width={300}
                             alt={product?.name}
                             quality={100}

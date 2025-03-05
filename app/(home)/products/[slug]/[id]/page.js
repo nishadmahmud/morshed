@@ -175,6 +175,7 @@ console.log(product?.data);
             src={'https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg'}
             height={300} 
             width={300} 
+            unoptimized
             alt={product?.data.name}
             quality={75}
           />
@@ -185,7 +186,8 @@ console.log(product?.data);
           <div className="flex justify-center lg:hidden mt-3">
             {
                product?.data.images?.length > 0 ? 
-               ( <Image 
+               ( <Image
+                unoptimized 
                     height={200} 
                     width={200} 
                     alt="product" 
@@ -193,6 +195,7 @@ console.log(product?.data);
                 />
             ) : product?.data.image_path ? (
                 <Image 
+                unoptimized
                     height={200} 
                     width={200} 
                     alt="product" 
@@ -200,6 +203,7 @@ console.log(product?.data);
                 />
             ) : (
               <Image
+              unoptimized
               src={noImg}
               height={200} 
               width={200} 
@@ -221,6 +225,7 @@ console.log(product?.data);
                   product.data.images.map((image,idx) => {
                     return <div key={idx} className={`relative p-2  ${imageIndex === idx ? 'border-2 border-[#0F98BA]': ''} }   overflow-hidden `}>
                     <Image
+                    unoptimized
                       onClick={() => setImageIndex(idx)}
                       src={image}
                       alt={product?.data.name}
@@ -365,7 +370,6 @@ console.log(product?.data);
               </button>
             </div>
           </div>
-
         </div>
       </div>
 

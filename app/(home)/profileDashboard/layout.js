@@ -32,8 +32,9 @@ const DashboardLayout = ({ children }) => {
     }
   }, [email, reload]);
 
+  
   return (
-    <div className="md:flex md:w-11/12 mx-auto md:h-screen relative">
+    <div className="md:flex md:w-11/12 mx-auto  relative pb-5">
       {/* Mobile Menu Button */}
       <button
         className="md:hidden p-4 text-gray-700"

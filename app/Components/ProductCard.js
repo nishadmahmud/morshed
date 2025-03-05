@@ -82,6 +82,7 @@ const ProductCard = ({ product }) => {
               alt={product?.name}
               width={800}
               height={200}
+              unoptimized
               className='object-cover '
               quality={100}
             />

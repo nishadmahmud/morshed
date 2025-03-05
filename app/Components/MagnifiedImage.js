@@ -24,6 +24,7 @@ const MagnifiedImage= ({ image_path,alt }) => {
       {/* Image Container */}
       <div className="relative w-[350px] border rounded-md  h-[300px]" onMouseLeave={() => setIsZooming(false)} onMouseMove={handleMouseMove} onMouseUp={() => setIsZooming(true)}>
         <NextImage 
+        unoptimized
         src={image_path}
         alt={alt}
         fill={true}
@@ -46,6 +47,7 @@ const MagnifiedImage= ({ image_path,alt }) => {
           }}
         > 
         <NextImage 
+        unoptimized
           src={image_path}
           alt={alt}
           style={{objectFit : 'cover'}}
