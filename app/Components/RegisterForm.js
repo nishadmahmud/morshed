@@ -9,7 +9,7 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
-    phone : "",
+    phone: "",
     email: "",
     password: "",
   });

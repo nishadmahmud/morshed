@@ -14,7 +14,7 @@ const FeaturedCategories = ({ categories }) => {
         </p>
       </div>
 
-      <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-3 w-11/12 mx-auto my-8">
+      <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 w-11/12 mx-auto my-8">
         {categories.data &&
           categories.data.length > 0 &&
           categories.data.map((item, idx) => (

@@ -14,14 +14,7 @@ const DashboardLayout = ({ children }) => {
   const { setToken, setHasToken } = useStore();
   const route = useRouter();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    setToken(null);
-    setHasToken(false);
-    setEmail(null);
-    route.push("/");
-  };
+ 
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
@@ -32,9 +25,22 @@ const DashboardLayout = ({ children }) => {
     }
   }, [email, reload]);
 
-  
+
+  const handleLogout = () => {
+    
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    setToken(null);
+    setHasToken(false);
+    setEmail(null);
+    setUser(null); // Ensure user is set to null
+    setReload(prev => !prev); // Trigger a re-render
+    route.push('/')
+};
+
+
   return (
-    <div className="md:flex md:w-11/12 mx-auto  relative pb-5">
+    <div className="md:flex md:w-11/12 mx-auto relative lg:pt-5 md:pt-5 pt-1 pb-5">
       {/* Mobile Menu Button */}
       <button
         className="md:hidden p-4 text-gray-700"
@@ -55,7 +61,7 @@ const DashboardLayout = ({ children }) => {
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#ff8c53] to-[#F16724] px-6 shadow-md md:relative z-20 rounded-lg`}
+        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#F16724] to-[#e14e04] px-6 shadow-md md:relative z-20 rounded-lg`}
       >
         <div className="flex justify-between items-center pt-5">
           <button
@@ -96,7 +102,7 @@ const DashboardLayout = ({ children }) => {
           </Link>
           <div
             onClick={handleLogout}
-            className="text-white hover:font-semibold transition ease-in-out flex items-center gap-1 hover:text-red-600 cursor-pointer"
+            className="text-white hover:font-semibold transition ease-in-out flex items-center gap-1 hover:text-red-800 cursor-pointer"
           >
             <LogOut size={20} /> Logout
           </div>

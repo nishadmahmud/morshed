@@ -25,7 +25,8 @@ import { Menu } from 'lucide-react';
 import logo from '../../public/PerfectGadgetBD-logo (1) 1.png'
 import { Gift } from 'lucide-react';
 import TopHeader from './TopHeader';
-
+import navLogo from '/public/user.png'
+import { LogIn } from 'lucide-react';
 
 const Header = ({data}) => {
     const {getCartItems,refetch,setRefetch,setOpenCart,openCart,getWishList,isLoginModal,setIsLoginModal,setToken,setHasToken} = useStore();
@@ -37,23 +38,16 @@ const Header = ({data}) => {
     const [showBar,setShowBar] = useState(false);
     const [focused,setfocused] = useState(false);
     const [email,setEmail] = useState(null);
-    const [user,setUser] = useState(null);
+
     const [reload,setReload] = useState(false);
     const pathname = useSearchParams();
     const searchBarRef = useRef(null);
-   
+ 
  const categoryRef = useRef(null);
      const [showCategory,setShowCategory] = useState(false);
 
-    useEffect(() => {
-        const userInfo = JSON.parse(localStorage.getItem('user'));
-        
-        if(userInfo){
-            setUser(userInfo)
-            setEmail(userInfo?.email);
-            setReload(false);
-        }
-    },[email,reload])
+const user = localStorage.getItem('user')
+console.log("userrrrrr",user);
 
     useEffect(() => {
         getCartItems();
@@ -270,34 +264,28 @@ const Header = ({data}) => {
 
             <div>
             {
-  email ? 
-  <div onClick={handleUserInfo} className='lg:flex items-center lg:border bg-[#ffffff] border-[#F16724] px-2 p-2 rounded-full lg:mr-2.5 cursor-pointer hidden'>
+  !user ? 
+  <div onClick={() => { setIsLoginModal(true) }} className='lg:flex items-center lg:border bg-[#ffffff] border-[#F16724] px-2 p-2 rounded-full lg:mr-2.5 pr-3 cursor-pointer hidden'>
       <div className='p-1 rounded-full hidden lg:block'>
-          <CircleUser  size={18} className='text-[#F16724]'/>
+          <LogIn  size={18} className='text-[#F16724]'/>
       </div>
       <div>
-      <p className='text-[#F16724] hidden lg:block text-xs font-semibold '>Account</p> 
+      <p className='text-[#F16724] hidden lg:block text-xs font-semibold '>Login</p> 
       
    </div> 
   </div> :
-  <div onClick={() => { setIsLoginModal(true) }} className='items-center lg:border hidden lg:flex bg-white px-2 p-1.5 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
-    <div className='p-1 rounded-full hidden lg:block'>
-      <CircleUser size={18} className='text-[#F16724]'/>
+  <Link href='/profileDashboard'  className='items-center lg:border hidden lg:flex gap-1 bg-white px-2 p-1.5 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
+    <div className='rounded-full hidden lg:block'>
+     <Image alt='navLogo' src={navLogo} className='w-5 rounded-full'></Image>
     </div> 
     <div>
       <p className='text-[#F16724] hidden lg:block text-sm font-semibold '>Account</p> 
     </div> 
-  </div>
+  </Link>
 }  
              
             </div>
-                {   
-                    showUserInfo &&
-                    <div onClick={handleUserInfo} onMouseLeave={() => setShowUserInfo(false)} className={`bg-white shadow-lg absolute z-50 top-10 right-20 rounded-md pt-3`}>
-                        <Link href="/profileDashboard" className='border-b cursor-pointer p-3 px-5 hover:text-[#F16724]'>Dashboard</Link>
-                        <p onClick={handleLogout} className='p-3 px-5 cursor-pointer text-red-500 hover:font-semibold'>Logout</p>
-                    </div>
-                }
+               
             </div>
            </div>
            <div className=''>

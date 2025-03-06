@@ -18,6 +18,7 @@ const MyOrders = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const userData = JSON.parse(localStorage.getItem("user"));
+
     const customer_id = userData?.customer_id;
 
     useEffect(() => {
@@ -71,7 +72,7 @@ const MyOrders = () => {
             <div className="bg-white text-black p-6 shadow-md rounded-lg">
                 <div className="w-full mx-auto p-4 pt-0">
                     {/* Tabs Navigation */}
-                    <div className="flex flex-wrap justify-center md:justify-start space-x-2 border-b border-gray-300 overflow-x-auto">
+                    <div className="flex justify-center md:justify-start space-x-2 border-b border-gray-300 overflow-x-auto">
                         {tabs.map((tab) => (
                             <button
                                 key={tab.type}
@@ -134,6 +135,7 @@ const MyOrders = () => {
                                 <li key={idx} className="flex items-center justify-center justify-items-center md:justify-between space-x-4 border-b pb-2 md:flex-row flex-col">
                                     <div className="flex items-center md:flex-row flex-col gap-1">
                                     <Image
+                                    unoptimized
                                     width={100}
                                     height={100}
                                         src={item?.product_info?.image_path}

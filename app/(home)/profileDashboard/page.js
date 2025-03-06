@@ -1,27 +1,29 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 const PersonalInfo = () => {
   const [email, setEmail] = useState(null);
   const [user, setUser] = useState(null);
   const [reload, setReload] = useState(false);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
-
-    console.log(userInfo);
 
     if (userInfo) {
       setUser(userInfo);
       setEmail(userInfo?.email);
       setReload(false);
+
+      // Ensure name is a valid string before splitting
+      const fullName = userInfo?.name || "";
+      const nameParts = fullName.split(" ");
+      setFirstName(nameParts[0] || ""); // First word
+      setLastName(nameParts.slice(1).join(" ") || ""); // Rest of the name
     }
   }, [reload]);
-
-  console.log(user);
-
-  
 
   return (
     <>
@@ -32,7 +34,7 @@ const PersonalInfo = () => {
             <label className="block text-gray-700">First Name</label>
             <input
               type="text"
-              value={user?.first_name}
+              value={firstName}
               disabled
               className="w-full p-2 border rounded bg-gray-100 text-black"
             />
@@ -41,7 +43,7 @@ const PersonalInfo = () => {
             <label className="block text-gray-700">Last Name</label>
             <input
               type="text"
-              value={user?.last_name}
+              value={lastName}
               disabled
               className="w-full p-2 border rounded bg-gray-100 text-black"
             />
@@ -65,7 +67,7 @@ const PersonalInfo = () => {
             className="w-full p-2 border rounded bg-gray-100 text-black"
           />
         </div>
-        <button className="mt-6 px-4 py-2 bg-[#F16724] text-white rounded hover:bg-[#c8561c]">
+        <button className="mt-6 px-4 py-2 bg-[#F16724] text-white rounded hover:bg-[#c54403]">
           Update
         </button>
       </div>

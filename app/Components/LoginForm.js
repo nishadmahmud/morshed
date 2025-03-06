@@ -34,6 +34,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
     e.preventDefault();
     axios.post(`${process.env.NEXT_PUBLIC_API}/customer-login`, formData)
       .then((res) => {
+        console.log(res.data.customer);
         if (res.data.token) {
           const updatedFormData = { ...formData, customer_id, first_name, last_name, phone };
           setFormData(updatedFormData);
@@ -43,7 +44,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
           }else{
             router.push('/');
             toast.success("Login Successful!")
-            localStorage.setItem("user", JSON.stringify(updatedFormData));
+            localStorage.setItem("user", JSON.stringify(res.data.customer));
           }
           onClose();
           setToken(res.data.token);

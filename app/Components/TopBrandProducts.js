@@ -14,13 +14,12 @@ const TopBrandProducts = ({ brands }) => {
   const { handleCart } = useStore();
   const limit = 6;
 
-  // Extract all brand IDs by mapping over brands.data
+  
   const brandIds = brands?.data?.map((brand) => brand.id) || [];
 
-  // Get selected brand ID based on tabIndex
+
   const selectedBrandId = tabIndex === 0 ? 0 : brandIds[tabIndex - 1];
 
-  // Construct API URL dynamically
   const apiUrl = `${process.env.NEXT_PUBLIC_API}/public/brandwise-products/${selectedBrandId}/${userId}/${limit}`;
 
   // Fetch data using SWR
