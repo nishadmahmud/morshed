@@ -14,7 +14,9 @@ const DashboardLayout = ({ children }) => {
   const { setToken, setHasToken } = useStore();
   const route = useRouter();
 
- 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
@@ -22,6 +24,12 @@ const DashboardLayout = ({ children }) => {
       setUser(userInfo);
       setEmail(userInfo?.email);
       setReload(false);
+
+       // Ensure name is a valid string before splitting
+       const fullName = userInfo?.name || "";
+       const nameParts = fullName.split(" ");
+       setFirstName(nameParts[0] || ""); // First word
+       setLastName(nameParts.slice(1).join(" ") || ""); // Rest of the name
     }
   }, [email, reload]);
 
@@ -75,7 +83,7 @@ const DashboardLayout = ({ children }) => {
         <div className="flex items-center gap-1 text-gray-100">
           <CircleUser size={30} />
           <div>
-            <h2 className="text-white text-lg font-semibold">{user?.first_name}</h2>
+            <h2 className="text-white text-lg font-semibold">{user?.firstName}</h2>
             <p className="text-white text-sm">{email}</p>
           </div>
         </div>
