@@ -6,9 +6,13 @@ import { ShoppingCart, House, MapPinned, NotebookPen, Gift } from 'lucide-react'
 import Image from 'next/image';
 import noImg from '/public/no-image.jpg';
 import useStore from '../CustomHooks/useStore';
+import navLogo from '/public/user.png'
+import { LogIn } from 'lucide-react';
+
 
 const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
-    
+    const user = localStorage.getItem('user')
+console.log("userrrrrr",user);
     const [isHovered, setIsHovered] = useState(false);
     const categoryRef = useRef(null);
     const [showCategory, setShowCategory] = useState(false);
@@ -83,15 +87,15 @@ useEffect(() => {
                         <span className='text-white'>Cart</span>
                     </div>
 
-                    {email ? (
+                    {user ? (
                         <Link href='/profileDashboard' className='flex flex-col items-center text-sm text-[#F16724] hover:text-white'>
-                            <CgProfile className='text-2xl' />
+                            <Image className='border-2 p-0.5 border-[#F16724] rounded-full' src={navLogo} alt='navLogo' width={28} height={28} />
                             <span className='text-white'>Account</span>
                         </Link>
                     ) : (
                         <div onClick={() => setIsLoginModal(true)} className='flex flex-col items-center text-sm text-[#F16724] hover:text-white cursor-pointer'>
-                            <CgProfile className='text-2xl' />
-                            <span className='text-white'>Account</span>
+                            <LogIn className='text-2xl' />
+                            <span className='text-white'>Login</span>
                         </div>
                     )}
                 </div>

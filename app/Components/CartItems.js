@@ -33,7 +33,7 @@ const CartItems = () => {
       setItems(getCartItems());
       setRefetch(false);
     }
-  }, [refetch]);
+  }, [refetch, getCartItems, setRefetch]);
 
   const handleRedirect = () => {
     isChecked
@@ -79,6 +79,7 @@ const CartItems = () => {
                   {
                     item?.image_path ? 
                     <Image
+                    unoptimized
                     src={item.image_path}
                     alt="cart-products"
                     height={80}
@@ -87,12 +88,14 @@ const CartItems = () => {
                     :  
                     item?.images.length > 0 ? 
                     <Image
+                    unoptimized
                     src={item.images[0]}
                     alt="cart-products"
                     height={80}
                     width={80}
                   /> :
                     <Image
+                    unoptimized
                     src={'https://i.ibb.co.com/vwGWVVb/Pixel-7-Pro-Hazel-6784.jpg'}
                     height={80}
                     width={80}

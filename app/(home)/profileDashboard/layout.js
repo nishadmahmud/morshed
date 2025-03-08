@@ -27,11 +27,13 @@ const DashboardLayout = ({ children }) => {
 
        // Ensure name is a valid string before splitting
        const fullName = userInfo?.name || "";
-       const nameParts = fullName.split(" ");
+       const nameParts = fullName?.split(" ");
        setFirstName(nameParts[0] || ""); // First word
        setLastName(nameParts.slice(1).join(" ") || ""); // Rest of the name
     }
   }, [email, reload]);
+
+  console.log(firstName);
 
 
   const handleLogout = () => {
@@ -83,7 +85,7 @@ const DashboardLayout = ({ children }) => {
         <div className="flex items-center gap-1 text-gray-100">
           <CircleUser size={30} />
           <div>
-            <h2 className="text-white text-lg font-semibold">{user?.firstName}</h2>
+            <h2 className="text-white text-lg font-semibold">{firstName}</h2>
             <p className="text-white text-sm">{email}</p>
           </div>
         </div>
@@ -118,7 +120,7 @@ const DashboardLayout = ({ children }) => {
       </div>
 
       {/* Main Content */}
-      <div className="flex-1 lg:p-10 px-2 pb-10">{children}</div>
+      <div className="flex-1 lg:p-10 px-3 pb-10">{children}</div>
     </div>
   );
 };

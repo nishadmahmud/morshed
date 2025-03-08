@@ -27,7 +27,7 @@ const OurFeatures = () => {
           icon: MessageCircle,
           title: "Online Support",
           description: "Get Support on WhatsApp",
-          link : 'https://wa.me/+8801888679991'
+          link : 'https://wa.me/+8801725171313'
         },
        
       ]

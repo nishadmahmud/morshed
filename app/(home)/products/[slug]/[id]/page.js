@@ -103,7 +103,7 @@ const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails
 
       if (!foundItem) {
 
-        alert("Selected color is not available for the chosen storage.");
+        toast.error("Selected color is not available for the chosen storage.");
         return
         
       } else {
@@ -281,7 +281,7 @@ console.log(product?.data);
             <p className="text-gray-800 text-xs lg:mr-0 mr-2 text-nowrap bg-gray-200 px-4 py-1.5 rounded-sm"> Exchange <Link href={'/plans'} className="text-blue-500 font-semibold">View Plans</Link></p>
           </div>
           <Link
-            href="https://wa.me/+8801711157290" 
+            href="https://wa.me/+8801725171313" 
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center w-fit space-x-3 text-xs px-4 py-1 text-white font-semibold rounded-md bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 hover:text-white transition-colors duration-200 mb-3"
@@ -290,6 +290,8 @@ console.log(product?.data);
             <span>Message <br /> on WhatsApp</span>
           </Link>
     
+    <div className="flex justify-between items-center gap-2">
+
           <div className="mb-4">
   <h3 className="font-medium text-sm">Color: {selectedColor || "No color"}</h3>
   <div className="flex space-x-2">
@@ -306,9 +308,17 @@ console.log(product?.data);
         />
       ) : null
     )}
-</div>
+</div>    
 
 </div>
+
+<div className="flex items-center gap-1">
+     <span className="text-sm font-medium">Status: </span> <p className="text-xs" style={{ color: product?.data.status === 'Stock Out' ? 'red' : 'green' }}>
+  {product?.data.status === 'Stock Out' ? 'Stock Out' : 'In Stock'}
+</p>
+ 
+      </div>
+    </div>
 
 <div className="mb-4">
   <h3 className="font-medium mb-1 text-sm">Storage: {selectedStorage ? `${selectedStorage}` : 'N/A'}</h3>

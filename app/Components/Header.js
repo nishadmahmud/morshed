@@ -55,7 +55,7 @@ console.log("userrrrrr",user);
             getCartItems();
             setRefetch(false);
         }
-    },[refetch,getCartItems])
+    },[refetch,getCartItems,setRefetch])
 
     useEffect(() => {
         getWishList();
@@ -63,18 +63,19 @@ console.log("userrrrrr",user);
             setRefetch(false)
             getWishList()
         }
-    },[refetch,getWishList])
+    },[refetch,getWishList,setRefetch])
 
     useEffect(() => {
         if(pathname.get('login') == 'false'){
             setIsLoginModal(true)
         }
-    },[pathname])
+    },[pathname, setIsLoginModal])
    
    const items =  getCartItems();
    const total = items?.reduce((acc,curr) => acc += curr.quantity,0) || 0;
 
    
+   // eslint-disable-next-line react-hooks/exhaustive-deps
    const searchedItems = () => {
     if(keyword){
         setShowBar(true);
@@ -108,7 +109,7 @@ console.log("userrrrrr",user);
 
    useEffect(() => {
     searchedItems()
-   },[keyword])
+   },[keyword,searchedItems])
 
    const handleModalClose = () => setIsLoginModal(false);
 
