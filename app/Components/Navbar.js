@@ -89,7 +89,7 @@ useEffect(() => {
 
                     {user ? (
                         <Link href='/profileDashboard' className='flex flex-col items-center text-sm text-[#F16724] hover:text-white'>
-                            <Image className='border-2 p-0.5 border-[#F16724] rounded-full' src={navLogo} alt='navLogo' width={28} height={28} />
+                            <Image unoptimized className='border-2 p-0.5 border-[#F16724] rounded-full' src={navLogo} alt='navLogo' width={28} height={28} />
                             <span className='text-white'>Account</span>
                         </Link>
                     ) : (

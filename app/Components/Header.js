@@ -205,7 +205,7 @@ console.log("userrrrrr",user);
           data.data.map((item) => (
             <Link 
               onClick={() => setShowCategory(false)} 
-              href={`category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(item?.name)}&total=${encodeURIComponent(item?.product_count)}`} 
+              href={`/category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(item?.name)}&total=${encodeURIComponent(item?.product_count)}`} 
               key={item?.category_id} 
               className="text-[#555555] hover:bg-[#F16724] hover:text-white transition-all ease-in-out py-2 rounded-sm text-start text-sm pl-5 w-40 flex flex-col"
             >
@@ -277,7 +277,7 @@ console.log("userrrrrr",user);
   </div> :
   <Link href='/profileDashboard'  className='items-center lg:border hidden lg:flex gap-1 bg-white px-2 p-1.5 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
     <div className='rounded-full hidden lg:block'>
-     <Image alt='navLogo' src={navLogo} className='w-5 rounded-full'></Image>
+     <Image unoptimized alt='navLogo' src={navLogo} className='w-5 rounded-full'></Image>
     </div> 
     <div>
       <p className='text-[#F16724] hidden lg:block text-sm font-semibold '>Account</p> 

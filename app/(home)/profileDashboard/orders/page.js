@@ -3,6 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import noImg from '/public/no-image.jpg'
 
 const MyOrders = () => {
     const tabs = [
@@ -138,7 +139,7 @@ const MyOrders = () => {
                                     unoptimized
                                     width={100}
                                     height={100}
-                                        src={item?.product_info?.image_path}
+                                        src={item?.product_info?.image_path || noImg}
                                         alt={item.name}
                                         className="w-16 h-16 object-cover rounded-md"
                                     />
