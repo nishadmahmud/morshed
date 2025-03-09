@@ -21,7 +21,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Perfect Gadget BD",
+  title: "Apple Newton",
   description: "Get all kind of next gen gadget",
   
 };
