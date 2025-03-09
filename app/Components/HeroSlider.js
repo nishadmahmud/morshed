@@ -31,11 +31,11 @@ const HeroSlider = ({ slider, banner }) => {
 
 
   return (
-    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-0 pt-3 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
+    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-24 pt-20 md:pt-20 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
       {/* Grid Layout */}
       <div className="grid lg:grid-cols-2 items-center">
         {/* Slider Section */}
-        <div className="lg:col-span-3 w-full flex flex-col h-[25vh] justify-center overflow-hidden relative rounded-md lg:h-[76vh] md:h-[55vh] mb-0.5">
+        <div className="lg:col-span-3 w-full flex flex-col h-[31vh] justify-center overflow-hidden relative rounded-md lg:h-[82.5vh] md:h-[61vh] mb-0.5">
           <Swiper
             ref={swiperRef}
             slidesPerView={1}
@@ -83,12 +83,12 @@ const HeroSlider = ({ slider, banner }) => {
        {/* Banner Section */}
       <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 gap-2 mt-2 lg:mt-0 gap-y-3">
         {banner?.data?.[0] && (
-          <div className="w-full h-28 lg:h-[37vh] md:h-[25vh] relative">
+          <div className="w-full h-34 lg:h-[40.5vh] md:h-[30vh] relative">
             <Image
               src={banner.data[0].image_path}
               fill
               style={{ objectFit: "cover" }}
-              className="cursor-pointer rounded-md shadow-md"
+              className="cursor-pointer rounded-md "
               alt="banner"
               priority={true}
             />
@@ -96,12 +96,12 @@ const HeroSlider = ({ slider, banner }) => {
         )}
 
         {banner?.data?.[1] && (
-          <div className="w-full h-28 lg:h-[37vh] md:h-[25vh] relative">
+          <div className="w-full h-28 lg:h-[40.5vh] md:h-[30vh] relative">
             <Image
               src={banner.data[1].image_path || "No Img"}
               fill
               style={{ objectFit: "cover" }}
-              className="cursor-pointer rounded-md shadow-md"
+              className="cursor-pointer rounded-md"
               alt="banner"
               priority={true}
             />
