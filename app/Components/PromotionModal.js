@@ -42,7 +42,7 @@ const PromotionModal = ({ promotionBanner }) => {
                         <Image className='rounded-md' src={lastImage} priority={true} alt='promo' fill style={{ objectFit: 'cover' }} />
                     ) : (
                         <div>
-                            <FadeLoader color='#F16724' />
+                            <FadeLoader color='#c03b2c' />
                         </div>
                     )}
                 </div>

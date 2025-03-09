@@ -38,7 +38,7 @@ const Brands = ({brands}) => {
             <div className='pb-4 flex flex-col justify-center items-center justify-items-center'>
             <Link
                 href="/brands"
-                className="text-[#F16724] hover:bg-[#F16724] text-nowrap lg:w-40 w-32 justify-center hover:text-white transition-all ease-in-out border rounded-2xl border-[#F16724] flex items-center gap-2 px-2 h-fit py-1 lg:text-md text-sm pl-2"
+                className="text-[#c03b2c] hover:bg-[#c03b2c] text-nowrap lg:w-40 w-32 justify-center hover:text-white transition-all ease-in-out border rounded-2xl border-[#c03b2c] flex items-center gap-2 px-2 h-fit py-1 lg:text-md text-sm pl-2"
 
                 >
                 All Brands

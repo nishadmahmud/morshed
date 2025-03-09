@@ -81,7 +81,7 @@ const Page = ({ params }) => {
     <div className="md:px-12 p-5 relative">
       {/* Filter Toggle Button for Mobile */}
       <button
-        className="md:hidden fixed bottom-24 left-7 bg-[#F16724] text-white p-2 rounded-lg z-50"
+        className="md:hidden fixed bottom-24 left-7 bg-[#c03b2c] text-white p-2 rounded-lg z-50"
         onClick={() => setIsFilterOpen(true)}
       >
         <FiFilter size={24} />
@@ -122,7 +122,7 @@ const Page = ({ params }) => {
               <p className="font-semibold text-black">Sort By:</p>
               <select
                 onChange={(e) => setSortBy(e.target.value)}
-                className="outline-none p-1 px-2 rounded-sm bg-[#F2F3F7] text-black overflow-y-auto md:text-lg text-sm"
+                className="outline-none p-1 px-2 rounded-sm bg-[#F2F3F7] text-black overflow-y-auto md:text-sm text-xs"
               >
                 <option value="">Default</option>
                 <option value="low-to-high">Price low to high</option>

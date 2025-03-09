@@ -68,7 +68,7 @@ const MyOrders = () => {
 
     return (
         <div className="px-4 md:px-10">
-            <h2 className="text-xl font-bold my-6 text-[#F16724] text-center md:text-left">My Orders</h2>
+            <h2 className="text-xl font-bold my-6 text-[#c03b2c] text-center md:text-left">My Orders</h2>
             <div className="bg-white text-black p-6 shadow-md rounded-lg">
                 <div className="w-full mx-auto p-4 pt-0">
                     {/* Tabs Navigation */}
@@ -78,13 +78,13 @@ const MyOrders = () => {
                                 key={tab.type}
                                 onClick={() => setActiveTab(tab.type)}
                                 className={`relative px-3 py-2 text-md font-medium transition-colors duration-300 whitespace-nowrap
-                                    ${activeTab === tab.type ? "text-[#F16724]" : "text-gray-500"}`}
+                                    ${activeTab === tab.type ? "text-[#c03b2c]" : "text-gray-500"}`}
                             >
                                 {tab.label}
                                 {activeTab === tab.type && (
                                     <motion.div
                                         layoutId="underline"
-                                        className="absolute left-0 right-0 bottom-0 h-1 bg-[#F16724]"
+                                        className="absolute left-0 right-0 bottom-0 h-1 bg-[#c03b2c]"
                                     />
                                 )}
                             </button>

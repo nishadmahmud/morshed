@@ -95,7 +95,7 @@ const FeaturedProducts = ({ banner }) => {
                             quality={100}
                           />
                           {product.discount ? (
-                            <p className='absolute top-4 lg:top-2 left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-2 rounded-md'>
+                            <p className='absolute top-4 lg:top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md'>
                               SAVE {product.discount}%
                             </p>
                           ) : ""}
@@ -105,7 +105,7 @@ const FeaturedProducts = ({ banner }) => {
                           <div>
                             {product.discount ? (
                               <div className='flex gap-2 items-start justify-start'>
-                                <span className='text-sm md:text-xl font-bold text-[#F16724]'>
+                                <span className='text-sm md:text-xl font-bold text-[#c03b2c]'>
                                   <span className="font-bangla text-sm md:text-xl">৳</span>{(product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)}
                                 </span>
                                 <span className='text-xs md:text-sm font-bold text-gray-500 line-through'>
@@ -113,7 +113,7 @@ const FeaturedProducts = ({ banner }) => {
                                 </span>
                               </div>
                             ) : (
-                              <span className='text-sm md:text-xl font-bold text-[#F16724]'>
+                              <span className='text-sm md:text-xl font-bold text-[#c03b2c]'>
                                 <span className="font-bangla text-sm">৳</span>{product.retails_price}
                               </span>
                             )}
@@ -131,7 +131,7 @@ const FeaturedProducts = ({ banner }) => {
                       <div className='flex flex-col gap-2 px-4 pb-3'>
                         <button
                           onClick={() => handleBuy(product, 1)}
-                          className='border border-[#F16724] text-[#F16724] text-xs font-semibold py-1.5 rounded-md w-full'
+                          className='border border-[#c03b2c] text-[#c03b2c] text-xs font-semibold py-1.5 rounded-md w-full'
                         >
                           Buy Now
                         </button>
@@ -140,7 +140,7 @@ const FeaturedProducts = ({ banner }) => {
                             e.preventDefault();
                             handleCart(product, 1);
                           }}
-                          className='bg-[#F16724] text-white text-xs font-semibold py-1.5 rounded-md w-full'
+                          className='bg-[#c03b2c] text-white text-xs font-semibold py-1.5 rounded-md w-full'
                         >
                           Add to Cart
                         </button>

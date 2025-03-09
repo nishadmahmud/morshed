@@ -42,11 +42,11 @@ html{
 
 /* -----react chat bot------ */
 .react-chatbot-kit-chat-bot-message{
-  background-color:#F16724;
+  background-color:#c03b2c;
 }
 
 .react-chatbot-kit-chat-bot-message-arrow{
- border-right: #F16724;
+ border-right: #c03b2c;
 }
 .react-chatbot-kit-chat-btn-send{
   background:linear-gradient(90deg, rgb(225, 101, 38) 25%, rgba(251,120,56,1) 100%);
@@ -54,7 +54,7 @@ html{
 
 .react-chatbot-kit-chat-input{
   background: linear-gradient(90deg, rgba(251,120,56,1) 25%, rgb(218, 98, 38) 100%);
-  border-color: #F16724;
+  border-color: #c03b2c;
 }
 
 .chat-container {

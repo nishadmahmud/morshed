@@ -216,7 +216,7 @@ console.log(product?.data);
             {/* discount ribon */}
           {
               product?.data.discount ?
-              <p className="text-white bg-[#F16724] rounded-md  absolute py-1 
+              <p className="text-white bg-[#c03b2c] rounded-md  absolute py-1 
               px-[6px] text-sm top-5 lg:top-3 left-12">SAVE {product?.data?.discount}%</p> : ''
           }
           <div className="flex justify-center space-x-2 lg:mb-4 mt-2">
@@ -263,7 +263,7 @@ console.log(product?.data);
           </span>
         ) : ""
       }
-       <span className="text-sm font-bold text-[#F16724] ]  font-bangla">
+       <span className="text-sm font-bold text-[#c03b2c] ]  font-bangla">
         {selectedSalePrice || product?.data?.retails_price || 0} ৳
       </span>
     </div>
@@ -329,7 +329,7 @@ console.log(product?.data);
           key={storage}
           onClick={() => handleStorageChange(storage)}
           className={`px-4 py-2 rounded ${
-            selectedStorage === storage ? 'bg-[#F16724] text-white' : 'bg-gray-200 text-gray-800'
+            selectedStorage === storage ? 'bg-[#c03b2c] text-white' : 'bg-gray-200 text-gray-800'
           }`}
         >
           {storage} 
@@ -362,14 +362,14 @@ console.log(product?.data);
             <div className="flex gap-4">
             <button
                 onClick={() => handleBuy(product?.data, quantity)}
-                className="lg:px-5 px-2.5 py-0.5 text-sm  md:py-1 bg-[#F16724] text-white hover:bg-white hover:text-[#F16724] hover:border-[#F16724] rounded-sm border border-transparent"
+                className="lg:px-5 px-2.5 py-0.5 text-sm  md:py-1 bg-[#c03b2c] text-white hover:bg-white hover:text-[#c03b2c] hover:border-[#c03b2c] rounded-sm border border-transparent"
               >
                 Buy Now
               </button>
 
               <button
                 disabled={isCartItem !== undefined}
-                className={`border border-[#F16724] md:px-4 text-sm md:py-1 px-2.5 py-1 bg-transparent text-[#F16724] hover:bg-[#F16724] hover:text-white rounded-sm ${
+                className={`border border-[#c03b2c] md:px-4 text-sm md:py-1 px-2.5 py-1 bg-transparent text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white rounded-sm ${
                   isCartItem !== undefined
                     ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
                     : ''
@@ -405,7 +405,7 @@ console.log(product?.data);
         <h2 className="text-[#4D5959] text-xl mb-2 font-semibold">Specification</h2>
 
 
-        <div className="w-[7.5rem] h-[2px] bg-[#F16724] mt-1 mb-4"></div>
+        <div className="w-[7.5rem] h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
         <table id="Specification" className="table-auto w-full text-sm text-left">
          <tbody>
          {
@@ -451,7 +451,7 @@ console.log(product?.data);
         {/* extra descriptions */}
         <div  id="Description" className="mt-5 p-3 text-sm border rounded-lg">
         <h2 className="text-xl font-bold text-gray-900">Description</h2>
-        <div className="w-[6.5rem] h-[2px] bg-[#F16724] mt-1 mb-4"></div>
+        <div className="w-[6.5rem] h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
         {
           product?.data.description ?
               <p className="text-gray-600 mb-4">
@@ -465,10 +465,10 @@ console.log(product?.data);
         {/* warranty */}
         <div id="Warranty" className="bg-white text-sm border rounded-lg p-6 mt-5 shadow-sm">
             <h2 className="text-xl font-bold text-gray-900">Warranty</h2>
-            <div className="w-24 h-[2px] bg-[#F16724] mt-1 mb-4"></div>
+            <div className="w-24 h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
             <p className="text-gray-700">
               Explore our{' '}
-              <a href="/warranty-policy" className="text-[#F16724] font-semibold hover:underline">
+              <a href="/warranty-policy" className="text-[#c03b2c] font-semibold hover:underline">
                 Warranty Policy
               </a>{' '}
               page for detailed information about our warranty coverage.
@@ -539,7 +539,7 @@ console.log(product?.data);
         </div>
 
         {/* Add to Cart Button */}
-        <button disabled={isCartItem !== undefined} onClick={() => handleCart(product?.data,quantity)} className={`border px-4 rounded-md py-1 border-[#F16724] text-[#F16724] hover:bg-[#F16724] hover:text-white  ${isCartItem !== undefined ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ''}`}>
+        <button disabled={isCartItem !== undefined} onClick={() => handleCart(product?.data,quantity)} className={`border px-4 rounded-md py-1 border-[#c03b2c] text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white  ${isCartItem !== undefined ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ''}`}>
           {isCartItem !== undefined ? 'Added' : 'ADD TO CART'}
         </button>
 
@@ -580,7 +580,7 @@ console.log(product?.data);
         {/* Quantity Selector */}
        
         {/* Add to Cart Button */}
-        <button disabled={isCartItem !== undefined} onClick={() => handleCart(product?.data,quantity)} className={`border px-4 py-1 border-[#F16724] text-[#F16724] hover:bg-[#F16724] hover:text-white  ${isCartItem !== undefined ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ''}`}>
+        <button disabled={isCartItem !== undefined} onClick={() => handleCart(product?.data,quantity)} className={`border px-4 py-1 border-[#c03b2c] text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white  ${isCartItem !== undefined ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ''}`}>
           {isCartItem !== undefined ? 'Added' : 'ADD TO CART'}
         </button>
 

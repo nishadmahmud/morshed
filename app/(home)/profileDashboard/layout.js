@@ -71,7 +71,7 @@ const DashboardLayout = ({ children }) => {
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#F16724] to-[#e14e04] px-6 shadow-md md:relative z-20 rounded-lg`}
+        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#c03b2c] to-[#e14e04] px-6 shadow-md md:relative z-20 rounded-lg`}
       >
         <div className="flex justify-between items-center pt-5">
           <button

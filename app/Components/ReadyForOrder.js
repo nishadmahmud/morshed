@@ -109,7 +109,7 @@ console.log(products);
                             quality={100}
                           />
                           {product?.discount ? (
-                            <p className="absolute top-2 left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-2 rounded-md">
+                            <p className="absolute top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md">
                               SAVE {product?.discount || 0}%
                             </p>
                           ) : ""
@@ -122,11 +122,11 @@ console.log(products);
                           <div className="mt-auto">
                             {product?.discount ? (
                               <div className="flex justify-center items-center gap-2">
-                                <span className="text-sm lg:text-lg font-bold text-[#F16724] line-through">
+                                <span className="text-sm lg:text-lg font-bold text-[#c03b2c] line-through">
                                   <span className="font-bangla text-sm lg:text-lg">৳</span>
                                   {product?.retails_price}
                                 </span>
-                                <span className="text-sm lg:text-lg font-bold text-[#F16724]">
+                                <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
                                   <span className="font-bangla text-sm lg:text-lg">৳</span>{" "}
                                   {(
                                     product?.retails_price -
@@ -135,7 +135,7 @@ console.log(products);
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-sm lg:text-lg font-bold text-[#F16724]">
+                              <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
                                 <span className="font-bangla text-sm lg:text-lg">৳</span>{" "}
                                 {product?.retails_price}
                               </span>
@@ -163,7 +163,7 @@ console.log(products);
                       <div className="grid grid-cols-1 justify-center items-center mb-5 mx-5 gap-2 bottom-2">
                         <button
                           onClick={() => handleBuy(product, 1)}
-                          className="border-[#F16724] border text-xs text-[#F16724] w-full py-1 rounded-md font-semibold transition-colors px-3"
+                          className="border-[#c03b2c] border text-xs text-[#c03b2c] w-full py-1 rounded-md font-semibold transition-colors px-3"
                         >
                           Buy Now
                         </button>
@@ -172,7 +172,7 @@ console.log(products);
                             e.preventDefault();
                             handleCart(product, 1);
                           }}
-                          className="bg-[#F16724] border border-transparent text-xs text-white w-full px-2 py-1 rounded-md font-semibold transition-colors"
+                          className="bg-[#c03b2c] border border-transparent text-xs text-white w-full px-2 py-1 rounded-md font-semibold transition-colors"
                         >
                           Add to Cart
                         </button>

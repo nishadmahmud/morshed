@@ -228,7 +228,7 @@ const PaymentMethodForm = ({totalAmount,methodName,methods,selectedMethodId,setO
                     <p className='font-semibold'>0.00</p>
                 </div>
             </div> */}
-            <button onClick={handleAmountCheck} className='bg-[#F16724] py-2 w-full rounded-lg text-white'>Save</button>
+            <button onClick={handleAmountCheck} className='bg-[#c03b2c] py-2 w-full rounded-lg text-white'>Save</button>
         </div>
     );
 };

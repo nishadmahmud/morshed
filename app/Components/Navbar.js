@@ -12,7 +12,6 @@ import { LogIn } from 'lucide-react';
 
 const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
     const user = localStorage.getItem('user')
-console.log("userrrrrr",user);
     const [isHovered, setIsHovered] = useState(false);
     const categoryRef = useRef(null);
     const [showCategory, setShowCategory] = useState(false);
@@ -59,7 +58,7 @@ useEffect(() => {
                     <div className='flex items-center gap-5'>
                         {data?.data.slice(0, 6).map((item, idx) => (
                             <Link key={idx} href={`/category/${encodeURIComponent(item.category_id)}?category=${encodeURIComponent(item.name)}&total=${encodeURIComponent(item.product_count)}`} 
-                                  className='text-[#555555] text-sm font-semibold flex items-center gap-1 hover:text-[#F16724] transition-all ease-in-out'>
+                                  className='text-[#555555] text-sm font-semibold flex items-center gap-1 hover:text-[#c03b2c] transition-all ease-in-out'>
                                 <Image width={22} height={22} src={item.image_url || noImg} alt='category' />
                                 {item.name}
                             </Link>
@@ -71,29 +70,29 @@ useEffect(() => {
             {/* Mobile & Tablet Menu */}
             <div className='fixed -bottom-1 left-0 right-0 bg-[#171717] pt-1 z-50 shadow-lg lg:hidden'>
                 <div className='flex justify-around items-center py-2'>
-                    <Link href='/' className='flex flex-col items-center text-sm text-[#F16724] hover:text-white'>
+                    <Link href='/' className='flex flex-col items-center text-sm text-[#c03b2c] hover:text-white'>
                         <House className='text-2xl' />
                         <span className='text-white'>Home</span>
                     </Link>
                     
-                    <Link href='/offer' className='flex flex-col items-center text-sm text-[#F16724] hover:text-white'>
+                    <Link href='/offer' className='flex flex-col items-center text-sm text-[#c03b2c] hover:text-white'>
                         <Gift className='text-2xl' />
                         <span className='text-white'>Offers</span>
                     </Link>
                     
-                    <div onClick={() => setOpenCart(!openCart)} className='flex flex-col items-center text-sm text-[#F16724] hover:text-white cursor-pointer'>
+                    <div onClick={() => setOpenCart(!openCart)} className='flex flex-col items-center text-sm text-[#c03b2c] hover:text-white cursor-pointer'>
                         <ShoppingCart className='text-2xl' />
-                        <p className='bg-[#ffffff] z-[900] h-fit text-[#F16724] w-fit px-1 text-xs rounded-full absolute top-2 right-[9.2rem]'>{total}</p>
+                        <p className='bg-[#ffffff] z-[900] h-fit text-[#c03b2c] w-fit px-1 text-xs rounded-full absolute top-2 right-[9.2rem]'>{total}</p>
                         <span className='text-white'>Cart</span>
                     </div>
 
                     {user ? (
-                        <Link href='/profileDashboard' className='flex flex-col items-center text-sm text-[#F16724] hover:text-white'>
-                            <Image className='border-2 p-0.5 border-[#F16724] rounded-full' src={navLogo} alt='navLogo' width={28} height={28} />
+                        <Link href='/profileDashboard' className='flex flex-col items-center text-sm text-[#c03b2c] hover:text-white'>
+                            <Image className='border-2 p-0.5 border-[#c03b2c] rounded-full' src={navLogo} alt='navLogo' width={28} height={28} />
                             <span className='text-white'>Account</span>
                         </Link>
                     ) : (
-                        <div onClick={() => setIsLoginModal(true)} className='flex flex-col items-center text-sm text-[#F16724] hover:text-white cursor-pointer'>
+                        <div onClick={() => setIsLoginModal(true)} className='flex flex-col items-center text-sm text-[#c03b2c] hover:text-white cursor-pointer'>
                             <LogIn className='text-2xl' />
                             <span className='text-white'>Login</span>
                         </div>
