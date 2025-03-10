@@ -4,35 +4,22 @@ import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 const Pagination = ({ currentPage, totalPage, onPageChange }) => {
     const generatePages = () => {
         const pages = [];
-      console.log(currentPage);
+      
         if (totalPage <= 7) {
-            // Show all pages if total pages are less than or equal to 7
             for (let i = 1; i <= totalPage; i++) {
                 pages.push(i);
             }
         } else {
-            // Add the first page
             pages.push(1);
-
-            // Add ellipsis if needed
-            if (currentPage > 4) {
-                pages.push('...');
-            }
-
-            // Add middle pages dynamically
+            if (currentPage > 4) pages.push('...');
+            
             const start = Math.max(2, currentPage - 2);
             const end = Math.min(totalPage - 1, currentPage + 2);
-
             for (let i = start; i <= end; i++) {
                 pages.push(i);
             }
-
-            // Add ellipsis if needed
-            if (currentPage < totalPage - 3) {
-                pages.push('...');
-            }
-
-            // Add the last page
+            
+            if (currentPage < totalPage - 3) pages.push('...');
             pages.push(totalPage);
         }
 
@@ -42,29 +29,29 @@ const Pagination = ({ currentPage, totalPage, onPageChange }) => {
     const pages = generatePages();
 
     return (
-        <div className="pagination flex gap-4 items-center">
+        <div className="pagination flex flex-wrap gap-2 md:gap-4 items-center justify-center">
             {/* Previous Button */}
             <button
-                className="hover:bg-[#F16724] md:px-4 py-1 rounded-md hover:text-white transition flex items-center gap-1 md:text-sm text-xs disabled:opacity-50 disabled:cursor-not-allowed"
+                className="hover:bg-[#F16724] px-3 py-2 rounded-md hover:text-white transition flex items-center gap-1 text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[32px]"
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
             >
                 <MdNavigateBefore />
-                Previous
+                <span className="hidden md:inline">Previous</span>
             </button>
 
             {/* Page Numbers */}
-            <div className="flex gap-1">
+            <div className="flex gap-1 flex-wrap">
                 {pages.map((page, index) =>
                     page === '...' ? (
-                        <span key={index} className="px-2">...</span>
+                        <span key={index} className="px-2 text-gray-500">...</span>
                     ) : (
                         <button
                             key={index}
-                            className={`p-2 rounded-md transition ${
+                            className={`px-3 py-2 rounded-md transition min-w-[32px] ${
                                 page === currentPage
                                     ? 'bg-[#ff8800] text-white font-semibold'
-                                    : 'bg-gray-200 text-black'
+                                    : 'bg-gray-200 text-black hover:bg-gray-300'
                             }`}
                             onClick={() => onPageChange(page)}
                         >
@@ -76,11 +63,11 @@ const Pagination = ({ currentPage, totalPage, onPageChange }) => {
 
             {/* Next Button */}
             <button
-                className="hover:bg-[#F16724] md:px-4 py-1 rounded-md hover:text-white transition flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed md:text-sm text-xs"
+                className="hover:bg-[#F16724] px-3 py-2 rounded-md hover:text-white transition flex items-center gap-1 text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[32px]"
                 disabled={currentPage === totalPage}
                 onClick={() => onPageChange(currentPage + 1)}
             >
-                Next
+                <span className="hidden md:inline">Next</span>
                 <MdNavigateNext />
             </button>
         </div>
