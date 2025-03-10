@@ -10,9 +10,11 @@ import Modal from "./Modal";
 import PaymentMethodForm from "./PaymentMethodForm";
 import { ShoppingBag } from 'lucide-react';
 import { Headset } from "lucide-react";
+import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
+import CheckoutPage from "../(home)/checkout/page";
 
 
-const DeliveryForm = ({cartItems,cartTotal}) => {
+const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
   const { data : paymentMethods, error } = useSWR(`${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`, fetcher);
   const date = new Date().toISOString();
   const [showPaymentModal,setShowPaymentModal] = useState(false);
@@ -25,6 +27,16 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
   const userData = JSON.parse(localStorage.getItem("user"));
   const customer_id = userData?.customer_id;
   const customer_phone = userData?.phone;
+  const [location, setLocation] = useState("inside"); 
+  // console.log(shippingFee);
+
+  const shippingFee = location === "inside" ? 70 : 130;
+  useEffect(() => {
+    const shippingFeee = location === "inside" ? 70 : 130;
+    setShippingFee(shippingFee); // Send shipping fee to parent
+}, [location, setShippingFee, shippingFee]);
+    
+  
   const [formData, setFormData] = useState({
     country: "Bangladesh",
     email : userEmail || '',
@@ -73,7 +85,7 @@ const DeliveryForm = ({cartItems,cartTotal}) => {
     delivery_customer_name: formData.firstName + formData.lastName,
     delivery_customer_address: formData.address || formData.billAddress,
     delivery_customer_phone: formData?.phone ? formData?.phone : 'N/A',
-    delivery_fee: 200,
+    delivery_fee: shippingFee,
     payment_method: [
       {
         payment_type_category_id: "",
@@ -116,7 +128,6 @@ console.log('order schema', orderSchema);
     }))
   };
 
-
   const  handlePayment = (e) => {
     setPayment(e.target.value)
   }
@@ -144,7 +155,7 @@ console.log('order schema', orderSchema);
   const handleOrderComplete = (e) => {
     e.preventDefault();
    if(cartItems.length > 0){
-     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,orderSchema)
+     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecomme-rce-save-sales`,orderSchema)
      .then((res) => {
        if(res.status === 200){
         localStorage.removeItem('cart');
@@ -201,8 +212,6 @@ console.log('order schema', orderSchema);
   }
 
 
-
-
   return (
     <div className=" bg-white rounded-tl-lg rounded-bl-lg ">
       {/* {
@@ -214,6 +223,9 @@ console.log('order schema', orderSchema);
         </div> : <p>No user</p>
         
       } */}
+      <div className="hidden">
+{/* <CheckoutPage shippingFee={shippingFee}></CheckoutPage> */}
+      </div>
 
       <div className="md:pr-6">
       <div className="bg-[#ed6c2c] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs lg:text-sm text-xs font-bangla flex items-center justify-center gap-2">
@@ -339,13 +351,51 @@ console.log('order schema', orderSchema);
         </div>
 
         {/* Shipping Method */}
-        <div className="my-6 ">
-          <h3 className="text-2xl font-bold sans my-4 mb-5">Shipping Method</h3>
-          <div className="bg-[#F0F7FF] border border-blue-400 p-3 rounded-sm">
-            <span>BDT 200 depending on location</span>
-            <span className="float-right font-semibold">৳200.00</span>
-          </div>
-        </div>
+        <div className="mb-6 rounded-sm">
+      <h3 className="text-2xl font-bold my-4 mb-5">Shipping Method</h3>
+
+      <div className="space-y-3">
+        {/* Inside Dhaka Option */}
+        <label
+          className={`flex overflow-hidden transition-all duration-300 px-3 py-2 items-center cursor-pointer ${
+            location === "inside" ? "bg-[#F0F7FF] border border-blue-400" : ""
+          }`}
+        >
+          <input
+            type="radio"
+            name="shipping"
+            value="inside"
+            checked={location === "inside"}
+            onChange={() => setLocation("inside")}
+            className="mr-2"
+          />
+          Inside Dhaka (৳70)
+        </label>
+
+        {/* Outside Dhaka Option */}
+        <label
+          className={`flex overflow-hidden transition-all duration-300 px-3 py-2 items-center cursor-pointer ${
+            location === "outside" ? "bg-[#F0F7FF] border border-blue-400" : ""
+          }`}
+        >
+          <input
+            type="radio"
+            name="shipping"
+            value="outside"
+            checked={location === "outside"}
+            onChange={() => setLocation("outside")}
+            className="mr-2"
+          />
+          Outside Dhaka (৳130)
+        </label>
+      </div>
+
+      {/* Shipping Details - Shown when an option is selected */}
+      <div className="p-3 text-black bg-[#F4F4F4] mt-3">
+        <p>Shipping cost: <span className="font-semibold">৳{location === "inside" ? 70 : 130}</span></p>
+        <p className="text-gray-600">Shipping charge depends on your location.</p>
+      </div>
+    </div>
 
         {/* Payment Section */}
         <h2 className="text-2xl font-bold sans mt-4 mb-1">Payment Method</h2>

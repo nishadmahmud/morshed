@@ -60,7 +60,12 @@ const ProductCard = ({ product }) => {
   
   const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
   const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
-  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description || "N/A";
+  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
+                      const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
+                      
+                      const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
+                      
+                      console.log(cameraShort);
 
   const sanitizeSlug = (str) => {
     return str
@@ -96,7 +101,7 @@ const ProductCard = ({ product }) => {
         }        
 
         <div className="lg:pb-2 pb-1 flex flex-col flex-grow px-4">
-          <h3 className="text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-3">
+          <h3 className="text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-5">
             {product?.name}
           </h3>
           <div className="mt-auto">
@@ -132,7 +137,7 @@ const ProductCard = ({ product }) => {
       </div>
       <div className="flex items-start gap-1 text-xs">
         <Camera size={15}></Camera>
-        {camera}
+        {cameraShort}
       </div>
       <div className="hidden md:flex items-start gap-1 text-xs">
         <MemoryStick size={15}></MemoryStick>

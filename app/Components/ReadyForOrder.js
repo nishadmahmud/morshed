@@ -88,7 +88,12 @@ console.log(products);
                   
                   const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
                   const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
-                  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description || "N/A";
+                  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
+                  const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
+                  
+                  const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
+                  
+                  console.log(cameraShort);
 
                   return (
                     <div
@@ -116,7 +121,7 @@ console.log(products);
                         }
                         </div>
                         <div className="mt-10 flex flex-col flex-grow px-4">
-                          <h3 className="text-sm font-semibold text-black  line-clamp-1 text-ellipsis">
+                          <h3 className="text-sm font-semibold text-black  line-clamp-1 text-ellipsis mt-2">
                             {product?.name}
                           </h3>
                           <div className="mt-auto">
@@ -153,7 +158,7 @@ console.log(products);
                           <Cpu size={15} /> {chipset}
                         </div>
                         <div className="flex items-start gap-1 text-xs">
-                          <Camera size={15} /> {camera}
+                          <Camera size={15} /> {cameraShort}
                         </div>
                         <div className="hidden md:flex items-start gap-1 text-xs">
                           <MemoryStick size={15} /> {storage}

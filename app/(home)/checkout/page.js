@@ -3,7 +3,7 @@ import DeliveryForm from '@/app/Components/DeliveryForm';
 import useStore from '@/app/CustomHooks/useStore';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 
 
@@ -29,12 +29,12 @@ const CheckoutPage = () => {
         }
       }, [router, setIsLoginModal,token]);
 
- 
+      const [shippingFee, setShippingFee] = useState(0); 
 
     return (
             <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-5 lg:pt-10 w-11/12 mx-auto'>
             <div className='col-span-1 md:col-span-2 border-gray-300 border-r '>
-                <DeliveryForm cartItems={cartItems} cartTotal={Subtotal}/>
+                <DeliveryForm setShippingFee={setShippingFee} cartItems={cartItems} cartTotal={Subtotal} />
             </div>
 
             {
@@ -100,11 +100,11 @@ const CheckoutPage = () => {
                 </div>
                 <div className="flex items-center justify-between text-sm font-medium">
                     <p>Shipping</p>
-                    <p>200</p>
+                    <p>{shippingFee}৳</p>
                 </div>
                 <div className='flex justify-between items-center font-medium text-gray-600 text-lg pb-12'>
                     <p>Total</p>
-                    <p>{(parseInt(Subtotal) + 200).toFixed(2)}৳</p>
+                    <p>{(parseInt(Subtotal) + shippingFee).toFixed(2)}৳</p>
                 </div>
             </div>
                 : <p className='font-bold text-2xl text-center'>Cart is Empty</p>
