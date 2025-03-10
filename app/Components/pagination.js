@@ -4,21 +4,26 @@ import { MdNavigateNext, MdNavigateBefore } from "react-icons/md";
 const Pagination = ({ currentPage, totalPage, onPageChange }) => {
     const generatePages = () => {
         const pages = [];
-      
+
+        // Always show the first page
+        pages.push(1);
+
         if (totalPage <= 7) {
-            for (let i = 1; i <= totalPage; i++) {
+            // Show all pages if total pages are less than or equal to 7
+            for (let i = 2; i <= totalPage; i++) {
                 pages.push(i);
             }
         } else {
-            pages.push(1);
             if (currentPage > 4) pages.push('...');
-            
-            const start = Math.max(2, currentPage - 2);
-            const end = Math.min(totalPage - 1, currentPage + 2);
+
+            // Dynamic middle pages
+            const start = Math.max(2, currentPage - 1); // Hide previous number if more pages exist
+            const end = Math.min(totalPage - 1, currentPage + 1);
+
             for (let i = start; i <= end; i++) {
                 pages.push(i);
             }
-            
+
             if (currentPage < totalPage - 3) pages.push('...');
             pages.push(totalPage);
         }
@@ -29,7 +34,7 @@ const Pagination = ({ currentPage, totalPage, onPageChange }) => {
     const pages = generatePages();
 
     return (
-        <div className="pagination flex flex-wrap gap-2 md:gap-4 items-center justify-center">
+        <div className="pagination flex items-center justify-center gap-2 md:gap-4">
             {/* Previous Button */}
             <button
                 className="hover:bg-[#F16724] px-3 py-2 rounded-md hover:text-white transition flex items-center gap-1 text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[32px]"
@@ -41,7 +46,7 @@ const Pagination = ({ currentPage, totalPage, onPageChange }) => {
             </button>
 
             {/* Page Numbers */}
-            <div className="flex gap-1 flex-wrap">
+            <div className="flex gap-1">
                 {pages.map((page, index) =>
                     page === '...' ? (
                         <span key={index} className="px-2 text-gray-500">...</span>
