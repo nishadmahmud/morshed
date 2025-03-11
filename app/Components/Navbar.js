@@ -60,7 +60,7 @@ useEffect(() => {
                         {data?.data.slice(0, 6).map((item, idx) => (
                             <Link key={idx} href={`/category/${encodeURIComponent(item.category_id)}?category=${encodeURIComponent(item.name)}&total=${encodeURIComponent(item.product_count)}`} 
                                   className='text-[#555555] text-sm font-semibold flex items-center gap-1 hover:text-[#F16724] transition-all ease-in-out'>
-                                <Image width={22} height={22} src={item.image_url || noImg} alt='category' />
+                                <Image unoptimized width={22} height={22} src={item.image_url || noImg} alt='category' />
                                 {item.name}
                             </Link>
                         ))}
