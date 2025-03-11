@@ -22,7 +22,7 @@ import { LiaShoppingCartSolid } from "react-icons/lia";
 import { IoCloseSharp, IoSearchSharp } from 'react-icons/io5';
 import { RiMenu4Fill } from 'react-icons/ri';
 import { Menu } from 'lucide-react';
-import logo from '../../public/PerfectGadgetBD-logo (1) 1.png'
+import logo from '../../public/logo.png'
 import { Gift } from 'lucide-react';
 import TopHeader from './TopHeader';
 import navLogo from '/public/user.png'
@@ -145,20 +145,20 @@ console.log("userrrrrr",user);
           <div className={`w-full z-50 text-white  transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] fixed mt-0`}>
           {/* <TopHeader></TopHeader> */}
             {/* desktop menu */}
-           <div className='flex gap-16 justify-between items-center bg-[#0e0e0e] text-[#ffffff] p-3 py-2'>
+           <div className='flex gap-16 justify-between items-center bg-[#ffffff] text-[#000000] p-3 py-2'>
 
            <div className="lg:hidden block ml-4" onClick={toggleSidebar}>
-          <Menu className="text-[#ffffff] text-right text-xl" />
+          <Menu className="text-[#000000] text-right text-xl" />
         </div>
 
             <div
-        className={`fixed top-0 left-0 w-3/5 max-w-xs bg-[#ffffff] text-black p-5  z-50 transform transition-transform duration-300 overflow-y-auto h-full ${
+        className={`fixed top-0 left-0 w-3/5 max-w-xs bg-[#ffffff] text-black p-5 z-50 transform transition-transform duration-300 overflow-y-scroll h-full ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         }`}
       >
         <div className="flex justify-between items-center p-2 border-b-2 border-[#c03b2c]">
           <div>
-            <Image width={100} src={logo} alt='logo'></Image>
+            <Image width={130} src={logo} alt='logo'></Image>
           </div>
           <IoCloseSharp
             size={24}
@@ -185,11 +185,17 @@ console.log("userrrrrr",user);
             />
           )}
 
+           {/* logo large device */}
+           <Link href={'/'}><Image src={companyLogo} alt='company-logo' height={180} width={200} className='w-auto mr-10 h-auto'/></Link>
+
           {/* ==========category + search========== */}
             <div className='hidden relative md:flex lg:flex lg:justify-center px-5 py-1.5'>
 
                 <div className='lg:flex hidden'>
-                <div className='rounded-l-md bg-white p-3'>
+
+                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3 rounded-sm border-t border-b border-l  outline-none text-black bg-white text-xs pr-24'/>
+
+                <div className='border bg-white p-3 pr-2.5 rounded-r-sm px-0'>
                 <div 
     ref={categoryRef} 
     onMouseEnter={() => setShowCategory(true)} 
@@ -218,18 +224,17 @@ console.log("userrrrrr",user);
   </div>
                 </div>
 
-                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3 border outline-none text-black bg-white text-xs pr-16'/>
+               
                
             
-                <button className='bg-[#ffffff] p-3 w-2/6 text-[#070707] rounded-r-md text-xs'> <IoSearchSharp size={20}></IoSearchSharp></button>
+                <button className='bg-[#c03b2c] text-white p-3 w-2/6 rounded-r-sm text-xs'> <IoSearchSharp size={20}></IoSearchSharp></button>
                 
                 
                 </div>
                 
                 
             </div>
-            {/* logo large device */}
-           <Link href={'/'}><Image src={companyLogo} alt='company-logo' height={180} width={200} className='w-auto mr-10 h-auto'/></Link>
+           
 
 
             
@@ -245,20 +250,20 @@ console.log("userrrrrr",user);
                 <Link href='/offer'>
             <div  className='flex items-center group'>
                 <div className="relative p-1 rounded-full hover:text-blue-500">
-                    <Gift size={27} className='group-hover:text-[#c03b2c] text-white cursor-pointer'/>
+                    <Gift size={27} className='group-hover:text-[#c03b2c] text-black cursor-pointer'/>
                 </div>
-                    <p className='group-hover:text-[#c03b2c] text-white text-sm font-semibold'>Offers</p>
+                    <p className='group-hover:text-[#c03b2c] text-black text-sm font-semibold'>Offers</p>
                    
              </div>
                 </Link>
 
              <div onClick={() => setOpenCart(!openCart)} className='flex group items-center cursor-pointer'>
                 <div className="relative p-1 rounded-full" >
-                    <LiaShoppingCartSolid size={35} className='cursor-pointer group-hover:text-[#c03b2c] text-white' />
+                    <LiaShoppingCartSolid size={35} className='cursor-pointer group-hover:text-[#c03b2c] text-black' />
                     <p className='bg-[#c03b2c] h-fit  text-[#ffffff] w-fit px-1 rounded-full text-[8px] absolute top-1 right-1'>{total}</p>
                     </div>
                     <div>
-                    <p className='group-hover:text-[#c03b2c] text-white hidden md:block text-sm font-semibold '>Cart</p> 
+                    <p className='group-hover:text-[#c03b2c] text-black hidden md:block text-sm font-semibold '>Cart</p> 
                     
                 </div> 
             </div>    
@@ -269,20 +274,18 @@ console.log("userrrrrr",user);
   !user ? 
   <div onClick={() => { setIsLoginModal(true) }} className='lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group'>
       <div className='p-1 rounded-full hidden lg:block'>
-          <LogIn  size={25} className='group-hover:text-[#c03b2c] text-white'/>
+          <LogIn  size={25} className='group-hover:text-[#c03b2c] text-black'/>
       </div>
       <div>
-      <p className='group-hover:text-[#c03b2c] text-white hidden lg:block text-sm font-semibold '>Login</p> 
+      <p className='group-hover:text-[#c03b2c] text-black hidden lg:block text-sm font-semibold '>Login</p> 
       
    </div> 
   </div> :
-  <Link href='/profileDashboard'  className='items-center lg:border hidden lg:flex gap-1 bg-white px-2 p-1.5 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
+  <Link href='/profileDashboard'  className='items-center hidden lg:flex gap-2 px-2 p-1.5 lg:pr-2.5 lg:mr-4 cursor-pointer'>
     <div className='rounded-full hidden lg:block'>
-     <Image alt='navLogo' src={navLogo} className='w-5 rounded-full'></Image>
+     <Image alt='navLogo' src={navLogo} className='w-8 rounded-full border-2 border-[#c03b2c] p-0.5'></Image>
     </div> 
-    <div>
-      <p className='text-[#c03b2c] hidden lg:block text-sm font-semibold '>Account</p> 
-    </div> 
+    
   </Link>
 }  
              
@@ -290,7 +293,7 @@ console.log("userrrrrr",user);
                
             </div>
            </div>
-           <div className=''>
+           <div className='md:hidden'>
             <Navbar setIsLoginModal={setIsLoginModal} openCart={openCart} setOpenCart={setOpenCart} data={data}/>
            </div>
            {

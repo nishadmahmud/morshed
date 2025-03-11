@@ -50,7 +50,7 @@ const DashboardLayout = ({ children }) => {
 
 
   return (
-    <div className="md:flex md:w-11/12 mx-auto relative lg:pt-5 md:pt-5 pt-1 pb-5">
+    <div className="md:flex md:w-11/12 mx-auto relative lg:pt-20 md:pt-16 pt-10 pb-5">
       {/* Mobile Menu Button */}
       <button
         className="md:hidden p-4 text-gray-700"
@@ -71,7 +71,7 @@ const DashboardLayout = ({ children }) => {
       <div
         className={`fixed inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#c03b2c] to-[#e14e04] px-6 shadow-md md:relative z-20 rounded-lg`}
+        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#d44130] to-[#8b190c] px-6 shadow-md md:relative z-20 rounded-lg`}
       >
         <div className="flex justify-between items-center pt-5">
           <button

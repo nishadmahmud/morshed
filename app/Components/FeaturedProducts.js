@@ -80,7 +80,12 @@ const FeaturedProducts = ({ banner }) => {
                   const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
                   const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
                   const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
-                  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description || "N/A";
+                  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
+                      const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
+                      
+                      const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
+                      
+                      console.log(cameraShort);
 
                   return (
                     <div key={product.id} className='bg-white border border-gray-300 rounded-xl flex flex-col shadow-sm hover:scale-105 transition py-2'>
@@ -124,7 +129,7 @@ const FeaturedProducts = ({ banner }) => {
                       <div className="text-gray-600 px-5 grid grid-cols-2 gap-1 mb-3">
                         <div className="flex items-start gap-1 text-xs"><Battery size={15} /> {batteryCapacity}</div>
                         <div className="hidden md:flex items-start gap-1 text-xs"><Cpu size={15} /> {chipset}</div>
-                        <div className="flex items-start gap-1 text-xs"><Camera size={15} /> {camera}</div>
+                        <div className="flex items-start gap-1 text-xs"><Camera size={15} /> {cameraShort}</div>
                         <div className="hidden md:flex items-start gap-1 text-xs"><MemoryStick size={15} /> {storage}</div>
                       </div>
 

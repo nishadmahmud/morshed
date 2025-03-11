@@ -19,7 +19,7 @@ const MyOrders = () => {
     const [error, setError] = useState(null);
     const userData = JSON.parse(localStorage.getItem("user"));
 
-    const customer_id = userData?.customer_id;
+    const customer_id = userData?.id;
 
     useEffect(() => {
         const fetchOrders = async () => {
