@@ -252,10 +252,12 @@ console.log(product?.data);
       product?.data?.retails_price ? "Retail Price:" : "0"
     }
     <div className="text-nowrap flex gap-2 items-center">
-     
+    <span className="text-xs font-bold text-[#000000] ] line-through font-bangla">
+        {selectedSalePrice || product?.data?.retails_price || 0} ৳
+      </span>
       {
         product?.data?.discount ? (
-          <span className="sans text-sm font-bold text-[#4e4b49 line-through">
+          <span className="sans text-sm font-bold text-[#F16724] ">
             {(
               (selectedSalePrice || product?.data?.retails_price || 0) - 
               ((selectedSalePrice || product?.data?.retails_price || 0) * product?.data.discount) / 100
@@ -263,9 +265,7 @@ console.log(product?.data);
           </span>
         ) : ""
       }
-       <span className="text-sm font-bold text-[#F16724] ]  font-bangla">
-        {selectedSalePrice || product?.data?.retails_price || 0} ৳
-      </span>
+      
     </div>
   </div>
 

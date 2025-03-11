@@ -275,12 +275,12 @@ console.log("userrrrrr",user);
       
    </div> 
   </div> :
-  <Link href='/profileDashboard'  className='items-center lg:border hidden lg:flex gap-1 bg-white px-2 p-1.5 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
+  <Link href='/profileDashboard'  className='items-center lg:border hidden lg:flex gap-1 bg-white px-2.5 p-2 rounded-full lg:pr-2.5 lg:mr-2.5 cursor-pointer'>
     <div className='rounded-full hidden lg:block'>
-     <Image unoptimized alt='navLogo' src={navLogo} className='w-5 rounded-full'></Image>
+     <Image unoptimized alt='navLogo' src={navLogo} className='w-6 rounded-full'></Image>
     </div> 
     <div>
-      <p className='text-[#F16724] hidden lg:block text-sm font-semibold '>Account</p> 
+      <p className='text-[#F16724] hidden lg:block text-xs font-semibold '>Account</p> 
     </div> 
   </Link>
 }  

@@ -34,7 +34,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
     e.preventDefault();
     axios.post(`${process.env.NEXT_PUBLIC_API}/customer-login`, formData)
       .then((res) => {
-        console.log(res.data.customer);
+        console.log("loggggggiiiiinn......",res.data);
         if (res.data.token) {
           const updatedFormData = { ...formData, customer_id, first_name, last_name, phone };
           setFormData(updatedFormData);
@@ -94,7 +94,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
 
         <button
           type="submit"
-          className="w-full py-2 bg-[#FF8800] text-white rounded-lg "
+          className="w-full py-2 bg-[#F16724] text-white rounded-lg "
         >
           Login
         </button>
@@ -104,7 +104,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
             <Link
               onClick={() => setIsRegistered(!isRegistered)}
               href={"/register"}
-              className="hover:text-[#FF8800]"
+              className="hover:text-[#F16724]"
             >
               Register
             </Link>
@@ -114,7 +114,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
             Do Not Have an Account?{" "}
             <span
               onClick={() => setIsRegistered(!isRegistered)}
-              className="hover:text-[#FF8800] cursor-pointer"
+              className="hover:text-[#F16724] cursor-pointer"
             >
               Register
             </span>

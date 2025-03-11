@@ -26,7 +26,7 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
   const [userEmail, setUserEmail] = useState(null);
   const userData = JSON.parse(localStorage.getItem("user"));
   const customer_id = userData?.customer_id;
-  const customer_phone = userData?.phone;
+  const customer_phone = userData?.mobile_number;
   const [location, setLocation] = useState("inside"); 
   // console.log(shippingFee);
 
@@ -86,13 +86,11 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
     delivery_customer_address: formData.address || formData.billAddress,
     delivery_customer_phone: formData?.phone ? formData?.phone : 'N/A',
     delivery_fee: shippingFee,
-    payment_method: [
-      {
-        payment_type_category_id: "",
-        payment_type_id: "",
-        payment_amount: 0,
-      },
-    ],
+    payment_method: paymentMethods?.data?.data.map((item) => ({
+      payment_type_category_id: item.payment_type_category[0]?.id,
+      payment_type_id: item.payment_type_category[0]?.payment_type_id,
+      payment_amount: 0,
+    })),
     variants: [],
     imeis: cartItems.map((item) => {
       if (item?.imeis && item?.imeis.length > 0) {
@@ -155,7 +153,7 @@ console.log('order schema', orderSchema);
   const handleOrderComplete = (e) => {
     e.preventDefault();
    if(cartItems.length > 0){
-     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecomme-rce-save-sales`,orderSchema)
+     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecomm-erce-save-sales`,orderSchema)
      .then((res) => {
        if(res.status === 200){
         localStorage.removeItem('cart');
@@ -210,7 +208,7 @@ console.log('order schema', orderSchema);
     const existingMethodIndex = updatedMethod.findIndex(item => item.payment_type_category_id === selectedMethodId);
     updatedMethod[existingMethodIndex].ref_id = refId;
   }
-
+console.log('payment method',paymentMethods);
 
   return (
     <div className=" bg-white rounded-tl-lg rounded-bl-lg ">
@@ -428,25 +426,63 @@ console.log('order schema', orderSchema);
             </label>
           </div>
           {!isCod && <div className="p-3 text-black bg-[#F4F4F4] flex flex-wrap gap-5">
-           { paymentMethods?.data?.data && paymentMethods.data.data.length > 0 ? 
-           paymentMethods.data.data.filter(item => item.type_name !== 'Cash').map((item) => {
-            return <div onClick={() => handlePaymentMethod(item)} key={item.id} className={`flex flex-col items-center justify-center gap-2 cursor-pointer ${item.payment_type_category[0].payment_category_name === payment ? 'bg-blue-200 p-2 rounded-lg' : ''}`}>
-                <Image 
-                src={item.icon_image}
-                alt={item.payment_type_category[0].payment_category_name}
-                height={40}
-                width={40}
-                className="rounded-md h-auto w-auto"
-                />
-                <h3 className="text-black">{item.payment_type_category[0].payment_category_name}</h3>
-            </div>
-           })
-           : <p className="text-black">You wont be redirected to Payment Link immediately due to stock limitation at real time after your order is placed. Our team will call you with stock confirmation at real time and will be given a SSL Wireless Custom Mac BD Secure Payment Link. You can proceed with the payment then.</p>
-           }
+            {paymentMethods?.data?.data &&
+              paymentMethods?.data?.data?.length > 0 ? (
+                (() => {
+                  const otherMethods = paymentMethods?.data?.data?.filter(
+                    (item) => item?.type_name !== "Cash"
+                  );
+
+                  return otherMethods.length > 0 ? (
+                    otherMethods.map((item) => (
+                      <div
+                        onClick={() => handlePaymentMethod(item)}
+                        key={item.id}
+                        className={`flex flex-col items-center justify-center gap-2 cursor-pointer ${
+                          item.payment_type_category[0]
+                            .payment_category_name === payment
+                            ? "bg-blue-200 p-2 rounded-lg"
+                            : ""
+                        }`}
+                      >
+                        <Image
+                          unoptimized
+                          src={item?.icon_image}
+                          alt={
+                            item?.payment_type_category[0]
+                              ?.payment_category_name
+                          }
+                          height={40}
+                          width={40}
+                          className="rounded-md h-auto w-auto"
+                        />
+                        <h3 className="text-black">
+                          {
+                            item?.payment_type_category[0]
+                              ?.payment_category_name
+                          }
+                        </h3>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-black">Only Cash On Delivery is available right now</p>
+                  );
+                })()
+              ) : (
+                <p className="text-black">
+                  You won&apos;t be redirected to a Payment Link immediately due to
+                  stock limitation at real time. After your order is placed, our
+                  team will call you with stock confirmation in real time and
+                  will provide an SSL Wireless Gadget Bodda Secure Payment Link.
+                  You can proceed with the payment then.
+                </p>
+              )}
+              
+              
+
             </div>}
         </div>
-
-       
+     
 
         {/* Billing Address */}
         <h2 className="text-2xl font-bold sans mt-4 mb-4">Billing Address</h2>
