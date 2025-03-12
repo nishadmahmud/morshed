@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import DeliveryForm from '@/app/Components/DeliveryForm';
 import useStore from '@/app/CustomHooks/useStore';
 import Image from 'next/image';
@@ -34,6 +34,7 @@ const CheckoutPage = () => {
     return (
             <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-5 lg:pt-10 w-11/12 mx-auto'>
             <div className='col-span-1 md:col-span-2 border-gray-300 border-r '>
+                {  console.log("CARTITMES......... ",cartItems) }
                 <DeliveryForm setShippingFee={setShippingFee} cartItems={cartItems} cartTotal={Subtotal} />
             </div>
 

@@ -25,7 +25,7 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
   const router = useRouter(); 
   const [userEmail, setUserEmail] = useState(null);
   const userData = JSON.parse(localStorage.getItem("user"));
-  const customer_id = userData?.customer_id;
+  const customer_id = userData?.id;
   const customer_phone = userData?.mobile_number;
   const [location, setLocation] = useState("inside"); 
   // console.log(shippingFee);

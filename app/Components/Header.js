@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import React, {  useCallback, useEffect, useRef, useState } from 'react';
 import { FaChevronDown, FaRegHeart, FaRegUser } from 'react-icons/fa6';
 import companyLogo from '/public/PerfectGadgetBD-logo (1) 1.png';

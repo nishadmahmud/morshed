@@ -28,7 +28,7 @@ const MyOrders = () => {
             setError(null);
     
             try {
-                const response = await fetch(`https://www.outletexpense.xyz/api/customer-order-list`, {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API}/customer-order-list`, {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
