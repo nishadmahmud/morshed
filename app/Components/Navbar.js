@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
 import { CgProfile } from "react-icons/cg";

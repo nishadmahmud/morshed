@@ -26,7 +26,7 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
   const router = useRouter(); 
   const [userEmail, setUserEmail] = useState(null);
   const userData = JSON.parse(localStorage.getItem("user"));
-  const customer_id = userData?.customer_id;
+  const customer_id = userData?.id;
   const customer_phone = userData?.mobile_number;
   const [location, setLocation] = useState("inside"); 
   // console.log(shippingFee);
@@ -154,7 +154,7 @@ console.log('order schema', orderSchema);
   const handleOrderComplete = (e) => {
     e.preventDefault();
    if(cartItems.length > 0){
-     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecomm-erce-save-sales`,orderSchema)
+     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,orderSchema)
      .then((res) => {
        if(res.status === 200){
         localStorage.removeItem('cart');

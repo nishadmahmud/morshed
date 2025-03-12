@@ -20,7 +20,7 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = { ...formData, user_id: userId, customer_id: customerId };
+    const payload = { ...formData, user_id: userId};
   
     axios
       .post(`${process.env.NEXT_PUBLIC_API}/customer-registration`, payload, {
