@@ -34,10 +34,11 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="apple-touch-icon" sizes="180x180" href="/public/PerfectGadgetBD-logo (1) 1.png"/>
-        <link rel="icon" type="image/png" sizes="32x32" href="/public/PerfectGadgetBD-logo (1) 1.png"/>
-        <link rel="icon" type="image/png" sizes="16x16" href="/public/PerfectGadgetBD-logo (1) 1.png"/>
-      </head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/pg-fav.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/pg-fav.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/pg-fav.png" />
+</head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased nunito`}
       >

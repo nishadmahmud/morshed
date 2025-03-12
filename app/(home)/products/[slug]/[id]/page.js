@@ -80,7 +80,7 @@ console.log(colornames("Black"));
 
 
 console.log(product);
-const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails_price || 0);
+const [selectedSalePrice, setSelectedSalePrice] = useState(product?.data.retails_price || product?.data.purchase_price || 0);
 
 
   console.log(selectedSalePrice);
@@ -252,20 +252,22 @@ console.log(product?.data);
       product?.data?.retails_price ? "Retail Price:" : "0"
     }
     <div className="text-nowrap flex gap-2 items-center">
-    <span className="text-xs font-bold text-[#000000] ] line-through font-bangla">
-        {selectedSalePrice || product?.data?.retails_price || 0} ৳
-      </span>
+    
       {
         product?.data?.discount ? (
-          <span className="sans text-sm font-bold text-[#F16724] ">
-            {(
-              (selectedSalePrice || product?.data?.retails_price || 0) - 
-              ((selectedSalePrice || product?.data?.retails_price || 0) * product?.data.discount) / 100
-            ).toFixed(0)} ৳
-          </span>
+
+          <span className="text-xs font-bold text-[#000000] ] line-through font-bangla">
+        {(
+              (selectedSalePrice || product?.data?.retails_price || product?.data.sale_price || 0) - 
+              ((selectedSalePrice || product?.data?.retails_price  || product?.data.sale_price || 0) * product?.data.discount) / 100
+            ).toFixed(0)}  ৳
+      </span>
+          
         ) : ""
       }
-      
+      <span className="sans text-sm font-bold text-[#F16724] ">
+      { product?.data?.retails_price || 0} ৳
+          </span>
     </div>
   </div>
 
@@ -290,29 +292,31 @@ console.log(product?.data);
             <span>Message <br /> on WhatsApp</span>
           </Link>
     
-    <div className="flex justify-between items-center gap-2">
+    <div className="flex justify-start items-start gap-2 flex-col">
 
-          <div className="mb-4">
+    <div className="mb-">
   <h3 className="font-medium text-sm">Color: {selectedColor || "No color"}</h3>
-  <div className="flex space-x-2">
+  <div className="grid md:grid-cols-4 lg:grid-cols-6 grid-cols-3 gap-2">
   {product?.data?.color &&
     Object.entries(product.data.color).map(([colorName, colorCode]) =>
-      colorCode ? ( // Check if colorCode exists
+      colorCode ? (
         <button
           key={colorName}
-          className={`w-8 h-8 rounded-full border-2 ${
-            selectedColor === colorCode ? "border-black" : "border-gray-300"
+          className={`rounded-lg border-2 text-ellipsis line-clamp-1 text-xs md:py-2 py-1 px-1 pt-1 flex justify-center items-center ${
+            selectedColor === colorCode ? "border-[#F16724]" : "border-gray-300"
           }`}
-          style={{ backgroundColor: colornames(colorCode) }}
-          onClick={() => handleColorChange(colorCode)} 
-        />
+          onClick={() => handleColorChange(colorCode)}
+        >
+          {colorCode}
+        </button>
       ) : null
     )}
-</div>    
+</div>
 
 </div>
 
-<div className="flex items-center gap-1">
+
+<div className="flex items-center gap-1 mb-4">
      <span className="text-sm font-medium">Status: </span> <p className="text-xs" style={{ color: product?.data.status === 'Stock Out' ? 'red' : 'green' }}>
   {product?.data.status === 'Stock Out' ? 'Stock Out' : 'In Stock'}
 </p>
@@ -328,7 +332,7 @@ console.log(product?.data);
         <button
           key={storage}
           onClick={() => handleStorageChange(storage)}
-          className={`px-4 py-2 rounded ${
+          className={`px-4 py-2 text-sm rounded ${
             selectedStorage === storage ? 'bg-[#F16724] text-white' : 'bg-gray-200 text-gray-800'
           }`}
         >
