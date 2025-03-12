@@ -153,7 +153,7 @@ console.log('order schema', orderSchema);
   const handleOrderComplete = (e) => {
     e.preventDefault();
    if(cartItems.length > 0){
-     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecomm-erce-save-sales`,orderSchema)
+     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,orderSchema)
      .then((res) => {
        if(res.status === 200){
         localStorage.removeItem('cart');
