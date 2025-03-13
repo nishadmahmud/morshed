@@ -7,6 +7,7 @@ import AvatarChat from "../Components/AvatarChat";
 import { userId } from "./page";
 import { Suspense } from "react";
 import Loader from "../Components/Loader";
+import Compare from "../Components/Compare";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -50,6 +51,7 @@ export default async function RootLayout({ children }) {
 
           <div className="bg-[#f7f7f7] ">
             {children}
+        <Compare />
             <AvatarChat />
           </div>
           <Footer/>

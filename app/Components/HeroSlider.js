@@ -109,10 +109,7 @@ const HeroSlider = ({ slider, banner }) => {
         )}
       </div>
 
-      {/* Compare Section */}
-      <div className="mt-8">
-        <Compare />
-      </div>
+      
     </div>
   );
 };

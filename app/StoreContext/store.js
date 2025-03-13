@@ -39,9 +39,11 @@ const StoreProvider = ({children}) => {
     const handleCart = (item,quantity) => {
         if(!isMounted) return;
         setRefetch(true);
+        const newItem = {...item,retails_price : item.price}
         const cartItems =JSON.parse(localStorage.getItem('cart')) || [];
         const existingProducts = cartItems.find(product => product.id === item.id);
-        if((item.status !== "Stock out" && item.status) || item.current_stock > 0){
+        if ((newItem.status && newItem.status.toLowerCase() !== "stock out") || newItem.current_stock > 0)
+            {
             if(existingProducts){
                 existingProducts.quantity += quantity;
             }else{

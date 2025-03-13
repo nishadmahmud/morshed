@@ -110,6 +110,29 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
     status: 3,
   });
   
+
+  useEffect(() => {
+    orderSchema.product = cartItems.map((item) => ({
+       product_id: item.id,
+       qty: item.quantity,
+       price: item.retails_price,
+       mode: 1,
+       size: 1,
+       sales_id: 3,
+       imei_id: item?.imeis ? item.imeis.find(imei => imei.storage === item?.storage).id : null,
+     }))
+    orderSchema.imeis = cartItems.map((item) => {
+       if (item?.imeis && item?.imeis.length > 0) {
+         const imeiItem = item.imeis.find(imei => imei.storage === item?.storage);
+         return imeiItem.id 
+       } else {
+         return null;
+       }
+     }),
+     orderSchema.sub_total = cartTotal
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+   },[cartItems])
+   
 console.log('order schema', orderSchema);
 
   const handleChange = (e) => {

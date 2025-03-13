@@ -24,7 +24,7 @@ const Page = () => {
       axios
         .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, { keyword, user_id: userId })
         .then((res) => {
-          const fetchedProducts = res.data?.data?.data || [];
+          const fetchedProducts = res?.data?.data?.data || [];
           setProducts(fetchedProducts);
           setProduct(fetchedProducts);
         })
@@ -41,7 +41,7 @@ const Page = () => {
 
 useEffect(() => {
   if (products?.specifications?.length > 0) {
-    const names = products.specifications.map((dName) => dName.name); // Extract names
+    const names = products?.specifications?.map((dName) => dName.name); // Extract names
     setHello(names); // Store as an array in state
     console.log(names);
   }
