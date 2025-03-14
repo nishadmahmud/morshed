@@ -288,8 +288,12 @@ const Page = ({ params }) => {
                     ? "Retail Price:"
                     : "0"}
                   <div className="text-nowrap flex gap-2 items-center">
+                  <span className="sans text-xs font-bold text-[#4e4b49] line-through">
+                      {selectedSalePrice || product?.data?.retails_price || 0} ৳
+                    </span>
+
                     {product?.data?.discount ? (
-                      <span className="sans text-sm font-bold text-[#4e4b49 line-through">
+                      <span className="text-sm font-bold text-[#F16724] ]  font-bangla ">
                         {(
                           (selectedSalePrice ||
                             product?.data?.retails_price ||
@@ -305,9 +309,7 @@ const Page = ({ params }) => {
                     ) : (
                       ""
                     )}
-                    <span className="text-sm font-bold text-[#F16724] ]  font-bangla">
-                      {selectedSalePrice || product?.data?.retails_price || 0} ৳
-                    </span>
+                    
                   </div>
                 </div>
 
@@ -338,7 +340,7 @@ const Page = ({ params }) => {
                 </p>
               </div>
               <Link
-                href="https://wa.me/+8801339809100"
+                href="https://wa.me/+8801725171313"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center w-fit space-x-3 text-xs px-4 py-1 text-white font-semibold rounded-md bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 hover:text-white transition-colors duration-200 mb-3"
