@@ -7,8 +7,8 @@ const TopHeader = () => {
     <div className="bg-white h-8 hidden lg:block text-black">
       <div className="flex pt-1.5  justify-between w-11/12 mx-auto items-center">
         <div className="flex items-center text-xs gap-3">
-          <Link className="hover:font-semibold hover:scale-105 transition ease-in-out" href="orderTracking" >Order Tracking</Link>
-          <Link  className="hover:font-semibold hover:scale-105 transition ease-in-out"  href="offer" >Offer Details</Link>
+          <Link className="hover:font-semibold hover:scale-105 transition ease-in-out" href="/orderTracking" >Order Tracking</Link>
+          <Link  className="hover:font-semibold hover:scale-105 transition ease-in-out"  href="/offer" >Offer Details</Link>
           <Link  className="hover:font-semibold hover:scale-105 transition ease-in-out"  href="/blogs" >Blogs</Link>
           
         </div>

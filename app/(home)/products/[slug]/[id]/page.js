@@ -617,10 +617,11 @@ const Page = ({ params }) => {
               <p className="text-gray-500">No recently viewed products.</p>
             )}
           </div>
+        </div>
           <div className="container mx-auto p-4">
             <h2 className="text-lg font-bold mb-4">Recently Viewed</h2>
             {recentProducts.length > 0 ? (
-              <div className="grid gap-3 grid-cols-2">
+              <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-5 grid-cols-2">
                 {recentProducts.map((product) => (
                   <Link
                     key={product.id}
@@ -654,7 +655,6 @@ const Page = ({ params }) => {
               <p className="text-gray-500">No recently viewed products.</p>
             )}
           </div>
-        </div>
 
         {/* bottom cart */}
         {/* desktop */}
@@ -665,7 +665,7 @@ const Page = ({ params }) => {
         >
           {/* Product Information */}
           <div className="text-lg font-light">
-            <span className="font-medium">{product?.data?.name}</span>
+            <span className="font-medium text-black">{product?.data?.name}</span>
           </div>
 
           {/* Quantity and Buttons */}

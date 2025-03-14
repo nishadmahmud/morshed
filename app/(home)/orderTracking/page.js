@@ -2,10 +2,10 @@
 
 import { SearchIcon } from "lucide-react";
 import { useState } from "react";
-import orderRecived from "/public/order (1).png";
-import orderConfirmed from "/public/pickup.png";
-import deliveryProccesing from "/public/rider.png";
-import orderDelivered from "/public/delivery.png";
+import orderRecived from "/public/orderRecived.png";
+import orderConfirmed from "/public/orderConfirmd.png";
+import deliveryProccesing from "/public/deliveryProcc.png";
+import orderDelivered from "/public/completed.png";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { userId } from "../page";
@@ -84,9 +84,9 @@ export default function Page() {
               <button
                 type="submit"
                 disabled={loading}
-                className="p-1 bg-[#F16724] text-white rounded-md hover:bg-[#F16724] transition-colors disabled:opacity-50"
+                className="p-0.5 px-2 bg-[#F16724] text-white rounded-md hover:bg-[#F16724] transition-colors disabled:opacity-50"
               >
-                <SearchIcon />
+                <SearchIcon size={20} />
               </button>
            </div>
             </div>
