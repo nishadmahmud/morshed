@@ -5,7 +5,7 @@ import { useState } from "react";
 import orderRecived from "/public/orderRecived.png";
 import orderConfirmed from "/public/orderConfirmd.png";
 import deliveryProccesing from "/public/deliveryProcc.png";
-import orderDelivered from "/public/completed.png";
+import orderDelivered from "/public/delivered.png";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { userId } from "../page";
