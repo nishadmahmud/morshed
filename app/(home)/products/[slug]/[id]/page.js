@@ -163,8 +163,8 @@ const Page = ({ params }) => {
 
   return (
     <section className="bg-white">
-      <div className="px-5 lg:pt-28 md:pt-24 pt-20 mx-auto text-black max-w-7xl overflow-hidden sans">
-        <h1 className="text-base sans lg:text-xl font-semibold lg:hidden block text-ellipsis overflow-hidden line-clamp-1 lg:text-nowrap">
+      <div className="px-5 lg:p-8 lg:pt-28 md:pt-24 pt-20 mx-auto text-black max-w-7xl overflow-hidden sans">
+        <h1 className="text-base sans lg:text-xl font-semibold lg:hidden block lg:text-nowrap">
           {product?.data.name}
         </h1>
         <Breadcrumbs />
@@ -340,7 +340,7 @@ const Page = ({ params }) => {
                 </p>
               </div>
               <Link
-                href="https://wa.me/+8801898931468"
+                href="https://wa.me/+8801725171313"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center w-fit space-x-3 text-xs px-4 py-1 text-white font-semibold rounded-md bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 hover:text-white transition-colors duration-200 mb-3"
@@ -775,14 +775,6 @@ const Page = ({ params }) => {
             >
               {isCartItem !== undefined ? "Added" : "ADD TO CART"}
             </button>
-      {/* Quantity and Buttons */}
-      <div className="  flex  items-center justify-between w-full">
-        {/* Quantity Selector */}
-       
-        {/* Add to Cart Button */}
-        <button disabled={isCartItem !== undefined} onClick={() => handleCart(product?.data,quantity)} className={`border px-4 py-1 border-[#c03b2c] text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white  ${isCartItem !== undefined ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ''}`}>
-          {isCartItem !== undefined ? 'Added' : 'ADD TO CART'}
-        </button>
 
             {/* Buy It Now Button */}
             <button
