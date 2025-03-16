@@ -775,6 +775,14 @@ const Page = ({ params }) => {
             >
               {isCartItem !== undefined ? "Added" : "ADD TO CART"}
             </button>
+      {/* Quantity and Buttons */}
+      <div className="  flex  items-center justify-between w-full">
+        {/* Quantity Selector */}
+       
+        {/* Add to Cart Button */}
+        <button disabled={isCartItem !== undefined} onClick={() => handleCart(product?.data,quantity)} className={`border px-4 py-1 border-[#c03b2c] text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white  ${isCartItem !== undefined ? 'bg-gray-300 text-gray-500 cursor-not-allowed' : ''}`}>
+          {isCartItem !== undefined ? 'Added' : 'ADD TO CART'}
+        </button>
 
             {/* Buy It Now Button */}
             <button

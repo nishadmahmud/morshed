@@ -37,7 +37,7 @@ const Pagination = ({ currentPage, totalPage, onPageChange }) => {
         <div className="pagination flex items-center justify-center gap-2 md:gap-4">
             {/* Previous Button */}
             <button
-                className="hover:bg-[#c03b2c] px-3 py-2 rounded-md hover:text-white transition flex items-center gap-1 text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[32px]"
+                className="hover:bg-[#c03b2c] px-4 py-1 rounded-md hover:text-white transition flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={currentPage === 1}
                 onClick={() => onPageChange(currentPage - 1)}
             >
@@ -68,7 +68,7 @@ const Pagination = ({ currentPage, totalPage, onPageChange }) => {
 
             {/* Next Button */}
             <button
-                className="hover:bg-[#c03b2c] px-3 py-2 rounded-md hover:text-white transition flex items-center gap-1 text-xs md:text-sm disabled:opacity-50 disabled:cursor-not-allowed min-w-[32px]"
+                className="hover:bg-[#c03b2c] px-4 py-1 rounded-md hover:text-white transition flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
                 disabled={currentPage === totalPage}
                 onClick={() => onPageChange(currentPage + 1)}
             >

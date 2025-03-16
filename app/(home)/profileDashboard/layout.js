@@ -71,7 +71,7 @@ const DashboardLayout = ({ children }) => {
       <div
         className={`fixed pt-10 md:pt-0 inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#8f1002] to-[#c03b2c] px-6 shadow-md md:relative z-20 rounded-lg`}
+        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#d44130] to-[#8b190c] px-6 shadow-md md:relative z-20 rounded-lg`}
       >
         
 

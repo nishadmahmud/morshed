@@ -28,7 +28,6 @@ export const metadata = {
 };
 
 
-
 export default async function RootLayout({ children }) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`,{cache : 'no-cache'});
   const data = await res.json();
@@ -49,7 +48,7 @@ export default async function RootLayout({ children }) {
            <Header data={data}/>
           </div>
 
-          <div className="bg-[#f7f7f7] ">
+          <div className="bg-[#ffffff] ">
             {children}
         <Compare />
             <AvatarChat />

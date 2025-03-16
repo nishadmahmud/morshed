@@ -91,8 +91,8 @@ const Page = ({ params }) => {
       
       {/* Mobile Filter Button */}
       <button
-        className="md:hidden fixed bottom-24 left-5 bg-[#c03b2c] text-white p-4 rounded-full z-50"
-        onClick={() => setIsSidebarOpen(true)}
+        className="md:hidden fixed bottom-24 left-7 bg-[#c03b2c] text-white p-2 rounded-lg z-50"
+        onClick={() => setIsFilterOpen(true)}
       >
         <IoFilter size={24} />
       </button>
@@ -137,7 +137,7 @@ const Page = ({ params }) => {
               <p className="font-semibold text-black">Sort By:</p>
               <select
                 onChange={(e) => setSortBy(e.target.value)}
-                className="outline-none p-1 md:w-full w-24 rounded-md bg-[#F2F3F7] text-black"
+                className="outline-none p-1 px-2 rounded-sm bg-[#F2F3F7] text-black overflow-y-auto md:text-lg text-sm"
               >
                 <option value="">Default</option>
                 <option value="low-to-high">Price low to high</option>

@@ -51,7 +51,7 @@ const PromotionModal = () => {
                         <Image unoptimized className='rounded-md' src={lastImage} priority={true} alt='promo' fill style={{ objectFit: 'cover' }} />
                     ) : (
                         <div>
-                            <FadeLoader color='#EB0439' />
+                            <FadeLoader color='#c03b2c' />
                         </div>
                     )}
                 </div>
