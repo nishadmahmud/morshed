@@ -11,16 +11,16 @@ import Modal from "./Modal";
 import PaymentMethodForm from "./PaymentMethodForm";
 import { ShoppingBag } from 'lucide-react';
 import { Headset } from "lucide-react";
-import { FaChevronDown, FaChevronUp } from "react-icons/fa6";
-import CheckoutPage from "../(home)/checkout/page";
 
 
-const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
+
+const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
   const { data : paymentMethods, error } = useSWR(`${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`, fetcher);
   const date = new Date().toISOString();
   const [showPaymentModal,setShowPaymentModal] = useState(false);
   const [payment, setPayment] = useState("Cash");
   const [isCod,setIsCod] = useState(true);
+  const [isSSL, setIsSSL] = useState(true);
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
   const [user,setUser] = useState(null); 
   const router = useRouter(); 
@@ -28,14 +28,15 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
   const userData = JSON.parse(localStorage.getItem("user"));
   const customer_id = userData?.id;
   const customer_phone = userData?.mobile_number;
-  const [location, setLocation] = useState("inside"); 
+  const [loading, setLoading] = useState(false); 
+  const [invoice, setInvoice] = useState(null);
   // console.log(shippingFee);
 
-  const shippingFee = location === "inside" ? 70 : 130;
-  useEffect(() => {
-    const shippingFeee = location === "inside" ? 70 : 130;
-    setShippingFee(shippingFee); // Send shipping fee to parent
-}, [location, setShippingFee, shippingFee]);
+//   const shippingFee = location === "inside" ? 70 : 130;
+//   useEffect(() => {
+//     const shippingFeee = location === "inside" ? 70 : 130;
+//     setShippingFee(shippingFee); // Send shipping fee to parent
+// }, [location, setShippingFee, shippingFee]);
     
   
   const [formData, setFormData] = useState({
@@ -68,7 +69,7 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
   const [orderSchema, setOrderSchema] = useState({
     pay_mode: payment,
     paid_amount: 0,
-    sub_total: Number(cartTotal) + 200,
+    sub_total:(Number(cartTotal) + Number(shippingFee)),
     vat: 0,
     tax: 0,
     discount: 0,
@@ -109,6 +110,11 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
     wholeseller_id: 1,
     status: 3,
   });
+
+  const getProductName = () => {
+    const name = cartItems.flatMap((item) => item.name);
+    return name;
+  };
   
 
   useEffect(() => {
@@ -129,7 +135,7 @@ const DeliveryForm = ({cartItems,cartTotal, setShippingFee}) => {
          return null;
        }
      }),
-     orderSchema.sub_total = cartTotal
+     orderSchema.sub_total = (Number(cartTotal) + Number(shippingFee)).toFixed(0)
    // eslint-disable-next-line react-hooks/exhaustive-deps
    },[cartItems])
    
@@ -148,6 +154,43 @@ console.log('order schema', orderSchema);
       ['delivery_customer_phone'] : formData?.phone ? formData?.phone : "N/A",
       ['customer_id'] : customer_id,
     }))
+  };
+
+  const sslPayment = (invoice) => {
+    console.log(invoice);
+    setPayment("SSL");
+    const sslSchema = {
+      amount: Number(cartTotal) + orderSchema.delivery_fee,
+      customer_name:
+        `${formData.firstName}  ${formData.lastName}` ||
+        `${formData.billFirstName}  ${formData.billLastName}`,
+      customer_email: userEmail,
+      customer_phone: formData.phone || formData.billPhone,
+      customer_address: formData.address || formData.billAddress,
+      customer_city: formData.city || formData.billCity,
+      customer_country: "Bangladesh",
+      product_name: getProductName(),
+      invoice_id: invoice,
+      product_category: "Electronics",
+    }
+    const hasEmptyField = Object.values(sslSchema).some((value) => !value);
+    console.log(sslSchema);
+    if (!hasEmptyField) {
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API}/payment/initiate`, sslSchema)
+        .then((res) => {
+          window.open(res.data.url, "_self");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+    // else if (!schema.amount){
+    //   toast.error('Product Price Must be Greater than 0')
+    // }
+    else {
+      toast.error("Please fill everything first");
+    }
   };
 
   const  handlePayment = (e) => {
@@ -174,28 +217,65 @@ console.log('order schema', orderSchema);
     }
   }, []);
 
+  console.log(shippingFee);
+
+  const handleCmsPayment = async () => {
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
+        orderSchema
+      );
+      if(response.status === 200) {
+        setLoading(false);
+        setInvoice(response.data.data.invoice_id);
+        if (!isSSL){
+          toast.success("order placed successfully");
+            setTimeout(() => {
+              router.push(`/payment-success/${response.data.data.invoice_id}`);
+           },2000)
+        }else{
+          sslPayment(response.data.data.invoice_id)
+        }
+        localStorage.removeItem("cart");
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error("error occured try again");
+    }
+  };
+
   const handleOrderComplete = (e) => {
     e.preventDefault();
-   if(cartItems.length > 0){
-     axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,orderSchema)
-     .then((res) => {
-       if(res.status === 200){
-        localStorage.removeItem('cart');
-        setTimeout(() => {
-          router.push('/');
-        },2000)
-        toast.success('Order placed successfully!');
-      }
-     })
-     .catch(err => {
-      toast.error('error occured try again');
-      console.log(err);
-     })
-   }else{
-     alert('Add Some Products First to the cart')
-     router.push('/')
-   }
-  }
+    if (cartItems.length === 0) {
+      toast.error("Add Some Products First to the cart");
+      return;
+    }
+    setLoading(true);
+    handleCmsPayment();
+  };
+
+  // const handleOrderComplete = (e) => {
+  //   e.preventDefault();
+  //  if(cartItems.length > 0){
+  //    axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,orderSchema)
+  //    .then((res) => {
+  //      if(res.status === 200){
+  //       localStorage.removeItem('cart');
+  //       setTimeout(() => {
+  //         router.push('/');
+  //       },2000)
+  //       toast.success('Order placed successfully!');
+  //     }
+  //    })
+  //    .catch(err => {
+  //     toast.error('error occured try again');
+  //     console.log(err);
+  //    })
+  //  }else{
+  //    alert('Add Some Products First to the cart')
+  //    router.push('/')
+  //  }
+  // }
 
   const handlePaymentMethod = (item) => {
     setShowPaymentModal(true);
@@ -232,7 +312,15 @@ console.log('order schema', orderSchema);
     const existingMethodIndex = updatedMethod.findIndex(item => item.payment_type_category_id === selectedMethodId);
     updatedMethod[existingMethodIndex].ref_id = refId;
   }
-console.log('payment method',paymentMethods);
+
+  const handleShippingFee = (e) => {
+    console.log();
+    const fee = parseInt(e.target.value);
+    setShippingFee(fee);
+    orderSchema.delivery_fee = fee;
+    orderSchema.sub_total += fee;
+  }
+// console.log('payment method',paymentMethods);
 
   return (
     <div className=" bg-white rounded-tl-lg rounded-bl-lg ">
@@ -368,6 +456,7 @@ console.log('payment method',paymentMethods);
             onChange={handleChange}
             placeholder="Phone"
             required
+            autoComplete="off"
             className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
           />
         </div>
@@ -380,15 +469,16 @@ console.log('payment method',paymentMethods);
         {/* Inside Dhaka Option */}
         <label
           className={`flex overflow-hidden transition-all duration-300 px-3 py-2 items-center cursor-pointer ${
-            location === "inside" ? "bg-[#F0F7FF] border border-blue-400" : ""
+            shippingFee === 70 ? "bg-[#F0F7FF] border border-blue-400" : ""
           }`}
         >
           <input
             type="radio"
             name="shipping"
-            value="inside"
-            checked={location === "inside"}
-            onChange={() => setLocation("inside")}
+            value={70}
+            checked={shippingFee == 70}
+            onChange={handleShippingFee}
+            // onChange={handle}
             className="mr-2"
           />
           Inside Dhaka (৳70)
@@ -397,15 +487,15 @@ console.log('payment method',paymentMethods);
         {/* Outside Dhaka Option */}
         <label
           className={`flex overflow-hidden transition-all duration-300 px-3 py-2 items-center cursor-pointer ${
-            location === "outside" ? "bg-[#F0F7FF] border border-blue-400" : ""
+            shippingFee === 130 ? "bg-[#F0F7FF] border border-blue-400" : ""
           }`}
         >
           <input
             type="radio"
             name="shipping"
-            value="outside"
-            checked={location === "outside"}
-            onChange={() => setLocation("outside")}
+            value={130}
+            checked={shippingFee == 130}
+            onChange={handleShippingFee}
             className="mr-2"
           />
           Outside Dhaka (৳130)
@@ -414,7 +504,7 @@ console.log('payment method',paymentMethods);
 
       {/* Shipping Details - Shown when an option is selected */}
       <div className="p-3 text-black bg-[#F4F4F4] mt-3">
-        <p>Shipping cost: <span className="font-semibold">৳{location === "inside" ? 70 : 130}</span></p>
+        <p>Shipping cost: <span className="font-semibold">৳{shippingFee}</span></p>
         <p className="text-gray-600">Shipping charge depends on your location.</p>
       </div>
     </div>
@@ -444,12 +534,30 @@ console.log('payment method',paymentMethods);
                 name="payment"
                 value="online"
                 className="mr-2 bg-white"
-                onChange={(e) => {handlePayment(e);setIsCod(false)}}
+                onChange={(e) => {handlePayment(e);setIsCod(false);setIsSSL(false)}}
               />
               Pay By Credit Card / Mobile Banking / Net Banking
             </label>
+            <label
+              className={`flex px-3 py-2 items-center ${
+                payment === "SSL" ? "bg-[#F0F7FF] border border-blue-400" : ""
+              }`}
+            >
+              <input
+                type="radio"
+                name="payment"
+                value="SSL"
+                className="mr-2 bg-white"
+                onChange={(e) => {
+                  setIsSSL(true);
+                  setPayment(e.target.value);
+                  setIsCod(false);
+                }}
+              />
+              Pay By SSL Commerz
+            </label>
           </div>
-          {!isCod && <div className="p-3 text-black bg-[#F4F4F4] flex flex-wrap gap-5">
+          {!isCod && !isSSL && <div className="p-3 text-black bg-[#F4F4F4] flex gap-5">
             {paymentMethods?.data?.data &&
               paymentMethods?.data?.data?.length > 0 ? (
                 (() => {
@@ -489,7 +597,7 @@ console.log('payment method',paymentMethods);
                       </div>
                     ))
                   ) : (
-                    <p className="text-black">Only Cash On Delivery is available right now</p>
+                    <p className="text-black">Only Cash On Delivery  & SSLCommerz is available right now</p>
                   );
                 })()
               ) : (
@@ -664,7 +772,7 @@ console.log('payment method',paymentMethods);
          <div className="hover:scale-105 transition ease-in-out flex items-center gap-1 justify-center">
           <ShoppingBag size={22}></ShoppingBag> 
           
-          Complete Order</div>
+          {loading ? "Order Processing..." : "Complete Order"}</div>
         </button>
       </form>
 

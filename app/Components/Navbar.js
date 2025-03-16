@@ -12,7 +12,6 @@ import { LogIn } from 'lucide-react';
 
 const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
     const user = localStorage.getItem('user')
-console.log("userrrrrr",user);
     const [isHovered, setIsHovered] = useState(false);
     const categoryRef = useRef(null);
     const [showCategory, setShowCategory] = useState(false);
@@ -47,7 +46,6 @@ useEffect(() => {
     const items =  getCartItems();
     const total = items?.reduce((acc,curr) => acc += curr.quantity,0) || 0;
 
-    console.log(total);
 
     return (
         <div className='relative'>

@@ -29,13 +29,12 @@ const CheckoutPage = () => {
         }
       }, [router, setIsLoginModal,token]);
 
-      const [shippingFee, setShippingFee] = useState(0); 
+      const [shippingFee, setShippingFee] = useState(70); 
 
     return (
             <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-5 lg:pt-10 w-11/12 mx-auto'>
             <div className='col-span-1 md:col-span-2 border-gray-300 border-r '>
-                {  console.log("CARTITMES......... ",cartItems) }
-                <DeliveryForm setShippingFee={setShippingFee} cartItems={cartItems} cartTotal={Subtotal} />
+                <DeliveryForm shippingFee={shippingFee} setShippingFee={setShippingFee} cartItems={cartItems} cartTotal={Subtotal} />
             </div>
 
             {
@@ -105,7 +104,7 @@ const CheckoutPage = () => {
                 </div>
                 <div className='flex justify-between items-center font-medium text-gray-600 text-lg pb-12'>
                     <p>Total</p>
-                    <p>{(parseInt(Subtotal) + shippingFee).toFixed(2)}৳</p>
+                    <p>{((Number(Subtotal) || 0) + (Number(shippingFee) || 0)).toFixed(2)}৳</p>
                 </div>
             </div>
                 : <p className='font-bold text-2xl text-center'>Cart is Empty</p>

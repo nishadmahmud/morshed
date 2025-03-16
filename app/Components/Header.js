@@ -47,7 +47,7 @@ const Header = ({data}) => {
      const [showCategory,setShowCategory] = useState(false);
 
 const user = localStorage.getItem('user')
-console.log("userrrrrr",user);
+
 
     useEffect(() => {
         getCartItems();
