@@ -81,9 +81,9 @@ useEffect(() => {
                         <span className='text-white'>Offers</span>
                     </Link>
                     
-                    <div onClick={() => setOpenCart(!openCart)} className='flex flex-col items-center text-sm text-[#F16724] hover:text-white cursor-pointer'>
+                    <div onClick={() => setOpenCart(!openCart)} className='flex flex-col items-center text-sm text-[#F16724] hover:text-white cursor-pointer relative'>
                         <ShoppingCart className='text-2xl' />
-                        <p className='bg-[#ffffff] z-[900] h-fit text-[#F16724] w-fit px-1 text-xs rounded-full absolute top-2 right-[9.2rem]'>{total}</p>
+                        <p className='bg-[#ffffff] z-[900] h-fit text-[#F16724] w-fit px-1 text-xs rounded-full absolute -top-3 -right-3'>{total}</p>
                         <span className='text-white'>Cart</span>
                     </div>
 
