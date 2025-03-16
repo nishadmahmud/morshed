@@ -80,7 +80,7 @@ const Page = () => {
 
     return (
         <div className="max-w-md mx-auto bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-2xl font-semibold text-[#F16724] mb-4 text-center">
+            <h2 className="text-2xl font-semibold text-[#c03b2c] mb-4 text-center">
                 Update Password
             </h2>
            
@@ -115,7 +115,7 @@ const Page = () => {
         />
                 <button
                     type="submit"
-                    className="w-full bg-[#F16724] text-white p-2 rounded"
+                    className="w-full bg-[#c03b2c] text-white p-2 rounded"
                     disabled={loading}
                 >
                     {loading ? "Updating..." : "Update Password"}

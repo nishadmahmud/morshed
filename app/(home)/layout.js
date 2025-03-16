@@ -22,7 +22,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Perfect Gadget BD",
+  title: "Apple Newton",
   description: "Get all kind of next gen gadget",
   
 };
@@ -35,9 +35,9 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-  <link rel="apple-touch-icon" sizes="180x180" href="/pg-fav.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/pg-fav.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/pg-fav.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
 </head>
 
       <body

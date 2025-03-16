@@ -80,20 +80,20 @@ console.log(products);
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 lg:p-2 rounded-3xl w-11/12 mx-auto">
               {products?.data && products?.data.length > 0 ? (
                 products.data.slice(0, 5).map((product) => {
-                  const specs = product?.specifications || [];
-                  console.log(specs);
-                  const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
-                  const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
-                  console.log(batteryCapacity); 
+                  // const specs = product?.specifications || [];
+                  // console.log(specs);
+                  // const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
+                  // const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
+                  // console.log(batteryCapacity); 
                   
-                  const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
-                  const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
-                  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
-                  const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
+                  // const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
+                  // const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
+                  // const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
+                  // const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
                   
-                  const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
+                  // const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
                   
-                  console.log(cameraShort);
+                  // console.log(cameraShort);
 
                   return (
                     <div
@@ -114,7 +114,7 @@ console.log(products);
                             quality={100}
                           />
                           {product?.discount ? (
-                            <p className="absolute top-2 left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-2 rounded-md">
+                            <p className="absolute top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md">
                               SAVE {product?.discount || 0}%
                             </p>
                           ) : ""
@@ -127,11 +127,11 @@ console.log(products);
                           <div className="mt-auto">
                             {product?.discount ? (
                               <div className="flex justify-center items-center gap-2">
-                                <span className="text-sm lg:text-lg font-bold text-[#F16724] line-through">
+                                <span className="text-sm lg:text-lg font-bold text-[#c03b2c] line-through">
                                   <span className="font-bangla text-sm lg:text-lg">৳</span>
                                   {product?.retails_price}
                                 </span>
-                                <span className="text-sm lg:text-lg font-bold text-[#F16724]">
+                                <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
                                   <span className="font-bangla text-sm lg:text-lg">৳</span>{" "}
                                   {(
                                     product?.retails_price -
@@ -140,7 +140,7 @@ console.log(products);
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-sm lg:text-lg font-bold text-[#F16724]">
+                              <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
                                 <span className="font-bangla text-sm lg:text-lg">৳</span>{" "}
                                 {product?.retails_price}
                               </span>
@@ -150,7 +150,7 @@ console.log(products);
                       </Link>
 
                       {/* Product specifications */}
-                      <div className="text-gray-600 px-5 grid mb-3 mt-1 justify-items-start grid-cols-2 gap-1">
+                      {/* <div className="text-gray-600 px-5 grid mb-3 mt-1 justify-items-start grid-cols-2 gap-1">
                         <div className="flex items-start gap-1 text-xs">
                           <Battery size={15} /> {batteryCapacity}
                         </div>
@@ -163,12 +163,12 @@ console.log(products);
                         <div className="hidden md:flex items-start gap-1 text-xs">
                           <MemoryStick size={15} /> {storage}
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="grid grid-cols-1 justify-center items-center mb-5 mx-5 gap-2 bottom-2">
                         <button
                           onClick={() => handleBuy(product, 1)}
-                          className="border-[#F16724] border text-xs text-[#F16724] w-full py-1 rounded-md font-semibold transition-colors px-3"
+                          className="border-[#c03b2c] border text-xs text-[#c03b2c] w-full py-1 rounded-md font-semibold transition-colors px-3"
                         >
                           Buy Now
                         </button>
@@ -177,7 +177,7 @@ console.log(products);
                             e.preventDefault();
                             handleCart(product, 1);
                           }}
-                          className="bg-[#F16724] border border-transparent text-xs text-white w-full px-2 py-1 rounded-md font-semibold transition-colors"
+                          className="bg-[#c03b2c] border border-transparent text-xs text-white w-full px-2 py-1 rounded-md font-semibold transition-colors"
                         >
                           Add to Cart
                         </button>

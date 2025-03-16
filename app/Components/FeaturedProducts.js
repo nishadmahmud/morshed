@@ -77,26 +77,26 @@ const FeaturedProducts = ({ banner }) => {
                 ))
               ) : bestDeals?.data?.length > 0 ? (
                 bestDeals.data.slice(0, 10).map((product) => {
-                  const specs = product?.specifications || [];
-                  const battery =
-                    specs.find((s) =>
-                      s.name.toLowerCase().includes("battery info")
-                    )?.description || "N/A";
-                  const batteryCapacity =
-                    battery.match(/\d+\s*mAh/)?.[0] || "N/A";
-                  const chipset =
-                    specs
-                      .find((s) => s.name.toLowerCase().includes("chipset"))
-                      ?.description?.split(" ")[0] || "N/A";
-                  const storage =
-                    specs.find((s) => s.name.toLowerCase().includes("storage"))
-                      ?.description || "N/A";
-                      const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
-                      const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
+                  // const specs = product?.specifications || [];
+                  // const battery =
+                  //   specs.find((s) =>
+                  //     s.name.toLowerCase().includes("battery info")
+                  //   )?.description || "N/A";
+                  // const batteryCapacity =
+                  //   battery.match(/\d+\s*mAh/)?.[0] || "N/A";
+                  // const chipset =
+                  //   specs
+                  //     .find((s) => s.name.toLowerCase().includes("chipset"))
+                  //     ?.description?.split(" ")[0] || "N/A";
+                  // const storage =
+                  //   specs.find((s) => s.name.toLowerCase().includes("storage"))
+                  //     ?.description || "N/A";
+                  //     const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
+                  //     const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
                       
-                      const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
+                  //     const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
                       
-                      console.log(cameraShort);
+                  //     console.log(cameraShort);
                       
 
                   return (
@@ -121,7 +121,7 @@ const FeaturedProducts = ({ banner }) => {
                             quality={100}
                           />
                           {product.discount ? (
-                            <p className="absolute top-4 lg:top-2 left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-2 rounded-md">
+                            <p className="absolute top-4 lg:top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md">
                               SAVE {product.discount}%
                             </p>
                           ) : (
@@ -135,7 +135,7 @@ const FeaturedProducts = ({ banner }) => {
                           <div>
                             {product.discount ? (
                               <div className="flex gap-2 items-start justify-start">
-                                <span className="text-sm md:text-xl font-bold text-[#F16724]">
+                                <span className="text-sm md:text-xl font-bold text-[#c03b2c]">
                                   <span className="font-bangla text-sm md:text-xl">
                                     ৳
                                   </span>
@@ -153,7 +153,7 @@ const FeaturedProducts = ({ banner }) => {
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-sm md:text-xl font-bold text-[#F16724]">
+                              <span className="text-sm md:text-xl font-bold text-[#c03b2c]">
                                 <span className="font-bangla text-sm">৳</span>
                                 {product.retails_price}
                               </span>
@@ -162,7 +162,7 @@ const FeaturedProducts = ({ banner }) => {
                         </div>
                       </Link>
 
-                      <div className="text-gray-600 px-5 grid grid-cols-2 gap-1 mb-3">
+                      {/* <div className="text-gray-600 px-5 grid grid-cols-2 gap-1 mb-3">
                         <div className="flex items-start gap-1 text-xs">
                           <Battery size={15} /> {batteryCapacity}
                         </div>
@@ -175,12 +175,12 @@ const FeaturedProducts = ({ banner }) => {
                         <div className="hidden md:flex items-start gap-1 text-xs">
                           <MemoryStick size={15} /> {storage}
                         </div>
-                      </div>
+                      </div> */}
 
                       <div className="flex flex-col gap-2 px-4 pb-3">
                         <button
                           onClick={() => handleBuy(product, 1)}
-                          className="border border-[#F16724] text-[#F16724] text-xs font-semibold py-1.5 rounded-md w-full"
+                          className="border border-[#c03b2c] text-[#c03b2c] text-xs font-semibold py-1.5 rounded-md w-full"
                         >
                           Buy Now
                         </button>
@@ -189,7 +189,7 @@ const FeaturedProducts = ({ banner }) => {
                             e.preventDefault();
                             handleCart(product, 1);
                           }}
-                          className="bg-[#F16724] text-white text-xs font-semibold py-1.5 rounded-md w-full"
+                          className="bg-[#c03b2c] text-white text-xs font-semibold py-1.5 rounded-md w-full"
                         >
                           Add to Cart
                         </button>

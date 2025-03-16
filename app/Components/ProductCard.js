@@ -53,20 +53,20 @@ const ProductCard = ({ product }) => {
   (Array.isArray(product?.images) && product.images[0]) ||
   noImg;
 
-  const specs = product?.specifications || [];
-  console.log(specs);
-  const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
-  const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
-  console.log(batteryCapacity); 
+  // const specs = product?.specifications || [];
+  // console.log(specs);
+  // const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
+  // const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
+  // console.log(batteryCapacity); 
   
-  const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
-  const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
-  const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
-                      const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
+  // const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
+  // const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
+  // const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
+  //                     const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
                       
-                      const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
+  //                     const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
                       
-                      console.log(cameraShort);
+  //                     console.log(cameraShort);
 
   const sanitizeSlug = (str) => {
     return str
@@ -95,7 +95,7 @@ const ProductCard = ({ product }) => {
           </div>
 
           {product?.discount ? (
-            <p className="relative  md:-top-32 -top-36 w-20 text-center left-2 bg-[#F16724] text-white text-xs font-bold py-1 px-1 rounded-md">
+            <p className="relative  md:-top-32 -top-36 w-20 text-center left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-1 rounded-md">
               SAVE {product?.discount}%
             </p>
           ) : ""
@@ -108,7 +108,7 @@ const ProductCard = ({ product }) => {
           <div className="mt-auto">
             {product?.discount ? (
               <div className="flex items-center gap-2">
-                <span className="md:text-xl text-sm  font-bold text-[#F16724]">
+                <span className="md:text-xl text-sm  font-bold text-[#c03b2c]">
                 <span className="font-bangla text-sm md:text-xl">৳</span> {discountedPrice}
                 </span>
                 
@@ -118,7 +118,7 @@ const ProductCard = ({ product }) => {
                 
               </div>
             ) : (
-              <span className="md:text-xl text-sm font-bold text-[#F16724]">
+              <span className="md:text-xl text-sm font-bold text-[#c03b2c]">
                 <span className="font-bangla text-sm lg:text-xl">৳</span> {product?.retails_price} 
               </span>
             )}
@@ -126,7 +126,7 @@ const ProductCard = ({ product }) => {
         </div>
       </Link>
 
-      <div className="text-gray-600 px-5 grid mb-3 justify-items-start grid-cols-2 gap-1">
+      {/* <div className="text-gray-600 px-5 grid mb-3 justify-items-start grid-cols-2 gap-1">
       
       <div className="flex items-start gap-1 text-xs">
         <Battery size={15}></Battery>
@@ -145,13 +145,13 @@ const ProductCard = ({ product }) => {
         {storage}
       </div>
 
-    </div>
+    </div> */}
       
       <div className='flex flex-col gap-2 items-center mt-0 mx-3 mb-3'>
-          <button onClick={() => {handleBuy(product,1)}} className="border-[#F16724] text-nowrap border text-xs text-[#F16724] w-full px-[2px] py-1.5 rounded-md font-semibold  transition-colors">Buy Now</button>
+          <button onClick={() => {handleBuy(product,1)}} className="border-[#c03b2c] text-nowrap border text-xs text-[#c03b2c] w-full px-[2px] py-1.5 rounded-md font-semibold  transition-colors">Buy Now</button>
           <button
               onClick={(e) => {e.preventDefault(),handleCart(product,1)}}
-              className="bg-[#F16724] border border-transparent text-xs text-nowrap text-white w-full px-[2px] py-1.5 rounded-md font-semibold  transition-colors"
+              className="bg-[#c03b2c] border border-transparent text-xs text-nowrap text-white w-full px-[2px] py-1.5 rounded-md font-semibold  transition-colors"
               >
               Add to Cart
           </button>

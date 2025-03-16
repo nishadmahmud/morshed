@@ -50,7 +50,7 @@ const DashboardLayout = ({ children }) => {
 
 
   return (
-    <div className="md:flex w-full min-h-screen mx-auto relative lg:pt-5 md:pt-5 pt-1 pb-5">
+    <div className="md:flex w-11/12 min-h-screen mx-auto relative lg:pt-28 md:pt-24 pt-20 pb-5">
       {/* Mobile Menu Button */}
       <button
         className="md:hidden p-4 text-gray-700"
@@ -69,18 +69,11 @@ const DashboardLayout = ({ children }) => {
 
       {/* Sidebar */}
       <div
-        className={`fixed inset-y-0 left-0 transform ${
+        className={`fixed pt-10 md:pt-0 inset-y-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#F16724] to-[#e14e04] px-6 shadow-md md:relative z-20 rounded-lg`}
+        } md:translate-x-0 transition-transform duration-300 ease-in-out w-64 bg-gradient-to-t from-[#8f1002] to-[#c03b2c] px-6 shadow-md md:relative z-20 rounded-lg`}
       >
-        <div className="flex justify-between items-center pt-5">
-          <button
-            className="md:hidden p-2 text-gray-100"
-            onClick={() => setIsSidebarOpen(false)}
-          >
-            <X size={24} />
-          </button>
-        </div>
+        
 
         <div className="flex items-center gap-1 text-gray-100">
           <CircleUser size={30} />
@@ -112,7 +105,7 @@ const DashboardLayout = ({ children }) => {
           </Link>
           <div
             onClick={handleLogout}
-            className="text-white hover:font-semibold transition ease-in-out flex items-center gap-1 hover:text-red-800 cursor-pointer"
+            className="text-white hover:font-semibold transition ease-in-out flex items-center gap-1 hover:text-red-300 cursor-pointer"
           >
             <LogOut size={20} /> Logout
           </div>

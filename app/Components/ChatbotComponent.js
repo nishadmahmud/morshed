@@ -8,13 +8,13 @@ import "react-chatbot-kit/build/main.css";
 const LocationWidget = () => (
   <div className="text-black">
     📍 আমাদের ঠিকানা: {' '}
-     <a className="font-semibold" href="https://maps.app.goo.gl/kWZ3ShvqBB4e68JUA" target="_blank">Level 4, Block A, Shop 038A,West Court. Jamuna Future Park Dhaka., Dhaka.</a>
+     <a className="font-semibold" href="https://maps.app.goo.gl/kWZ3ShvqBB4e68JUA" target="_blank">Level-4 | Block - A | Shop 029B,Jamuna Future Park Dhaka.</a>
   </div>
 );
 
 const ContactWidget = () => (
   <div className="text-black">
-    📞 আমাদের যোগাযোগ নম্বর: <strong>+8801725171313</strong>
+    📞 আমাদের যোগাযোগ নম্বর: <strong>+8801898931468</strong>
   </div>
 );
 
@@ -28,9 +28,9 @@ const OffersWidget = () => (
 const OptionsWidget = (props) => {
   return (
     <div className="flex gap-2 flex-col justify-center ml-4">
-      <button className="bg-gradient-to-t from-[#f96d28] to-[#d56025] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showLocation()}>📍 শপ লোকেশন</button>
-      <button className="bg-gradient-to-t from-[#d56025] to-[#f96d28] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showContact()}>📞 যোগাযোগ</button>
-      <button className="bg-gradient-to-t from-[#f96d28] to-[#d56025] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showOffers()}>🎉 অফার</button>
+      <button className="bg-gradient-to-t from-[#c03b2c] to-[#9c1405] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showLocation()}>📍 শপ লোকেশন</button>
+      <button className="bg-gradient-to-t from-[#9c1405] to-[#c03b2c] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showContact()}>📞 যোগাযোগ</button>
+      <button className="bg-gradient-to-t from-[#c03b2c] to-[#9c1405] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showOffers()}>🎉 অফার</button>
     </div>
   );
 };
@@ -38,7 +38,7 @@ const OptionsWidget = (props) => {
 
 // Chatbot config
 const config = {
-  botName: "Perfect Gadget BD",
+  botName: "Apple Newton",
   initialMessages: [
     createChatBotMessage("স্যার, কিভাবে সহযোগিতা করতে পারি?", {
       widget: "options",

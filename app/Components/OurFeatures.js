@@ -1,16 +1,11 @@
-import { Store } from 'lucide-react';
+import { Settings2, Store } from 'lucide-react';
 import { MessageCircle, MonitorPlay, Settings, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
 
 const OurFeatures = () => {
     const services = [
-      {
-        icon: Smartphone,
-        title: "Outfit Finder",
-        description: "Find Outfit For Gadgets",
-        link : '/'
-      },
+      
         {
           icon: Store,
           title: "Store Locator",
@@ -21,14 +16,20 @@ const OurFeatures = () => {
           icon: MonitorPlay,
           title: "Complain/Advice",
           description: "We Value your Feedback",
-          link : 'https://www.facebook.com/Perfectgadgetb'
+          link : 'https://www.facebook.com/share/18oagGM1az/?mibextid=wwXIfr'
         },
         {
           icon: MessageCircle,
           title: "Online Support",
           description: "Get Support on WhatsApp",
-          link : 'https://wa.me/+8801725171313'
+          link : 'https://wa.me/+8801898931468'
         },
+        {
+          icon: Settings2,
+          title: "Apple newton care",
+          description: "Repair your device",
+          link : 'tel:+8801898931468'
+        }
        
       ]
     return (
@@ -40,7 +41,7 @@ const OurFeatures = () => {
          key={index}
          className="block group"
        >
-         <div className="flex items-center lg:items-start gap-1 rounded-xl border bg-[#F16724] p-3 lg:p-6 shadow-md transition-all duration-200  hover:scale-[1.02]">
+         <div className="flex items-center lg:items-start gap-1 rounded-xl border bg-[#c03b2c] p-3 lg:p-6 shadow-md transition-all duration-200  hover:scale-[1.02]">
            <div className="rounded-full p-1 text-black shrink-0  group-hover:text-white transition-colors">
              <service.icon className="h-6 w-6 text-[#ffffff]" />
            </div>

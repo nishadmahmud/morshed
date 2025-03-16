@@ -43,7 +43,7 @@ export default async function Home() {
   return (
     <>
       <PromotionModal promotionBanner={promotion?.data}/>
-      <HeroSlider slider={slider} banner={banner}/>
+      <HeroSlider slider={slider} banner={banner} data={categories}/>
       <div>
         <FeaturedCategories categories={categories}/>
         <OurFeatures />

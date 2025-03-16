@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import companyLogo from '/public/PerfectGadgetBD-logo (1) 1.png'
+import companyLogo from '/public/logo.png'
 import { FaBehance, FaFacebook, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa6"
 import { FaLinkedin, FaYoutube } from "react-icons/fa"
 import { Mail, MapPin, Phone } from "lucide-react"
@@ -19,9 +19,9 @@ export default function Footer() {
             <Link href={'/'}>
             <Image 
               src={companyLogo || noImg} 
-              alt="Cel-tel"
-              width={120}
-              height={40}
+              alt="apple-newton"
+              width={280}
+              height={150}
               className="mb-4"
             />
             </Link>
@@ -32,8 +32,8 @@ export default function Footer() {
 
               <div className="flex flex-wrap gap-2 mt-5">
                 {[
-                  { icon: FaWhatsapp, href: "https://wa.me/+8801725171313" },
-                  { icon: FaFacebook, href: "https://www.facebook.com/Perfectgadgetb" },
+                  { icon: FaWhatsapp, href: "https://wa.me/+8801898931468" },
+                  { icon: FaFacebook, href: "https://www.facebook.com/share/18oagGM1az/?mibextid=wwXIfr" },
                   { icon: FaTiktok, href: "#tiktok" }, // Behance
                   { icon: FaInstagram, href: "#instagram" },
                   { icon: FaLinkedin, href: "#linkedin" },
@@ -69,8 +69,8 @@ export default function Footer() {
             <h3 className="font-bold text-lg text-[#ffffff] mb-4 uppercase">Help Center</h3>
             <ul className="space-y-2">
               <li><Link href="/faq" className="text-white hover:underline">FAQ</Link></li>
-              <li><Link href="tel:+8801725171313" className="text-white hover:underline">Support Center</Link></li>
-              <li><Link href="https://wa.me/+8801725171313" className="text-white hover:underline">Feedback</Link></li>
+              <li><Link href="tel:+8801898931468" className="text-white hover:underline">Support Center</Link></li>
+              <li><Link href="https://wa.me/+8801898931468" className="text-white hover:underline">Feedback</Link></li>
             </ul>
           </div>
 
@@ -98,8 +98,8 @@ export default function Footer() {
             <div className="space-y-2">
                 <div className="flex items-center gap-2 border border-white p-2 rounded-md">
                   <Phone size={25} className="w-7 h-7 border-r border-white text-white pr-2" />
-                  <Link href="tel:+8801725171313" className="text-white hover:underline text-xs">
-                  +8801725171313
+                  <Link href="tel:+8801898931468" className="text-white hover:underline text-xs">
+                  +8801898931468
                   </Link>
                 </div>
                 {/* <div className="flex items-center gap-2 border border-white p-2 rounded-md">
@@ -113,7 +113,7 @@ export default function Footer() {
                   <MapPin size={45} className=" border-r text-white border-white pr-2" />
 
                   <p className="text-white text-[10px]">
-                  Level 4, Block A, Shop 038A,West Court. Jamuna Future Park Dhaka., Dhaka, Bangladesh, 1212
+                  Level-4 | Block - A | Shop 029B, Jamuna Future Park, Dhaka, Bangladesh.
                   </p>
                 </div>
                 </Link>

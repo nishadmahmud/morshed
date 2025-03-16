@@ -163,8 +163,8 @@ const Page = ({ params }) => {
 
   return (
     <section className="bg-white">
-      <div className="px-5 lg:p-8 lg:pt-2 md:pt-2 pt-2 mx-auto text-black max-w-7xl overflow-hidden sans">
-        <h1 className="text-base sans lg:text-xl font-semibold lg:hidden block lg:text-nowrap">
+      <div className="px-5 lg:pt-28 md:pt-24 pt-20 mx-auto text-black max-w-7xl overflow-hidden sans">
+        <h1 className="text-base sans lg:text-xl font-semibold lg:hidden block text-ellipsis overflow-hidden line-clamp-1 lg:text-nowrap">
           {product?.data.name}
         </h1>
         <Breadcrumbs />
@@ -236,7 +236,7 @@ const Page = ({ params }) => {
               {/* discount ribon */}
               {product?.data.discount ? (
                 <p
-                  className="text-white bg-[#F16724] rounded-md  absolute py-1 
+                  className="text-white bg-[#c03b2c] rounded-md  absolute py-1 
               px-[6px] text-sm top-5 md:top-3 lg:top-3 left-12"
                 >
                   SAVE {product?.data?.discount}%
@@ -293,7 +293,7 @@ const Page = ({ params }) => {
                     </span>
 
                     {product?.data?.discount ? (
-                      <span className="text-sm font-bold text-[#F16724] ]  font-bangla ">
+                      <span className="text-sm font-bold text-[#c03b2c] ]  font-bangla ">
                         {(
                           (selectedSalePrice ||
                             product?.data?.retails_price ||
@@ -340,7 +340,7 @@ const Page = ({ params }) => {
                 </p>
               </div>
               <Link
-                href="https://wa.me/+8801725171313"
+                href="https://wa.me/+8801898931468"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center w-fit space-x-3 text-xs px-4 py-1 text-white font-semibold rounded-md bg-gradient-to-r from-green-400 to-green-600 hover:from-green-500 hover:to-green-700 hover:text-white transition-colors duration-200 mb-3"
@@ -404,7 +404,7 @@ const Page = ({ params }) => {
                         onClick={() => handleStorageChange(storage)}
                         className={`px-4 text-xs py-2 rounded ${
                           selectedStorage === storage
-                            ? "bg-[#F16724] text-white"
+                            ? "bg-[#c03b2c] text-white"
                             : "bg-gray-200 text-gray-800"
                         }`}
                       >
@@ -440,14 +440,14 @@ const Page = ({ params }) => {
                 <div className="flex gap-4">
                   <button
                     onClick={() => handleBuy(product?.data, quantity)}
-                    className="lg:px-5 px-2.5 py-0.5 text-sm  md:py-1 bg-[#F16724] text-white hover:bg-white hover:text-[#F16724] hover:border-[#F16724] rounded-sm border border-transparent"
+                    className="lg:px-5 px-2.5 py-0.5 text-sm  md:py-1 bg-[#c03b2c] text-white hover:bg-white hover:text-[#c03b2c] hover:border-[#c03b2c] rounded-sm border border-transparent"
                   >
                     Buy Now
                   </button>
 
                   <button
                     disabled={isCartItem !== undefined}
-                    className={`border border-[#F16724] md:px-4 text-sm md:py-1 px-2.5 py-1 bg-transparent text-[#F16724] hover:bg-[#F16724] hover:text-white rounded-sm ${
+                    className={`border border-[#c03b2c] md:px-4 text-sm md:py-1 px-2.5 py-1 bg-transparent text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white rounded-sm ${
                       isCartItem !== undefined
                         ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                         : ""
@@ -495,7 +495,7 @@ const Page = ({ params }) => {
                 Specification
               </h2>
 
-              <div className="w-[7.5rem] h-[2px] bg-[#F16724] mt-1 mb-4"></div>
+              <div className="w-[7.5rem] h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
               <table
                 id="Specification"
                 className="table-auto w-full text-sm text-left"
@@ -549,7 +549,7 @@ const Page = ({ params }) => {
               className="mt-5 p-3 text-sm border rounded-lg"
             >
               <h2 className="text-xl font-bold text-gray-900">Description</h2>
-              <div className="w-[6.5rem] h-[2px] bg-[#F16724] mt-1 mb-4"></div>
+              <div className="w-[6.5rem] h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
               {product?.data.description ? (
                 <p className="text-gray-600 mb-4">
                   {product?.data.description}
@@ -564,12 +564,12 @@ const Page = ({ params }) => {
               className="bg-white text-sm border rounded-lg p-6 mt-5 shadow-sm"
             >
               <h2 className="text-xl font-bold text-gray-900">Warranty</h2>
-              <div className="w-24 h-[2px] bg-[#F16724] mt-1 mb-4"></div>
+              <div className="w-24 h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
               <p className="text-gray-700">
                 Explore our{" "}
                 <a
                   href="/warranty-policy"
-                  className="text-[#F16724] font-semibold hover:underline"
+                  className="text-[#c03b2c] font-semibold hover:underline"
                 >
                   Warranty Policy
                 </a>{" "}
@@ -701,7 +701,7 @@ const Page = ({ params }) => {
             <button
               disabled={isCartItem !== undefined}
               onClick={() => handleCart(product?.data, quantity)}
-              className={`border px-4 rounded-md py-1 border-[#F16724] text-[#F16724] hover:bg-[#F16724] hover:text-white  ${
+              className={`border px-4 rounded-md py-1 border-[#c03b2c] text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white  ${
                 isCartItem !== undefined
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : ""
@@ -767,7 +767,7 @@ const Page = ({ params }) => {
             <button
               disabled={isCartItem !== undefined}
               onClick={() => handleCart(product?.data, quantity)}
-              className={`border px-4 py-1 border-[#F16724] text-[#F16724] hover:bg-[#F16724] hover:text-white  ${
+              className={`border px-4 py-1 border-[#c03b2c] text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white  ${
                 isCartItem !== undefined
                   ? "bg-gray-300 text-gray-500 cursor-not-allowed"
                   : ""

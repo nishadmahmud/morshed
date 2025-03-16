@@ -75,7 +75,7 @@ const MyOrders = () => {
 
   return (
     <div className="px-4 md:px-0 w-full flex flex-col overflow-hidden">
-      <h2 className="text-xl font-bold my-6 text-[#F16724] text-center md:text-left">
+      <h2 className="text-xl font-bold my-6 text-[#c03b2c] text-center md:text-left">
         My Orders
       </h2>
       <div className="bg-white text-black md:p-2 p-1 shadow-md rounded-lg">
@@ -89,7 +89,7 @@ const MyOrders = () => {
                 className={`relative md:px-3 md:py-2 md:text-xs text-[8px] font-medium transition-colors duration-300 whitespace-nowrap
                                     ${
                                       activeTab === tab.type
-                                        ? "text-[#F16724]"
+                                        ? "text-[#c03b2c]"
                                         : "text-gray-500"
                                     }`}
               >
@@ -100,7 +100,7 @@ const MyOrders = () => {
                 {activeTab === tab.type && (
                   <motion.div
                     layoutId="underline"
-                    className="absolute left-0 right-0 bottom-0 h-[1px] sm:h-1 bg-[#F16724]"
+                    className="absolute left-0 right-0 bottom-0 h-[1px] sm:h-1 bg-[#c03b2c]"
                   />
                 )}
               </button>

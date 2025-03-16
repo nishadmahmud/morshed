@@ -28,10 +28,10 @@ const FeaturedCategories = ({ categories }) => {
               className="group "
             >
               <div className="flex flex-col items-center justify-between flex-grow text-black lg:h-30 py-1 
-              group-hover:text-[#F16724] transition ease-in-out">
+              group-hover:text-[#c03b2c] transition ease-in-out">
                 
                 {/* Image Wrapper */}
-                <div className="lg:p-10 p-4 flex items-center border-gray-200 shadow-sm group-hover:border-[#F16724]  relative lg:h-40 lg:w-40 rounded-md border 
+                <div className="lg:p-10 p-4 flex items-center border-gray-200 shadow-sm group-hover:border-[#c03b2c]  relative lg:h-40 lg:w-40 rounded-md border 
                 transition-transform duration-300 group-hover:scale-105 bg-white">
                   <Image
                     src={item?.image_url ?? noImg}
