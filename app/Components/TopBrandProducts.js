@@ -57,15 +57,15 @@ const TopBrandProducts = ({ brands }) => {
         {[null, ...brands?.data].map((brand, index) => (
           <TabPanel key={index}>
             {isLoading ? (
-              <div className="grid w-11/12 gap-5 mx-auto grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
-                {Array.from({ length: 5 }).map((_, idx) => (
+              <div className="grid w-11/12 gap-5 mx-auto grid-cols-2 md:grid-cols-3 lg:grid-cols-6">
+                {Array.from({ length: 6 }).map((_, idx) => (
                   <CardSkeleton key={idx} />
                 ))}
               </div>
             ) : (
-              <div className="grid grid-cols-2 w-11/12 mx-auto md:grid-cols-3 lg:grid-cols-5 lg:gap-10 gap-5">
+              <div className="grid grid-cols-2 w-11/12 mx-auto md:grid-cols-3 lg:grid-cols-6 lg:gap-5 gap-3">
                 {pdcByBrands?.data.length > 0 ? (
-                  pdcByBrands?.data.slice(0, 5).map((product) => (
+                  pdcByBrands?.data.slice(0, 6).map((product) => (
                     <ProductCard key={product.id} product={product} />
                   ))
                 ) : (

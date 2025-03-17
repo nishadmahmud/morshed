@@ -186,14 +186,14 @@ console.log("userrrrrr",user);
           )}
 
            {/* logo large device */}
-           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='mr-10 w-72 h-auto'/></Link>
+           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='ml-2 w-64 h-auto'/></Link>
 
           {/* ==========category + search========== */}
             <div className='hidden relative md:flex lg:flex lg:justify-center px-5 py-1.5'>
 
                 <div className='lg:flex hidden'>
 
-                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3 rounded-sm border-t border-b border-l  outline-none text-black bg-white text-xs pr-32'/>
+                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3 rounded-sm border-t border-b border-l  outline-none text-black bg-white text-xs pr-44'/>
 
                 <div className='border bg-white p-3 pr-2.5 rounded-r-sm px-0'>
                 <div 

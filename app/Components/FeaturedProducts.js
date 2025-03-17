@@ -56,7 +56,7 @@ console.log(banner);
       <Heading title={"Flash Sale"} />
       <div className="w-11/12 mx-auto">
         <div className="flex mt-5">
-          <div className="w-full h-[50vh] object-cover">
+          <div className="w-full h-[55vh] object-cover">
             <Image
             unoptimized
               width={400}
@@ -71,7 +71,7 @@ console.log(banner);
         <div className="mt-8 lg:mt-10 flex flex-col lg:flex-row gap-6">
           {/* Product Grid */}
           <div className="flex-1">
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-4">
               {isLoading ? (
                 Array.from({ length: 10 }).map((_, idx) => (
                   <CardSkeleton key={idx} />

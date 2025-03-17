@@ -14,7 +14,7 @@ export default function Page() {
     console.log(blogs);
 
     return (
-        <div className="w-9/12 mx-auto py-10">
+        <div className="w-9/12 mx-auto py-10 lg:pt-32 md:pt-28 pt-20">
             <div className="flex justify-between gap-16">
             <div className="grid gap-8 md:grid-cols-2 w-11/12">
                 {blogs?.data.length > 0 ? (
