@@ -9,7 +9,7 @@ const FeaturedCategories = ({ categories }) => {
     <div>
       <div className="lg:mt-8 lg:mb-4">
         <Heading title={"FEATURED CATEGORIES"} />
-        <p className="text-sm text-black w-11/12 mx-auto">
+        <p className="text-sm text-center text-black w-11/12 mx-auto">
           Get your desired product from featured category
         </p>
       </div>

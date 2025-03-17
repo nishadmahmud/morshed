@@ -64,7 +64,7 @@ console.log(selectedProduct1);
   };
 
   return (
-    <div className="p-6 lg:pt-4 pt-2 w-11/12 mx-auto">
+    <div className="p-6 lg:pt-32 md:pt-28 pt-20 w-11/12 mx-auto">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
 
         <div className="mb-12">

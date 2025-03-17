@@ -1,279 +1,358 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import useStore from '../../CustomHooks/useStore';
-import Image from 'next/image';
-import { IoClose } from 'react-icons/io5';
-import { useRouter } from 'next/navigation';
-import { FaRegTrashAlt } from "react-icons/fa";
+"use client";
+import React, { useEffect, useState } from "react";
+import useStore from "../../CustomHooks/useStore";
+import Image from "next/image";
+import noImg from "/public/no-image.jpg";
+import Link from "next/link";
 
 const CartPage = () => {
-    const {getCartItems,refetch,setRefetch,handleCartItemDelete,handleDncQuantity,handleIncQuantity} = useStore();
-    const [cartItems,setCartItems] = useState([]);
-    const [checked,setChecked] = useState(false);
-    const [instructions,setInstructions] = useState('');
-    const [location,setLocation] = useState('');
-    const [zipCode,setZipCode] = useState('');
-    const [cartTotal, setCartTotal] = useState(0);
-    const [shippingCost, setShippingCost] = useState(0);
-    const router = useRouter();
-    useEffect(() => {
-        setCartItems(getCartItems());
-        if(refetch){
-            setRefetch(false)
-            setCartItems(getCartItems());
-        }
-    },[refetch,getCartItems,cartTotal,setRefetch])
-    
-    const handleRedirect = () => {
-        if(checked){
-            router.push('/checkout')
-        }else{
-            alert('Please Accept Terms & Conditions First')
-        }
+  const {
+    getCartItems,
+    refetch,
+    setRefetch,
+    handleCartItemDelete,
+    handleDncQuantity,
+    handleIncQuantity,
+  } = useStore();
+  const [cartItems, setCartItems] = useState([]);
+  const [termsAgreed, setTermsAgreed] = useState(false);
+  const [cartTotal, setCartTotal] = useState(0);
+
+
+  useEffect(() => {
+    setCartItems(getCartItems());
+    if (refetch) {
+      setRefetch(false);
+      setCartItems(getCartItems());
     }
+  }, [refetch, getCartItems, cartTotal, setRefetch]);
+
+  useEffect(() => {
+    const total = cartItems
+      .reduce(
+        (prev, curr) =>
+          prev +
+          (curr?.discount
+            ? curr.discounted_price  *
+              curr.quantity
+            : curr?.retails_price * curr.quantity),
+        0
+      )
+      .toFixed(2);
+    setCartTotal(total);
+  }, [cartItems]);
 
 
-    useEffect(() => {
-        const total = (cartItems.reduce(
-            (prev, curr) => prev + ((curr?.discount ?  (curr?.retails_price - ((curr?.retails_price * curr.discount) / 100).toFixed(0)) * curr.quantity  : curr?.retails_price * curr.quantity)),
-            0
-          )).toFixed(2);
-        setCartTotal(total);
-    }, [cartItems]);
+  const handleClearCart = () => {
+    setRefetch(true);
+    localStorage.removeItem("cart");
+  };
 
-    const handleCalculation = (e) => {
-        e.preventDefault();
-        const zip = e.target.zipcode.value;
-        setZipCode(zip);
-        setShippingCost(200);
-    } 
-
-    const handleClearCart = () => {
-        setRefetch(true);
-        localStorage.removeItem('cart');
-    }
-
-
-    return (
-        <div className='text-black pt-24 lg:pt-40 md:pt-20 w-11/12 mx-auto'>
-            {/* desktop cart */}
-            <div className='overflow-x-scroll hidden md:block '>
-            <table className='text-black min-w-[800px] md:w-full mt-10 bg-white rounded-md'>
-                <thead>
-                    <tr className=' border font-semibold border-gray-300 '>
-                        <th className=' font-semibold align-middle text-center  py-4'><p>Product </p></th>
-                        <th className='text-center font-semibold '>Price</th>
-                        <th className='text-center font-semibold '>Quantity</th>
-                        <th className='text-center font-semibold '>Total</th>
-                        <th className='text-center font-bold '></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {
-                       cartItems.length > 0  ?
-                        cartItems.map((item,idx) => {
-                            console.log(item);
-                            return <tr key={idx} className='text-black  justify-items-center items-center  border-gray-300 border-t-0 border'>
-                                
-                                <td className=' flex gap-10 align-middle'>
-                                    {  item?.images?.length > 0 ? 
-                                        <Image
-                                            src={item?.images[0]}
-                                            height={50} 
-                                            width={50} 
-                                            alt="mobile-phone"
-                                            quality={75}
-                                        />  : 
-                                       item?.image_path ? 
-                                        <Image 
-                                        src={item.image_path}
-                                        height={50}
-                                        width={50}
-                                        alt='product'
-                                        />
-                                        :
-                                        <Image
-                                            src={'https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg'}
-                                            height={50} 
-                                            width={50} 
-                                            alt="mobile-phone"
-                                            quality={75}
-                                        />
-                                    }
-                                    
-                                    <p className='font-semibold my-auto'>{item?.name}</p>
-                                </td>
-                               
-                                <td className='font-semibold text-center align-middle'>
-                                    {item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price} ৳
-                                </td>
-                                <td className='text-center align-middle'>
-                                <div className="flex mx-auto items-center border border-gray-300 rounded w-fit">
-                                    <input
-                                    type="number"
-                                    value={ item.quantity}
-                                    min={1}
-                                    className="w-12 h-10 text-center border-none bg-white focus:outline-none no-arrows"
-                                    />
-                                    <div className="flex flex-col justify-between ">
-                                    <button
-                                        onClick={() =>
-                                            handleIncQuantity(item?.id,item.quantity)
-                                        }
-                                        className="px-2 border-b border-l border-gray-300"
-                                    >
-                                        ▲
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            handleDncQuantity(item?.id,item.quantity)
-                                        }
-                                        className="px-2 border-l border-gray-300"
-                                    >
-                                        ▼
-                                    </button>
-                                    </div>
-                                </div>
-                                </td>
-                                <td className='font-semibold text-center align-middle'>
-                                    {(item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price) * item?.quantity } ৳
-                                </td>
-                                <td className='text-center align-middle px-4 '>
-                                    <IoClose size={30} onClick={() => handleCartItemDelete(item?.id)} className='cursor-pointer hover:bg-red-500 p-1.5 rounded-full hover:text-white text-red-500'/>
-                                </td>
-                                
-                            </tr>
-                        }) 
-                        : <tr className='text-black text-center border border-gray-300 border-t-0'>
-                            <td colSpan="6" className="text-center py-5 text-red-500 font-semibold">No products were added to the cart</td>
-                        </tr>
-                    }
-                </tbody>
-                {   cartItems.length > 0  ?
-                    <tfoot className='border border-t-0 border-gray-300 '> 
-                    <tr>
-                    <td className='py-4 '><button onClick={handleClearCart} className='bg-[#4eb0be] text-sm text-white py-2 px-5 ml-5 rounded-md'>Clear Cart</button></td>
-                    </tr>
-                </tfoot> : null
-                }
-            </table>
-            </div>
-
-            {/* mobile cart */}
-            <div className='flex flex-col gap-y-5 md:hidden'>
-                {
-                    cartItems.length > 0  ?
-                    cartItems.map((item,idx) => {
-                        return <div key={idx} className='flex gap-3 space-y-3 items-center bg-white p-5'>
-                            {
-                             item?.image_path ?   
-                            <Image height={56}
-                            width={56} src={item.image_path} alt={item.name}/> : item?.images && item?.images.length > 0 ?   
-                            <Image height={56}
-                            width={56} src={item.images[0]} alt={item.name}/>  :
-                            <Image
-                            src={'https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg'}
-                            height={56}
-                            width={56}
-                            alt={item.name}
-                            quality={100}
-                          />
-                            }
-                            <div className=' flex-1'>
-                                <h3 className='font-semibold'>{item?.name}</h3>
-                                <div className="flex items-center justify-between">
-                                    <p className='font-semibold'>{item?.retails_price} ৳</p>
-                                    <div className="flex mx-auto items-center border border-gray-300 rounded w-fit gap-5">
-                                    <input
-                                    type="number"
-                                    value={ item?.quantity}
-                                    min={1}
-                                    className="w-12 h-10 bg-white text-center border-none focus:outline-none no-arrows"
-                                    />
-                                    <div className="flex flex-col justify-between ">
-                                    <button
-                                        onClick={() =>
-                                            handleIncQuantity(item?.id,item?.quantity)
-                                        }
-                                        className="px-2 border-b border-l border-gray-300"
-                                    >
-                                        ▲
-                                    </button>
-                                    <button
-                                        onClick={() =>
-                                            handleDncQuantity(item?.id,item?.quantity)
-                                        }
-                                        className="px-2 border-l border-gray-300"
-                                    >
-                                        ▼
-                                    </button>
-                                    </div>
-                                </div>
-                                </div>
-                            </div>
-                            <FaRegTrashAlt onClick={() => handleCartItemDelete(item?.id)} className='text-xl'/>
-                        </div>
-
-                    }) : <p className='text-black text-center border border-gray-300 border-t-0'>No products were added to the cart</p>
-                }
-            </div>
-            <div className='grid grid-cols-1 md:grid-cols-2 gap-10 py-10'>
-                {/* shiiping fees */}
-                    <div className='col-span-1 '>
-                        <h3 className='text-[#4D5959]  text-lg font-semibold'>Special instructions for seller</h3>
-                        
-                        <textarea onChange={(e) => setInstructions(e.target.value)} rows={5} className='w-full rounded-md bg-[#F2F3F7] border border-gray-300 mt-10 outline-none'></textarea>
-                        <h3 className='text-[#4D5959] mt-10 text-lg font-semibold'>Get shipping estimates
-                        </h3>
-                        <form onSubmit={handleCalculation} className='grid grid-cols-2 gap-3 mt-5'>
-                            <div className='grid-cols-1'>
-                            <p className='my-3'>Country</p>
-                            <select name="country" onChange={(e) => setLocation(e.target.value)} id="country" className='p-2 w-full rounded-md bg-[#F2F3F7] border-gray-300 border outline-none'>
-                                <option value="bd">Bangladesh</option>
-                                
-                            </select>
-                            </div>
-                            <div className='grid-cols-1'>
-                            <p className='my-3'>Zip/Postal Code</p>
-                            <input type="text" name='zipcode'  className='w-full p-2 rounded-md bg-[#F2F3F7] border-gray-300 border outline-none'/>
-                            </div>
-
-                            <button  className='bg-[#4eb0be] py-2 text-white mt-5 rounded-md px-5' type="submit">Calculate Shipping</button>
-
-                        </form>
-                            <p className='text-sm mt-8'>There is one shipping rate available for {zipCode || ''} Bangladesh.</p>
-                            <li className='text-sm mt-8'>BDT 200 depending on location at BDT 200.00</li>
-                    </div>
-
-                    {/* cart totals */}
-                    <div className='col-span-1 '>
-                        <h3 className='text-[#4D5959]  text-lg font-semibold'>Cart Totals</h3>
-                        <div className='border border-gray-300 font-semibold p-5 text-[#4D5959] flex gap-20 text-base mt-10'>
-                            <p>Cart Totals</p>
-                            <p>{shippingCost ?  cartTotal + shippingCost : cartTotal} ৳</p>
-                        </div>
-                        <p className='text-[#575E63] text-sm mt-4'>* The final price with your coupon code will apply in Checkout page</p>
-                        <p className='text-[#575E63] text-sm mt-4'>
-                        * All charges are billed in BDT. While the content of your cart is currently displayed in BDT, the checkout will use BDT at the most current exchange rate.</p>
-
-                        <div className='flex gap-1 mt-5'>
-                            <input type="checkbox" onChange={(e) => setChecked(e.target.checked)} className='bg-white dark:bg-white'/>
-                            <label >I agree with the terms and conditions.</label>
-                        </div>
-                        <Image 
-                            src={'https://www.custommacbd.com/cdn/shop/files/SSL_Commerz_Pay_With_logo_All_Size-01_320x.png?v=1614930139'}
-                            height={500}
-                            width={500}
-                            className="mt-3"
-                            alt="ssl-commerce"
-                        />
-                       <div className="w-full flex justify-end">
-                       <button onClick={handleRedirect} className='bg-[#4eb0be] py-2 text-white mt-5 rounded-md px-5'>Processed to Checkout</button>
-                       </div>
-                    </div>
-            </div>
+  return (
+    <div className="bg-gray-50 min-h-screen">
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl text-black font-bold flex items-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+              />
+            </svg>
+            Your Cart
+            <span className="ml-2 text-sm bg-gray-100 text-gray-800 py-1 px-2 rounded-full">
+              {cartItems.length} items
+            </span>
+          </h1>
+          <Link
+            href="/"
+            className="text-sm text-gray-500 hover:text-blue-600 flex items-center"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-4 w-4 mr-1"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M15 19l-7-7 7-7"
+              />
+            </svg>
+            Continue Shopping
+          </Link>
         </div>
-    );
+
+        <div className="grid md:grid-cols-3 gap-8">
+          {/* Cart Items */}
+          <div className="md:col-span-2 space-y-4">
+            {cartItems.length > 0 ? (
+              <>
+                {cartItems.map((item) => (
+                  <div
+                    key={item.id}
+                    className="bg-white rounded-lg border overflow-hidden shadow-sm"
+                  >
+                    <div className="p-4">
+                      <div className="flex gap-4">
+                        <div className="flex-shrink-0 rounded-md overflow-hidden border bg-white p-2">
+                          {item?.images && item?.images.length > 0 ? (
+                            <Image
+                              src={item.images[0]}
+                              alt={item.name}
+                              width={80}
+                              height={80}
+                              className="object-contain"
+                            />
+                          ) : item?.image_path ? (
+                            <Image
+                              src={item.image_path}
+                              alt={item.name}
+                              width={80}
+                              height={80}
+                              className="object-contain"
+                            />
+                          ) : (
+                            <Image
+                              src={noImg}
+                              alt={item.name}
+                              width={80}
+                              height={80}
+                              className="object-contain"
+                            />
+                          )}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex flex-col h-full justify-between">
+                            <div>
+                              <h3 className="font-medium text-base text-black line-clamp-2">
+                                {item.name}
+                              </h3>
+                              <p className="text-blue-600 font-bold mt-1">
+                                 {item.discounted_price ? item.discounted_price.toLocaleString() : item.retails_price.toLocaleString()} 
+                              </p>
+                            </div>
+                            <div className="flex items-center justify-between mt-4">
+                              <div className="flex items-center border rounded-md">
+                                <button
+                                  className="h-8 w-8 flex items-center justify-center text-gray-500 hover:bg-gray-100"
+                                  onClick={() =>
+                                    handleDncQuantity(item.id, item.quantity)
+                                  }
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-3 w-3"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M20 12H4"
+                                    />
+                                  </svg>
+                                </button>
+                                <span className="w-8 text-center text-gray-900">
+                                  {item.quantity}
+                                </span>
+                                <button
+                                  className="h-8 w-8 flex items-center justify-center text-gray-500 hover:bg-gray-100"
+                                  onClick={() =>
+                                    handleIncQuantity(item.id, item.quantity)
+                                  }
+                                >
+                                  <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="h-3 w-3"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M12 4v16m8-8H4"
+                                    />
+                                  </svg>
+                                </button>
+                              </div>
+                              <button
+                                className="text-red-500 hover:text-red-700 text-sm flex items-center px-2 py-1 hover:bg-red-50 rounded"
+                                onClick={() => handleCartItemDelete(item.id)}
+                              >
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="h-4 w-4 mr-1"
+                                  fill="none"
+                                  viewBox="0 0 24 24"
+                                  stroke="currentColor"
+                                >
+                                  <path
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                                  />
+                                </svg>
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+                <div className="flex justify-end">
+                  <button
+                    className="text-red-500 border border-red-500 px-4 py-2 rounded hover:bg-red-50 text-sm font-medium"
+                    onClick={handleClearCart}
+                  >
+                    Clear Cart
+                  </button>
+                </div>
+              </>
+            ) : (
+              <div className="text-center py-12 bg-white rounded-lg border">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  className="h-12 w-12 mx-auto text-gray-400 mb-4"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"
+                  />
+                </svg>
+                <h3 className="text-lg font-medium mb-2">Your cart is empty</h3>
+                <p className="text-gray-500 mb-6">
+                  Looks like you haven&apos;t added anything to your cart yet.
+                </p>
+                <Link
+                  href="/"
+                  className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                >
+                  Start Shopping
+                </Link>
+              </div>
+            )}
+          </div>
+
+          {/* Order Summary */}
+          <div className="md:col-span-1">
+            <div className="bg-white rounded-lg border shadow-sm">
+              <div className="p-6">
+                <h2 className="text-xl font-bold mb-4 text-black">Order Summary</h2>
+                <div className="space-y-3">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Subtotal</span>
+                    <span className="text-gray-800">৳ {cartTotal.toLocaleString()}</span>
+                  </div>
+                  <div className="border-t my-3 pt-3"></div>
+                  <div className="flex justify-between font-bold">
+                    <span className="text-black">Total</span>
+                    <span className="text-blue-600">৳ {cartTotal.toLocaleString()}</span>
+                  </div>
+                </div>
+
+                <div className="mt-4">
+                  <p className="text-xs text-gray-500">
+                    * The final price with your coupon code will apply in
+                    Checkout page
+                  </p>
+                  <p className="text-xs text-gray-500 mt-2">
+                    * All charges are billed in BDT. While the content of your
+                    cart is currently displayed in BDT, the checkout will use
+                    BDT at the most current exchange rate.
+                  </p>
+                </div>
+              </div>
+              <div className="p-6 border-t">
+                <div className="w-full space-y-4">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="terms"
+                      className="mr-2"
+                      checked={termsAgreed}
+                      onChange={(e) => setTermsAgreed(e.target.checked)}
+                    />
+                    <label htmlFor="terms" className="text-sm text-gray-700">
+                      I agree with the terms and conditions.
+                    </label>
+                  </div>
+                  <Link
+                    href={'/checkout'}
+                    className={`w-full py-3 px-4 rounded font-medium flex items-center justify-center ${
+                      termsAgreed
+                        ? "bg-blue-600 text-white hover:bg-blue-700"
+                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                    }`}
+                    disabled={!termsAgreed}
+                  >
+                    Proceed to Checkout
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-4 w-4 ml-2"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
+                    </svg>
+                  </Link>
+                  <div className="flex flex-wrap justify-center gap-2 mt-4">
+                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
+                      <span className="text-[8px] text-gray-500">Visa</span>
+                    </div>
+                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
+                      <span className="text-[8px] text-gray-500">Master</span>
+                    </div>
+                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
+                      <span className="text-[8px] text-gray-500">Amex</span>
+                    </div>
+                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
+                      <span className="text-[8px] text-gray-500">PayPal</span>
+                    </div>
+                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
+                      <span className="text-[8px] text-gray-500">bKash</span>
+                    </div>
+                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
+                      <span className="text-[8px] text-gray-500">Nagad</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default CartPage;
