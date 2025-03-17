@@ -86,7 +86,7 @@ const HeroSlider = ({ slider, banner, data }) => {
            </Link>
         </div>
           {/* Slider Section */}     
-        <div className="lg:col-span-2 w-full flex flex-col h-[39vh] justify-center overflow-hidden relative rounded-md lg:h-[75vh] md:h-[55vh] lg:mb-4">
+        <div className="lg:col-span-2 w-full flex flex-col h-[35vh] justify-center overflow-hidden relative rounded-md lg:h-[75vh] md:h-[55vh] lg:mb-4">
           
           <Swiper
             ref={swiperRef}
