@@ -32,7 +32,7 @@ const CheckoutPage = () => {
       const [shippingFee, setShippingFee] = useState(70); 
 
     return (
-            <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-5 lg:pt-10 w-11/12 mx-auto'>
+            <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-16 lg:pt-32 md:pt-28 w-11/12 mx-auto'>
             <div className='col-span-1 md:col-span-2 border-gray-300 border-r '>
                 <DeliveryForm shippingFee={shippingFee} setShippingFee={setShippingFee} cartItems={cartItems} cartTotal={Subtotal} />
             </div>
@@ -52,7 +52,7 @@ const CheckoutPage = () => {
                                         <Image
                                             height={60} 
                                             width={60} 
-                                            alt="product" 
+                                            alt="product" unoptimized
                                             src={item.images[0]} 
                                             className="border border-gray-300" 
                                         />

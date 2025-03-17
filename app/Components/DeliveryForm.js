@@ -323,7 +323,7 @@ console.log('order schema', orderSchema);
 // console.log('payment method',paymentMethods);
 
   return (
-    <div className=" bg-white rounded-tl-lg rounded-bl-lg lg:pt-32 md:pt-28 pt-20">
+    <div className=" bg-white rounded-tl-lg rounded-bl-lg">
       {/* {
         userEmail ? <div className="border-b">
         <div className="flex items-center  cursor-pointer">
@@ -337,8 +337,8 @@ console.log('order schema', orderSchema);
 {/* <CheckoutPage shippingFee={shippingFee}></CheckoutPage> */}
       </div>
 
-      <div className="md:pr-6">
-      <div className="bg-[#c03b2c] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs lg:text-sm text-xs font-bangla flex items-center justify-center gap-2">
+      <div className="md:pr-6 ">
+      <div className="bg-[#c03b2c] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs lg:text-sm text-xs font-bangla flex items-center justify-center md:gap-2 md:flex-row flex-col">
       অর্ডার সংক্রান্ত যেকোনো প্রয়োজনে কথা বলুন আমাদের কাস্টমার সার্ভিস প্রতিনিধির সাথে <div className="flex items-center gap-1">
       <Headset size={17}></Headset>+8801898931468
       </div>
