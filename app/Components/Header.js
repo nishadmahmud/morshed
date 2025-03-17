@@ -186,7 +186,7 @@ console.log("userrrrrr",user);
           )}
 
            {/* logo large device */}
-           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='mr-10 w-80 h-auto'/></Link>
+           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='mr-10 w-72 h-auto'/></Link>
 
           {/* ==========category + search========== */}
             <div className='hidden relative md:flex lg:flex lg:justify-center px-5 py-1.5'>

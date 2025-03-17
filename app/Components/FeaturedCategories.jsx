@@ -34,6 +34,7 @@ const FeaturedCategories = ({ categories }) => {
                 <div className="lg:p-10 p-4 flex items-center border-gray-200 shadow-sm group-hover:border-[#c03b2c]  relative lg:h-40 lg:w-40 rounded-md border 
                 transition-transform duration-300 group-hover:scale-105 bg-white">
                   <Image
+                  unoptimized
                     src={item?.image_url ?? noImg}
                     alt={item?.name || "mobile-phone"}
                     height={80}

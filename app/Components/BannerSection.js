@@ -17,6 +17,7 @@ const BannerSection = ({ banner }) => {
                 banner?.data && banner?.data[3] && banner?.data[3]?.image_path
               }
               alt="banner"
+              unoptimized
               // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               fill={true}
               style={{ objectFit: "cover" }}
@@ -48,6 +49,7 @@ const BannerSection = ({ banner }) => {
                 height={"256"}
                 width={"256"}
                 alt="Watches"
+                unoptimized
               />
             </div>
           )}
@@ -65,6 +67,7 @@ const BannerSection = ({ banner }) => {
               style={{ objectFit: "cover" }}
               className="cursor-pointer rounded-md h-full w-full"
               quality={100}
+              unoptimized
             />
           ) : (
             <div className="bg-gradient-to-br from-[#1B054E] to-[#6C157E] text-white p-8 rounded-lg flex flex-col-reverse gap-5 items-center md:flex-row md:justify-between md:items-center">
@@ -93,6 +96,7 @@ const BannerSection = ({ banner }) => {
                 height={"200"}
                 width={"200"}
                 alt="Watches"
+                unoptimized
               />
             </div>
           )}

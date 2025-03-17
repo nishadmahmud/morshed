@@ -58,6 +58,7 @@ const FeaturedProducts = ({ banner }) => {
         <div className="flex mt-5">
           <div className="w-full h-[50vh] object-cover">
             <Image
+            unoptimized
               width={400}
               height={600}
               src={banner.data[2].image_path || noImg}
@@ -119,6 +120,7 @@ const FeaturedProducts = ({ banner }) => {
                             alt={product.name}
                             className="object-cover h-36 w-40"
                             quality={100}
+                            unoptimized
                           />
                           {product.discount ? (
                             <p className="absolute top-4 lg:top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md">
