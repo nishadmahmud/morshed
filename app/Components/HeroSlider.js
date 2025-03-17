@@ -35,10 +35,10 @@ const HeroSlider = ({ slider, banner, data }) => {
   return (
     <div className="lg:max-w-[98%] lg:mr-2 lg:pt-24 pt-20 md:pt-20 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
       {/* Grid Layout */}
-      <div className="flex gap-6">
+      <div className="flex gap-4">
         
         {/* category section */}
-        <div className="w-4/6 h-full pt-8 px-3 text-black bg-gray-100 hidden lg:block">
+        <div className="w-3/6 h-full pt-8 pb-2 px-3 text-black bg-gray-100 hidden lg:block">
           <div className="flex items-center gap-1 rounded-sm bg-[#c03b2c] text-white p-3">
             <Menu></Menu>
             Browse Categories
@@ -67,12 +67,11 @@ const HeroSlider = ({ slider, banner, data }) => {
           </div>
         </div>
             
-        <div className="grid lg:grid-cols-1 col-span-5 h-[69vh]">
+        <div className="grid lg:grid-cols-3 col-span-5 gap-4">
           {/* Slider Section */}
          
 
-
-        <div className="lg:col-span-2 w-full flex flex-col h-[10vh] justify-center overflow-hidden relative rounded-md lg:h-[49vh] md:h-[30vh] mb-4">
+        <div className="lg:col-span-2 w-full flex flex-col h-[50vh] justify-center overflow-hidden relative rounded-md lg:h-[84vh] md:h-[60vh] mb-4">
           
           <Swiper
             ref={swiperRef}
@@ -117,11 +116,10 @@ const HeroSlider = ({ slider, banner, data }) => {
 
         
             {/* Banner Section */}
-            <div className="col-span-2">
-          
-          <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-2 gap-4 mt-2 lg:mt-0 gap-y-3">
+            <div className="col-span-1">
+          <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 gap-4 mt-2 lg:mt-0 gap-y-3">
             {banner?.data?.[0] && (
-              <div className="w-full h-34 lg:h-[33vh] md:h-[28vh] relative">
+              <div className="w-full h-34 lg:h-[41vh] md:h-[35vh] relative">
                 <Image
                 unoptimized
                   src={banner.data[0].image_path}
@@ -135,7 +133,7 @@ const HeroSlider = ({ slider, banner, data }) => {
             )}
 
             {banner?.data?.[1] && (
-              <div className="w-full h-28 lg:h-[33vh] md:h-[25vh] relative">
+              <div className="w-full h-28 lg:h-[41vh] md:h-[25vh] relative">
                 <Image
                 unoptimized
                   src={banner.data[1].image_path || "No Img"}
@@ -153,24 +151,8 @@ const HeroSlider = ({ slider, banner, data }) => {
 
         
         </div>
-           <div className="col-span-1 w-1/2 mt-4 lg:flex flex-col text-black text-right gap-7 hidden items-start">
-            <Link href='/' className="flex items-center gap-1 font-medium"> <House className="text-[#c03b2c]" size={20}></House> Home</Link>
-            <Link href='/' className="flex items-center gap-1 font-medium"> <House className="text-[#c03b2c]" size={20}></House> Home</Link>
-
-            <Link href='/blogs' className="flex items-center gap-1 font-medium"> <NotebookPen className="text-[#c03b2c]" size={20}></NotebookPen> Blog</Link >
-            <Link href='/blogs' className="flex items-center gap-1 font-medium"> <NotebookPen className="text-[#c03b2c]" size={20}></NotebookPen> Blog</Link >
-            <Link href='/blogs' className="flex items-center gap-1 font-medium"> <NotebookPen className="text-[#c03b2c]" size={20}></NotebookPen> Blog</Link >
-            <Link href='/blogs' className="flex items-center gap-1 font-medium"> <NotebookPen className="text-[#c03b2c]" size={20}></NotebookPen> Blog</Link >
-
-            <Link href='/store' className="flex items-center gap-1 font-medium"> <MapPin className="text-[#c03b2c]" size={20}></MapPin> Store</Link>
-            <Link href='/store' className="flex items-center gap-1 font-medium"> <MapPin className="text-[#c03b2c]" size={20}></MapPin> Store</Link>
-            <Link href='/store' className="flex items-center gap-1 font-medium"> <MapPin className="text-[#c03b2c]" size={20}></MapPin> Store</Link>
-            <Link href='/store' className="flex items-center gap-1 font-medium"> <MapPin className="text-[#c03b2c]" size={20}></MapPin> Store</Link>
-
-            <Link href='/orderTracking' className="flex items-center gap-1 font-medium"> <Map className="text-[#c03b2c]" size={20}></Map> Order Tracking</Link>
-            
-              
-            </div>
+        
+          
       </div>
 
       {/* Compare Section */}

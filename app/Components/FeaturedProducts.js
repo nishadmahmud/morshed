@@ -17,7 +17,7 @@ const FeaturedProducts = ({ banner }) => {
   );
   const { handleBuy, handleCart } = useStore();
   console.log("bessssst", bestDeals);
-
+console.log(banner);
   // Handle recent view when product card is clicked
   const updateRecentViews = (product) => {
     if (!product?.id) return;
