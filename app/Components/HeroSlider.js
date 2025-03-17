@@ -86,7 +86,7 @@ const HeroSlider = ({ slider, banner, data }) => {
            </Link>
         </div>
           {/* Slider Section */}     
-        <div className="lg:col-span-2 w-full flex flex-col h-[35vh] justify-center overflow-hidden relative rounded-md lg:h-[75vh] md:h-[55vh] lg:mb-4">
+        <div className="lg:col-span-2 w-full flex flex-col h-[32vh] justify-center overflow-hidden relative rounded-md lg:h-[75vh] md:h-[55vh] lg:mb-4">
           
           <Swiper
             ref={swiperRef}
@@ -108,6 +108,7 @@ const HeroSlider = ({ slider, banner, data }) => {
                     width={1000}
                     height={200}
                     quality={100}
+                    className="rounded-md"
                   />
                 </SwiperSlide>
               ))}
@@ -134,7 +135,7 @@ const HeroSlider = ({ slider, banner, data }) => {
             <div className="col-span-1">
           <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 lg:gap-4 mt-2 gap-2 lg:mt-0 gap-y-3">
             {banner?.data?.[0] && (
-              <div className="w-full h-32 lg:h-[35.5vh] md:h-[35vh] relative">
+              <div className="w-full h-24 lg:h-[35.5vh] md:h-[35vh] relative">
                 <Image
                 unoptimized
                   src={banner.data[0].image_path}
@@ -148,7 +149,7 @@ const HeroSlider = ({ slider, banner, data }) => {
             )}
 
             {banner?.data?.[1] && (
-              <div className="w-full h-32 lg:h-[37.5vh] md:h-[25vh] relative">
+              <div className="w-full h-24 lg:h-[37.5vh] md:h-[25vh] relative">
                 <Image
                 unoptimized
                   src={banner.data[1].image_path || "No Img"}
