@@ -41,7 +41,7 @@ const OurFeatures = () => {
          key={index}
          className="block group"
        >
-         <div className="flex items-center lg:items-start gap-1 rounded-xl border bg-[#c03b2c] p-3 lg:p-6 shadow-md transition-all duration-200  hover:scale-[1.02]">
+         <div className="flex items-center lg:items-start gap-1 rounded-full border bg-[#c03b2c] p-3 lg:p-6 shadow-md transition-all duration-200  hover:scale-[1.02]">
            <div className="rounded-full p-1 text-black shrink-0  group-hover:text-white transition-colors">
              <service.icon className="h-6 w-6 text-[#ffffff]" />
            </div>

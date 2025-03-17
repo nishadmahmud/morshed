@@ -205,6 +205,7 @@ const CartItems = () => {
             }
             height={100}
             width={500}
+            unoptimized
             className="mt-3"
             alt="ssl-commerce"
           />
