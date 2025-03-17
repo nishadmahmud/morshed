@@ -33,7 +33,7 @@ const HeroSlider = ({ slider, banner, data }) => {
   }, []);
 
   return (
-    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-24 pt-20 md:pt-20 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
+    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-24 pt-[5rem] md:pt-20 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
       {/* Grid Layout */}
       <div className="flex gap-4">
         
@@ -67,11 +67,11 @@ const HeroSlider = ({ slider, banner, data }) => {
           </div>
         </div>
             
-        <div className="grid lg:grid-cols-3 col-span-5 gap-4">
+        <div className="grid lg:grid-cols-3 col-span-5 lg:gap-4">
           {/* Slider Section */}
          
 
-        <div className="lg:col-span-2 w-full flex flex-col h-[50vh] justify-center overflow-hidden relative rounded-md lg:h-[84vh] md:h-[60vh] mb-4">
+        <div className="lg:col-span-2 w-full flex flex-col h-[39vh] justify-center overflow-hidden relative rounded-md lg:h-[84vh] md:h-[60vh] lg:mb-4">
           
           <Swiper
             ref={swiperRef}
@@ -117,9 +117,9 @@ const HeroSlider = ({ slider, banner, data }) => {
         
             {/* Banner Section */}
             <div className="col-span-1">
-          <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 gap-4 mt-2 lg:mt-0 gap-y-3">
+          <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 lg:gap-4 mt-2 gap-2 lg:mt-0 gap-y-3">
             {banner?.data?.[0] && (
-              <div className="w-full h-34 lg:h-[41vh] md:h-[35vh] relative">
+              <div className="w-full h-32 lg:h-[41vh] md:h-[35vh] relative">
                 <Image
                 unoptimized
                   src={banner.data[0].image_path}
@@ -133,7 +133,7 @@ const HeroSlider = ({ slider, banner, data }) => {
             )}
 
             {banner?.data?.[1] && (
-              <div className="w-full h-28 lg:h-[41vh] md:h-[25vh] relative">
+              <div className="w-full h-32 lg:h-[41vh] md:h-[25vh] relative">
                 <Image
                 unoptimized
                   src={banner.data[1].image_path || "No Img"}
