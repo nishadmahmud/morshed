@@ -49,7 +49,7 @@ const Page = () => {
                     "flex items-center gap-3 font-semibold text-black text-sm rounded-full px-2 py-1  hover:text-gray-500  transition-transform duration-300 hover:filter hover:grayscale-[70%]"
                 } `}
                 >
-                <Image alt={brand.name} src={brand.image_path} width={70} height={70} className="inherit"/> 
+                <Image unoptimized alt={brand.name} src={brand.image_path} width={70} height={70} className="inherit"/> 
                 {brand.name}
                 </button>
             </Link>

@@ -41,13 +41,13 @@ const OurFeatures = () => {
          key={index}
          className="block group"
        >
-         <div className="flex items-center lg:items-start gap-1 rounded-full border bg-[#c03b2c] p-3 lg:p-6 shadow-md transition-all duration-200  hover:scale-[1.02]">
-           <div className="rounded-full p-1 text-black shrink-0  group-hover:text-white transition-colors">
-             <service.icon className="h-6 w-6 text-[#ffffff]" />
+         <div className="flex items-center gap-2 rounded-full border bg-[#ffffff] p-3 lg:p-6 hover:shadow-md shadow-sm transition-all duration-200  hover:scale-[1.02]">
+           <div className="rounded-full p-2 text-black shrink-0  group-hover:text-white transition-colors bg-[#c03b2c]">
+             <service.icon className="h-5 w-5 text-[#ffffff]" />
            </div>
            <div className="flex-1">
-             <h3 className="font-semibold text-[#ffffff] lg:line-clamp-1 text-xs md:text-lg ">{service.title}</h3>
-             <p className="text-sm hidden lg:block text-white line-clamp-2">{service.description}</p>
+             <h3 className="font-semibold text-[#000000] lg:line-clamp-1 text-xs md:text-lg ">{service.title}</h3>
+             <p className="text-sm hidden lg:block text-black line-clamp-2">{service.description}</p>
            </div>
          </div>
        </Link>

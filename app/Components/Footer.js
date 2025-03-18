@@ -18,6 +18,7 @@ export default function Footer() {
           <div className="space-y-6">
             <Link href={'/'}>
             <Image 
+            unoptimized
               src={companyLogo || noImg} 
               alt="apple-newton"
               width={280}

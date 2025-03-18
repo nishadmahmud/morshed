@@ -22,6 +22,7 @@ const Brands = ({brands}) => {
                 brands.data.map((item) => {
                     return <Link key={item.id} href={`/brands/${item.id}?brand=${item.name}`}>
                     <Image
+                    unoptimized
                     alt='apple'
                     src={item.image_path}
                     height={105}

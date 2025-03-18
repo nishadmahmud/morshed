@@ -24,7 +24,7 @@ export default function Component() {
           fontSize: "18px"
         }}
       >
-        <Image width={60} height={60} alt='logo' className='rounded-full' src={avatar} />
+        <Image width={60} height={60} alt='logo' className='rounded-full border' src={avatar} />
       </button>
 
      
