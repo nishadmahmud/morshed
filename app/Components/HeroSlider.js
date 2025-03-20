@@ -33,12 +33,12 @@ const HeroSlider = ({ slider, banner, data }) => {
   }, []);
 
   return (
-    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-24 pt-[4rem] md:pt-20 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
+    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-28 pt-[5rem] md:pt-20 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
       {/* Grid Layout */}
       <div className="flex gap-4">
         
         {/* category section */}
-        <div className="w-[45%] pt-8 pb-2 px-3 text-black bg-gray-100 h-[81vh] overflow-y-auto hidden lg:block">
+        <div className="w-[45%] pt-8 pb-2 px-3 text-black bg-gray-100 h-[77vh] overflow-y-auto hidden lg:block">
           <div className="flex items-center gap-1 rounded-sm bg-[#c03b2c] text-white p-3">
             <Menu></Menu>
             Browse Categories
@@ -70,23 +70,9 @@ const HeroSlider = ({ slider, banner, data }) => {
        
         <div className="grid lg:grid-cols-3 col-span-5 lg:gap-4">
 
-           {/* category section */}
-         <div className="col-span-3 justify-end text-black items-center gap-6 hidden md:flex">
-          <Link href='/' className="flex hover:scale-105 transition ease-in-out font-semibold items-center gap-1 hover:text-[#c03b2c]"> 
-          <House color="#c03b2c" size={20}></House> 
-            Home
-            </Link>
-
-          <Link href='/blogs' className="flex hover:scale-105 transition ease-in-out font-semibold items-center gap-1 hover:text-[#c03b2c]"> 
-          <NotebookPen color="#c03b2c" size={20}></NotebookPen> 
-          Blog</Link>
-          <Link href='/orderTracking' className="flex hover:scale-105 transition ease-in-out font-semibold items-center gap-1 hover:text-[#c03b2c]"> 
-          <MapPin color="#c03b2c" size={20}></MapPin>
-           Order Tracking
-           </Link>
-        </div>
+         
           {/* Slider Section */}     
-        <div className="lg:col-span-2 w-full flex flex-col h-[32vh] justify-center overflow-hidden relative rounded-md lg:h-[75vh] md:h-[55vh] lg:mb-4">
+        <div className="lg:col-span-2 w-full flex flex-col h-[32vh] justify-center overflow-hidden relative rounded-md lg:h-[77vh] md:h-[55vh] lg:mb-4">
           
           <Swiper
             ref={swiperRef}
@@ -135,7 +121,7 @@ const HeroSlider = ({ slider, banner, data }) => {
             <div className="col-span-1">
           <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 lg:gap-4 mt-2 gap-2 lg:mt-0 gap-y-3">
             {banner?.data?.[0] && (
-              <div className="w-full h-24 lg:h-[35.5vh] md:h-[35vh] relative">
+              <div className="w-full h-32 lg:h-[37vh] md:h-[35vh] relative">
                 <Image
                 unoptimized
                   src={banner.data[0].image_path}
@@ -149,7 +135,7 @@ const HeroSlider = ({ slider, banner, data }) => {
             )}
 
             {banner?.data?.[1] && (
-              <div className="w-full h-24 lg:h-[37.5vh] md:h-[25vh] relative">
+              <div className="w-full h-32 lg:h-[37.5vh] md:h-[25vh] relative">
                 <Image
                 unoptimized
                   src={banner.data[1].image_path || "No Img"}

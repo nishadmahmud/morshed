@@ -27,6 +27,7 @@ import { Gift } from 'lucide-react';
 import TopHeader from './TopHeader';
 import navLogo from '/public/user.png'
 import { LogIn } from 'lucide-react';
+import { NotebookPen } from 'lucide-react';
 
 const Header = ({data}) => {
     const {getCartItems,refetch,setRefetch,setOpenCart,openCart,getWishList,isLoginModal,setIsLoginModal,setToken,setHasToken} = useStore();
@@ -193,7 +194,7 @@ console.log("userrrrrr",user);
 
                 <div className='lg:flex hidden'>
 
-                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3 rounded-sm border-t border-b border-l  outline-none text-black bg-white text-xs pr-44'/>
+                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3 rounded-md border-t border-b border-l  outline-none text-black bg-white text-xs pr-44'/>
 
                 <div className='border bg-white p-3 pr-2.5 rounded-r-sm px-0'>
                 <div 
@@ -246,6 +247,11 @@ console.log("userrrrrr",user);
            
            {/* offer */}
             <div className='items-center gap-3 hidden lg:flex'>
+
+              
+          <Link href='/blogs' className="flex  transition ease-in-out font-semibold items-center gap-1 hover:text-[#c03b2c]"> 
+          <NotebookPen size={22}></NotebookPen> 
+          Blog</Link>
             
                 <Link href='/offer'>
             <div  className='flex items-center group'>

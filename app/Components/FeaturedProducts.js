@@ -56,7 +56,7 @@ console.log(banner);
       <Heading title={"Flash Sale"} />
       <div className="w-11/12 mx-auto">
         <div className="flex mt-5">
-          <div className="w-full h-[55vh] object-cover">
+          <div className="w-full md:h-[65vh] h-[40vh] object-cover">
             <Image
             unoptimized
               width={400}

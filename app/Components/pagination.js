@@ -55,7 +55,7 @@ const Pagination = ({ currentPage, totalPage, onPageChange }) => {
                             key={index}
                             className={`px-3 py-2 rounded-md transition min-w-[32px] ${
                                 page === currentPage
-                                    ? 'bg-[#ff8800] text-white font-semibold'
+                                    ? 'bg-[#c03b2c] text-white font-semibold'
                                     : 'bg-gray-200 text-black hover:bg-gray-300'
                             }`}
                             onClick={() => onPageChange(page)}
