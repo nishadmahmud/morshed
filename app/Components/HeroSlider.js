@@ -10,6 +10,8 @@ import Compare from "./Compare";
 import { Headset, House, Map, MapPin, Menu, NotebookPen } from "lucide-react";
 import Link from "next/link";
 import noImg from "/public/no-image.jpg";
+import { Pagination } from 'swiper/modules';
+import 'swiper/css/pagination';
 
 const HeroSlider = ({ slider, banner, data }) => {
   const swiperRef = useRef(null);
@@ -33,15 +35,15 @@ const HeroSlider = ({ slider, banner, data }) => {
   }, []);
 
   return (
-    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-28 pt-[5rem] md:pt-20 max-w-[94%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
+    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-[7rem] pt-[3.5rem] md:pt-20 max-w-[100%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
       {/* Grid Layout */}
       <div className="flex gap-4">
         
         {/* category section */}
-        <div className="w-[45%] pt-8 pb-2 px-3 text-black bg-gray-100 h-[77vh] overflow-y-auto hidden lg:block">
+        <div className="w-[40%] pt-5 pb-2 px-3 text-black bg-gray-100 h-[77vh] overflow-y-auto hidden lg:block">
           <div className="flex items-center gap-1 rounded-sm bg-[#c03b2c] text-white p-3">
             <Menu></Menu>
-            Browse Categories
+            Categories
           </div>
 
           <div className="text-black flex flex-col gap-5 mt-3">
@@ -56,6 +58,7 @@ const HeroSlider = ({ slider, banner, data }) => {
                 className="text-[#555555] text-sm font-semibold flex items-center gap-1 hover:text-[#c03b2c] transition-all ease-in-out"
               >
                 <Image
+                unoptimized
                   width={22}
                   height={22}
                   src={item.image_url || noImg}
@@ -72,15 +75,16 @@ const HeroSlider = ({ slider, banner, data }) => {
 
          
           {/* Slider Section */}     
-        <div className="lg:col-span-2 w-full flex flex-col h-[32vh] justify-center overflow-hidden relative rounded-md lg:h-[77vh] md:h-[55vh] lg:mb-4">
+        <div className="lg:col-span-2 w-full flex flex-col h-[28vh] justify-center overflow-hidden relative md:rounded-md lg:h-[77vh] md:h-[55vh] lg:mb-4">
           
           <Swiper
+          pagination={true}
             ref={swiperRef}
             slidesPerView={1}
             autoplay={{ delay: 2500, disableOnInteraction: false }}
             loop={true}
             speed={500}
-            modules={[Autoplay]}
+            modules={[Autoplay, Pagination]}
           >
             {slider.status === 200 &&
               slider?.data.length > 0 &&
@@ -94,7 +98,7 @@ const HeroSlider = ({ slider, banner, data }) => {
                     width={1000}
                     height={200}
                     quality={100}
-                    className="rounded-md"
+                    className="md:rounded-md"
                   />
                 </SwiperSlide>
               ))}
@@ -118,7 +122,7 @@ const HeroSlider = ({ slider, banner, data }) => {
 
         
             {/* Banner Section */}
-            <div className="col-span-1">
+            <div className="col-span-1 hidden md:block">
           <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 lg:gap-4 mt-2 gap-2 lg:mt-0 gap-y-3">
             {banner?.data?.[0] && (
               <div className="w-full h-32 lg:h-[37vh] md:h-[35vh] relative">

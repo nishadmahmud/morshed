@@ -9,9 +9,10 @@ import FeaturedProducts from "../Components/FeaturedProducts";
 import NewArrival from "../Components/NewArrival";
 import TopBrandProducts from "../Components/TopBrandProducts";
 import PromotionModal from "../Components/PromotionModal";
+import SmallBanner from "../Components/SmallBanner";
 
 
-export const userId = 181;
+export const userId = 193;
 export const fetcher = (url) => fetch(url).then(res => res.json());
 
 
@@ -51,6 +52,7 @@ export default async function Home() {
       <HeroSlider slider={slider} banner={banner} data={categories}/>
       <div>
         <FeaturedCategories categories={categories}/>
+        <SmallBanner banner={banner}/>
         <OurFeatures />
         <ReadyForOrder />  
         <FeaturedProducts banner={banner}/>

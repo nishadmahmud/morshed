@@ -288,7 +288,7 @@ const Page = ({ params }) => {
                     ? "Retail Price:"
                     : "0"}
                   <div className="text-nowrap flex gap-2 items-center">
-                  <span className="sans text-xs font-bold text-[#4e4b49] line-through">
+                  <span className={`sans text-xs font-bold text-[#4e4b49] ${product?.data?.discount ? "line-through" : ""} `}>
                       {selectedSalePrice || product?.data?.retails_price || 0} ৳
                     </span>
 

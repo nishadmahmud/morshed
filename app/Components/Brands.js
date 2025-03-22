@@ -16,7 +16,7 @@ const Brands = ({brands}) => {
                 </div>
                 
             </div>
-            <div className='grid w-11/12 mx-auto gap-y-10 gap-6 grid-cols-4 items-center justify-center justify-items-center lg:w-8/12'>
+            <div className='grid w-11/12 my-8 mx-auto gap-y-10 gap-6 grid-cols-4 items-center justify-center justify-items-center lg:w-8/12'>
             {
                 brands?.data && brands?.data.length > 0 ?
                 brands.data.map((item) => {
@@ -27,7 +27,7 @@ const Brands = ({brands}) => {
                     src={item.image_path}
                     height={105}
                     width={105}
-                    className='lg:w-32 w-20'
+                    className='lg:w-38 w-20'
                     />
                     </Link>
                 })

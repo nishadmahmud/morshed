@@ -31,17 +31,16 @@ const FeaturedCategories = ({ categories }) => {
               group-hover:text-[#c03b2c] transition ease-in-out">
                 
                 {/* Image Wrapper */}
-                <div className="lg:p-10 p-4 flex items-center border-gray-200 shadow-sm group-hover:border-[#c03b2c]  relative lg:h-40 lg:w-40 rounded-md border 
-                transition-transform duration-300 group-hover:scale-105 bg-white">
+                <div className="">
                   <Image
                   unoptimized
                     src={item?.image_url ?? noImg}
                     alt={item?.name || "mobile-phone"}
-                    height={80}
-                    width={80}
+                    height={100}
+                    width={100}
                     style={{ objectFit: "cover" }}
                     loading="lazy"
-                    className="rounded-full transition-transform duration-300"
+                    className="rounded-full transition-transform duration-300 border-2 md:p-4 p-6 border-gray-200 group-hover:scale-105"
                   />
                 </div>
 

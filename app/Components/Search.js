@@ -14,7 +14,7 @@ const Search = ({searchedItem,setSearchText,setSearchedItem,searchBarRef}) => {
     return (
         <>
         {   searchedItem && searchedItem.length > 0 ? 
-            <div ref={searchBarRef} className='bg-white text-black min-w-[23rem] md:min-w-[28rem] max-w-[27rem] lg:w-[28rem] p-5 absolute lg:top-[6rem] top-[9.5rem] z-[1000] lg:z-50 left-1/2 transform -translate-x-1/2 rounded-md max-h-[21.5rem] overflow-y-auto'>
+            <div ref={searchBarRef} className='bg-white text-black min-w-[23rem] md:min-w-[28rem] max-w-[27rem] lg:w-[28rem] p-5 absolute lg:top-[6rem] top-[5.5rem] z-[1000] lg:z-50 left-1/2 transform -translate-x-1/2 rounded-md max-h-[21.5rem] overflow-y-auto'>
             <h5 className='text-right'>Products</h5>
             <div className='flex flex-col gap-3'>
                 {

@@ -1,8 +1,7 @@
 'use client'
 import Link from 'next/link';
 import React, { useEffect, useRef, useState } from 'react';
-import { CgProfile } from "react-icons/cg";
-import { ShoppingCart, House, MapPinned, NotebookPen, Gift } from 'lucide-react';
+import { ShoppingCart, House, Gift } from 'lucide-react';
 import Image from 'next/image';
 import noImg from '/public/no-image.jpg';
 import useStore from '../CustomHooks/useStore';
