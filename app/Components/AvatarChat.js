@@ -10,7 +10,7 @@ export default function Component() {
   const [isOpen, setIsOpen] = useState(false); // Track visibility
 
   return (
-    <div className="fixed cursor-pointer lg:bottom-20 bottom-20 right-6">
+    <div className="fixed cursor-pointer lg:bottom-20 bottom-20 right-5">
      
       <button 
         onClick={() => setIsOpen(!isOpen)} 

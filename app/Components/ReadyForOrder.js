@@ -55,7 +55,7 @@ const ReadyForOrder = () => {
 console.log(products);
   return (
     <div className="lg:mt-20 mt-10">
-      <Heading title={"Ready for Order"} />
+      <Heading title={"New Arraivals"} />
       <div>
         <div className="mt-6">
           {isLoading ? (
@@ -120,7 +120,7 @@ console.log(products);
                           ) : ""
                         }
                         </div>
-                        <div className="mt-10 flex flex-col flex-grow px-4">
+                        <div className="mt-10 flex flex-col flex-grow justify-center items-center px-4">
                           <h3 className="text-sm font-semibold text-black  line-clamp-1 text-ellipsis mt-2">
                             {product?.name}
                           </h3>
@@ -128,11 +128,11 @@ console.log(products);
                             {product?.discount ? (
                               <div className="flex justify-center items-center gap-2">
                                 <span className="text-sm lg:text-lg font-bold text-[#c03b2c] line-through">
-                                  <span className="font-bangla text-sm lg:text-lg">৳</span>
+                                  <span className="font-bangla text-sm lg:text-sm">৳</span>
                                   {product?.retails_price}
                                 </span>
                                 <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
-                                  <span className="font-bangla text-sm lg:text-lg">৳</span>{" "}
+                                  <span className="font-bangla text-sm lg:text-sm">৳</span>{" "}
                                   {(
                                     product?.retails_price -
                                     (product?.retails_price * product?.discount) / 100
@@ -141,7 +141,7 @@ console.log(products);
                               </div>
                             ) : (
                               <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
-                                <span className="font-bangla text-sm lg:text-lg">৳</span>{" "}
+                                <span className="font-bangla text-sm lg:text-sm">৳</span>{" "}
                                 {product?.retails_price}
                               </span>
                             )}
@@ -149,26 +149,10 @@ console.log(products);
                         </div>
                       </Link>
 
-                      {/* Product specifications */}
-                      {/* <div className="text-gray-600 px-5 grid mb-3 mt-1 justify-items-start grid-cols-2 gap-1">
-                        <div className="flex items-start gap-1 text-xs">
-                          <Battery size={15} /> {batteryCapacity}
-                        </div>
-                        <div className="hidden md:flex items-start gap-1 text-xs">
-                          <Cpu size={15} /> {chipset}
-                        </div>
-                        <div className="flex items-start gap-1 text-xs">
-                          <Camera size={15} /> {cameraShort}
-                        </div>
-                        <div className="hidden md:flex items-start gap-1 text-xs">
-                          <MemoryStick size={15} /> {storage}
-                        </div>
-                      </div> */}
-
-                      <div className="grid grid-cols-1 justify-center items-center mb-5 mx-5 gap-2 bottom-2">
+                      <div className="grid grid-cols-2 justify-center items-center mt-2 mb-5 mx-3 gap-3 bottom-2">
                         <button
                           onClick={() => handleBuy(product, 1)}
-                          className="border-[#c03b2c] border text-xs text-[#c03b2c] w-full py-1 rounded-md font-semibold transition-colors px-3"
+                          className=" bg-[#c03b2c32] border text-xs text-[#c03b2c] hover:bg-[#c03b2c] w-full py-1.5 hover:text-white rounded-md font-medium transition-colors px-3"
                         >
                           Buy Now
                         </button>
@@ -177,7 +161,7 @@ console.log(products);
                             e.preventDefault();
                             handleCart(product, 1);
                           }}
-                          className="bg-[#c03b2c] border border-transparent text-xs text-white w-full px-2 py-1 rounded-md font-semibold transition-colors"
+                          className="hover:bg-[#383838] bg-[#b4b4b474] border border-transparent text-xs text-black w-full px-2 py-1.5 rounded-md font-medium transition-colors hover:text-white"
                         >
                           Add to Cart
                         </button>

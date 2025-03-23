@@ -4,12 +4,10 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import "../globals.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useRef, useState } from "react";
+import Marquee from "react-fast-marquee";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import Compare from "./Compare";
-import { Headset, House, Map, MapPin, Menu, NotebookPen } from "lucide-react";
-import Link from "next/link";
-import noImg from "/public/no-image.jpg";
 import { Pagination } from 'swiper/modules';
 import 'swiper/css/pagination';
 
@@ -34,13 +32,14 @@ const HeroSlider = ({ slider, banner, data }) => {
     return () => window.removeEventListener("resize", updateHeight);
   }, []);
 
+
   return (
-    <div className="lg:max-w-[98%] lg:mr-2 lg:pt-[7rem] pt-[3.5rem] md:pt-20 max-w-[100%] w-full mx-auto flex lg:flex-row flex-col  items-center gap-x-3">
+    <div className="lg:max-w-[100%] lg:mr-2 lg:pt-[6.5rem] pt-[3.5rem] md:pt-20 max-w-[100%] w-full mx-auto flex lg:flex-row flex-col  items-center">
       {/* Grid Layout */}
       <div className="flex gap-4">
         
         {/* category section */}
-        <div className="w-[40%] pt-5 pb-2 px-3 text-black bg-gray-100 h-[77vh] overflow-y-auto hidden lg:block">
+        {/* <div className="w-[40%] pt-5 pb-2 px-3 text-black bg-gray-100 h-[77vh] overflow-y-auto hidden lg:block">
           <div className="flex items-center gap-1 rounded-sm bg-[#c03b2c] text-white p-3">
             <Menu></Menu>
             Categories
@@ -68,14 +67,14 @@ const HeroSlider = ({ slider, banner, data }) => {
               </Link>
             ))}
           </div>
-        </div>
+        </div> */}
             
        
-        <div className="grid lg:grid-cols-3 col-span-5 lg:gap-4">
+        <div className="grid">
 
          
           {/* Slider Section */}     
-        <div className="lg:col-span-2 w-full flex flex-col h-[28vh] justify-center overflow-hidden relative md:rounded-md lg:h-[77vh] md:h-[55vh] lg:mb-4">
+        <div className="w-[88%] mx-auto flex flex-col h-[28vh] justify-center overflow-hidden relative md:rounded-sm lg:h-[65vh] md:h-[55vh] lg:mb-4">
           
           <Swiper
           pagination={true}
@@ -98,7 +97,7 @@ const HeroSlider = ({ slider, banner, data }) => {
                     width={1000}
                     height={200}
                     quality={100}
-                    className="md:rounded-md"
+                    className="md:rounded-sm"
                   />
                 </SwiperSlide>
               ))}
@@ -120,9 +119,15 @@ const HeroSlider = ({ slider, banner, data }) => {
           </div>
         </div>
 
+        <div className="text-[#c03b2c] mx-auto w-[88%] mb-3">
+        <Marquee>
+        🎊 Eid-ul-Fitr Exclusive Offer on Phones & Gadgets! 🎊 | 📅 Limited Time Only! Celebrate Eid with the latest tech at unbeatable discounts!
+    </Marquee>
+        </div>
+
         
             {/* Banner Section */}
-            <div className="col-span-1 hidden md:block">
+            {/* <div className="col-span-1 hidden md:block">
           <div className="w-full mx-auto grid grid-cols-2 lg:grid-cols-1 lg:gap-4 mt-2 gap-2 lg:mt-0 gap-y-3">
             {banner?.data?.[0] && (
               <div className="w-full h-32 lg:h-[37vh] md:h-[35vh] relative">
@@ -153,7 +158,7 @@ const HeroSlider = ({ slider, banner, data }) => {
             )}
           </div>
 
-        </div>
+        </div> */}
 
         
         </div>

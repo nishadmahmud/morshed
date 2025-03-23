@@ -147,7 +147,7 @@ console.log("userrrrrr",user);
           <div className={`w-full z-50 text-white  transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] fixed mt-0`}>
           {/* <TopHeader></TopHeader> */}
             {/* desktop menu */}
-           <div className='flex justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2'>
+           <div className='flex px-20 justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2'>
 
            <div className="lg:hidden flex items-center ml-2 gap-3" onClick={toggleSidebar}>
           <Menu className="text-[#ffffff] text-right text-2xl" />
@@ -196,34 +196,34 @@ console.log("userrrrrr",user);
           )}
 
            {/* logo large device */}
-           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='ml-2 hidden md:block md:w-64 w-52 h-auto'/></Link>
+           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='hidden md:block md:w-56 w-52 h-auto'/></Link>
 
           {/* ==========category + search========== */}
             <div className='hidden relative md:flex lg:flex lg:justify-center px-5 py-1.5'>
 
-                <div className='lg:flex hidden'>
+                <div className='lg:flex hidden h-10'>
 
-                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-3 rounded-l-md border-t border-b border-l  outline-none text-black bg-white text-sm pr-44'/>
+                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='px-5 py-1 rounded-l-sm border-t border-b border-l outline-none text-black bg-white text-sm pr-56'/>
 
-                <div className='border bg-white p-3 pr-2 rounded-r-sm px-0'>
+                <div className='border bg-white p-3 pr-2 pb-4 px-0'>
                 <div 
     ref={categoryRef} 
     onMouseEnter={() => setShowCategory(true)} 
     onMouseLeave={() => setShowCategory(false)} 
     className="hidden bg-white lg:flex gap-3 items-center relative pl-5 pr-2 cursor-pointer"
   >
-    <p className="text-sm cursor-pointer text-nowrap text-[#555555] font-semibold">All Categories</p>
-    <FaChevronDown className="text-xs text-[#555555] cursor-pointer" />
+    <p className="text-sm cursor-pointer text-nowrap text-[#555555] font-semibold relative bottom-1">All Categories</p>
+    <FaChevronDown className="text-xs text-[#555555] cursor-pointer relative bottom-1" />
 
     {showCategory && (
-      <div className="bg-white absolute -left-3.5 rounded-sm transition ease-out py-3 top-[1rem] z-50 h-80 overflow-y-auto">
+      <div className="bg-white absolute -left-3.5 rounded-sm transition ease-out py-1 top-[1rem] z-50 h-60 overflow-y-auto">
         {data?.data && data?.data.length > 0 &&
           data.data.map((item) => (
             <Link 
               onClick={() => setShowCategory(false)} 
               href={`/category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(item?.name)}&total=${encodeURIComponent(item?.product_count)}`} 
               key={item?.category_id} 
-              className="text-[#555555] hover:bg-[#c03b2c] hover:text-white transition-all ease-in-out py-2 rounded-sm text-start text-sm pl-5 w-36 flex flex-col"
+              className="text-[#555555] hover:bg-[#c03b2c] hover:text-white transition-all ease-in-out py-1 rounded-sm text-start text-sm pl-5 w-36 flex flex-col"
             >
               {item?.name}
             </Link>
@@ -237,7 +237,7 @@ console.log("userrrrrr",user);
                
                
             
-                <button className='bg-[#c03b2c] text-white p-3 w-2/6 rounded-r-md text-xs'> <IoSearchSharp size={20}></IoSearchSharp></button>
+                <button className='bg-[#c03b2c] text-white px-2.5 py-2 w-2/6 rounded-r-sm text-xs'> <IoSearchSharp size={25}></IoSearchSharp></button>
                
                 </div>
         
@@ -254,27 +254,27 @@ console.log("userrrrrr",user);
            
       {/* offer + blog */}
       <div className='items-center gap-3 hidden lg:flex'>       
-          <Link href='/blogs' className="flex transition ease-in-out bg-[#302e31] p-2 px-4 rounded-md font-medium items-center text-white gap-1 text-sm hover:text-[#c03b2c]"> 
+          <Link href='/blogs' className="flex transition ease-in-out bg-[#302e31] p-2 px-4 rounded-md font-normal items-center text-white gap-1 text-sm  hover:bg-[#c03b2c]"> 
           <NotebookPen size={20}></NotebookPen>
           Blog</Link>
             
                 <Link href='/offer'>
-            <div  className='flex text-white items-center group gap-1 bg-[#302e31] p-2 px-3 rounded-md text-sm'>
+            <div  className='flex text-white items-center group gap-1 bg-[#302e31] p-2 px-3 rounded-md text-sm hover:bg-[#c03b2c]'>
                 <div className="relative rounded-full text-white">
-                    <Gift size={20} className='group-hover:text-[#c03b2c] text-white cursor-pointer'/>
+                    <Gift size={20} className='group-hover:text-[#ffffff] text-white cursor-pointer'/>
                 </div>
-                    <p className='group-hover:text-[#c03b2c] text-white font-medium'>Offers</p>
+                    <p className='group-hover:text-[#ffffff] text-white font-normal'>Offers</p>
                    
              </div>
                 </Link>
 
-             <div onClick={() => setOpenCart(!openCart)} className='flex group items-center cursor-pointer bg-[#302e31] px-3 rounded-md text-sm mr-3'>
+             <div onClick={() => setOpenCart(!openCart)} className='flex group items-center cursor-pointer bg-[#302e31] px-3 rounded-md text-sm mr-3 hover:bg-[#c03b2c]'>
                 <div className="relative p-1 rounded-full" >
-                    <LiaShoppingCartSolid size={28} className='cursor-pointer group-hover:text-[#c03b2c] text-white' />
+                    <LiaShoppingCartSolid size={28} className='cursor-pointer group-hover:text-[#ffffff] text-white' />
                     <p className='bg-[#c03b2c] h-fit  text-[#ffffff] w-fit px-0.5 rounded-full text-[10px] absolute top-1 right-1'>{total}</p>
                     </div>
                     <div>
-                    <p className='group-hover:text-[#c03b2c] text-white hidden md:block font-medium '>Cart</p> 
+                    <p className='group-hover:text-[#ffffff] text-white hidden md:block font-normal '>Cart</p> 
                     
                 </div> 
             </div>    
@@ -283,12 +283,12 @@ console.log("userrrrrr",user);
             <div>
             {
   !user ? 
-  <Link href='/login'  className='lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group bg-[#302e31] p-1 px-3 rounded-md text-sm'>
+  <Link href='/login'  className='lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group bg-[#302e31] p-1 px-3 rounded-md text-sm hover:bg-[#c03b2c]'>
       <div className='p-1 rounded-full hidden lg:block'>
-          <LogIn  size={20} className='group-hover:text-[#c03b2c] text-white'/>
+          <LogIn  size={20} className='group-hover:text-[#ffffff] text-white'/>
       </div>
       <div>
-      <p className='group-hover:text-[#c03b2c] text-white hidden lg:block font-semibold '>Login</p> 
+      <p className='group-hover:text-[#ffffff] text-white hidden lg:block font-normal '>Login</p> 
       
    </div> 
   </Link> :
@@ -304,8 +304,13 @@ console.log("userrrrrr",user);
                
             </div>
            </div>
-           <div className='md:hidden'>
-            <Navbar setIsLoginModal={setIsLoginModal} openCart={openCart} setOpenCart={setOpenCart} data={data}/>
+           <div className=''>
+           <Navbar
+          setIsLoginModal={setIsLoginModal}
+          openCart={openCart}
+          setOpenCart={setOpenCart}
+          data={data}
+        />
            </div>
            {
             openCart && <div className="fixed inset-0 bg-black bg-opacity-30 z-40">

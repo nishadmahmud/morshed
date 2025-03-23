@@ -50,10 +50,10 @@ export default async function Home() {
     <>
       <PromotionModal promotionBanner={promotion?.data}/>
       <HeroSlider slider={slider} banner={banner} data={categories}/>
+        <OurFeatures />
       <div>
         <FeaturedCategories categories={categories}/>
         <SmallBanner banner={banner}/>
-        <OurFeatures />
         <ReadyForOrder />  
         <FeaturedProducts banner={banner}/>
         <BannerSection banner={banner}/>

@@ -33,7 +33,7 @@ const OurFeatures = () => {
        
       ]
     return (
-    <section className="lg:py-7 lg:mt-20 w-11/12 mx-auto py-10 lg:pt-0">
+    <section className="lg:py-7 lg:mt-4 w-11/12 mx-auto py-10 lg:pt-0">
       <div className="grid md:gap-6 gap-3 grid-cols-2 md:grid-cols-2 lg:grid-cols-4">
         {services.map((service, index) => (
          <Link 

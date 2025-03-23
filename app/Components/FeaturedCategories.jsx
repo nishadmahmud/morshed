@@ -8,10 +8,7 @@ const FeaturedCategories = ({ categories }) => {
   return (
     <div>
       <div className="lg:mt-8 lg:mb-4">
-        <Heading title={"FEATURED CATEGORIES"} />
-        <p className="text-sm text-center text-black w-11/12 mx-auto">
-          Get your desired product from featured category
-        </p>
+        <Heading title={"Featured Categories"} />   
       </div>
 
       <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 w-11/12 mx-auto my-8">
@@ -28,16 +25,16 @@ const FeaturedCategories = ({ categories }) => {
               className="group "
             >
               <div className="flex flex-col items-center justify-between flex-grow text-black lg:h-30 py-1 
-              group-hover:text-[#c03b2c] transition ease-in-out">
+              group-hover:text-[#c03b2c] transition ease-in-out ">
                 
                 {/* Image Wrapper */}
-                <div className="">
+                <div className="bg-gray-200 rounded-full">
                   <Image
                   unoptimized
                     src={item?.image_url ?? noImg}
                     alt={item?.name || "mobile-phone"}
-                    height={100}
-                    width={100}
+                    height={120}
+                    width={120}
                     style={{ objectFit: "cover" }}
                     loading="lazy"
                     className="rounded-full transition-transform duration-300 border-2 md:p-4 p-6 border-gray-200 group-hover:scale-105"

@@ -54,32 +54,32 @@ const ProductCard = ({ product }) => {
             SAVE {product?.discount}%
           </p>
         )}
-        <div className="px-4 flex-grow">
+        <div className="px-4 flex flex-col flex-grow justify-center items-center">
           <h3 className="text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-4">
             {product?.name}
           </h3>
-          <div className="mt-2">
+          <div>
             {product?.discount ? (
               <div className="flex items-center gap-2">
-                <span className="md:text-xl text-sm font-bold text-[#c03b2c]">
-                  <span className="font-bangla text-sm md:text-xl">৳</span> {discountedPrice}
+                <span className="md:text-lg text-sm font-bold text-[#c03b2c]">
+                  <span className="font-bangla text-sm md:text-sm">৳</span> {discountedPrice}
                 </span>
                 <span className="text-sm font-bold text-[#504f4d] line-through">
-                  <span className="font-bangla md:text-xl text-sm">৳</span>{product?.retails_price}
+                  <span className="font-bangla md:text-sm text-sm">৳</span>{product?.retails_price}
                 </span>
               </div>
             ) : (
-              <span className="md:text-xl text-sm font-bold text-[#c03b2c]">
-                <span className="font-bangla text-sm lg:text-xl">৳</span> {product?.retails_price}
+              <span className="md:text-lg text-sm font-bold text-[#c03b2c]">
+                <span className="font-bangla text-sm lg:text-sm">৳</span> {product?.retails_price}
               </span>
             )}
           </div>
         </div>
       </Link>
-      <div className="mt-auto flex flex-col gap-2 p-3 border-t border-gray-200">
+      <div className="mt-auto flex gap-2 p-3 pt-2 border-gray-200">
         <button
           onClick={() => handleBuy(product, 1)}
-          className="border-[#c03b2c] border text-xs text-[#c03b2c] w-full px-2 py-1.5 rounded-md font-semibold transition-colors"
+          className="bg-[#c03b2c32] border text-xs text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white w-full px-2 py-1.5 rounded-md font-semibold transition-colors"
         >
           Buy Now
         </button>
@@ -88,7 +88,7 @@ const ProductCard = ({ product }) => {
             e.preventDefault();
             handleCart(product, 1);
           }}
-          className="bg-[#c03b2c] border border-transparent text-xs text-white w-full px-2 py-1.5 rounded-md font-semibold transition-colors"
+          className="hover:bg-[#383838] bg-[#b4b4b474] border border-transparent text-xs hover:text-white text-black w-full px-2 py-1.5 rounded-md font-semibold transition-colors"
         >
           Add to Cart
         </button>
