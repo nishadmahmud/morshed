@@ -34,8 +34,7 @@ const Page = ({ params }) => {
     }
   }, [refetch, setRefetch, getCartItems]);
 
-  const { id } = params; // Get product ID from URL
-
+  const { id } = params; 
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
     fetcher

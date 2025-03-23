@@ -147,7 +147,7 @@ console.log("userrrrrr",user);
           <div className={`w-full z-50 text-white  transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] fixed mt-0`}>
           {/* <TopHeader></TopHeader> */}
             {/* desktop menu */}
-           <div className='flex justify-between items-center bg-[#000000] text-[#ffffff] p-3 py-2'>
+           <div className='flex justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2'>
 
            <div className="lg:hidden flex items-center ml-2 gap-3" onClick={toggleSidebar}>
           <Menu className="text-[#ffffff] text-right text-2xl" />
@@ -252,29 +252,29 @@ console.log("userrrrrr",user);
              </div>
              
            
-      {/* offer */}
+      {/* offer + blog */}
       <div className='items-center gap-3 hidden lg:flex'>       
-          <Link href='/blogs' className="flex transition ease-in-out font-medium items-center text-white gap-1 mr-2 hover:text-[#c03b2c]"> 
-          <NotebookPen size={22}></NotebookPen>
+          <Link href='/blogs' className="flex transition ease-in-out bg-[#302e31] p-2 px-4 rounded-md font-medium items-center text-white gap-1 text-sm hover:text-[#c03b2c]"> 
+          <NotebookPen size={20}></NotebookPen>
           Blog</Link>
             
                 <Link href='/offer'>
-            <div  className='flex text-white items-center group'>
-                <div className="relative p-1 rounded-full text-white">
-                    <Gift size={25} className='group-hover:text-[#c03b2c] text-white cursor-pointer'/>
+            <div  className='flex text-white items-center group gap-1 bg-[#302e31] p-2 px-3 rounded-md text-sm'>
+                <div className="relative rounded-full text-white">
+                    <Gift size={20} className='group-hover:text-[#c03b2c] text-white cursor-pointer'/>
                 </div>
-                    <p className='group-hover:text-[#c03b2c] text-white text-base font-medium'>Offers</p>
+                    <p className='group-hover:text-[#c03b2c] text-white font-medium'>Offers</p>
                    
              </div>
                 </Link>
 
-             <div onClick={() => setOpenCart(!openCart)} className='flex group items-center cursor-pointer'>
+             <div onClick={() => setOpenCart(!openCart)} className='flex group items-center cursor-pointer bg-[#302e31] px-3 rounded-md text-sm mr-3'>
                 <div className="relative p-1 rounded-full" >
-                    <LiaShoppingCartSolid size={33} className='cursor-pointer group-hover:text-[#c03b2c] text-white' />
-                    <p className='bg-[#c03b2c] h-fit  text-[#ffffff] w-fit px-1 rounded-full text-[8px] absolute top-1 right-1'>{total}</p>
+                    <LiaShoppingCartSolid size={28} className='cursor-pointer group-hover:text-[#c03b2c] text-white' />
+                    <p className='bg-[#c03b2c] h-fit  text-[#ffffff] w-fit px-0.5 rounded-full text-[10px] absolute top-1 right-1'>{total}</p>
                     </div>
                     <div>
-                    <p className='group-hover:text-[#c03b2c] text-white hidden md:block text-base font-medium '>Cart</p> 
+                    <p className='group-hover:text-[#c03b2c] text-white hidden md:block font-medium '>Cart</p> 
                     
                 </div> 
             </div>    
@@ -283,15 +283,15 @@ console.log("userrrrrr",user);
             <div>
             {
   !user ? 
-  <div onClick={() => { setIsLoginModal(true) }} className='lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group'>
+  <Link href='/login'  className='lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group bg-[#302e31] p-1 px-3 rounded-md text-sm'>
       <div className='p-1 rounded-full hidden lg:block'>
-          <LogIn  size={25} className='group-hover:text-[#c03b2c] text-white'/>
+          <LogIn  size={20} className='group-hover:text-[#c03b2c] text-white'/>
       </div>
       <div>
-      <p className='group-hover:text-[#c03b2c] text-white hidden lg:block text-base font-semibold '>Login</p> 
+      <p className='group-hover:text-[#c03b2c] text-white hidden lg:block font-semibold '>Login</p> 
       
    </div> 
-  </div> :
+  </Link> :
   <Link href='/profileDashboard'  className='items-center hidden lg:flex gap-2 px-2 p-1.5 lg:pr-2.5 lg:mr-4 cursor-pointer'>
     <div className='rounded-full hidden lg:block'>
      <Image unoptimized alt='navLogo' src={navLogo} className='w-8 rounded-full border-2 border-[#c03b2c] p-0.5'></Image>
