@@ -147,7 +147,7 @@ console.log("userrrrrr",user);
           <div className={`w-full z-50 text-white  transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] fixed mt-0`}>
           {/* <TopHeader></TopHeader> */}
             {/* desktop menu */}
-           <div className='flex px-20 justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2'>
+           <div className='flex md:px-20 justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2'>
 
            <div className="lg:hidden flex items-center ml-2 gap-3" onClick={toggleSidebar}>
           <Menu className="text-[#ffffff] text-right text-2xl" />

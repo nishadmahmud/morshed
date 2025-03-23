@@ -20,39 +20,40 @@ const ReadyForOrder = () => {
 
   const { handleBuy, handleCart } = useStore();
 
- // Handle recent view when product card is clicked
+  // Handle recent view when product card is clicked
   const updateRecentViews = (product) => {
-   if (!product?.id) return
- 
-   let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
-   
-   // Remove existing entry if present
-   recentViews = recentViews.filter(p => p.id !== product.id)
-   
-   // Add new entry to beginning
-   recentViews.unshift({
-     id: product.id,
-     name: product.name,
-     image: product.image_path || (product.images?.[0] || noImg.src),
-     price: product.retails_price,
-     discount: product.discount || 0
-   })
- 
-   // Keep only last 5 items
-   if (recentViews.length > 6) recentViews.pop()
-   
-   localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
- }
+    if (!product?.id) return;
 
- const sanitizeSlug = (str) => {
-  return str
-    ?.toLowerCase()
-    .replace(/\s+/g, "-") // Replace spaces with dashes
-    .replace(/[^a-z0-9-]/g, ""); // Remove special characters
-};
+    let recentViews = JSON.parse(
+      localStorage.getItem("recentlyViewed") || "[]"
+    );
 
+    // Remove existing entry if present
+    recentViews = recentViews.filter((p) => p.id !== product.id);
 
-console.log(products);
+    // Add new entry to beginning
+    recentViews.unshift({
+      id: product.id,
+      name: product.name,
+      image: product.image_path || product.images?.[0] || noImg.src,
+      price: product.retails_price,
+      discount: product.discount || 0,
+    });
+
+    // Keep only last 5 items
+    if (recentViews.length > 6) recentViews.pop();
+
+    localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
+  };
+
+  const sanitizeSlug = (str) => {
+    return str
+      ?.toLowerCase()
+      .replace(/\s+/g, "-") // Replace spaces with dashes
+      .replace(/[^a-z0-9-]/g, ""); // Remove special characters
+  };
+
+  console.log(products);
   return (
     <div className="lg:mt-20 mt-10">
       <Heading title={"New Arraivals"} />
@@ -84,15 +85,15 @@ console.log(products);
                   // console.log(specs);
                   // const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
                   // const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
-                  // console.log(batteryCapacity); 
-                  
+                  // console.log(batteryCapacity);
+
                   // const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
                   // const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
                   // const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
                   // const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
-                  
+
                   // const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
-                  
+
                   // console.log(cameraShort);
 
                   return (
@@ -102,11 +103,17 @@ console.log(products);
                     >
                       <Link
                         onClick={() => updateRecentViews(product)}
-                        href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
+                        href={`/products/${sanitizeSlug(
+                          product?.brand_name || product?.name
+                        )}/${product?.id}`}
                       >
                         <div className="h-32 w-40 mx-auto">
                           <Image
-                            src={product?.image_path || product?.images?.[0] || noImg}
+                            src={
+                              product?.image_path ||
+                              product?.images?.[0] ||
+                              noImg
+                            }
                             height={500}
                             unoptimized
                             width={300}
@@ -117,8 +124,9 @@ console.log(products);
                             <p className="absolute top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md">
                               SAVE {product?.discount || 0}%
                             </p>
-                          ) : ""
-                        }
+                          ) : (
+                            ""
+                          )}
                         </div>
                         <div className="mt-10 flex flex-col flex-grow justify-center items-center px-4">
                           <h3 className="text-sm font-semibold text-black  line-clamp-1 text-ellipsis mt-2">
@@ -128,20 +136,28 @@ console.log(products);
                             {product?.discount ? (
                               <div className="flex justify-center items-center gap-2">
                                 <span className="text-sm lg:text-lg font-bold text-[#c03b2c] line-through">
-                                  <span className="font-bangla text-sm lg:text-sm">৳</span>
+                                  <span className="font-bangla text-sm lg:text-sm">
+                                    ৳
+                                  </span>
                                   {product?.retails_price}
                                 </span>
                                 <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
-                                  <span className="font-bangla text-sm lg:text-sm">৳</span>{" "}
+                                  <span className="font-bangla text-sm lg:text-sm">
+                                    ৳
+                                  </span>{" "}
                                   {(
                                     product?.retails_price -
-                                    (product?.retails_price * product?.discount) / 100
+                                    (product?.retails_price *
+                                      product?.discount) /
+                                      100
                                   ).toFixed(2)}
                                 </span>
                               </div>
                             ) : (
                               <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
-                                <span className="font-bangla text-sm lg:text-sm">৳</span>{" "}
+                                <span className="font-bangla text-sm lg:text-sm">
+                                  ৳
+                                </span>{" "}
                                 {product?.retails_price}
                               </span>
                             )}
@@ -149,7 +165,7 @@ console.log(products);
                         </div>
                       </Link>
 
-                      <div className="grid grid-cols-2 justify-center items-center mt-2 mb-5 mx-3 gap-3 bottom-2">
+                      <div className="grid md:grid-cols-2 grid-cols-1 justify-center items-center mt-2 mb-5 mx-3 gap-3 bottom-2 ">
                         <button
                           onClick={() => handleBuy(product, 1)}
                           className=" bg-[#c03b2c32] border text-xs text-[#c03b2c] hover:bg-[#c03b2c] w-full py-1.5 hover:text-white rounded-md font-medium transition-colors px-3"
@@ -170,7 +186,9 @@ console.log(products);
                   );
                 })
               ) : (
-                <p className="text-black text-center col-span-full">No products found</p>
+                <p className="text-black text-center col-span-full">
+                  No products found
+                </p>
               )}
             </div>
           )}

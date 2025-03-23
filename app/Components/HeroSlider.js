@@ -34,7 +34,7 @@ const HeroSlider = ({ slider, banner, data }) => {
 
 
   return (
-    <div className="lg:max-w-[100%] lg:mr-2 lg:pt-[6.5rem] pt-[3.5rem] md:pt-20 max-w-[100%] w-full mx-auto flex lg:flex-row flex-col  items-center">
+    <div className="lg:max-w-[100%] lg:mr-2 lg:pt-[6.5rem] pt-[3.5rem] md:pt-20 max-w-[100%] w-full mx-auto flex lg:flex-row   items-center">
       {/* Grid Layout */}
       <div className="flex gap-4">
         
@@ -74,7 +74,7 @@ const HeroSlider = ({ slider, banner, data }) => {
 
          
           {/* Slider Section */}     
-        <div className="w-[88%] mx-auto flex flex-col h-[28vh] justify-center overflow-hidden relative md:rounded-sm lg:h-[65vh] md:h-[55vh] lg:mb-4">
+        <div className="md:w-[88%] mx-auto w-full flex flex-col h-[25vh] justify-center overflow-hidden relative md:rounded-sm lg:h-[65vh] md:h-[55vh] lg:mb-4">
           
           <Swiper
           pagination={true}
@@ -119,7 +119,7 @@ const HeroSlider = ({ slider, banner, data }) => {
           </div>
         </div>
 
-        <div className="text-[#c03b2c] mx-auto w-[88%] mb-3">
+        <div className="text-[#c03b2c] mx-auto md:w-[88%] mb-3 md:mt-0 mt-3">
         <Marquee>
         🎊 Eid-ul-Fitr Exclusive Offer on Phones & Gadgets! 🎊 | 📅 Limited Time Only! Celebrate Eid with the latest tech at unbeatable discounts!
     </Marquee>
