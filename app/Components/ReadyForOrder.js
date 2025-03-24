@@ -80,7 +80,7 @@ const ReadyForOrder = () => {
           ) : (
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 lg:p-2 rounded-3xl w-11/12 mx-auto">
               {products?.data && products?.data.length > 0 ? (
-                products.data.slice(0, 5).map((product) => {
+                products.data.slice(0, 12).map((product) => {
                   // const specs = product?.specifications || [];
                   // console.log(specs);
                   // const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";

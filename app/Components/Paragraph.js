@@ -2,7 +2,7 @@ import React from 'react';
 
 const Paragraph = () => {
     return (
-        <div className='xl:text-lg lg:text-base text-sm text-black w-11/12 mx-auto pb-5'>
+        <div className='xl:text-base text-sm text-black w-11/12 mx-auto pb-5'>
             <span className='font-semibold xl:text-3xl lg:text-2xl text-xl'>Leading Gadget Hub in Bangladesh</span> <br></br> <p className='mt-2'>
 
             – Your Ultimate Tech Destination

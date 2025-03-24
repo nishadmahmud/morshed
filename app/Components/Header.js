@@ -156,9 +156,9 @@ console.log("userrrrrr",user);
 
          <div className='flex items-center gap-1'>
 
-         <Link href={'/'}><Image src={logoSmallDevice} unoptimized alt='company-logo' height={300} width={300} className='w-4 h-auto'/></Link>
+         <Link href={'/'}><Image src={logoSmallDevice} unoptimized alt='company-logo' height={300} width={300} className='w-6 h-auto'/></Link>
 
-<h5 className='text-[9px] font-semibold font-logo'>Apple Newton Bd</h5>
+<h5 className='text-[12px] font-semibold font-logo'>Apple Newton Bd</h5>
 
          </div>
         </div>
