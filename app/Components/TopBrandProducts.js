@@ -30,7 +30,7 @@ const TopBrandProducts = ({ brands }) => {
   console.log("API URL:", apiUrl);
 
   return (
-    <div className="lg:mt-24 mt-12">
+    <div className="lg:mt-10 mt-5 pb-10">
       <Heading title="Top Brand Products" />
 
       <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)} className="mt-5">

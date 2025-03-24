@@ -58,8 +58,8 @@ export default async function Home() {
         <FeaturedProducts banner={banner}/>
         <BannerSection banner={banner}/>
         <NewArrival banner={banner}/> 
-        <TopBrandProducts brands={brands}/> 
         <Brands brands={brands}/>    
+        <TopBrandProducts brands={brands}/> 
       </div>
         
     </>

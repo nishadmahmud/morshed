@@ -40,7 +40,7 @@ const ProductCard = ({ product }) => {
       <Link onClick={updateRecentViews} href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}>
         <div className="relative h-36 w-40 mx-auto">
           <Image
-            src={validImage}
+            src={validImage || noImg}
             alt={product?.name}
             width={800}
             height={200}
@@ -51,7 +51,7 @@ const ProductCard = ({ product }) => {
         </div>
         {product?.discount && (
           <p className="absolute top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md">
-            SAVE {product?.discount}%
+            SAVE {product?.discount || null}%
           </p>
         )}
         <div className="px-4 flex flex-col flex-grow justify-center items-center">

@@ -1,6 +1,6 @@
 'use client'
 import React, {  useCallback, useEffect, useRef, useState } from 'react';
-import { FaChevronDown, FaRegHeart, FaRegUser } from 'react-icons/fa6';
+import { FaChevronDown, FaRegHeart, FaRegUser, FaUsers } from 'react-icons/fa6';
 import companyLogo from '/public/logo.png';
 import logoSmallDevice from '/public/logoPhone.png';
 import { HiMiniShoppingCart } from "react-icons/hi2";
@@ -184,6 +184,11 @@ console.log("userrrrrr",user);
               </Link>
           })
           }
+         <div className='flex flex-col gap-2 font-medium text-[#c03b2c]'>
+         <Link className='flex items-center gap-1' href="/offer"> <Gift size={15}></Gift> Latest Offer</Link>
+          <Link className='flex items-center gap-1' href="/blogs"><NotebookPen size={15}></NotebookPen> Blog</Link>
+          <Link className='flex items-center gap-1' href="/about-us"> <FaUsers size={16}></FaUsers> About Us</Link>
+         </div>
         </ul>
       </div>
 
@@ -196,7 +201,7 @@ console.log("userrrrrr",user);
           )}
 
            {/* logo large device */}
-           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='hidden md:block md:w-56 w-52 h-auto'/></Link>
+           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='hidden md:block md:w-48 lg:w-52 py-1 w-52 h-auto'/></Link>
 
           {/* ==========category + search========== */}
             <div className='hidden relative md:flex lg:flex lg:justify-center px-5 py-1.5'>
@@ -283,7 +288,7 @@ console.log("userrrrrr",user);
             <div>
             {
   !user ? 
-  <Link href='/login'  className='lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group bg-[#302e31] p-1 px-3 rounded-md text-sm hover:bg-[#c03b2c]'>
+  <div onClick={() => setIsLoginModal(true)}  className='lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group bg-[#302e31] p-1 px-3 rounded-md text-sm hover:bg-[#c03b2c]'>
       <div className='p-1 rounded-full hidden lg:block'>
           <LogIn  size={20} className='group-hover:text-[#ffffff] text-white'/>
       </div>
@@ -291,7 +296,7 @@ console.log("userrrrrr",user);
       <p className='group-hover:text-[#ffffff] text-white hidden lg:block font-normal '>Login</p> 
       
    </div> 
-  </Link> :
+  </div> :
   <Link href='/profileDashboard'  className='items-center hidden lg:flex gap-2 px-2 p-1.5 lg:pr-2.5 lg:mr-4 cursor-pointer'>
     <div className='rounded-full hidden lg:block'>
      <Image unoptimized alt='navLogo' src={navLogo} className='w-8 rounded-full border-2 border-[#c03b2c] p-0.5'></Image>

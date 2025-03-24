@@ -8,6 +8,7 @@ import { fetcher, userId } from "../(home)/page";
 import CardSkeleton from "./CardSkeleton";
 import useStore from "../CustomHooks/useStore";
 import Link from "next/link";
+import { ShoppingCart } from "lucide-react";
 
 const FeaturedProducts = ({ banner }) => {
   const { data: bestDeals, isLoading } = useSWR(
@@ -54,8 +55,8 @@ console.log(banner);
     <div className="lg:mt-24 mt-16 poppins">
       <Heading title={"Flash Sale"} />
 
-      <div className="w-11/12 mx-auto md:gap-5 gap-2 grid md:grid-cols-5  md:justify-between justify-center items-center">
-        <div className="flex mt-5 md:col-span-3">
+      <div className="lg:w-11/12 w-full mx-auto md:gap-5 gap-2 grid md:grid-cols-5  md:justify-between justify-center items-center">
+        <div className="flex mt-5 lg:col-span-3">
           <div className="w-full md:h-[65vh] h-[25vh] object-cover">
             <Image
             unoptimized
@@ -68,38 +69,49 @@ console.log(banner);
           </div>
         </div>
 
-        <div className="bg-[#bd4437df] rounded-xl mt-5 p-5 md:col-span-2 md:h-[65vh] h-[25vh] text-black overflow-y-auto">
-          <h3 className="text-white text-xl font-medium">🔥Hot Deal of The Day</h3>
+        <div className="bg-[#cf4a3ccc] rounded-xl mt-5 p-5 md:col-span-2 lg:h-[65vh] h-[35vh] text-black overflow-y-auto">
+          <h3 className="text-white text-base md:text-xl font-medium">🔥Hot Deal of The Day</h3>
           <div>
             {
               bestDeals? bestDeals.data.slice(0, 6).map((product, index) => (
-                <div key={index} className="bg-white p-3 rounded-xl mt-5 flex items-center gap-3">
-                  <div>
-                    <Image alt={product.name} width={80} height={80} src={product.image_path || noImg}></Image>
+
+                <div key={index} className="bg-white p-3 rounded-xl mt-5 flex justify-between items-center gap-3">
+                 <div className="flex items-center gap-2">
+                 <div>
+                    <Image className="w-9 md:w-20" alt={product.name} width={80} height={80} src={product.image_path || noImg}></Image>
                   </div>
 
                   <div> 
                     <Link onClick={updateRecentViews} href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`} 
-                    className="font-semibold text-sm text-ellipsis line-clamp-2 hover:text-gray-700">{product.name}</Link>
-                    <div className="flex items-center gap-1">
+                    className="font-semibold md:text-sm text-xs text-ellipsis line-clamp-2 hover:text-gray-700">{product.name}</Link>
+                    <div className="flex items-center gap-5">
+                      
                     {product?.discount ? (
               <div className="flex items-center gap-2">
-                <span className="md:text-base text-sm font-bold text-[#c03b2c]">
-                  <span className="font-bangla text-sm md:text-base">৳</span> {discountedPrice}
+                <span className="md:text-base text-xs font-bold text-[#c03b2c]">
+                  <span className="font-bangla text-xs md:text-base">৳</span> {discountedPrice}
                 </span>
-                <span className="text-sm font-bold text-[#504f4d] line-through">
-                  <span className="font-bangla md:text-base text-sm">৳</span>{product?.retails_price}
+                <span className="text-xs font-bold text-[#504f4d] line-through">
+                  <span className="font-bangla md:text-base text-xs">৳</span>{product?.retails_price}
                 </span>
               </div>
             ) : (
-              <span className="md:text-base text-sm font-bold text-[#c03b2c]">
-                <span className="font-bangla text-sm lg:text-base">৳</span> {product?.retails_price}
+              <span className="md:text-base text-xs font-bold text-[#c03b2c]">
+                <span className="font-bangla text-xs lg:text-base">৳</span> {product?.retails_price}
               </span>
             )}
+
+            
                     </div>
                   </div>
+                 </div>
+
+                 <div onClick={handleCart} className="mr-5 cursor-pointer">
+              <ShoppingCart></ShoppingCart>
+            </div>
 
                 </div>
+
               )): [1,2,3].map((_, i) => <CardSkeleton key={i} />)
             }
            

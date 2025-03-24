@@ -1,6 +1,8 @@
 "use client"
 
 import useStore from "@/app/CustomHooks/useStore";
+import { MapPinCheckIcon } from "lucide-react";
+import { MapPin } from "lucide-react";
 import { FileUser, ShoppingBag, KeyRound, CircleUser, LogOut, X, Menu } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -75,7 +77,7 @@ const DashboardLayout = ({ children }) => {
       >
         
 
-        <div className="flex items-center gap-1 text-gray-100">
+        <div className="flex items-center gap-1 text-gray-100 pt-5">
           <CircleUser size={30} />
           <div>
             <h2 className="text-white text-lg font-semibold">{firstName}</h2>
@@ -102,6 +104,13 @@ const DashboardLayout = ({ children }) => {
             className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <KeyRound size={20} /> Change Password
+          </Link>
+
+          <Link
+            href="/orderTracking"
+            className="text-white hover:text-gray-300 flex items-center gap-1"
+          >
+            <MapPin size={20} /> Order Tracking
           </Link>
           <div
             onClick={handleLogout}

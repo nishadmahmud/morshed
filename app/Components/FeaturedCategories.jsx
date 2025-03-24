@@ -37,7 +37,7 @@ const FeaturedCategories = ({ categories }) => {
                     width={120}
                     style={{ objectFit: "cover" }}
                     loading="lazy"
-                    className="rounded-full transition-transform duration-300 border-2 md:p-4 p-6 border-gray-200 group-hover:scale-105"
+                    className="rounded-full transition-transform duration-300 border-2 p-4 border-gray-200 group-hover:scale-105"
                   />
                 </div>
 
