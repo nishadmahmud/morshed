@@ -48,7 +48,7 @@ export default function Page() {
               <FaMapMarkerAlt /> Show Map
             </button>
             </Link>
-            <Link target="_blank" href="https://www.facebook.com/Perfectgadgetb">
+            <Link target="_blank" href="https://www.facebook.com/profile.php?id=61563743437257">
             <button className="flex items-center gap-2 bg-[#c03b2c] text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-[#932b20]">
               <FaStore /> Show Details
             </button>

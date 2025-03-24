@@ -3,10 +3,10 @@
 import useStore from "@/app/CustomHooks/useStore"
 import Image from "next/image"
 import Link from "next/link";
-import shop01 from '/public/shopPerfG.jpeg'
-import happyC01 from '/public/happyCustomer01.jpeg'
-import happyC02 from '/public/happyC02.jpeg'
-import happyC03 from '/public/happyC-03.jpeg'
+import shop01 from '/public/bannerApleN.jpeg'
+import happyC01 from '/public/happyC.jpeg'
+import happyC02 from '/public/happyCus.jpeg'
+import happyC03 from '/public/owner.jpeg'
 import allMember from '/public/allMembar.jpeg'
 
 
@@ -22,8 +22,8 @@ export default function Home() {
           <h2 className="text-2xl font-semibold  text-nowrap ">Who We Are</h2>
           <div>
             <p className="text-gray-600">
-                Perfect Gadgets BD is a one-stop tech shop that offers tech enthusiasts authentic smartphones, gadgets, and
-                devices at the best prices. We have been serving our customers since 2015, and we have never failed to
+                Apple Newton Bd is a one-stop tech shop that offers tech enthusiasts authentic smartphones, gadgets, and
+                devices at the best prices. We have been serving our customers since many years, and we have never failed to
                 achieve the highest customer satisfaction by ensuring top-notch service through multichannel shopping
                 stores, online store, EMI facility, exchange offers, free home delivery, dedicated service centers, and many
                 more.
@@ -57,7 +57,7 @@ export default function Home() {
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-4">Exchange and Upgrade</h3>
             <p className="text-gray-600 mb-4">
-            Upgrade to a new device with Perfect Gadget&apos;s BD simple exchange system. Just swap your old device for a new one.  
+            Upgrade to a new device with Apple Newton Bd simple exchange system. Just swap your old device for a new one.  
 Enjoy a hassle-free trade-in process with instant evaluation and competitive exchange value.
             </p>
             
@@ -67,7 +67,7 @@ Enjoy a hassle-free trade-in process with instant evaluation and competitive exc
           <div className="bg-white rounded-lg shadow-md p-6">
             <h3 className="text-xl font-semibold mb-4">Pre-Order Anything</h3>
             <p className="text-gray-600 mb-4">
-              You can pre-order any device or accessory from Perfect Gadgets BD by providing the product URL. Once you do,
+              You can pre-order any device or accessory from Apple Newton Bd by providing the product URL. Once you do,
               we&apos;ll confirm your order and make sure you get what you want.
             </p>
             
@@ -98,28 +98,19 @@ Enjoy a hassle-free trade-in process with instant evaluation and competitive exc
               className="w-full rounded-lg"
             />
           </div>
-          <div className="relative w-full h-80">
-            <Image
-             src={happyC03}
-              alt="Mobile Club Store Interior"
-              fill={true}
-              quality={100}
-              style={{objectFit : 'contain'}}
-              className="w-full rounded-lg"
-            />
-          </div>
+          
         </div>
-            <h4 className="text-center font-medium text-xl mt-4">Our Happy Customer</h4>
+            <h4 className="text-center font-medium text-2xl mt-10">Our Happy Customer</h4>
       </section>
 
       {/* Free Shop Pickup Section */}
       <section className="px-4 py-8 bg-gray-50 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-2xl font-semibold mb-4">
-            Free Shop Pickup : Discover Convenience with Free Shop Pickup at Perfect Gadgets BD in Dhaka City.
+            Free Shop Pickup : Discover Convenience with Free Shop Pickup at Apple Newton Bd in Dhaka City.
           </h2>
           <p className="text-gray-600">
-            We are delighted to offer you a seamless and cost-free option for product pickup at Perfect Gadgets BD. Make the
+            We are delighted to offer you a seamless and cost-free option for product pickup at Apple Newton Bd. Make the
             most of this convenient service by visiting our outlet situated in one of the most prominent locations in
             Dhaka city. Our outlet not only provides a diverse array of Apple products but also ensures a pleasant
             shopping experience. To help you make an informed decision and enhance your understanding of our outlets,
@@ -145,7 +136,7 @@ Enjoy a hassle-free trade-in process with instant evaluation and competitive exc
       {/* Blog Section */}
       {/* <section className="px-4 py-8 bg-gray-50 md:px-6 lg:px-8">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl text-black font-semibold mb-8">More from Perfect Gadgets BD</h2>
+          <h2 className="text-2xl text-black font-semibold mb-8">More from Apple Newton Bd</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {blogs?.data.map((blog,i) => (
               <div key={i} className="bg-white text-black rounded-lg shadow-md overflow-hidden">
@@ -168,9 +159,11 @@ Enjoy a hassle-free trade-in process with instant evaluation and competitive exc
       </section> */}
 
       <div>
-        <Image alt="allMember" className="w-10/12 h-[35rem] mx-auto object-cover" src={allMember} width={1000} height={500}></Image>
+        <Image alt="allMember" className="w-10/12 h-[35rem] mx-auto object-cover pb-5" src={happyC03} width={1000} height={500}></Image>
 
-        <h6 className="p-4 text-center pb-5 shadow-lg px-5 rounded-sm text-xl font-medium">All Member</h6>
+        <h6 className="text-center pb-3 text-xl">Stay with Apple Newton Bd</h6>
+
+  
       </div>
     </main>
   )

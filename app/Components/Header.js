@@ -151,14 +151,14 @@ console.log("userrrrrr",user);
             {/* desktop menu */}
            <div className='flex xl:px-20 justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2 lg:px-16'>
 
-           <div className="xl:hidden lg:flex items-center ml-2 gap-3" onClick={toggleSidebar}>
-          <Menu className="text-[#ffffff] text-right text-2xl" />
+           <div className="xl:hidden flex items-center lg:gap-3 gap-1" onClick={toggleSidebar}>
+          <Menu className="text-[#ffffff] text-right text-lg" />
 
          <div className='flex items-center gap-1'>
 
-         <Link href={'/'}><Image src={logoSmallDevice} unoptimized alt='company-logo' height={300} width={300} className='w-9 h-auto'/></Link>
+         <Link href={'/'}><Image src={logoSmallDevice} unoptimized alt='company-logo' height={300} width={300} className='w-4 h-auto'/></Link>
 
-<h5 className='text-xs font-semibold font-logo'>Apple Newton Bd</h5>
+<h5 className='text-[9px] font-semibold font-logo'>Apple Newton Bd</h5>
 
          </div>
         </div>
@@ -252,7 +252,7 @@ console.log("userrrrrr",user);
 
            
             
-            <div className='flex items-end text-white relative'>
+            <div className='flex text-white relative mr-1'>
              <div className='lg:hidden block'>
              <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search Products..' className='p-1 px-2 rounded-sm border-t border-b border-l  outline-none text-black bg-white text-xs'/>
              <SearchIcon size={14} className='absolute top-1.5 right-2 text-gray-400'/>

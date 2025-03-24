@@ -2,8 +2,8 @@ import React from "react";
 
 const Page = () => {
   return (
-    <div className="lg:px-12 mx-auto p-6 bg-white  rounded-lg">
-      <h1 className="text-3xl font-bold mb-4 text-gray-800">Refund Policy</h1>
+    <div className="lg:px-12 mx-auto p-6 bg-white  rounded-lg lg:pt-20 xl:pt-32 pt-24">
+      <h1 className="xl:text-3xl lg:text-2xl text-2xl font-bold xl:mb-4 text-gray-800 underline">Refund Policy</h1>
       <p className="text-gray-600 mb-4">
         Thank you for shopping with us. If you are not entirely satisfied with your
         purchase, we&apos;re here to help.

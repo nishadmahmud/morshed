@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 
 const TawkTo = () => {
- <div className='relative cursor-pointer lg:bottom-20 bottom-32 right-5'>
+ <div className='relative bg-red-500 p-10 cursor-pointer lg:bottom-20 bottom-32 right-5'>
     { useEffect(() => {
     const script = document.createElement('script');
     script.src = 'https://embed.tawk.to/67e1460a669fe61904e0739b/1in3vj75e';

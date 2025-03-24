@@ -1,8 +1,8 @@
 const Page = () => {
     return (
-      <div className="bg-gray-100 p-4">
+      <div className="bg-gray-100 p-4 lg:pt-20 xl:pt-32 pt-24">
         <div className=" w-full p-6 bg-white  rounded-2xl">
-          <h1 className="text-2xl font-bold text-center text-gray-800">Warranty Policy</h1>
+          <h1 className="text-2xl font-bold text-center text-gray-800 underline">Warranty Policy</h1>
           <div className="mt-4 text-gray-700">
             <h2 className="text-lg font-semibold">Coverage</h2>
             <p className="mt-2 text-sm">

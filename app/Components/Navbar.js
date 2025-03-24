@@ -127,8 +127,10 @@ const total = items?.reduce((acc,curr) => acc += curr.quantity,0) || 0;
                 </Link>
 
                 <div onClick={() => setOpenCart(!openCart)} className="flex flex-col items-center text-sm hover:text-white text-[#c03b2c]">
+                    <div>
                     <ShoppingCart className="text-2xl" />
-                    <p className='bg-[#ffffff] z-[900] h-fit text-[#c03b2c] w-fit px-1 text-xs rounded-full absolute top-2 md:right-40 right-[9.2rem]'>{total}</p>
+                    <p className='bg-[#ffffff] z-[900] h-fit text-[#c03b2c] w-fit px-1 text-xs rounded-full absolute top-2 md:right-96 lg:right-80 right-[8rem]'>{total}</p>
+                    </div>
                     <span className='text-white'>Cart</span>
                 </div>
                 {loggedInUser ? (

@@ -2,11 +2,11 @@ import React from 'react';
 
 const Page = () => {
   return (
-    <div className="bg-white text-center p-8 rounded-lg  mx-auto">
-      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6">Exchange Policy</h1>
+    <div className="bg-white text-center lg:pt-20 xl:pt-32 pt-24 p-8 rounded-lg  mx-auto">
+      <h1 className="text-3xl font-bold text-center text-gray-800 mb-6 underline">Exchange Policy</h1>
       
       <p className="text-lg text-gray-700 mb-4">
-        At <span className="font-semibold">Perfect Gadget BD</span>, we want you to be completely satisfied with your purchase.
+        At <span className="font-semibold">Apple Newton Bd</span>, we want you to be completely satisfied with your purchase.
         If you are not satisfied with your product, we offer a hassle-free exchange policy under the following conditions.
       </p>
       
@@ -25,7 +25,7 @@ const Page = () => {
           If you meet the eligibility criteria, please follow these steps to request an exchange:
         </p>
         <ol className="list-decimal list-inside text-gray-700 text-lg">
-          <li>Contact our customer support team at <span className="font-semibold">bdperfectgadget@gmail.com</span>.</li>
+          <li>Contact our customer support team at <span className="font-semibold">contact@applemartbd.com</span>.</li>
           <li>Provide your order number and the reason for the exchange.</li>
           <li>Our team will assist you with the next steps and issue a return shipping label if needed.</li>
         </ol>

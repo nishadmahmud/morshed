@@ -55,7 +55,7 @@ console.log(banner);
     <div className="lg:mt-24 mt-16 poppins">
       <Heading title={"Flash Sale"} />
 
-      <div className="lg:w-11/12 w-full mx-auto md:gap-5 gap-2 grid md:grid-cols-5  md:justify-between justify-center items-center">
+      <div className="w-[90%] mx-auto md:gap-5 gap-2 grid md:grid-cols-5  md:justify-between justify-center items-center">
         <div className="flex mt-5 lg:col-span-3">
           <div className="w-full md:h-[65vh] h-[25vh] object-cover">
             <Image
@@ -87,19 +87,33 @@ console.log(banner);
                     <div className="flex items-center gap-5">
                       
                     {product?.discount ? (
-              <div className="flex items-center gap-2">
-                <span className="md:text-base text-xs font-bold text-[#c03b2c]">
-                  <span className="font-bangla text-xs md:text-base">৳</span> {discountedPrice}
-                </span>
-                <span className="text-xs font-bold text-[#504f4d] line-through">
-                  <span className="font-bangla md:text-base text-xs">৳</span>{product?.retails_price}
-                </span>
-              </div>
-            ) : (
-              <span className="md:text-base text-xs font-bold text-[#c03b2c]">
-                <span className="font-bangla text-xs lg:text-base">৳</span> {product?.retails_price}
-              </span>
-            )}
+                              <div className="flex justify-center items-center gap-2">
+                                <span className="text-xs lg:text-sm font-bold text-[#535353] line-through">
+                                  <span className="font-bangla text-sm lg:text-sm">
+                                    ৳
+                                  </span>
+                                  {product?.retails_price}
+                                </span>
+                                <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
+                                  <span className="font-bangla text-sm lg:text-sm">
+                                    ৳
+                                  </span>{" "}
+                                  {(
+                                    product?.retails_price -
+                                    (product?.retails_price *
+                                      product?.discount) /
+                                      100
+                                  ).toFixed(0)}
+                                </span>
+                              </div>
+                            ) : (
+                              <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
+                                <span className="font-bangla text-sm lg:text-sm">
+                                  ৳
+                                </span>{" "}
+                                {product?.retails_price}
+                              </span>
+                            )}
 
             
                     </div>
@@ -112,7 +126,7 @@ console.log(banner);
 
                 </div>
 
-              )): [1,2,3].map((_, i) => <CardSkeleton key={i} />)
+              )): <div className="text-center my-4 text-white">Loading...</div>
             }
            
           </div>

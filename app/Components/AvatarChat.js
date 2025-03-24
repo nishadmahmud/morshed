@@ -1,22 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import Image from 'next/image'
-import avatar from '/public/avatar.jpg'
-import ChatbotComponent from './ChatbotComponent';
-import TawkTo from './TawkTo';
+import FloatingActionMenu from './FloatingActionMenu';
 
 
 export default function Component() {
-  const [isOpen, setIsOpen] = useState(false); // Track visibility
+  const [isMinimized, setIsMinimized] = useState(false);
 
   return (
-    <div className="fixed cursor-pointer lg:bottom-20 bottom-32 right-5 ">
-     
-      {/* <TawkTo></TawkTo> */}
-     
 
-    
+    <div className="fixed cursor-pointer lg:bottom-20 bottom-24 md:right-6 right-6 z-[10000]">
+
+      <div className={`  transition-all duration-300 ease-in-out ${isMinimized ? 'w-14' : 'max-w-sm'}`}>
+      <FloatingActionMenu />
+      </div>
     </div>
   )
 }
+
+
+
+
+

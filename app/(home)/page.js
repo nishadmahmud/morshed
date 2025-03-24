@@ -10,6 +10,7 @@ import NewArrival from "../Components/NewArrival";
 import TopBrandProducts from "../Components/TopBrandProducts";
 import PromotionModal from "../Components/PromotionModal";
 import SmallBanner from "../Components/SmallBanner";
+import Paragraph from "../Components/Paragraph";
 
 
 export const userId = 193;
@@ -60,6 +61,7 @@ export default async function Home() {
         <NewArrival banner={banner}/> 
         <Brands brands={brands}/>    
         <TopBrandProducts brands={brands}/> 
+        <Paragraph></Paragraph>
       </div>
         
     </>

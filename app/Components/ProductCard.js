@@ -56,21 +56,21 @@ const ProductCard = ({ product }) => {
         )}
         <div className="px-4 flex flex-col flex-grow justify-center items-center">
           <h3 className="text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-4">
-            {product?.name}
+            {product?.name || "N/A"}
           </h3>
           <div>
             {product?.discount ? (
               <div className="flex items-center gap-2">
                 <span className="md:text-lg text-sm font-bold text-[#c03b2c]">
-                  <span className="font-bangla text-sm md:text-sm">৳</span> {discountedPrice}
+                  <span className="font-bangla text-sm md:text-sm">৳</span> {discountedPrice || 0}
                 </span>
                 <span className="text-sm font-bold text-[#504f4d] line-through">
-                  <span className="font-bangla md:text-sm text-sm">৳</span>{product?.retails_price}
+                  <span className="font-bangla md:text-sm text-sm">৳</span>{product?.retails_price || 0}
                 </span>
               </div>
             ) : (
               <span className="md:text-lg text-sm font-bold text-[#c03b2c]">
-                <span className="font-bangla text-sm lg:text-sm">৳</span> {product?.retails_price}
+                <span className="font-bangla text-sm lg:text-sm">৳</span> {product?.retails_price || 0}
               </span>
             )}
           </div>
