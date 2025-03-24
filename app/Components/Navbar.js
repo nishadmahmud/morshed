@@ -61,7 +61,7 @@ const total = items?.reduce((acc,curr) => acc += curr.quantity,0) || 0;
     return (
         <div className='relative'>
         {/* desktop menu */}
-            <div className='w-full bg-[#000000] text-white z-40 py-2.5 px-5 hidden items-center text-center gap-16 roboto text-sm md:hidden lg:flex justify-between'>
+            <div className='w-full bg-[#000000] text-white z-40 py-2.5 px-5 hidden items-center text-center gap-16 roboto text-sm xl:flex justify-between'>
                 
                 <div className='px-16 flex justify-between items-center '>
                 {/* <div onMouseEnter={() => setIsHovered(true)}  className='flex mr-2 items-center justify-center gap-3'>

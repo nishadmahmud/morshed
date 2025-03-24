@@ -66,19 +66,19 @@ const ReadyForOrder = () => {
                   <CardSkeleton key={idx} />
                 ))}
               </div>
-              <div className="hidden md:grid md:grid-cols-6 lg:hidden gap-5 w-11/12 mx-auto">
+              <div className="hidden md:grid md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 lg:hidden gap-5 w-11/12 mx-auto">
                 {Array.from({ length: 3 }).map((_, idx) => (
                   <CardSkeleton key={idx} />
                 ))}
               </div>
-              <div className="lg:grid w-11/12 mx-auto lg:grid-cols-6 hidden gap-5">
+              <div className="lg:grid w-11/12 mx-auto md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 hidden gap-5">
                 {Array.from({ length: 6 }).map((_, idx) => (
                   <CardSkeleton key={idx} />
                 ))}
               </div>
             </div>
           ) : (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-5 lg:p-2 rounded-3xl w-11/12 mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 lg:p-2 rounded-3xl w-11/12 mx-auto">
               {products?.data && products?.data.length > 0 ? (
                 products.data.slice(0, 5).map((product) => {
                   // const specs = product?.specifications || [];

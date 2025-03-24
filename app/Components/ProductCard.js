@@ -76,7 +76,7 @@ const ProductCard = ({ product }) => {
           </div>
         </div>
       </Link>
-      <div className="mt-auto flex md:flex-row flex-col gap-2 p-3 pt-2 border-gray-200">
+      <div className="mt-auto flex flex-col md:flex-col lg:flex-row gap-2 p-3 pt-2 border-gray-200 cardBtn pb-4">
         <button
           onClick={() => handleBuy(product, 1)}
           className="bg-[#c03b2c32] border text-xs text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white w-full px-2 py-1.5 rounded-md font-semibold transition-colors"

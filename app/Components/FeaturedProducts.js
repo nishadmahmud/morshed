@@ -78,7 +78,7 @@ console.log(banner);
                 <div key={index} className="bg-white p-3 rounded-xl mt-5 flex justify-between items-center gap-3">
                  <div className="flex items-center gap-2">
                  <div>
-                    <Image className="w-9 md:w-20" alt={product.name} width={80} height={80} src={product.image_path || noImg}></Image>
+                    <Image unoptimized className="w-9 md:w-20" alt={product.name} width={80} height={80} src={product.image_path || noImg}></Image>
                   </div>
 
                   <div> 

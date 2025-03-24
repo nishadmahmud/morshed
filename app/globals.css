@@ -308,3 +308,12 @@ body {
     object-fit: contain;
   }
 }
+
+@media (min-width: 768px) {
+  .cardBtn {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+

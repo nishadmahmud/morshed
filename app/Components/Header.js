@@ -29,6 +29,8 @@ import TopHeader from './TopHeader';
 import navLogo from '/public/user.png'
 import { LogIn } from 'lucide-react';
 import { NotebookPen } from 'lucide-react';
+import logo2 from '/public/favicon.png';
+
 
 const Header = ({data}) => {
     const {getCartItems,refetch,setRefetch,setOpenCart,openCart,getWishList,isLoginModal,setIsLoginModal,setToken,setHasToken} = useStore();
@@ -147,9 +149,9 @@ console.log("userrrrrr",user);
           <div className={`w-full z-50 text-white  transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] fixed mt-0`}>
           {/* <TopHeader></TopHeader> */}
             {/* desktop menu */}
-           <div className='flex md:px-20 justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2'>
+           <div className='flex xl:px-20 justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2 lg:px-16'>
 
-           <div className="lg:hidden flex items-center ml-2 gap-3" onClick={toggleSidebar}>
+           <div className="xl:hidden lg:flex items-center ml-2 gap-3" onClick={toggleSidebar}>
           <Menu className="text-[#ffffff] text-right text-2xl" />
 
          <div className='flex items-center gap-1'>
@@ -201,14 +203,14 @@ console.log("userrrrrr",user);
           )}
 
            {/* logo large device */}
-           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='hidden md:block md:w-48 lg:w-52 py-1 w-52 h-auto'/></Link>
+           <Link href={'/'}><Image src={companyLogo} unoptimized alt='company-logo' height={500} width={500} className='hidden xl:block md:w-48 lg:w-40 py-1 h-auto'/></Link>
 
           {/* ==========category + search========== */}
             <div className='hidden relative md:flex lg:flex lg:justify-center px-5 py-1.5'>
 
-                <div className='lg:flex hidden h-10'>
+                <div className='xl:flex hidden h-10'>
 
-                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search Products...' className='px-5 py-1 rounded-l-sm border-t border-b border-l outline-none text-black bg-white md:text-sm text-xs pr-56'/>
+                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search Products...' className='px-5 py-1 rounded-l-sm border-t border-b border-l outline-none text-black bg-white md:text-sm text-xs xl:pr-56'/>
 
                 <div className='border bg-white p-3 pr-2 pb-4 px-0'>
                 <div 

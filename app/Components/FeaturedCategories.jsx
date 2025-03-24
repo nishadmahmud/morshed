@@ -11,7 +11,7 @@ const FeaturedCategories = ({ categories }) => {
         <Heading title={"Featured Categories"} />   
       </div>
 
-      <div className="grid grid-cols-4 md:grid-cols-6 lg:grid-cols-8 gap-4 w-11/12 mx-auto my-8">
+      <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 w-11/12 mx-auto my-8">
         {categories.data &&
           categories.data.length > 0 &&
           categories.data.map((item, idx) => (
