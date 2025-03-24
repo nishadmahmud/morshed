@@ -13,7 +13,7 @@ export default function Component() {
   return (
     <div className="fixed cursor-pointer lg:bottom-20 bottom-20 right-5 ">
      
-      <TawkTo></TawkTo>
+      {/* <TawkTo></TawkTo> */}
      
 
     
