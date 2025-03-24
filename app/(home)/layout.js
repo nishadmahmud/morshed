@@ -8,6 +8,7 @@ import { userId } from "./page";
 import { Suspense } from "react";
 import Loader from "../Components/Loader";
 import Compare from "../Components/Compare";
+import TawkTo from "../Components/TawkTo";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,6 +43,7 @@ export default async function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased nunito`}
       >
+        
       <StoreProvider>
           <Suspense fallback={<Loader />}>
           <div>
@@ -51,7 +53,10 @@ export default async function RootLayout({ children }) {
           <div className="bg-[#ffffff] ">
             {children}
         <Compare />
-            <AvatarChat />
+        <div className="fixed cursor-pointer lg:bottom-24 bottom-20 right-5">
+        <TawkTo></TawkTo>
+        </div>
+            {/* <AvatarChat /> */}
           </div>
           <Footer/>
           </Suspense>

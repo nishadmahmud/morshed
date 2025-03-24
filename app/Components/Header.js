@@ -208,7 +208,7 @@ console.log("userrrrrr",user);
 
                 <div className='lg:flex hidden h-10'>
 
-                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='px-5 py-1 rounded-l-sm border-t border-b border-l outline-none text-black bg-white text-sm pr-56'/>
+                <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search Products...' className='px-5 py-1 rounded-l-sm border-t border-b border-l outline-none text-black bg-white md:text-sm text-xs pr-56'/>
 
                 <div className='border bg-white p-3 pr-2 pb-4 px-0'>
                 <div 
@@ -252,7 +252,7 @@ console.log("userrrrrr",user);
             
             <div className='flex items-end text-white relative'>
              <div className='lg:hidden block'>
-             <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search for Products...' className='p-1 px-2 rounded-sm border-t border-b border-l  outline-none text-black bg-white text-xs'/>
+             <input  onFocus={() => {setfocused(true),setShowBar(true)}} onChange={(e) => setKeyword(e.target.value)} value={keyword} onBlur={() => setfocused(false)}  type="text" placeholder='Search Products..' className='p-1 px-2 rounded-sm border-t border-b border-l  outline-none text-black bg-white text-xs'/>
              <SearchIcon size={14} className='absolute top-1.5 right-2 text-gray-400'/>
              </div>
              
