@@ -12,7 +12,8 @@ import MagnifiedImage from "@/app/Components/MagnifiedImage";
 import { colornames } from "color-name-list";
 import toast from "react-hot-toast";
 import Breadcrumbs from "@/app/Components/Breadcrumbs";
-import { fetcher } from "@/app/(home)/page";
+import { fetcher, userId } from "@/app/(home)/page";
+import axios from "axios";
 
 const Page = ({ params }) => {
   const { handleCart, getCartItems, refetch, setRefetch, handleBuy } =
@@ -20,6 +21,7 @@ const Page = ({ params }) => {
   const [scroll, setScroll] = useState(0);
   // const [product,setProduct] = useState({});
   const [recentItems, setRecentItems] = useState([]);
+  const [relatedProducts,setRelatedProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("Specification");
@@ -39,7 +41,7 @@ const Page = ({ params }) => {
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
     fetcher
   );
-  console.log(product);
+ 
 
   const [selectedStorage, setSelectedStorage] = useState("");
 
@@ -49,9 +51,18 @@ const Page = ({ params }) => {
     (item) => item?.id === product?.data.id || undefined
   );
 
-  // useEffect(() => {
-  //   if (storages && storages.length > 0) setSelectedStorage(storages[0]);
-  // }, [storages]);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/get-related-products`,{product_id : id,user_id : userId});
+        console.log(response.data);
+        setRelatedProducts(response.data)
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    fetchData();
+  },[id])
 
   useMemo(() => {
     if (product && product?.data.imeis && product?.data.imeis.length > 0) {
@@ -80,29 +91,15 @@ const Page = ({ params }) => {
 
   const [selectedSalePrice, setSelectedSalePrice] = useState(
     (product?.data.imeis &&
-      product?.data.imeis.length &&
-      product?.data.imeis[0].sale_price) ||
+      product?.data.imeis.length ?
+      product?.data.imeis[0].sale_price :
       product?.data.retails_price
+    )  
   );
 
   const [selectedColor, setSelectedColor] = useState(product?.data?.color[0]);
 
-  // console.log(selectedColor, selectedStorage);
-
-  // useEffect(() => {
-  //   if (selectedStorage && selectedColor && product?.data?.imeis?.length > 0) {
-  //     // const foundItem = product.data.imeis.find(
-  //     //   (item) =>
-  //     //     item.storage === selectedStorage && item.color === selectedColor
-  //     // );
-  //     // if (!foundItem) {
-  //     //   alert("Selected color is not available for the chosen storage.");
-  //     //   return;
-  //     // } else {
-  //     //   setSelectedSalePrice(foundItem ? Number(foundItem.sale_price) || 0 : 0);
-  //     // }
-  //   }
-  // }, [selectedStorage, selectedColor, product]);
+ 
 
   const handleColorChange = (colorCode) => {
     setSelectedColor(colorCode);
@@ -126,14 +123,14 @@ const Page = ({ params }) => {
   const handleStorageChange = (storage) => {
     const findImei =
       product?.data.imeis && product?.data.imeis.length
-        ? product?.data.imeis.find((item) => item.storage === storage)
+        ? product?.data.imeis.find((item) => item.storage === storage && item.color === selectedColor)
         : null;
-    if (findImei.color === selectedColor) {
-      setSelectedStorage(storage);
-      setSelectedSalePrice(findImei.sale_price);
-    } else {
-      toast.error("this variant is not available");
-    }
+        if (!findImei) {
+          toast.error("This variant is not available");
+          return;
+        }
+       setSelectedStorage(storage);
+       setSelectedSalePrice(findImei.sale_price) 
   };
 
   let someNamedColor = colornames.find(
@@ -150,8 +147,7 @@ const Page = ({ params }) => {
       setColors(uniqueColors);
     }
   }, [product?.data]);
-  // console.log(product?.data);
-  // console.log(someNamedColor);
+  
 
   const sanitizeSlug = (str) => {
     return str
@@ -281,34 +277,24 @@ const Page = ({ params }) => {
                 <div className="bg-gray-200 px-4 rounded-sm text-xs py-1 flex items-center md:justify-center gap-1">
                   {product?.data?.discount
                     ? "Cash Discount Price:"
-                    : selectedSalePrice
-                    ? "Sale Price:"
-                    : product?.data?.retails_price
-                    ? "Retail Price:"
-                    : "0"}
+                    : "Retail Price:"
+                  }
                   <div className="text-nowrap flex gap-2 items-center">
-                  <span className={`sans text-xs font-bold text-[#4e4b49] ${product?.data?.discount ? "line-through" : ""} `}>
-                      {selectedSalePrice || product?.data?.retails_price || 0} ৳
-                    </span>
-
                     {product?.data?.discount ? (
-                      <span className="text-sm font-bold text-[#c03b2c] ]  font-bangla ">
+                      <span className="sans text-xs font-bold text-[#4b4947] line-through">
                         {(
-                          (selectedSalePrice ||
-                            product?.data?.retails_price ||
-                            0) -
-                          ((selectedSalePrice ||
-                            product?.data?.retails_price ||
-                            0) *
+                          (selectedSalePrice ) -
+                          (selectedSalePrice  *
                             product?.data.discount) /
                             100
-                        ).toFixed(0)}{" "}
-                        ৳
+                        ).toFixed(0)}{" "}৳
                       </span>
                     ) : (
                       ""
                     )}
-                    
+                    <span className="text-sm font-bold text-[#C03B2C]  font-bangla">
+                      {selectedSalePrice} ৳
+                    </span>
                   </div>
                 </div>
 
@@ -581,9 +567,9 @@ const Page = ({ params }) => {
 
           <div className="container mx-auto p-4">
             <h2 className="text-lg font-bold mb-4">Related Products</h2>
-            {recentProducts.length > 0 ? (
+            {relatedProducts.length > 0 ? (
               <div className="grid gap-3 grid-cols-2">
-                {recentProducts.map((product) => (
+                {relatedProducts.map((product) => (
                   <Link
                     key={product.id}
                     href={`/products/${sanitizeSlug(
@@ -594,7 +580,7 @@ const Page = ({ params }) => {
                     <div className="relative w-full h-[150px] flex justify-center items-center">
                       <Image
                         unoptimized
-                        src={product.image || noImg}
+                        src={product.image_path || noImg}
                         alt={product.name}
                         width={120}
                         height={80}
@@ -606,14 +592,14 @@ const Page = ({ params }) => {
                         {product.name}
                       </h3>
                       <p className="text-xs text-gray-500 font-semibold">
-                        {product.price} ৳
+                        {product.retails_price} ৳
                       </p>
                     </div>
                   </Link>
                 ))}
               </div>
             ) : (
-              <p className="text-gray-500">No recently viewed products.</p>
+              <p className="text-gray-500">No related products avaiable.</p>
             )}
           </div>
         </div>

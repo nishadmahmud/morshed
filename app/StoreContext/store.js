@@ -47,7 +47,7 @@ const StoreProvider = ({children}) => {
             if(existingProducts){
                 existingProducts.quantity += quantity;
             }else{
-                const itemWithQty = {...item,'quantity' : quantity}
+                const itemWithQty = {...newItem,'quantity' : quantity}
                 cartItems.push(itemWithQty);
             }
             toast.success('Item added to cart successfully');
