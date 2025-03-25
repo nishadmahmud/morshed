@@ -271,7 +271,7 @@ const Header = ({ data }) => {
                     <div className="bg-white absolute -left-3.5 rounded-sm transition ease-out py-1 top-[1rem] z-50 h-60 overflow-y-auto">
                       {data?.data &&
                         data?.data.length > 0 &&
-                        data.data.slice(0,10).map((item) => (
+                        data.data.map((item) => (
                           <Link
                             onClick={() => setShowCategory(false)}
                             href={`/category/${encodeURIComponent(
@@ -284,7 +284,6 @@ const Header = ({ data }) => {
                             key={item?.category_id}
                             className="text-[#555555] hover:bg-[#c03b2c] hover:text-white transition-all ease-in-out py-1 rounded-sm text-start text-sm pl-5 w-36 flex gap-2"
                           >
-                            <Image src={item.image_url} height={30} width={30} alt={item.name}/>
                             <p>{item?.name}</p>
                           </Link>
                         ))}
