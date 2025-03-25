@@ -1,5 +1,6 @@
 "use client";
 
+import WithAuth from "@/app/Components/WithAuth";
 import { useEffect, useState } from "react";
 
 const PersonalInfo = () => {
@@ -75,4 +76,4 @@ const PersonalInfo = () => {
   );
 };
 
-export default PersonalInfo;
+export default WithAuth(PersonalInfo);

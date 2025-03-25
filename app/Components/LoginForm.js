@@ -44,10 +44,10 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
           }else{
             router.push('/');
             toast.success("Login Successful!")
-            localStorage.setItem("user", JSON.stringify(res.data.customer));
           }
           onClose();
           setToken(res.data.token);
+          localStorage.setItem("user", JSON.stringify(res.data.customer));
           localStorage.setItem("token", res.data.token);
           
         }

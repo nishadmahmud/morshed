@@ -20,7 +20,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
   const [showPaymentModal,setShowPaymentModal] = useState(false);
   const [payment, setPayment] = useState("Cash");
   const [isCod,setIsCod] = useState(true);
-  const [isSSL, setIsSSL] = useState(true);
+  const [isSSL, setIsSSL] = useState(false);
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
   const [user,setUser] = useState(null); 
   const router = useRouter(); 
@@ -116,6 +116,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
     return name;
   };
   
+  console.log(paymentMethods);
 
   useEffect(() => {
     orderSchema.product = cartItems.map((item) => ({
@@ -534,11 +535,11 @@ console.log('order schema', orderSchema);
                 name="payment"
                 value="online"
                 className="mr-2 bg-white"
-                onChange={(e) => {handlePayment(e);setIsCod(false);setIsSSL(false)}}
+                onChange={(e) => {handlePayment(e);setIsCod(false)}}
               />
               Pay By Credit Card / Mobile Banking / Net Banking
             </label>
-            <label
+            {/* <label
               className={`flex px-3 py-2 items-center ${
                 payment === "SSL" ? "bg-[#F0F7FF] border border-blue-400" : ""
               }`}
@@ -555,9 +556,9 @@ console.log('order schema', orderSchema);
                 }}
               />
               Pay By SSL Commerz
-            </label>
+            </label> */}
           </div>
-          {!isCod && !isSSL && <div className="p-3 text-black bg-[#F4F4F4] flex gap-5">
+          {!isCod && <div className="p-3 text-black bg-[#F4F4F4] flex gap-5">
             {paymentMethods?.data?.data &&
               paymentMethods?.data?.data?.length > 0 ? (
                 (() => {
