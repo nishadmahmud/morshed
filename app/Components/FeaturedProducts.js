@@ -53,7 +53,7 @@ console.log(banner);
 
   return (
     <div className="lg:mt-24 mt-16 poppins">
-      <Heading title={"Flash Sale"} />
+      {/* <Heading title={"Flash Sale"} /> */}
 
       <div className="w-[90%] mx-auto md:gap-5 gap-2 grid md:grid-cols-5  md:justify-between justify-center items-center">
         <div className="flex mt-5 lg:col-span-3">

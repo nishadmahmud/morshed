@@ -60,7 +60,7 @@ export default async function Home() {
         <BannerSection banner={banner}/>
         <NewArrival banner={banner}/> 
         <Brands brands={brands}/>    
-        <TopBrandProducts brands={brands}/> 
+        {/* <TopBrandProducts brands={brands}/>  */}
         <Paragraph></Paragraph>
       </div>
         

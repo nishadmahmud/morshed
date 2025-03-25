@@ -122,7 +122,7 @@ const HeroSlider = ({ slider, banner, data }) => {
         </div>
 
         <div className="text-[#c03b2c] mx-auto md:w-[88%] mb-3 md:mt-0 mt-3">
-        <Marquee>
+        <Marquee className="text-xl font-medium">
         🎊 Eid-ul-Fitr Exclusive Offer on Phones & Gadgets! 🎊 | 📅 Limited Time Only! Celebrate Eid with the latest tech at unbeatable discounts!
     </Marquee>
         </div>
