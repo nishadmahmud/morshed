@@ -21,12 +21,12 @@ const Page = ({ params }) => {
   const [scroll, setScroll] = useState(0);
   // const [product,setProduct] = useState({});
   const [recentItems, setRecentItems] = useState([]);
-  const [relatedProducts,setRelatedProducts] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const [cartItems, setCartItems] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("Specification");
   const [imageIndex, setImageIndex] = useState(0);
-  const [colors,setColors] = useState([]);
+  const [colors, setColors] = useState([]);
 
   useEffect(() => {
     setCartItems(getCartItems());
@@ -36,12 +36,11 @@ const Page = ({ params }) => {
     }
   }, [refetch, setRefetch, getCartItems]);
 
-  const { id } = params; 
+  const { id } = params;
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
     fetcher
   );
- 
 
   const [selectedStorage, setSelectedStorage] = useState("");
 
@@ -54,15 +53,18 @@ const Page = ({ params }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/get-related-products`,{product_id : id,user_id : userId});
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/public/get-related-products`,
+          { product_id: id, user_id: userId }
+        );
         console.log(response.data);
-        setRelatedProducts(response.data)
+        setRelatedProducts(response.data);
       } catch (error) {
         console.log(error);
       }
-    }
+    };
     fetchData();
-  },[id])
+  }, [id]);
 
   useMemo(() => {
     if (product && product?.data.imeis && product?.data.imeis.length > 0) {
@@ -90,16 +92,12 @@ const Page = ({ params }) => {
   }, []);
 
   const [selectedSalePrice, setSelectedSalePrice] = useState(
-    (product?.data.imeis &&
-      product?.data.imeis.length ?
-      product?.data.imeis[0].sale_price :
-      product?.data.retails_price
-    )  
+    product?.data.imeis && product?.data.imeis.length
+      ? product?.data.imeis[0].sale_price
+      : product?.data.retails_price
   );
 
   const [selectedColor, setSelectedColor] = useState(product?.data?.color[0]);
-
- 
 
   const handleColorChange = (colorCode) => {
     setSelectedColor(colorCode);
@@ -123,14 +121,16 @@ const Page = ({ params }) => {
   const handleStorageChange = (storage) => {
     const findImei =
       product?.data.imeis && product?.data.imeis.length
-        ? product?.data.imeis.find((item) => item.storage === storage && item.color === selectedColor)
+        ? product?.data.imeis.find(
+            (item) => item.storage === storage && item.color === selectedColor
+          )
         : null;
-        if (!findImei) {
-          toast.error("This variant is not available");
-          return;
-        }
-       setSelectedStorage(storage);
-       setSelectedSalePrice(findImei.sale_price) 
+    if (!findImei) {
+      toast.error("This variant is not available");
+      return;
+    }
+    setSelectedStorage(storage);
+    setSelectedSalePrice(findImei.sale_price);
   };
 
   let someNamedColor = colornames.find(
@@ -138,16 +138,15 @@ const Page = ({ params }) => {
   );
 
   useEffect(() => {
-    if (product?.data.color && typeof(product?.data.color) === 'object') {
+    if (product?.data.color && typeof product?.data.color === "object") {
       const colors = Object.values(product.data.color);
       const uniqueColors = [...new Set(colors)];
-      setColors(uniqueColors)
-    }else if(product?.data.color && product?.data.color.length){
-      const uniqueColors = [...new Set(product.data.color)]; 
+      setColors(uniqueColors);
+    } else if (product?.data.color && product?.data.color.length) {
+      const uniqueColors = [...new Set(product.data.color)];
       setColors(uniqueColors);
     }
   }, [product?.data]);
-  
 
   const sanitizeSlug = (str) => {
     return str
@@ -277,17 +276,15 @@ const Page = ({ params }) => {
                 <div className="bg-gray-200 px-4 rounded-sm text-xs py-1 flex items-center md:justify-center gap-1">
                   {product?.data?.discount
                     ? "Cash Discount Price:"
-                    : "Retail Price:"
-                  }
+                    : "Retail Price:"}
                   <div className="text-nowrap flex gap-2 items-center">
                     {product?.data?.discount ? (
                       <span className="sans text-xs font-bold text-[#4b4947] line-through">
                         {(
-                          (selectedSalePrice ) -
-                          (selectedSalePrice  *
-                            product?.data.discount) /
-                            100
-                        ).toFixed(0)}{" "}৳
+                          selectedSalePrice -
+                          (selectedSalePrice * product?.data.discount) / 100
+                        ).toFixed(0)}{" "}
+                        ৳
                       </span>
                     ) : (
                       ""
@@ -341,41 +338,42 @@ const Page = ({ params }) => {
                   <h3 className="font-medium text-sm">
                     Color: {selectedColor || "No color"}
                   </h3>
-                  <div className="grid lg:grid-cols-6 md:grid-cols-4 grid-cols-3 gap-3">
+                  <div className="grid lg:grid-cols-6 md:grid-cols-5 grid-cols-4 gap-3">
                     {colors.length &&
                       colors.map((color) =>
                         color ? (
                           <button
                             key={color}
-                            className={`p-1 text-xs px-1 rounded-full border-2 ${
+                            className={`p-2 w-7 h-7 text-xs rounded-full border-2 ${
                               selectedColor === color
                                 ? "border-black"
                                 : "border-gray-300"
                             }`}
                             onClick={() => handleColorChange(color)}
+                            style={{ backgroundColor: color }} // Apply the background color
                           >
-                            {color}
+                            &nbsp;{" "}
+                            {/* This adds some space inside the button */}
                           </button>
                         ) : null
                       )}
                   </div>
                 </div>
-
               </div>
-                <div className="flex items-center gap-1 mb-2">
-                  <span className="text-sm font-medium">Status: </span>{" "}
-                  <p
-                    className="text-xs"
-                    style={{
-                      color:
-                        product?.data.status === "Stock Out" ? "red" : "green",
-                    }}
-                  >
-                    {product?.data.status === "Stock Out"
-                      ? "Stock Out"
-                      : "In Stock"}
-                  </p>
-                </div>
+              <div className="flex items-center gap-1 mb-2">
+                <span className="text-sm font-medium">Status: </span>{" "}
+                <p
+                  className="text-xs"
+                  style={{
+                    color:
+                      product?.data.status === "Stock Out" ? "red" : "green",
+                  }}
+                >
+                  {product?.data.status === "Stock Out"
+                    ? "Stock Out"
+                    : "In Stock"}
+                </p>
+              </div>
 
               <div className="mb-4">
                 <h3 className="font-medium mb-1 text-sm">
@@ -603,43 +601,43 @@ const Page = ({ params }) => {
             )}
           </div>
         </div>
-          <div className="container mx-auto p-4">
-            <h2 className="text-lg font-bold mb-4">Recently Viewed</h2>
-            {recentProducts.length > 0 ? (
-              <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-5 grid-cols-2">
-                {recentProducts.map((product) => (
-                  <Link
-                    key={product.id}
-                    href={`/products/${sanitizeSlug(
-                      product?.brand_name || product?.name
-                    )}/${product?.id}`}
-                    className="border p-2 rounded-md hover:shadow-md"
-                  >
-                    <div className="relative w-full h-[150px] flex justify-center items-center">
-                      <Image
-                        unoptimized
-                        src={product.image || noImg}
-                        alt={product.name}
-                        width={120}
-                        height={80}
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="text-center mt-2">
-                      <h3 className="text-sm font-semibold text-ellipsis line-clamp-1">
-                        {product.name}
-                      </h3>
-                      <p className="text-xs text-gray-500 font-semibold">
-                        {product.price} ৳
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <p className="text-gray-500">No recently viewed products.</p>
-            )}
-          </div>
+        <div className="container mx-auto p-4">
+          <h2 className="text-lg font-bold mb-4">Recently Viewed</h2>
+          {recentProducts.length > 0 ? (
+            <div className="grid gap-3 md:grid-cols-3 lg:grid-cols-5 grid-cols-2">
+              {recentProducts.map((product) => (
+                <Link
+                  key={product.id}
+                  href={`/products/${sanitizeSlug(
+                    product?.brand_name || product?.name
+                  )}/${product?.id}`}
+                  className="border p-2 rounded-md hover:shadow-md"
+                >
+                  <div className="relative w-full h-[150px] flex justify-center items-center">
+                    <Image
+                      unoptimized
+                      src={product.image || noImg}
+                      alt={product.name}
+                      width={120}
+                      height={80}
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="text-center mt-2">
+                    <h3 className="text-sm font-semibold text-ellipsis line-clamp-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-xs text-gray-500 font-semibold">
+                      {product.price} ৳
+                    </p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          ) : (
+            <p className="text-gray-500">No recently viewed products.</p>
+          )}
+        </div>
 
         {/* bottom cart */}
         {/* desktop */}
@@ -650,7 +648,9 @@ const Page = ({ params }) => {
         >
           {/* Product Information */}
           <div className="text-lg font-light">
-            <span className="font-medium text-black">{product?.data?.name}</span>
+            <span className="font-medium text-black">
+              {product?.data?.name}
+            </span>
           </div>
 
           {/* Quantity and Buttons */}
