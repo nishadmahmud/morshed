@@ -10,10 +10,10 @@ import { Autoplay } from "swiper/modules";
 import Compare from "./Compare";
 import { Pagination } from 'swiper/modules';
 import 'swiper/css/pagination';
+import Link from "next/link";
 
 const HeroSlider = ({ slider, banner, data }) => {
   const swiperRef = useRef(null);
-  console.log(data);
   const [height, setHeight] = useState("185%");
 
   useEffect(() => {
@@ -88,7 +88,8 @@ const HeroSlider = ({ slider, banner, data }) => {
             {slider.status === 200 &&
               slider?.data.length > 0 &&
               slider.data[0].image_path.map((img, idx) => (
-                <SwiperSlide key={idx} className="relative w-full">
+                <SwiperSlide key={idx} className="relative w-full ">
+                <Link href={idx === 0 ? '/brands/1761?brand=Apple%20Inc.' : idx === 1 ? '/brands/1760?brand=Samsung' : '/brands/1759?brand=Pixel'}>
                   <Image
                   unoptimized
                     src={img}
@@ -97,8 +98,9 @@ const HeroSlider = ({ slider, banner, data }) => {
                     width={1000}
                     height={200}
                     quality={100}
-                    className="md:rounded-sm"
+                    className="md:rounded-sm cursor-pointer"
                   />
+                </Link>
                 </SwiperSlide>
               ))}
           </Swiper>
