@@ -1,4 +1,4 @@
-import { Settings2, Store } from 'lucide-react';
+import { MapPin, Settings2, Store } from 'lucide-react';
 import { MessageCircle, MonitorPlay, Settings, Smartphone } from 'lucide-react';
 import Link from 'next/link';
 import React from 'react';
@@ -25,10 +25,10 @@ const OurFeatures = () => {
           link : 'https://wa.me/+8801898931468'
         },
         {
-          icon: Settings2,
-          title: "Apple newton care",
-          description: "Repair your device",
-          link : 'tel:+8801898931468'
+          icon: MapPin,
+          title: "Order Tracking",
+          description: "Track your order",
+          link : '/orderTracking'
         }
        
       ]
