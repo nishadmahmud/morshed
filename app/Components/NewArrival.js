@@ -18,7 +18,7 @@ const NewArrival = () => {
 
     return (
         <div className="mt-12 w-11/12 mx-auto">
-          <Heading title={'Most Selling Products'}/>
+          <Heading title={'Top Selling Products'}/>
             <div>
                 
                 {/* products */}

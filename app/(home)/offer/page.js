@@ -28,7 +28,7 @@ const Page = () => {
            </Link>
          </div>
         )) : 
-        <p className="text-red-500 font-semibold text-center mt-5">No offer available</p>
+        <p className="text-red-500 font-semibold text-center pt-40">No offer available</p>
         }
     </div>
   );

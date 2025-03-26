@@ -10,7 +10,7 @@ const BannerSection = ({ banner }) => {
       
       <div className="grid grid-cols-1 lg:gap-5 md:grid-cols-1 gap-4 lg:grid-cols-2 rounded-xl mt-5 lg:m-0">
        
-        <div className="relative lg:h-[40vh] xl:h-[50vh] h-[20vh]">
+        <div className="relative lg:h-[40vh] xl:h-[50vh] h-[30vh]">
           {banner?.data && banner?.data[3] ? (
             <Image
               src={
@@ -55,7 +55,7 @@ const BannerSection = ({ banner }) => {
           )}
         </div>
 
-        <div className="relative w-full lg:h-[40vh] xl:h-[50vh] h-[20vh]">
+        <div className="relative w-full lg:h-[40vh] xl:h-[50vh] h-[30vh]">
           {banner?.data && banner?.data[4] ? (
             <Image
               src={

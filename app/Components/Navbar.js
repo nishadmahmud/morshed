@@ -55,7 +55,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
   return (
     <div className="relative">
       {/* desktop menu */}
-      <div className="w-full bg-[#000000] text-white z-40 py-2.5 px-5 hidden items-center text-center gap-16 roboto text-sm xl:flex justify-between">
+      <div className="w-full bg-[#000000] text-white z-40 py-2.5 px-5 hidden items-center text-center gap-16 roboto text-sm xl:flex justify-center">
         <div className="px-16 flex justify-between items-center ">
           {/* <div onMouseEnter={() => setIsHovered(true)}  className='flex mr-2 items-center justify-center gap-3'>
                     <Link href={'/'} className='font-semibold text-[14px]'>Home</Link>
@@ -63,7 +63,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
 
           {/* <hr className='border border-gray-300 w-5 rotate-90 '/> */}
 
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-center">
             <div className="flex items-center gap-5">
               {/* <Link className='ml-2' href='/'>
                  <House color='gray' size={16}></House>
@@ -81,13 +81,13 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                       className={`text-[#ffffff] text-md text-nowrap font-medium flex items-center gap-2 hover:text-[#c03b2c] transition-all ease-in-out`}
                     >
                       <div className="flex gap-1">
-                        <Image
+                        {/* <Image
                           src={item.image_url}
                           height={20}
                           width={20}
                           alt={item.name}
                           className="rounded-sm"
-                        />
+                        /> */}
                         <p>{item.name}</p>
                       </div>
                     </Link>

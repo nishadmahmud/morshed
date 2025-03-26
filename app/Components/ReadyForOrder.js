@@ -81,20 +81,7 @@ const ReadyForOrder = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 lg:p-2 rounded-3xl w-11/12 mx-auto">
               {products?.data && products?.data.length > 0 ? (
                 products.data.slice(0, 12).map((product) => {
-                  // const specs = product?.specifications || [];
-                  // console.log(specs);
-                  // const battery = specs.find((s) => s.name.toLowerCase().includes("battery info"))?.description || "N/A";
-                  // const batteryCapacity = battery.match(/\d+\s*mAh/)?.[0] || "N/A";
-                  // console.log(batteryCapacity);
-
-                  // const chipset = specs.find((s) => s.name.toLowerCase().includes("chipset"))?.description?.split(" ")[0] || "N/A";
-                  // const storage = specs.find((s) => s.name.toLowerCase().includes("storage"))?.description || "N/A";
-                  // const camera = specs.find((s) => s.name.toLowerCase().includes("camera"))?.description ?? "N/A";
-                  // const getFirstTwoWords = (text) => text.split(' ').slice(0, 2).join('').replace(',', '');
-
-                  // const cameraShort = camera !== "N/A" ? getFirstTwoWords(camera) : "N/A";
-
-                  // console.log(cameraShort);
+                 
 
                   return (
                     <div

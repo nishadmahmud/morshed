@@ -11,6 +11,8 @@ import TopBrandProducts from "../Components/TopBrandProducts";
 import PromotionModal from "../Components/PromotionModal";
 import SmallBanner from "../Components/SmallBanner";
 import Paragraph from "../Components/Paragraph";
+import GadgetsAndGear from "../Components/GadgetsAndGear";
+import WideBanner from "../Components/WideBanner";
 
 
 export const userId = 193;
@@ -56,9 +58,11 @@ export default async function Home() {
         <FeaturedCategories categories={categories}/>
         <SmallBanner banner={banner}/>
         <ReadyForOrder />  
-        <FeaturedProducts banner={banner}/>
+        <WideBanner banner={banner}></WideBanner>
+        <GadgetsAndGear></GadgetsAndGear>
         <BannerSection banner={banner}/>
         <NewArrival banner={banner}/> 
+        <FeaturedProducts banner={banner}/>
         <Brands brands={brands}/>    
         {/* <TopBrandProducts brands={brands}/>  */}
         <Paragraph></Paragraph>

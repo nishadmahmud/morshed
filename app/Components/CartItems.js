@@ -64,7 +64,7 @@ const CartItems = () => {
         <div className="bg-[#000000] text-white flex p-3 items-center">
           <IoClose
             onClick={() => setOpenCart(!openCart)}
-            className="text-white bg-red-600 rounded-md p-0.5 text-xl cursor-pointer"
+            className="text-red-500 bg-white rounded-md p-0.5 text-xl cursor-pointer"
 
           />
           <p className="text-center flex-1 font-bold">Mini Cart</p>
@@ -147,7 +147,7 @@ const CartItems = () => {
                     onClick={() => handleCartItemDelete(item?.id)}
                     className="flex-1 flex justify-end cursor-pointer"
                   >
-                    <IoClose className="text-xl" />
+                    <IoClose className="text-xl bg-white text-red-500" />
                   </div>
                 </div>
               );
@@ -229,7 +229,7 @@ const CartItems = () => {
           size={22}
             onClick={() => setOpenCart(!openCart)}
 
-            className="text-white text-xl cursor-pointer bg-red-600 rounded-md p-0.5"
+            className="text-red-600 text-lg cursor-pointer bg-white rounded-full p-0.5"
 
           />
         </div>

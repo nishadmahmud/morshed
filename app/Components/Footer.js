@@ -57,7 +57,7 @@ export default function Footer() {
                   { icon: FaFacebook, href: "https://www.facebook.com/share/18oagGM1az/?mibextid=wwXIfr" },
                   { icon: FaTiktok, href: "#tiktok" }, // Behance
                   { icon: FaInstagram, href: "#instagram" },
-                  { icon: FaLinkedin, href: "#linkedin" },
+                  
                   { icon: FaYoutube, href: "#youtube" }
                 ].map(({ icon: Icon, href }) => (
                   <Link

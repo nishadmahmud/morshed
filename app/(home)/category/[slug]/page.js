@@ -20,6 +20,7 @@ const Page = ({ params }) => {
   const limit = 20;
   const totalPage = Math.ceil(parseInt(searchedTotal) / limit);
   const { slug: id } = params;
+  console.log(id);
 
   const [filteredItems, setFilteredItems] = useState([]);
   const [isChecked, setIsChecked] = useState(false);
