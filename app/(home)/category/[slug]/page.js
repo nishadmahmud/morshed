@@ -87,7 +87,7 @@ const Page = ({ params }) => {
   }, [currentPage, id]);
 
   return (
-    <div className="md:px-12 p-5 pt-16 lg:pt-24 md:pt-20 relative">
+    <div className="xl:pt-32 lg:pt-28 md:pt-24 pt-20  relative">
       
       {/* Mobile Filter Button */}
       <button

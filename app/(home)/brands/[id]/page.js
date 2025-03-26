@@ -157,7 +157,7 @@ const Page = ({ params }) => {
     // }
 
   return (
-    <div className="md:px-12 py-20 min-h-screen">
+    <div className="md:px-12 xl:pt-32 lg:pt-28 md:pt-24 pt-20  py-20 min-h-screen">
       {/* <div className="flex gap-3 flex-wrap">
         {!selectedBrand ? 
         brands?.map((brand, idx) => {

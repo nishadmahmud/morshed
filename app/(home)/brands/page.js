@@ -26,7 +26,7 @@ const Page = () => {
    
 
   return (
-    <div className="md:px-12 p-5">
+    <div className="xl:pt-32 lg:pt-28 md:pt-24 pt-20 p-5">
       <div>
         <h3 className="text-black font-semibold text-3xl mb-5">All Brands</h3>
         <div className="flex flex-wrap gap-3 mb-5">
