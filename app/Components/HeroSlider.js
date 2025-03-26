@@ -74,7 +74,7 @@ const HeroSlider = ({ slider, banner, data }) => {
 
          
           {/* Slider Section */}     
-        <div className="md:w-[88%] mx-auto w-full flex flex-col h-[32vh] justify-center overflow-hidden relative lg:h-[70vh] md:h-[60vh] lg:mb-4">
+        <div className="md:w-[88%] mx-auto w-full flex flex-col md:rounded-xl h-[32vh] justify-center overflow-hidden relative lg:h-[70vh] md:h-[60vh] lg:mb-4">
           
           <Swiper
           pagination={true}
@@ -98,7 +98,7 @@ const HeroSlider = ({ slider, banner, data }) => {
                     width={1000}
                     height={200}
                     quality={100}
-                    className=" cursor-pointer"
+                    className="md::rounded-xl cursor-pointer"
                   />
                 </Link>
                 </SwiperSlide>
