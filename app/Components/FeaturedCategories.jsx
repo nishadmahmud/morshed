@@ -1,7 +1,6 @@
 import Heading from "../CustomHooks/heading";
 import Image from "next/image";
 import Link from "next/link";
-import SubHeading from "../CustomHooks/subHeading";
 import noImg from "/public/no-image.jpg";
 
 const FeaturedCategories = ({ categories }) => {

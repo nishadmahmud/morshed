@@ -52,14 +52,12 @@ const Header = ({ data }) => {
   const [showBar, setShowBar] = useState(false);
   const [focused, setfocused] = useState(false);
   const [email, setEmail] = useState(null);
-
   const [reload, setReload] = useState(false);
   const pathname = useSearchParams();
   const searchBarRef = useRef(null);
-
   const categoryRef = useRef(null);
   const [showCategory, setShowCategory] = useState(false);
-
+  const debounceRef = useRef();
   const user = localStorage.getItem("user");
 
   useEffect(() => {
@@ -88,22 +86,20 @@ const Header = ({ data }) => {
   const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const searchedItems = useCallback(() => {
-    if (keyword) {
+  const searchedItems = async(keyword) => {
       setShowBar(true);
-      setTimeout(() => {
-        axios
-          .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, {
-            keyword,
-            user_id: userId,
-          })
-          .then((res) => {
-            setSearchedItem(res.data.data.data);
-          })
-          .catch((err) => console.log(err));
-      }, 600);
-    }
-  },[keyword]);
+      try {
+       const response = await axios
+        .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, {
+          keyword,
+          user_id: userId,
+        });
+        const result = await response.data;
+        setSearchedItem(result.data.data)
+      } catch (error) {
+        console.log(error);
+      }
+  }
 
   const handleClose = useCallback(() => {
     if (!keyword) {
@@ -121,9 +117,16 @@ const Header = ({ data }) => {
     }
   }, [keyword, searchBarRef, showBar, focused, searchBar]);
 
-  useEffect(() => {
-    searchedItems();
-  }, [keyword, searchedItems]);
+
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setKeyword(value);
+    if(debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      searchedItems(value);
+    },700)
+  }
 
   const handleModalClose = () => setIsLoginModal(false);
 
@@ -248,7 +251,7 @@ const Header = ({ data }) => {
                 onFocus={() => {
                   setfocused(true), setShowBar(true);
                 }}
-                onChange={(e) => setKeyword(e.target.value)}
+                onChange={handleChange}
                 value={keyword}
                 onBlur={() => setfocused(false)}
                 type="text"
@@ -306,7 +309,7 @@ const Header = ({ data }) => {
                 onFocus={() => {
                   setfocused(true), setShowBar(true);
                 }}
-                onChange={(e) => setKeyword(e.target.value)}
+                onChange={handleChange}
                 value={keyword}
                 onBlur={() => setfocused(false)}
                 type="text"
@@ -459,7 +462,7 @@ const Header = ({ data }) => {
                 onFocus={() => setSearchBar(true)}
                 autoFocus={searchBar}
                 type="text"
-                onChange={(e) => setKeyword(e.target.value)}
+                onChange={handleChange}
                 placeholder="Search"
                 className="focus:outline-none bg-white"
                 value={keyword}
