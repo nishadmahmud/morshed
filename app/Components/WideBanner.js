@@ -4,7 +4,7 @@ import noImg from '/public/no-image.jpg'
 
 const WideBanner = ({banner}) => {
     return (
-        <div className='w-[90%] mx-auto lg:mt-20 mt-10'>
+        <div className='w-[92%] mx-auto lg:mt-20 mt-10'>
              <div className="w-full mx-auto grid grid-cols-1 mt-2 gap-2 lg:mt-0 gap-y-2">
                         
             

@@ -68,7 +68,7 @@ const FeaturedProducts = ({ banner }) => {
           </div>
         </div>
 
-        <div className="bg-[#cf4a3ccc] rounded-xl mt-5 p-5 md:col-span-2 lg:h-[65vh] h-[35vh] text-black overflow-y-auto">
+        <div className="bg-[#cf4a3ccc] rounded-xl mt-5 p-5 md:col-span-2 lg:h-[65vh] h-[40vh] text-black overflow-y-auto">
           <h3 className="text-white text-base md:text-xl font-medium">🔥Hot Deal of The Day</h3>
           <div>
             {

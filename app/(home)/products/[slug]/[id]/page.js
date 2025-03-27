@@ -340,26 +340,29 @@ const Page = ({ params }) => {
 
               <div className="flex justify-between items-center gap-2">
                 <div className="mb-4">
-                  <h3 className="font-medium text-sm">
+                  <h3 className="font-medium text-sm mb-4">
                     Color: {selectedColor || "No color"}
                   </h3>
-                  <div className="grid lg:grid-cols-6 md:grid-cols-5 grid-cols-4 gap-3">
+                  <div className="grid lg:grid-cols-6 md:grid-cols-5 grid-cols-4  gap-3">
                     {colors.length &&
                       colors.map((color) =>
                         color ? (
-                          <button
-                            key={color}
-                            className={`p-2 w-7 h-7 text-xs rounded-full border-2 ${
+                          <div className={`rounded-lg border-2 p-0.5  ${
                               selectedColor === color
-                                ? "border-black"
-                                : "border-gray-300"
-                            }`}
+                                ? "border-[#ff7060] shadow-[0_2px_4px_4px] p-0.5 shadow-[#cf4b3c]"
+                                : "border-gray-200"
+                            }`} key={color}>
+                            <button
+                            
+                            className={`p-2 w-7 h-7 text-xs rounded-md `}
                             onClick={() => handleColorChange(color)}
                             style={{ backgroundColor: color }} // Apply the background color
                           >
                             &nbsp;{" "}
+                            
                             {/* This adds some space inside the button */}
                           </button>
+                          </div>
                         ) : null
                       )}
                   </div>

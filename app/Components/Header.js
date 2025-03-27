@@ -23,7 +23,7 @@ import { LiaShoppingCartSolid } from "react-icons/lia";
 import { IoCloseSharp, IoSearchSharp } from "react-icons/io5";
 import { RiMenu4Fill } from "react-icons/ri";
 import { Menu } from "lucide-react";
-import logo from "../../public/logo.png";
+import sidebarLogo from "../../public/sidebarLogo.png";
 import { Gift } from "lucide-react";
 import TopHeader from "./TopHeader";
 import navLogo from "/public/user.png";
@@ -183,7 +183,7 @@ const Header = ({ data }) => {
           >
             <div className="flex justify-between items-center p-2  border-b-2 border-[#c03b2c]">
               <Link href={'/'} onClick={toggleSidebar}>
-                <Image unoptimized width={140} src={logo} alt="logo"></Image>
+                <Image unoptimized width={140} src={sidebarLogo} alt="logo"></Image>
               </Link>
               <IoCloseSharp
                 size={24}
