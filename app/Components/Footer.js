@@ -81,7 +81,7 @@ export default function Footer() {
             <ul className="md:space-y-2 md:flex-col flex-row  flex md:items-start items-center md:gap-0 gap-4">
               <li><Link href="/about-us" className="text-white hover:underline">About Us</Link></li> <span className="md:hidden block">|</span>
               <li><Link href="/brands" className="text-white hover:underline">Our Brands</Link></li>  <span className="md:hidden block">|</span>
-              <li><Link href="/orderTracking" className="text-white hover:underline">Order Tracking</Link></li> <span className="md:hidden block">|</span>
+              <li><Link href="//order-tracking" className="text-white hover:underline">Order Tracking</Link></li> <span className="md:hidden block">|</span>
               <li><Link href="/blogs" className="text-white hover:underline">Blogs</Link></li> 
             </ul>
           </div>

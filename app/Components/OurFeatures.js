@@ -28,7 +28,7 @@ const OurFeatures = () => {
           icon: MapPin,
           title: "Order Tracking",
           description: "Track your order",
-          link : '/orderTracking'
+          link : '//order-tracking'
         }
        
       ]

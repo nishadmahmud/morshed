@@ -107,7 +107,7 @@ const DashboardLayout = ({ children }) => {
           </Link>
 
           <Link
-            href="/orderTracking"
+            href="/order-tracking"
             className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <MapPin size={20} /> Order Tracking

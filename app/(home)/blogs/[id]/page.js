@@ -20,8 +20,8 @@ export default function BlogPost({ params }) {
               src={blog?.image || noImg}
               alt={blog?.title}
               width={800}
-              height={200}
-              className="w-full h-[50vh] xl:pt-16 object-cover rounded-lg mb-6"
+              height={400}
+              className="w-full h-[90vh] xl:pt-16 object-cover object-center rounded-lg mb-6"
             />
              <h1 className="text-3xl text-black font-bold mb-4">{blog.title}</h1>
              <div

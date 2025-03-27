@@ -27,7 +27,7 @@ const CheckoutPage = () => {
         router.push('/')
     }
 
-console.log(cartItems);
+
 
     return (
             <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-16 lg:pt-32 md:pt-28 w-11/12 mx-auto'>
