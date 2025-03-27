@@ -18,7 +18,6 @@ const CartPage = () => {
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
 
-
   useEffect(() => {
     setCartItems(getCartItems());
     if (refetch) {
@@ -33,15 +32,13 @@ const CartPage = () => {
         (prev, curr) =>
           prev +
           (curr?.discount
-            ? curr.discounted_price  *
-              curr.quantity
+            ? curr.discounted_price * curr.quantity
             : curr?.retails_price * curr.quantity),
         0
       )
       .toFixed(2);
     setCartTotal(total);
   }, [cartItems]);
-
 
   const handleClearCart = () => {
     setRefetch(true);
@@ -50,9 +47,9 @@ const CartPage = () => {
 
   return (
     <div className="bg-gray-50 min-h-screen">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 pb-8 pt-16 lg:pt-36">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl text-black font-bold flex items-center gap-2">
+          <h1 className="text-2xl text-black font-bold flex items-center gap-2 text-nowrap">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6"
@@ -74,11 +71,11 @@ const CartPage = () => {
           </h1>
           <Link
             href="/"
-            className="text-sm text-gray-500 hover:text-blue-600 flex items-center"
+            className="text-sm text-gray-500 hover:text-blue-600 text-right flex items-center"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              className="h-4 w-4 mr-1"
+              className="h-4 w-4 mr-1 flex-1"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
@@ -140,7 +137,9 @@ const CartPage = () => {
                                 {item.name}
                               </h3>
                               <p className="text-blue-600 font-bold mt-1">
-                                 {item.discounted_price ? item.discounted_price.toLocaleString() : item.retails_price.toLocaleString()} 
+                                {item.discounted_price
+                                  ? item.discounted_price.toLocaleString()
+                                  : item.retails_price.toLocaleString()}
                               </p>
                             </div>
                             <div className="flex items-center justify-between mt-4">
@@ -261,16 +260,22 @@ const CartPage = () => {
           <div className="md:col-span-1">
             <div className="bg-white rounded-lg border shadow-sm">
               <div className="p-6">
-                <h2 className="text-xl font-bold mb-4 text-black">Order Summary</h2>
+                <h2 className="text-xl font-bold mb-4 text-black">
+                  Order Summary
+                </h2>
                 <div className="space-y-3">
                   <div className="flex justify-between">
                     <span className="text-gray-500">Subtotal</span>
-                    <span className="text-gray-800">৳ {cartTotal.toLocaleString()}</span>
+                    <span className="text-gray-800">
+                      ৳ {cartTotal.toLocaleString()}
+                    </span>
                   </div>
                   <div className="border-t my-3 pt-3"></div>
                   <div className="flex justify-between font-bold">
                     <span className="text-black">Total</span>
-                    <span className="text-blue-600">৳ {cartTotal.toLocaleString()}</span>
+                    <span className="text-blue-600">
+                      ৳ {cartTotal.toLocaleString()}
+                    </span>
                   </div>
                 </div>
 
@@ -300,31 +305,47 @@ const CartPage = () => {
                       I agree with the terms and conditions.
                     </label>
                   </div>
-                  <Link
-                    href={'/checkout'}
-                    className={`w-full py-3 px-4 rounded font-medium flex items-center justify-center ${
-                      termsAgreed
-                        ? "bg-blue-600 text-white hover:bg-blue-700"
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    }`}
-                    disabled={!termsAgreed}
-                  >
-                    Proceed to Checkout
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-4 w-4 ml-2"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
+                  {termsAgreed ? (
+                    <Link
+                      href="/checkout"
+                      className="w-full py-3 px-4 rounded font-medium flex items-center justify-center bg-blue-600 text-white hover:bg-blue-700"
                     >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M14 5l7 7m0 0l-7 7m7-7H3"
-                      />
-                    </svg>
-                  </Link>
+                      Proceed to Checkout
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 ml-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M14 5l7 7m0 0l-7 7m7-7H3"
+                        />
+                      </svg>
+                    </Link>
+                  ) : (
+                    <div className="w-full py-3 px-4 rounded font-medium flex items-center justify-center bg-gray-300 text-gray-500 cursor-not-allowed">
+                      Proceed to Checkout
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-4 w-4 ml-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M14 5l7 7m0 0l-7 7m7-7H3"
+                        />
+                      </svg>
+                    </div>
+                  )}
+
                   <div className="flex flex-wrap justify-center gap-2 mt-4">
                     <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
                       <span className="text-[8px] text-gray-500">Visa</span>

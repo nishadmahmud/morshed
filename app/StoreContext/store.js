@@ -39,7 +39,7 @@ const StoreProvider = ({children}) => {
     const handleCart = (item,quantity) => {
         if(!isMounted) return;
         setRefetch(true);
-        const newItem = {...item,retails_price : item.price}
+        const newItem = {...item,retails_price : item.price ?? item.retails_price}
         const cartItems =JSON.parse(localStorage.getItem('cart')) || [];
         const existingProducts = cartItems.find(product => product.id === item.id);
         if ((newItem.status && newItem.status.toLowerCase() !== "stock out") || newItem.current_stock > 0)
@@ -68,8 +68,6 @@ const StoreProvider = ({children}) => {
         const updatedItems = getCartItems();
         setCartItems(updatedItems);
     }
-
-
     
     const handleIncQuantity = (id,qty) => {
         const items = getCartItems();
@@ -134,7 +132,7 @@ const StoreProvider = ({children}) => {
 
     const handleBuy = (item,quantity) => {
         handleCart(item,quantity);
-        if(item.status !== "Stock out" || item.current_stock > 0){
+        if(item.status.toLowerCase() !== "stock out" || item.current_stock > 0){
             router.push('/checkout');
         }
     }

@@ -81,8 +81,6 @@ const ReadyForOrder = () => {
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-5 lg:p-2 rounded-3xl w-11/12 mx-auto">
               {products?.data && products?.data.length > 0 ? (
                 products.data.slice(0, 12).map((product) => {
-                 
-
                   return (
                     <div
                       key={product.id}
@@ -152,10 +150,10 @@ const ReadyForOrder = () => {
                         </div>
                       </Link>
 
-                      <div className="grid md:grid-cols-2 grid-cols-1 justify-center items-center mt-2 mb-5 mx-3 gap-3 bottom-2 ">
+                      <div className="mt-auto flex flex-col md:flex-col lg:flex-row gap-2 p-3 pt-2 border-gray-200 cardBtn pb-4">
                         <button
                           onClick={() => handleBuy(product, 1)}
-                          className=" bg-[#c03b2c32] border text-xs text-[#c03b2c] hover:bg-[#c03b2c] w-full py-1.5 hover:text-white rounded-md font-medium transition-colors px-3"
+                          className="bg-[#c03b2c32] border text-xs text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white w-full px-2 py-1.5 rounded-md font-semibold transition-colors text-nowrap"
                         >
                           Buy Now
                         </button>
@@ -164,7 +162,7 @@ const ReadyForOrder = () => {
                             e.preventDefault();
                             handleCart(product, 1);
                           }}
-                          className="hover:bg-[#383838] bg-[#b4b4b474] border border-transparent text-xs text-black w-full px-2 py-1.5 rounded-md font-medium transition-colors hover:text-white"
+                          className="hover:bg-[#383838] bg-[#b4b4b474] border border-transparent text-xs hover:text-white text-black w-full px-2 py-1.5 rounded-md font-semibold transition-colors text-nowrap"
                         >
                           Add to Cart
                         </button>

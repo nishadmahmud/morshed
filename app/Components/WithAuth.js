@@ -3,7 +3,8 @@ import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react';
 import useStore from '../CustomHooks/useStore';
 
-const WithAuth = (WrappedContent) => {
+const WithAuth = (WrappedComponent) => {
+
    const Wrapper = (props) => {
     const router  = useRouter();
     const {setIsLoginModal} = useStore();
@@ -11,12 +12,16 @@ const WithAuth = (WrappedContent) => {
     useEffect(() => {
         const intendedUrl = window.location.pathname;
         const token = localStorage.getItem('token');
-        if(!token) router.push(`/?redirect=${intendedUrl}&login=false`); setIsLoginModal(true);
+        if(!token){
+            router.push(`/?redirect=${intendedUrl}&login=false`);
+            setIsLoginModal(true);
+        } 
     },[router,setIsLoginModal])
 
-    return <WrappedContent {...props}/>
+    return <WrappedComponent {...props}/>
    }
-   return Wrapper
+
+   return Wrapper;
 };
 
 export default WithAuth;

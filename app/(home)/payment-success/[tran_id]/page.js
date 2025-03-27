@@ -24,12 +24,12 @@ export default function Page() {
   }
 
   return (
-    <div className="container max-w-md mx-auto py-12 px-4 mt-20">
+    <div className="container max-w-md mx-auto pb-12 pt-20 px-4 lg:pt-40">
       {/* Toast notification */}
       {showToast && (
       <div className="fixed inset-0 flex items-start justify-center z-50 pointer-events-none mt-10">
           <div className="bg-black text-white px-4 py-2 rounded-md shadow-lg animate-fade-in-down">
-            Copied to clipboard!
+            ✔️ Copied to clipboard!
           </div>
         </div>
         )} 

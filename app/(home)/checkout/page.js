@@ -1,5 +1,6 @@
 "use client"
 import DeliveryForm from '@/app/Components/DeliveryForm';
+import WithAuth from '@/app/Components/WithAuth';
 import useStore from '@/app/CustomHooks/useStore';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -8,9 +9,9 @@ import toast from 'react-hot-toast';
 
 
 const CheckoutPage = () => {
-    const {getCartItems,setIsLoginModal,token} = useStore();
+    const [shippingFee, setShippingFee] = useState(70); 
+    const {getCartItems} = useStore();
     const router = useRouter();
-    
     const cartItems = getCartItems();
     const quantity = cartItems.reduce((acc,curr) => acc + curr.quantity,0);
     const Subtotal = (cartItems.reduce(
@@ -19,17 +20,14 @@ const CheckoutPage = () => {
       )).toFixed(2) ;
 
 
-    useEffect(() => {
-        const intendedUrl = window.location.pathname;
-        const storedToken = localStorage.getItem('token');
-        if(!storedToken){
-            router.push(`/?redirect=${intendedUrl}&login=false`);
-            toast.error("Please Login First!")
-            setIsLoginModal(true);
-        }
-      }, [router, setIsLoginModal,token]);
+    // useEffect(() => {
+    // },[cartItems.length,router])
+    if(!cartItems.length){
+        toast('Please add atleast one product in cart');
+        router.push('/')
+    }
 
-      const [shippingFee, setShippingFee] = useState(70); 
+console.log(cartItems);
 
     return (
             <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-16 lg:pt-32 md:pt-28 w-11/12 mx-auto'>
@@ -116,4 +114,4 @@ const CheckoutPage = () => {
 };
 
 
-export default CheckoutPage;
+export default WithAuth(CheckoutPage);

@@ -4,7 +4,8 @@ import React from 'react';
 import noImg from '/public/no-image.jpg'
 
 
-const Search = ({searchedItem,setSearchText,setSearchedItem,searchBarRef}) => {
+const Search = ({searchedItem,setKeyword
+    ,setSearchedItem,searchBarRef}) => {
     const sanitizeSlug = (str) => {
         return str
           ?.toLowerCase()
@@ -18,8 +19,8 @@ const Search = ({searchedItem,setSearchText,setSearchedItem,searchBarRef}) => {
             <h5 className='text-right'>Products</h5>
             <div className='flex flex-col gap-3'>
                 {
-                    searchedItem.map((item,idx) => {
-                        return <Link onClick={() => {setSearchText(''),setSearchedItem([])}} href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`} key={idx} className='flex gap-2 items-center z-50 hover:bg-gray-200'>
+                    searchedItem.map((item,idx) => {setKeyword
+                        return <Link onClick={() => {setKeyword(''),setSearchedItem([])}} href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`} key={idx} className='flex gap-2 items-center z-50 hover:bg-gray-200'>
                             {
                                 item?.images?.length > 0 ? 
                                 <Image

@@ -16,8 +16,7 @@ const FeaturedProducts = ({ banner }) => {
     fetcher
   );
   const { handleBuy, handleCart } = useStore();
-  console.log("bessssst", bestDeals);
-console.log(banner);
+  ;
   // Handle recent view when product card is clicked
   const updateRecentViews = (product) => {
     if (!product?.id) return;
@@ -73,7 +72,7 @@ console.log(banner);
           <h3 className="text-white text-base md:text-xl font-medium">🔥Hot Deal of The Day</h3>
           <div>
             {
-              bestDeals? bestDeals.data.slice(0, 6).map((product, index) => (
+              bestDeals?.data && bestDeals?.data.length ? bestDeals.data.slice(0, 6).map((product, index) => (
 
                 <div key={index} className="bg-white p-3 rounded-xl mt-5 flex justify-between items-center gap-3">
                  <div className="flex items-center gap-2">
@@ -82,7 +81,7 @@ console.log(banner);
                   </div>
 
                   <div> 
-                    <Link onClick={updateRecentViews} href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`} 
+                    <Link onClick={() =>updateRecentViews(product)} href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`} 
                     className="font-semibold md:text-sm text-xs text-ellipsis line-clamp-2 hover:text-gray-700">{product.name}</Link>
                     <div className="flex items-center gap-5">
                       
@@ -126,7 +125,7 @@ console.log(banner);
 
                 </div>
 
-              )): <div className="text-center my-4 text-white">Loading...</div>
+              )): <div className="text-center my-4 text-white">No Products Available</div>
             }
            
           </div>

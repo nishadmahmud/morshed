@@ -116,8 +116,6 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
     return name;
   };
   
-  console.log(paymentMethods);
-
   useEffect(() => {
     orderSchema.product = cartItems.map((item) => ({
        product_id: item.id,
@@ -140,7 +138,6 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
    // eslint-disable-next-line react-hooks/exhaustive-deps
    },[cartItems])
    
-console.log('order schema', orderSchema);
 
   const handleChange = (e) => {
     const {name,value} = e.target;
@@ -151,8 +148,8 @@ console.log('order schema', orderSchema);
       ['delivery_customer_name'] : `${formData.firstName}  ${formData.lastName}`,
       ['delivery_customer_address'] : formData.address || formData.billAddress,
       ['delivery_customer_address'] : formData.address || formData.billAddress,
-      ['customer_phone'] : customer_phone,
-      ['delivery_customer_phone'] : formData?.phone ? formData?.phone : "N/A",
+      ['customer_phone'] : formData?.phone ? formData?.phone : formData?.billPhone ? formData.billPhone :  "N/A",
+      ['delivery_customer_phone'] : formData?.phone ? formData?.phone : formData?.billPhone ? formData.billPhone :  "N/A",
       ['customer_id'] : customer_id,
     }))
   };
@@ -218,7 +215,6 @@ console.log('order schema', orderSchema);
     }
   }, []);
 
-  console.log(shippingFee);
 
   const handleCmsPayment = async () => {
     try {
@@ -322,6 +318,7 @@ console.log('order schema', orderSchema);
     orderSchema.sub_total += fee;
   }
 // console.log('payment method',paymentMethods);
+// console.log(orderSchema)
 
   return (
     <div className=" bg-white rounded-tl-lg rounded-bl-lg">

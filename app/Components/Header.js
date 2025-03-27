@@ -88,7 +88,7 @@ const Header = ({ data }) => {
   const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  const searchedItems = () => {
+  const searchedItems = useCallback(() => {
     if (keyword) {
       setShowBar(true);
       setTimeout(() => {
@@ -103,7 +103,7 @@ const Header = ({ data }) => {
           .catch((err) => console.log(err));
       }, 600);
     }
-  };
+  },[keyword]);
 
   const handleClose = useCallback(() => {
     if (!keyword) {
@@ -138,7 +138,7 @@ const Header = ({ data }) => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  console.log(data?.data);
+
 
   return (
     <div>
@@ -172,15 +172,16 @@ const Header = ({ data }) => {
             </div>
           </div>
 
+          {/* mobile sidebar */}
           <div
-            className={`fixed top-0 left-0 w-3/5 max-w-xs bg-[#ffffff] text-black p-5 z-50 transform transition-transform overflow-y-auto duration-300 h-full ${
+            className={`fixed top-0 left-0 w-3/5 max-w-xs bg-[#ffffff] text-black px-5 pt-5 pb-[4.5rem] z-50 transform transition-transform overflow-y-auto duration-300 h-full ${
               isSidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
           >
             <div className="flex justify-between items-center p-2  border-b-2 border-[#c03b2c]">
-              <div>
+              <Link href={'/'} onClick={toggleSidebar}>
                 <Image unoptimized width={140} src={logo} alt="logo"></Image>
-              </div>
+              </Link>
               <IoCloseSharp
                 size={24}
                 className="cursor-pointer"
@@ -192,7 +193,7 @@ const Header = ({ data }) => {
                 return (
                   <Link
                     key={idx}
-                    onClick={() => setIsOpen(false)}
+                    onClick={toggleSidebar}
                     href={`/category/${encodeURIComponent(
                       item?.category_id
                     )}?category=${encodeURIComponent(
@@ -205,14 +206,14 @@ const Header = ({ data }) => {
                 );
               })}
               <div className="flex flex-col gap-2 font-medium text-[#c03b2c]">
-                <Link className="flex items-center gap-1" href="/offer">
+                <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/offer">
                   {" "}
                   <Gift size={15}></Gift> Latest Offer
                 </Link>
-                <Link className="flex items-center gap-1" href="/blogs">
+                <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/blogs">
                   <NotebookPen size={15}></NotebookPen> Blog
                 </Link>
-                <Link className="flex items-center gap-1" href="/about-us">
+                <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/about-us">
                   {" "}
                   <FaUsers size={16}></FaUsers> About Us
                 </Link>

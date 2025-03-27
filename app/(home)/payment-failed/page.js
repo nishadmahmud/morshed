@@ -18,7 +18,7 @@ export default function PaymentFail() {
   }
 
   return (
-    <div className="container max-w-md mx-auto py-12 px-4 mt-20">
+    <div className="container max-w-md mx-auto pb-12 pt-20 px-4 lg:pt-40">
       <div className="w-full bg-white rounded-lg shadow-md overflow-hidden border border-gray-200">
         <div className="text-center p-6 pb-4">
           <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
@@ -57,11 +57,11 @@ export default function PaymentFail() {
             {isRetrying ? "Retrying..." : "Retry Payment"}
           </button>
           <Link
-            href="/support"
+            href="/"
             className="w-full border border-gray-300 text-gray-700 hover:bg-gray-50 py-2 px-4 rounded-md font-medium flex items-center justify-center transition-colors"
           >
-            <LifeBuoy className="mr-2 h-4 w-4" />
-            Contact Support
+            {/* <LifeBuoy className="mr-2 h-4 w-4" /> */}
+            Return Home
           </Link>
         </div>
       </div>

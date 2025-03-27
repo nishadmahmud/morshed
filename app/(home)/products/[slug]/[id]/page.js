@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 import React, { useEffect, useMemo, useState } from "react";
 import Image from "next/image";
@@ -31,10 +32,10 @@ const Page = ({ params }) => {
   useEffect(() => {
     setCartItems(getCartItems());
     if (refetch) {
-      setCartItems(getCartItems());
+      // setCartItems(getCartItems());
       setRefetch(false);
     }
-  }, [refetch, setRefetch, getCartItems]);
+  }, [refetch, getCartItems]);
 
   const { id } = params;
   const { data: product, error } = useSWR(
@@ -50,6 +51,8 @@ const Page = ({ params }) => {
     (item) => item?.id === product?.data.id || undefined
   );
 
+  // console.log(product);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -57,7 +60,6 @@ const Page = ({ params }) => {
           `${process.env.NEXT_PUBLIC_API}/public/get-related-products`,
           { product_id: id, user_id: userId }
         );
-        console.log(response.data);
         setRelatedProducts(response.data);
       } catch (error) {
         console.log(error);
@@ -88,7 +90,10 @@ const Page = ({ params }) => {
   useEffect(() => {
     const storedProducts =
       JSON.parse(localStorage.getItem("recentlyViewed")) || [];
-    setRecentProducts(storedProducts);
+      if(storedProducts.length){
+       const WithoutThisProduct = storedProducts.filter(item => item.id != id);
+        setRecentProducts(WithoutThisProduct);
+      }
   }, []);
 
   const [selectedSalePrice, setSelectedSalePrice] = useState(
@@ -290,7 +295,7 @@ const Page = ({ params }) => {
                       ""
                     )}
                     <span className="text-sm font-bold text-[#C03B2C]  font-bangla">
-                      {selectedSalePrice} ৳
+                      {selectedSalePrice ?? product?.data.retails_price} ৳
                     </span>
                   </div>
                 </div>
@@ -712,9 +717,9 @@ const Page = ({ params }) => {
           } transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] w-full  bg-white text-black flex flex-col justify-between gap-y-5 items-center md:hidden py-4 px-6 border-t`}
         >
           {/* Product Information */}
-          <div className="flex items-center justify-between w-full">
-            <div className="text-lg font-light">
-              <span className="font-medium">{product?.name}</span>
+          <div className="flex items-center gap-5 w-full">
+            <div className="text-sm font-light">
+              <span className="font-medium">{product?.data.name}</span>
             </div>
 
             <div className="flex items-center border border-gray-300 rounded">
