@@ -13,6 +13,7 @@ import SmallBanner from "../Components/SmallBanner";
 import Paragraph from "../Components/Paragraph";
 import GadgetsAndGear from "../Components/GadgetsAndGear";
 import WideBanner from "../Components/WideBanner";
+import Fitness from "../Components/Fitness";
 
 
 export const userId = 193;
@@ -56,10 +57,11 @@ export default async function Home() {
         <OurFeatures />
       <div>
         <FeaturedCategories categories={categories}/>
-        <SmallBanner banner={banner}/>
         <ReadyForOrder />  
         <WideBanner banner={banner}></WideBanner>
         <GadgetsAndGear></GadgetsAndGear>
+        <SmallBanner banner={banner}/>
+        <Fitness></Fitness>
         <BannerSection banner={banner}/>
         <NewArrival banner={banner}/> 
         <FeaturedProducts banner={banner}/>

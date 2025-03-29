@@ -27,7 +27,7 @@ const Brands = ({ brands }) => {
         <div 
             style={{ backgroundImage: `url(https://i.ibb.co.com/Zp6Zwfzd/2e352a34f29bd02eadca4b5d39136fd9.jpg)`, backgroundSize: 'cover', backgroundPosition: 'center' }}
         >
-            <div className="md:mt-20 mt-10">
+            <div className="md:mt-20 mt-10 pt-4">
                 <Heading title="Shop By Brands" />
                 <div className='grid w-11/12 my-8 mx-auto gap-6 lg:grid-cols-4 grid-cols-3 items-center justify-center lg:w-8/12'>
                     {brands?.data && brands?.data.length > 0 ? (
