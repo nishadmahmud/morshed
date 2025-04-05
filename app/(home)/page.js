@@ -14,6 +14,7 @@ import Paragraph from "../Components/Paragraph";
 import GadgetsAndGear from "../Components/GadgetsAndGear";
 import WideBanner from "../Components/WideBanner";
 import Fitness from "../Components/Fitness";
+import BestDeals from "../Components/BestDeals";
 
 
 export const userId = 193;
@@ -59,6 +60,7 @@ export default async function Home() {
         <FeaturedCategories categories={categories}/>
         <ReadyForOrder />  
         <WideBanner banner={banner}></WideBanner>
+        <BestDeals></BestDeals>
         <GadgetsAndGear></GadgetsAndGear>
         <SmallBanner banner={banner}/>
         <Fitness></Fitness>

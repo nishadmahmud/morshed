@@ -84,7 +84,7 @@ const ReadyForOrder = () => {
                   return (
                     <div
                       key={product.id}
-                      className="bg-white border border-gray-300 hover:scale-105 shadow-sm transition rounded-xl overflow-hidden flex flex-col"
+                      className="bg-white border border-gray-300 hover:scale-105 shadow-sm transition rounded-xl overflow-hidden flex flex-col relative"
                     >
                       <Link
                         onClick={() => updateRecentViews(product)}

@@ -36,9 +36,9 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="bg-white border border-gray-300 shadow-sm rounded-lg flex flex-col poppins transition ease-in-out hover:scale-105 h-full">
+    <div className="bg-white border border-gray-300 shadow-sm rounded-lg flex flex-col poppins transition ease-in-out relative hover:scale-105 h-full">
       <Link onClick={updateRecentViews} href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}>
-        <div className="relative h-36 w-40 mx-auto">
+        <div className=" h-36 w-40 mx-auto">
           <Image
             src={validImage || noImg}
             alt={product?.name}
@@ -50,12 +50,12 @@ const ProductCard = ({ product }) => {
           />
         </div>
         {product?.discount && (
-          <p className="absolute top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md">
+          <p className="absolute top-3 -left-2 bg-[#c03b2c] text-white text-[10px] font-bold py-1 px-2 rounded-md">
             SAVE {product?.discount || null}%
           </p>
         )}
         <div className="px-4 flex flex-col flex-grow justify-center items-center">
-          <h3 className="text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-4">
+          <h3 className="text-sm font-semibold text-black line-clamp-1 text-ellipsis mt-6">
             {product?.name || "N/A"}
           </h3>
           <div>
