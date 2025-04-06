@@ -44,7 +44,6 @@ const Page = ({ params }) => {
     fetcher
   );
 
-  console.log(product)
 
   const [selectedStorage, setSelectedStorage] = useState("");
 
@@ -106,7 +105,7 @@ const Page = ({ params }) => {
   );
 
   const [selectedColor, setSelectedColor] = useState(product?.data?.color[0]);
-  const [selectedRegion,setSelectedRegion] = useState([]);
+  const [selectedRegion,setSelectedRegion] = useState("");
 
 
   const handleColorChange = (colorCode) => {
@@ -370,12 +369,12 @@ const Page = ({ params }) => {
               <div className="flex justify-between items-center gap-2">
                 <div className="mb-4">
                   <h3 className="font-medium text-sm mb-4">
-                    Color: {selectedColor || "No color"}
+                    Color: {selectedColor || "N/A"}
                   </h3>
                   <div className="grid lg:grid-cols-6 md:grid-cols-5 grid-cols-4  gap-3">
-                    {colors.length &&
+                    {colors.length ?
                       colors.map((color) =>
-                        color ? (
+                        color && (
                           <div className={`rounded-lg border-2 p-0.5  ${
                               selectedColor === color
                                 ? "border-[#ff7060] shadow-[0_2px_4px_4px] p-0.5 shadow-[#cf4b3c]"
@@ -392,8 +391,8 @@ const Page = ({ params }) => {
                             {/* This adds some space inside the button */}
                           </button>
                           </div>
-                        ) : null
-                      )}
+                        ) 
+                      ): null}
                   </div>
                 </div>
               </div>
@@ -414,12 +413,12 @@ const Page = ({ params }) => {
 
               <div className="mb-4">
                 <h3 className="font-medium text-sm mb-1">
-                    Region: {selectedRegion ?? "N/A"}
+                    Region: {selectedRegion || "N/A"}
                   </h3>
                   <div className="flex space-x-2">
-                    {region.length &&
+                    {region.length ?
                       region.map((rgn) =>
-                        rgn ? (
+                        rgn && (
                           <button
                             key={rgn}
                             className={`rounded-md px-2 ${
@@ -429,18 +428,18 @@ const Page = ({ params }) => {
                             }`}
                             onClick={() => handleRegionChange(rgn)}
                           >{rgn}</button>
-                        ) : null
-                      )}
+                        ) 
+                      ): null}
                   </div>                 
               </div>
 
               <div className="mb-4">
                 <h3 className="font-medium mb-1 text-sm">
-                  Storage: {selectedStorage ? `${selectedStorage}` : "N/A"}
+                  Storage: {selectedStorage || "N/A"}
                 </h3>
                 <div className="flex space-x-2">
-                  {storages &&
-                    storages.map((storage) => (
+                  {storages.length ?
+                   storages.map((storage) => (
                       <button
                         key={storage}
                         onClick={() => handleStorageChange(storage)}
@@ -452,7 +451,7 @@ const Page = ({ params }) => {
                       >
                         {storage}
                       </button>
-                    ))}
+                    )) : null}
                 </div>
               </div>
 
