@@ -26,6 +26,7 @@ const Page = ({ params }) => {
   const [cartItems, setCartItems] = useState([]);
   const [quantity, setQuantity] = useState(1);
   const [activeTab, setActiveTab] = useState("Specification");
+  const [region,setRegion] = useState([]);
   const [imageIndex, setImageIndex] = useState(0);
   const [colors, setColors] = useState([]);
 
@@ -42,6 +43,8 @@ const Page = ({ params }) => {
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
     fetcher
   );
+
+  console.log(product)
 
   const [selectedStorage, setSelectedStorage] = useState("");
 
@@ -103,6 +106,8 @@ const Page = ({ params }) => {
   );
 
   const [selectedColor, setSelectedColor] = useState(product?.data?.color[0]);
+  const [selectedRegion,setSelectedRegion] = useState([]);
+
 
   const handleColorChange = (colorCode) => {
     setSelectedColor(colorCode);
@@ -112,14 +117,24 @@ const Page = ({ params }) => {
     if (availableStorage) {
       setSelectedStorage(availableStorage.storage);
       setSelectedSalePrice(availableStorage.sale_price);
+      setSelectedRegion(availableStorage.region)
     }
   };
+
+  useEffect(() => {
+    if(product?.data.imeis && product?.data.imeis.length){
+      const regions = product?.data.imeis.flatMap((imei) => imei.region);
+      const uniqueRegions = [...new Set(regions)]
+      setRegion(uniqueRegions);
+    }
+  },[product?.data])
 
   useEffect(() => {
     const imeis = product?.data?.imeis;
     if (imeis && imeis.length) {
       setSelectedColor(imeis[0].color);
       setSelectedStorage(imeis[0].storage);
+      setSelectedRegion(imeis[0].region)
     }
   }, [product]);
 
@@ -137,6 +152,20 @@ const Page = ({ params }) => {
     setSelectedStorage(storage);
     setSelectedSalePrice(findImei.sale_price);
   };
+  
+  const handleRegionChange = (rgn) => {
+    const findImei =
+      product?.data.imeis && product?.data.imeis.length
+        ? product?.data.imeis.find((item) => item.region === rgn && item.color === selectedColor && item.storage === selectedStorage)
+        : null;
+        if (!findImei) {
+          toast.error("This variant is not available");
+          return;
+        }
+       setSelectedRegion(rgn);
+       setSelectedSalePrice(findImei.sale_price) 
+  };
+
 
   let someNamedColor = colornames.find(
     (color) => color.name === "Black Titanium"
@@ -381,6 +410,28 @@ const Page = ({ params }) => {
                     ? "Stock Out"
                     : "In Stock"}
                 </p>
+              </div>
+
+              <div className="mb-4">
+                <h3 className="font-medium text-sm mb-1">
+                    Region: {selectedRegion ?? "N/A"}
+                  </h3>
+                  <div className="flex space-x-2">
+                    {region.length &&
+                      region.map((rgn) =>
+                        rgn ? (
+                          <button
+                            key={rgn}
+                            className={`rounded-md px-2 ${
+                              selectedRegion === rgn
+                                ? "bg-[#EB0439] text-white"
+                                : "bg-[#EDEDED] text-gray-700"
+                            }`}
+                            onClick={() => handleRegionChange(rgn)}
+                          >{rgn}</button>
+                        ) : null
+                      )}
+                  </div>                 
               </div>
 
               <div className="mb-4">
