@@ -11,7 +11,6 @@ const WideBanner = ({banner}) => {
                         {banner?.data?.[3] && (
                           <div className="w-full h-44 xl:h-[50vh] lg:h-[40vh] md:h-35vh relative">
                             <Image
-                            unoptimized
                               src={banner.data[1].image_path || noImg}
                               fill
                               style={{ objectFit: "cover" }}

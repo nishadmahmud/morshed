@@ -9,13 +9,12 @@ import ProductCard from './ProductCard';
 
 
 const BestDeals = () => {
-    const {handleCart,handleBuy} = useStore();
-    const {data : bestSellers,isLoading} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/best-deals/${userId}`,fetcher);
-  console.log('best saller', bestSellers);
+    const {data : newPhones,isLoading} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/latest-phones/${userId}}`,fetcher);
+  console.log('best saller', newPhones?.data);
 
     return (
         <div className="mt-12 w-11/12 mx-auto">
-          {/* <Heading title={'Best Deals'}/> */}
+          <Heading title={'Brand New Phone'}/>
             <div>
                 
                 {/* products */}
@@ -30,8 +29,8 @@ const BestDeals = () => {
                       }
                       </div>  
                       :
-                    bestSellers?.data.length > 0 ? 
-                    bestSellers?.data.slice(0, 12).map((product) => {
+                    newPhones?.data && newPhones?.data.length > 0 ? 
+                    newPhones?.data.slice(0, 12).map((product) => {
                       return (
                        <ProductCard product={product} key={product.id}/>
                      );
