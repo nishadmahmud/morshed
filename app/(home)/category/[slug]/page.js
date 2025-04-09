@@ -88,15 +88,16 @@ const Page = ({ params }) => {
   }, [currentPage, id]);
 
   return (
-    <div className="xl:pt-32 lg:pt-28 md:pt-24 pt-20  relative">
+    <div className="xl:pt-32 lg:pt-28 md:pt-24 pt-16  relative">
       
       {/* Mobile Filter Button */}
       <button
-        className="md:hidden fixed bottom-24 left-7 bg-[#c03b2c] text-white p-2 rounded-lg z-50"
-        onClick={() => setIsFilterOpen(true)}
-      >
-        <IoFilter size={24} />
-      </button>
+  className="md:hidden fixed bottom-24 left-7 bg-[#c03b2c] text-white p-2 rounded-lg z-50"
+  onClick={() => setIsSidebarOpen(true)} 
+>
+  <IoFilter size={24} />
+</button>
+
 
       {/* Filter Sidebar (Mobile Only) */}
       <div
