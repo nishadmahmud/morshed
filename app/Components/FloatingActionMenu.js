@@ -33,7 +33,7 @@ const FloatingActionMenu = () => {
           icon={<FaFacebookMessenger style={{ fontSize: 20, color: "blue", zIndex: 0,  backgroundColor: "white", }} />}
           backgroundColor="#0068ff" 
           size={40}
-          onClick={() => window.open("/", "_blank")}
+          onClick={() => window.open("https://m.me/393235600545077", "_blank")}
         />
         {/* WhatsApp Button with Icon Background */}
         <ChildButton
