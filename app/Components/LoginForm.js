@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { useState } from "react";
 import useStore from "../CustomHooks/useStore";
 import toast from "react-hot-toast";
+import { userId } from "../(home)/page";
 
 const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReload }) => {
   const userData = JSON.parse(localStorage.getItem("user"));
@@ -17,6 +18,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    user_id : String(userId)
   });
 
 
@@ -34,7 +36,6 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
     e.preventDefault();
     axios.post(`${process.env.NEXT_PUBLIC_API}/customer-login`, formData)
       .then((res) => {
-        console.log("loggggggiiiiinn......",res.data);
         if (res.data.token) {
           const updatedFormData = { ...formData, customer_id, first_name, last_name, phone };
           setFormData(updatedFormData);

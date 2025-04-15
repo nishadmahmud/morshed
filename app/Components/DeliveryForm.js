@@ -96,7 +96,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
     variants: [],
     imeis: cartItems.map((item) => {
       if (item?.imeis && item?.imeis.length > 0) {
-        return parseInt(item?.imeis[0].imei);
+        return parseInt(item?.imeis[0]?.id);
       } else {
         return null;
       }

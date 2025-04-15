@@ -20,7 +20,7 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = { ...formData, user_id: userId};
+    const payload = { ...formData, user_id: String(userId)};
   
     axios
       .post(`${process.env.NEXT_PUBLIC_API}/customer-registration`, payload, {
@@ -29,10 +29,7 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
         },
       })
       .then((res) => {
-        const customerId = res?.data?.data?.id;
-
-        console.log(customerId, "stdhgj");
-  
+        const customerId = res?.data?.data?.id
         // Update formData with customer_id before saving it
         const updatedFormData = { ...formData, customer_id: customerId };
         setFormData(updatedFormData);

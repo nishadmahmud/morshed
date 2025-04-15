@@ -78,6 +78,8 @@ const Page = ({ params }) => {
       setStorages(uniqueStorage);
     }
   }, [product]);
+
+  console.log(product);
   // console.log(colornames("Black Titanium"));
   useEffect(() => {
     const handleScroll = () => {
@@ -110,9 +112,11 @@ const Page = ({ params }) => {
 
   const handleColorChange = (colorCode) => {
     setSelectedColor(colorCode);
+    // const findColorIndex = colors.findIndex(item  => item === colorCode);
     const availableStorage = product?.data.imeis.find(
       (item) => item.color === colorCode
     );
+    // setImageIndex(findColorIndex);
     if (availableStorage) {
       setSelectedStorage(availableStorage.storage);
       setSelectedSalePrice(availableStorage.sale_price);
@@ -187,6 +191,8 @@ const Page = ({ params }) => {
       .replace(/\s+/g, "-") // Replace spaces with dashes
       .replace(/[^a-z0-9-]/g, ""); // Remove special characters
   };
+
+  console.log(imageIndex);
 
   return (
     <section className="bg-white">
