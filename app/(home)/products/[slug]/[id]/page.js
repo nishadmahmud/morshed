@@ -397,7 +397,7 @@ const Page = ({ params }) => {
                                         : color === "Black Titanium"
                                           ? "#5b5b5b"
                                           : color === "Blue Titanium"
-                                            ? "#17192b"
+                                            ? "#2a2e54"
                                             : color === "White Titanium"
                                               ? "#e4e4e4"
                                               : color === "Natural Titanium"
