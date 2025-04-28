@@ -61,8 +61,8 @@ export default async function Home() {
         <ReadyForOrder />  
         <WideBanner banner={banner}></WideBanner>
         <BestDeals></BestDeals>
-        <GadgetsAndGear></GadgetsAndGear>
         <SmallBanner banner={banner}/>
+        <GadgetsAndGear></GadgetsAndGear>
         <Fitness></Fitness>
         <BannerSection banner={banner}/>
         <NewArrival banner={banner}/> 
