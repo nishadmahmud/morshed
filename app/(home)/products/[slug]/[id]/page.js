@@ -232,6 +232,7 @@ const Page = ({ params }) => {
                     src={
                       "https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg" ||
                       "/placeholder.svg" ||
+                      "/placeholder.svg" ||
                       "/placeholder.svg"
                     }
                     unoptimized
@@ -373,13 +374,13 @@ const Page = ({ params }) => {
               <div className="flex justify-between items-center gap-2">
                 <div className="mb-4">
                   <h3 className="font-medium text-sm mb-4">Color: {selectedColor || "N/A"}</h3>
-                  <div className="grid lg:grid-cols-6 md:grid-cols-5 grid-cols-4  gap-3">
+                  <div className="grid lg:grid-cols-6 md:grid-cols-5 grid-cols-4 gap-3">
                     {colors.length
                       ? colors.map(
                           (color) =>
                             color && (
                               <div
-                                className={`rounded-lg border-2 p-0.5  ${
+                                className={`rounded-lg border-2 p-0.5 ${
                                   selectedColor === color
                                     ? "border-[#ff7060] shadow-[0_2px_4px_4px] p-0.5 shadow-[#cf4b3c]"
                                     : "border-gray-200"
@@ -387,9 +388,22 @@ const Page = ({ params }) => {
                                 key={color}
                               >
                                 <button
-                                  className={`p-2 w-7 h-7 text-xs rounded-md `}
+                                  className={`p-2 w-7 h-7 text-xs rounded-md`}
                                   onClick={() => handleColorChange(color)}
-                                  style={{ backgroundColor: color }}
+                                  style={{
+                                    backgroundColor:
+                                      color === "Desert Titanium"
+                                        ? "#e7d4c6"
+                                        : color === "Black Titanium"
+                                          ? "#5b5b5b"
+                                          : color === "Blue Titanium"
+                                            ? "#5376be"
+                                            : color === "White Titanium"
+                                              ? "#e4e4e4"
+                                              : color === "Natural Titanium"
+                                                ? "#aba5a0"
+                                                : color,
+                                  }}
                                 >
                                   &nbsp; {/* This adds some space inside the button */}
                                 </button>
