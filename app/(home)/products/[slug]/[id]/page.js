@@ -102,10 +102,11 @@ const Page = ({ params }) => {
 
   useEffect(() => {
     if (product?.data) {
-      // Set the image array based on have_variant
-      if (product.data.have_variant === "1") {
-        setImageArray(product.data.imei_image || [])
+      // Set the image array based on have_variant and check if imei_image is empty
+      if (product.data.have_variant === "1" && product.data.imei_image && product.data.imei_image.length > 0) {
+        setImageArray(product.data.imei_image)
       } else {
+        // If have_variant is 0 or imei_image is empty, use images array
         setImageArray(product.data.images || [])
       }
     }
@@ -230,6 +231,7 @@ const Page = ({ params }) => {
                   <Image
                     src={
                       "https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg" ||
+                      "/placeholder.svg" ||
                       "/placeholder.svg"
                     }
                     unoptimized
