@@ -124,7 +124,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
        mode: 1,
        size: 1,
        sales_id: 3,
-       imei_id: item?.imeis ? item.imeis.find(imei => imei.storage === item?.storage).id : null,
+       imei_id: item?.imeis ? item.imeis.find(imei => imei.storage === item?.storage)?.id : null,
      }))
     orderSchema.imeis = cartItems.map((item) => {
        if (item?.imeis && item?.imeis.length > 0) {
