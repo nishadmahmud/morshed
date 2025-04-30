@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client"
+
 import { useEffect, useMemo, useState } from "react"
 import Image from "next/image"
 import useStore from "@/app/CustomHooks/useStore"
@@ -8,17 +9,16 @@ import Link from "next/link"
 import useSWR from "swr"
 import noImg from "/public/no-image.jpg"
 import MagnifiedImage from "@/app/Components/MagnifiedImage"
-// import nearestColor from 'nearest-color';
-import { colornames } from "color-name-list"
 import toast from "react-hot-toast"
 import Breadcrumbs from "@/app/Components/Breadcrumbs"
 import { fetcher, userId } from "@/app/(home)/page"
 import axios from "axios"
 
+
+
 const Page = ({ params }) => {
   const { handleCart, getCartItems, refetch, setRefetch, handleBuy } = useStore()
   const [scroll, setScroll] = useState(0)
-  // const [product,setProduct] = useState({});
   const [recentItems, setRecentItems] = useState([])
   const [relatedProducts, setRelatedProducts] = useState([])
   const [cartItems, setCartItems] = useState([])
@@ -32,7 +32,6 @@ const Page = ({ params }) => {
   useEffect(() => {
     setCartItems(getCartItems())
     if (refetch) {
-      // setCartItems(getCartItems());
       setRefetch(false)
     }
   }, [refetch, getCartItems])
@@ -44,12 +43,9 @@ const Page = ({ params }) => {
   )
 
   const [selectedStorage, setSelectedStorage] = useState("")
-
   const [storages, setStorages] = useState("")
-
   const isCartItem = cartItems.find((item) => item?.id === product?.data.id || undefined)
 
-  // console.log(product);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,6 +62,7 @@ const Page = ({ params }) => {
     fetchData()
   }, [id])
 
+
   useMemo(() => {
     if (product && product?.data.imeis && product?.data.imeis.length > 0) {
       const uniqueStorage = [...new Set(product.data.imeis.map((item) => item.storage))]
@@ -74,7 +71,7 @@ const Page = ({ params }) => {
   }, [product])
 
   console.log(product)
-  // console.log(colornames("Black Titanium"));
+
   useEffect(() => {
     const handleScroll = () => {
       setScroll(window.scrollY)
@@ -82,6 +79,7 @@ const Page = ({ params }) => {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
 
   const [recentProducts, setRecentProducts] = useState([])
 
@@ -93,21 +91,27 @@ const Page = ({ params }) => {
     }
   }, [])
 
+
   const [selectedSalePrice, setSelectedSalePrice] = useState(
     product?.data.imeis && product?.data.imeis.length ? product?.data.imeis[0].sale_price : product?.data.retails_price,
   )
 
+
   const [selectedColor, setSelectedColor] = useState(product?.data?.color[0])
   const [selectedRegion, setSelectedRegion] = useState("")
 
+
   useEffect(() => {
     if (product?.data) {
-      // Set the image array based on have_variant and check if imei_image is empty
+
       if (product.data.have_variant === "1" && product.data.imei_image && product.data.imei_image.length > 0) {
-        setImageArray(product.data.imei_image)
+
+        setImageArray(product.data.imei_image || noImg)
+
       } else {
-        // If have_variant is 0 or imei_image is empty, use images array
-        setImageArray(product.data.images || [])
+
+      setImageArray(product.data.images || noImg)
+
       }
     }
   }, [product?.data])
@@ -115,16 +119,14 @@ const Page = ({ params }) => {
   const handleColorChange = (colorCode) => {
     setSelectedColor(colorCode)
 
-    // Find the IMEI that matches the selected color
     const selectedImei = product?.data.imeis.find((item) => item.color === colorCode)
 
-    // If have_variant is 1, update the image to the one associated with this color
     if (product?.data.have_variant === "1" && selectedImei) {
-      // Set the image index to 0 to show the first image
+
       setImageIndex(0)
-      // Find the image path from the selected IMEI
+  
       const imeiImagePath = selectedImei.image_path
-      // Find the index of this image in the imei_image array if it exists
+ 
       const imageIdx = product.data.imei_image.findIndex((img) => img === imeiImagePath)
       if (imageIdx !== -1) {
         setImageIndex(imageIdx)
@@ -184,8 +186,7 @@ const Page = ({ params }) => {
     setSelectedSalePrice(findImei.sale_price)
   }
 
-  const someNamedColor = colornames.find((color) => color.name === "Black Titanium")
-
+  
   useEffect(() => {
     if (product?.data.color && typeof product?.data.color === "object") {
       const colors = Object.values(product.data.color)
@@ -231,9 +232,7 @@ const Page = ({ params }) => {
                   <Image
                     src={
                       "https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg" ||
-                      "/placeholder.svg" ||
-                      "/placeholder.svg" ||
-                      "/placeholder.svg"
+                      noImg
                     }
                     unoptimized
                     height={300}
@@ -252,7 +251,7 @@ const Page = ({ params }) => {
                     height={200}
                     width={200}
                     alt="product"
-                    src={imageArray[imageIndex] || "/placeholder.svg"}
+                    src={imageArray[imageIndex] || noImg}
                   />
                 ) : product?.data.image_path ? (
                   <Image
@@ -260,11 +259,11 @@ const Page = ({ params }) => {
                     height={200}
                     width={200}
                     alt="product"
-                    src={product?.data.image_path || "/placeholder.svg"}
+                    src={product?.data.image_path || noImg}
                   />
                 ) : (
                   <Image
-                    src={noImg || "/placeholder.svg"}
+                    src={noImg || noImg}
                     height={200}
                     width={200}
                     alt="mobile-phone"
