@@ -104,13 +104,13 @@ const Page = ({ params }) => {
   useEffect(() => {
     if (product?.data) {
 
-      if (product.data.have_variant === "1" && product.data.imei_image && product.data.imei_image.length > 0) {
+      if (product.data?.have_variant === "1" && product.data?.imei_image && product.data?.imei_image.length > 0) {
 
-        setImageArray(product.data.imei_image || noImg)
+        setImageArray(product.data.imei_image)
 
       } else {
 
-      setImageArray(product.data.images || noImg)
+      setImageArray(product?.data?.images)
 
       }
     }
@@ -222,7 +222,7 @@ const Page = ({ params }) => {
               >
                 {imageArray?.length > 0 ? (
                   <div>
-                    <MagnifiedImage image_path={imageArray[imageIndex]} alt={product?.data.name} />
+                    <MagnifiedImage image_path={imageArray[imageIndex] || noImg} alt={product?.data.name} />
                   </div>
                 ) : product?.data?.image_path ? (
                   <div>
@@ -234,7 +234,6 @@ const Page = ({ params }) => {
                       "https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg" ||
                       noImg
                     }
-                    unoptimized
                     height={300}
                     width={300}
                     alt={product?.data.name}
