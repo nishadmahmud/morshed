@@ -226,7 +226,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
         setLoading(false);
         setInvoice(response.data.data.invoice_id);
         if (!isSSL){
-          toast.success("order placed successfully");
+          toast.success("Order placed successfully");
             setTimeout(() => {
               router.push(`/payment-success/${response.data.data.invoice_id}`);
            },2000)

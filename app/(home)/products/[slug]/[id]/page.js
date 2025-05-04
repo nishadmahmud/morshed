@@ -104,9 +104,9 @@ const Page = ({ params }) => {
   useEffect(() => {
     if (product?.data) {
 
-      if (product.data?.have_variant === "1" && product.data?.imei_image && product.data?.imei_image.length > 0) {
+      if (product.data?.have_variant === "1" && product.data?.imei_image && product?.data?.imei_image?.length > 0) {
 
-        setImageArray(product.data.imei_image)
+        setImageArray(product?.data?.imei_image)
 
       } else {
 
@@ -295,7 +295,7 @@ const Page = ({ params }) => {
                           <Image
                             unoptimized
                             onClick={() => setImageIndex(idx)}
-                            src={image || "/placeholder.svg"}
+                            src={image || noImg}
                             alt={product?.data.name}
                             height={71}
                             width={71}
