@@ -150,7 +150,7 @@ const Header = ({ data }) => {
       >
         {/* <TopHeader></TopHeader> */}
         {/* desktop menu */}
-        <div className="flex  justify-between items-center bg-teal-800 text-[#ffffff] p-3 py-1 lg:px-16">
+        <div className="flex justify-between items-center bg-gray-500/20 backdrop-blur-md text-white p-3 py-0.5 lg:px-16">
           <div
             className="xl:hidden flex items-center lg:gap-3 gap-1"
             onClick={toggleSidebar}
@@ -238,7 +238,7 @@ const Header = ({ data }) => {
               alt="company-logo"
               height={500}
               width={500}
-              className="hidden xl:block md:w-10 py-1 h-auto"
+              className="hidden xl:block md:w-10 h-auto"
             />
           </Link>
 

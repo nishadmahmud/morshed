@@ -42,23 +42,23 @@ const HeroSlider = ({ slider, banner, data }) => {
   }, []);
 
   return (
-    <div className="lg:max-w-[100%] lg:mr-2 xl:pt-20 lg:pt-20 pt-10 md:pt-20 max-w-[100%] w-full mx-auto flex lg:flex-row items-center">
+    <div className="lg:max-w-[100%] lg:mr-2 max-w-[100%] w-full mx-auto flex lg:flex-row items-center">
       
       {/* Grid Layout */}
       <div className="flex gap-4">
         <div className="grid">
 
           {/* Slider Section */}
-          <div className="md:w-[95%] mx-auto w-full flex flex-col md:rounded-xl h-[42vh] justify-center overflow-hidden relative lg:h-[85vh] md:h-[70vh] lg:mb-4">
+          <div className="md:w-[100%] mx-auto w-full flex flex-col h-[42vh] justify-center overflow-hidden relative lg:h-[100vh] md:h-[100vh] lg:mb-4">
             
             <Swiper
               pagination={true}
               ref={swiperRef}
               slidesPerView={1}
-              autoplay={{ delay: 2500, disableOnInteraction: false }}
+              autoplay={{ delay: 3000, disableOnInteraction: false }}
               loop={true}
               speed={500}
-              modules={[Autoplay, Pagination]}
+              modules={[Autoplay]}
             >
               {slider.status === 200 &&
                 slider?.data.length > 0 &&
@@ -81,7 +81,7 @@ const HeroSlider = ({ slider, banner, data }) => {
                           width={1000}
                           height={200}
                           quality={100}
-                          className="md:rounded-xl cursor-pointer transition-transform duration-300 hover:scale-105"
+                          className="cursor-pointer transition-transform duration-300 hover:scale-105"
                         />
                       </Link>
                     </SwiperSlide>
