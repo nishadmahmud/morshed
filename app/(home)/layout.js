@@ -23,7 +23,7 @@ const geistMono = localFont({
 });
 
 export const metadata = {
-  title: "Apple Newton BD",
+  title: "Morshed Mart",
   description: "Get all kind of next gen gadget",
   
 };
