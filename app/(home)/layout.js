@@ -35,9 +35,9 @@ export default async function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-  <link rel="apple-touch-icon" sizes="180x180" href="/favicon.png" />
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon.png" />
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/morshed-mart-logo-removebg-preview.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="/morshed-mart-logo-removebg-preview.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="/morshed-mart-logo-removebg-preview.png" />
 </head>
 
       <body
@@ -52,7 +52,8 @@ export default async function RootLayout({ children }) {
 
           <div className="bg-[#ffffff] ">
             {children}
-        <Compare />
+        {/* <Compare /> */}
+
         {/* <div className="fixed cursor-pointer lg:bottom-20 bottom-20 right-5 bg-green-700 p-10">
         <TawkTo className="bottom-9"></TawkTo>
         </div> */}

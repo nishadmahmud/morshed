@@ -28,7 +28,7 @@ const PersonalInfo = () => {
 
   return (
     <>
-      <h2 className="text-xl font-bold mb-4 lg:mb-6 text-[#c03b2c]">Personal Info</h2>
+      <h2 className="text-xl font-bold mb-4 lg:mb-6 text-teal-800">Personal Info</h2>
       <div className="bg-white p-6 shadow-md rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -68,7 +68,7 @@ const PersonalInfo = () => {
             className="w-full p-2 border rounded bg-gray-100 text-black"
           />
         </div>
-        <button className="mt-6 px-4 py-2 bg-[#c03b2c] text-white rounded hover:bg-[#c54403]">
+        <button className="mt-6 px-4 py-2 bg-teal-800 text-white rounded hover:bg-teal-900">
           Update
         </button>
       </div>

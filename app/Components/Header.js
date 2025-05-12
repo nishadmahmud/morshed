@@ -1,7 +1,7 @@
 "use client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { FaChevronDown, FaRegHeart, FaRegUser, FaUsers } from "react-icons/fa6";
-import companyLogo from "/public/logo.png";
+import companyLogo from "/public/morshed-mart-logo-removebg-preview.png";
 import logoSmallDevice from "/public/logoPhone.png";
 import { HiMiniShoppingCart } from "react-icons/hi2";
 import Navbar from "./Navbar";
@@ -18,9 +18,9 @@ import axios from "axios";
 import { Toaster } from "react-hot-toast";
 import { useSearchParams } from "next/navigation";
 import { userId } from "../(home)/page";
-import { CircleUser, Headset, SearchIcon } from "lucide-react";
+import { CircleUser, Headset, SearchIcon, ShoppingBag, User } from "lucide-react";
 import { LiaShoppingCartSolid } from "react-icons/lia";
-import { IoCloseSharp, IoSearchSharp } from "react-icons/io5";
+import { IoCloseSharp, IoSearch, IoSearchSharp } from "react-icons/io5";
 import { RiMenu4Fill } from "react-icons/ri";
 import { Menu } from "lucide-react";
 import sidebarLogo from "../../public/sidebarLogo.png";
@@ -150,7 +150,7 @@ const Header = ({ data }) => {
       >
         {/* <TopHeader></TopHeader> */}
         {/* desktop menu */}
-        <div className="flex  justify-between items-center bg-[#191a20] text-[#ffffff] p-3 py-2 lg:px-16">
+        <div className="flex  justify-between items-center bg-teal-800 text-[#ffffff] p-3 py-2 lg:px-16">
           <div
             className="xl:hidden flex items-center lg:gap-3 gap-1"
             onClick={toggleSidebar}
@@ -169,9 +169,7 @@ const Header = ({ data }) => {
                 />
               </Link>
 
-              <h5 className="text-[12px] font-semibold font-logo">
-                Apple Newton Bd
-              </h5>
+             
             </div>
           </div>
 
@@ -181,7 +179,7 @@ const Header = ({ data }) => {
               isSidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
           >
-            <div className="flex justify-between items-center p-2  border-b-2 border-[#c03b2c]">
+            <div className="flex justify-between items-center p-2  border-b-2 border-teal-800">
               <Link href={'/'} onClick={toggleSidebar}>
                 <Image unoptimized width={140} src={sidebarLogo} alt="logo"></Image>
               </Link>
@@ -208,7 +206,7 @@ const Header = ({ data }) => {
                   </Link>
                 );
               })}
-              <div className="flex flex-col gap-2 font-medium text-[#c03b2c]">
+              <div className="flex flex-col gap-2 font-medium text-teal-800">
                 <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/offer">
                   {" "}
                   <Gift size={15}></Gift> Latest Offer
@@ -240,7 +238,7 @@ const Header = ({ data }) => {
               alt="company-logo"
               height={500}
               width={500}
-              className="hidden xl:block md:w-48  py-1 h-auto"
+              className="hidden xl:block md:w-10 py-1 h-auto"
             />
           </Link>
 
@@ -286,7 +284,7 @@ const Header = ({ data }) => {
                               item?.product_count
                             )}`}
                             key={item?.category_id}
-                            className="text-[#555555] hover:bg-[#c03b2c] hover:text-white transition-all ease-in-out py-1 rounded-sm text-start text-sm pl-5 w-36 flex gap-2"
+                            className="text-[#555555] hover:bg-teal-800 hover:text-white transition-all ease-in-out py-1 rounded-sm text-start text-sm pl-5 w-36 flex gap-2"
                           >
                             <p>{item?.name}</p>
                           </Link>
@@ -296,7 +294,7 @@ const Header = ({ data }) => {
                 </div>
               </div>
 
-              <button className="bg-[#c03b2c] text-white px-2.5 py-2 w-2/6 rounded-r-sm text-xs">
+              <button className="bg-teal-800 text-white px-2.5 py-2 w-2/6 rounded-r-sm text-xs">
                 {" "}
                 <IoSearchSharp size={25}></IoSearchSharp>
               </button>
@@ -326,14 +324,14 @@ const Header = ({ data }) => {
             <div className="items-center gap-3 hidden lg:flex">
               <Link
                 href="/blogs"
-                className="flex transition ease-in-out bg-[#302e31] p-2 px-4 rounded-md font-normal items-center text-white gap-1 text-sm  hover:bg-[#c03b2c]"
+                className="flex transition ease-in-out p-2 px-4 rounded-md font-normal items-center text-white gap-1 text-sm  hover:bg-teal-800"
               >
-                <NotebookPen size={20}></NotebookPen>
-                Blog
+                <IoSearch size={25}></IoSearch> 
+               
               </Link>
 
-              <Link href="/offer">
-                <div className="flex text-white items-center group gap-1 bg-[#302e31] p-2 px-3 rounded-md text-sm hover:bg-[#c03b2c]">
+              {/* <Link href="/offer">
+                <div className="flex text-white items-center group gap-1 bg-[#302e31] p-2 px-3 rounded-md text-sm hover:bg-teal-800">
                   <div className="relative rounded-full text-white">
                     <Gift
                       size={20}
@@ -344,26 +342,22 @@ const Header = ({ data }) => {
                     Offers
                   </p>
                 </div>
-              </Link>
+              </Link> */}
 
               <div
                 onClick={() => setOpenCart(!openCart)}
-                className="flex group items-center cursor-pointer bg-[#302e31] px-3 rounded-md text-sm mr-3 hover:bg-[#c03b2c]"
+                className="flex group items-center cursor-pointer  px-3 rounded-md text-sm mr-3 hover:bg-teal-800"
               >
                 <div className="relative p-1 rounded-full">
-                  <LiaShoppingCartSolid
-                    size={28}
+                  <ShoppingBag
+                    size={25}
                     className="cursor-pointer group-hover:text-[#ffffff] text-white"
                   />
-                  <p className="bg-[#c03b2c] h-fit  text-[#ffffff] w-fit px-0.5 rounded-full text-[10px] absolute top-1 right-1">
-                    {total}
-                  </p>
+                  {/* <p className="bg-white h-4 text-teal-800 w-fit px-1 rounded-full text-[10px] absolute -top-1 right-1">
+                    <span className="relative bottom-[2px] font-semibold">{total}</span>
+                  </p> */}
                 </div>
-                <div>
-                  <p className="group-hover:text-[#ffffff] text-white hidden md:block font-normal ">
-                    Cart
-                  </p>
-                </div>
+               
               </div>
             </div>
 
@@ -371,19 +365,15 @@ const Header = ({ data }) => {
               {!user ? (
                 <div
                   onClick={() => setIsLoginModal(true)}
-                  className="lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group bg-[#302e31] p-1 px-3 rounded-md text-sm hover:bg-[#c03b2c]"
+                  className="lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group p-1 px-3 rounded-md text-sm hover:bg-teal-800"
                 >
                   <div className="p-1 rounded-full hidden lg:block">
-                    <LogIn
-                      size={20}
+                    <User
+                      size={25}
                       className="group-hover:text-[#ffffff] text-white"
                     />
                   </div>
-                  <div>
-                    <p className="group-hover:text-[#ffffff] text-white hidden lg:block font-normal ">
-                      Login
-                    </p>
-                  </div>
+                 
                 </div>
               ) : (
                 <Link
@@ -395,22 +385,23 @@ const Header = ({ data }) => {
                       unoptimized
                       alt="navLogo"
                       src={navLogo}
-                      className="w-8 rounded-full border-2 border-[#c03b2c] p-0.5"
+                      className="w-8 rounded-full border-2 border-teal-800 p-0.5"
                     ></Image>
                   </div>
                 </Link>
               )}
             </div>
           </div>
+          
         </div>
-        <div className="">
+        {/* <div className="">
           <Navbar
             setIsLoginModal={setIsLoginModal}
             openCart={openCart}
             setOpenCart={setOpenCart}
             data={data}
           />
-        </div>
+        </div> */}
         {openCart && (
           <div className="fixed inset-0 bg-black bg-opacity-30 z-40">
             <CartItems />

@@ -79,12 +79,12 @@ export default function Page() {
                 value={orderId}
                 onChange={(e) => setOrderId(e.target.value)}
                 placeholder="Enter order ID"
-                className="flex justify-start lg:px-4 px-2 w-44 lg:w-full py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-[#c03b2c]"
+                className="flex justify-start lg:px-4 px-2 w-44 lg:w-full py-2 bg-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-teal-800"
               />
               <button
                 type="submit"
                 disabled={loading}
-                className="p-0.5 px-2 bg-[#c03b2c] text-white rounded-md hover:bg-[#c03b2c] transition-colors disabled:opacity-50"
+                className="p-0.5 px-2 bg-teal-800 text-white rounded-md hover:bg-teal-800 transition-colors disabled:opacity-50"
               >
                 <SearchIcon size={20} />
               </button>
