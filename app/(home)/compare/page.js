@@ -125,7 +125,7 @@ console.log(selectedProduct1);
                 <h3 className="mt-4 font-semibold text-black text-sm w-2/3 text-center mx-auto text-ellipsis line-clamp-2">{selectedProduct1.name}</h3>
 
                 <div className="flex items-center justify-center gap-2 mt-3">
-                <button onClick={() => {handleBuy(selectedProduct1,1)}} className="border-[#c03b2c] text-nowrap border text-xs text-[#c03b2c] w-full px-[8px] py-1.5 rounded font-semibold  transition-colors">Buy Now</button>
+                <button onClick={() => {handleBuy(selectedProduct1,1)}} className="border-[#115e59] text-nowrap border text-xs text-[#115e59] w-full px-[8px] py-1.5 rounded font-semibold  transition-colors">Buy Now</button>
                 <button
                   className="px-2 text-sm py-1 bg-red-500 text-white rounded"
                   onClick={() => handleRemoveProduct(setSelectedProduct1, setShowResults1)}
@@ -190,7 +190,7 @@ console.log(selectedProduct1);
                 <h3 className="mt-4 font-semibold text-black text-sm w-2/3 text-center mx-auto text-ellipsis line-clamp-2">{selectedProduct2.name}</h3>
 
                <div className="flex items-center justify-center gap-2 mt-3">
-                <button onClick={() => {handleBuy(selectedProduct2,1)}} className="border-[#c03b2c] text-nowrap border text-xs text-[#c03b2c] w-full px-[8px] py-1.5 rounded font-semibold  transition-colors">Buy Now</button>
+                <button onClick={() => {handleBuy(selectedProduct2,1)}} className="border-[#115e59] text-nowrap border text-xs text-[#115e59] w-full px-[8px] py-1.5 rounded font-semibold  transition-colors">Buy Now</button>
                 <button
                   className="px-2 text-sm py-1 bg-red-500 text-white rounded"
                   onClick={() => handleRemoveProduct(setSelectedProduct2, setShowResults2)}

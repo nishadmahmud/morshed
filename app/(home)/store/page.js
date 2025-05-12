@@ -32,24 +32,24 @@ export default function Page() {
             <FaStore /> {store.name}
           </h2>
           <p className="text-gray-600 flex items-center gap-2 mt-2">
-            <FaMapMarkerAlt className="text-[#c03b2c]" /> {store.address}
+            <FaMapMarkerAlt className="text-[#115e59]" /> {store.address}
           </p>
           <p className="text-gray-600 flex items-center gap-2 mt-2">
-            <FaPhone className="text-[#c03b2c]" /> {store.phone}
+            <FaPhone className="text-[#115e59]" /> {store.phone}
           </p>
           <p className="text-gray-600 flex items-center gap-2 mt-2">
-            <FaClock className="text-[#c03b2c]" /> {store.hours}
+            <FaClock className="text-[#115e59]" /> {store.hours}
           </p>
           <hr className="my-4" />
           <p className="text-gray-500">{store.closed}</p>
           <div className="mt-4 flex gap-2">
             <Link href={store.map}>
-            <button className="flex items-center gap-2 bg-[#c03b2c] text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-[#932b20]">
+            <button className="flex items-center gap-2 bg-[#115e59] text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-[#932b20]">
               <FaMapMarkerAlt /> Show Map
             </button>
             </Link>
             <Link target="_blank" href="https://www.facebook.com/profile.php?id=61563743437257">
-            <button className="flex items-center gap-2 bg-[#c03b2c] text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-[#932b20]">
+            <button className="flex items-center gap-2 bg-[#115e59] text-white px-4 py-2 rounded-lg font-medium shadow hover:bg-[#932b20]">
               <FaStore /> Show Details
             </button>
             </Link>

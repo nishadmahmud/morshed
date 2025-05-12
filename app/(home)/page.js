@@ -17,7 +17,7 @@ import Fitness from "../Components/Fitness";
 import BestDeals from "../Components/BestDeals";
 
 
-export const userId = 193;
+export const userId = 203;
 export const fetcher = (url) => fetch(url).then(res => res.json());
 
 
@@ -55,7 +55,7 @@ export default async function Home() {
     <>
       <PromotionModal promotionBanner={promotion?.data}/>
       <HeroSlider slider={slider} banner={banner} data={categories}/>
-        <OurFeatures />
+        {/* <OurFeatures /> */}
       <div>
         <FeaturedCategories categories={categories}/>
         <ReadyForOrder />  

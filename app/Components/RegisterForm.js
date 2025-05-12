@@ -111,14 +111,14 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
 
         <button
           type="submit"
-          className="w-full py-2 bg-[#c03b2c] text-white rounded-lg transition ease-in-out hover:font-semibold"
+          className="w-full py-2 bg-[#115e59] text-white rounded-lg transition ease-in-out hover:font-semibold"
         >
           Register
         </button>
         {
              !isLoginModal ?
-                <p className='text-black text-center'>Do Not Have an Account? <Link onClick={() => setIsRegistered(!isRegistered)} href={'/register'} className='hover:text-[#c03b2c] hover:underline'>Register</Link></p>
-              : <p className='text-black text-center'>Already Have an Account? <span onClick={() => setIsRegistered(!isRegistered)}  className='hover:text-[#c03b2c] cursor-pointer hover:underline font-semibold'>Login</span></p>
+                <p className='text-black text-center'>Do Not Have an Account? <Link onClick={() => setIsRegistered(!isRegistered)} href={'/register'} className='hover:text-[#115e59] hover:underline'>Register</Link></p>
+              : <p className='text-black text-center'>Already Have an Account? <span onClick={() => setIsRegistered(!isRegistered)}  className='hover:text-[#115e59] cursor-pointer hover:underline font-semibold'>Login</span></p>
               
         }
       </form>

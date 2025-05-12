@@ -1,6 +1,6 @@
-import { RiseLoader } from "react-spinners";
+import { ScaleLoader } from "react-spinners";
 export default function Loader() {
   return <div className="fixed inset-0 flex items-center justify-center bg-white z-[9999]">
-    <RiseLoader color='#c03b2c'/>
+    <ScaleLoader color='#115e59'/>
 </div>
 }

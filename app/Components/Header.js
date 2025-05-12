@@ -150,7 +150,7 @@ const Header = ({ data }) => {
       >
         {/* <TopHeader></TopHeader> */}
         {/* desktop menu */}
-        <div className="flex  justify-between items-center bg-teal-800 text-[#ffffff] p-3 py-2 lg:px-16">
+        <div className="flex  justify-between items-center bg-teal-800 text-[#ffffff] p-3 py-1 lg:px-16">
           <div
             className="xl:hidden flex items-center lg:gap-3 gap-1"
             onClick={toggleSidebar}
@@ -242,66 +242,23 @@ const Header = ({ data }) => {
             />
           </Link>
 
-          {/* ==========category + search========== */}
-          <div className="hidden relative md:flex lg:flex lg:justify-center  py-1.5">
-            <div className="xl:flex hidden h-10">
-              <input
-                onFocus={() => {
-                  setfocused(true), setShowBar(true);
-                }}
-                onChange={handleChange}
-                value={keyword}
-                onBlur={() => setfocused(false)}
-                type="text"
-                placeholder="Search Products..."
-                className="px-5 py-1 rounded-l-sm border-t border-b border-l outline-none text-black bg-white md:text-sm text-xs xl:pr-56"
-              />
+         {/* ==========category display only========== */}
+<div className="hidden relative md:flex lg:flex lg:justify-center py-1.5">
+  <div className="xl:flex hidden h-10 text-white px-4 rounded-sm items-center gap-6">
+    {data?.data?.slice(0, 3).map((item) => (
+      <Link
+        key={item?.category_id}
+        href={`/category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(item?.name)}&total=${encodeURIComponent(item?.product_count)}`}
+        className="hover:text-gray-300 transition-all text-sm hover:tracking-wide"
+      >
+        {item?.name}
+      </Link>
+    ))}
+  </div>
+</div>
 
-              <div className="border bg-white p-3 pr-2 pb-4 px-0">
-                <div
-                  ref={categoryRef}
-                  onMouseEnter={() => setShowCategory(true)}
-                  onMouseLeave={() => setShowCategory(false)}
-                  className="hidden bg-white lg:flex gap-3 items-center relative pl-5 pr-2 cursor-pointer"
-                >
-                  <p className="text-sm cursor-pointer text-nowrap text-[#555555] font-semibold relative bottom-1">
-                    All Categories
-                  </p>
-                  <FaChevronDown className="text-xs text-[#555555] cursor-pointer relative bottom-1" />
 
-                  {showCategory && (
-                    <div className="bg-white absolute -left-3.5 rounded-sm transition ease-out py-1 top-[1rem] z-50 h-60 overflow-y-auto">
-                      {data?.data &&
-                        data?.data.length > 0 &&
-                        data.data.map((item) => (
-                          <Link
-                            onClick={() => setShowCategory(false)}
-                            href={`/category/${encodeURIComponent(
-                              item?.category_id
-                            )}?category=${encodeURIComponent(
-                              item?.name
-                            )}&total=${encodeURIComponent(
-                              item?.product_count
-                            )}`}
-                            key={item?.category_id}
-                            className="text-[#555555] hover:bg-teal-800 hover:text-white transition-all ease-in-out py-1 rounded-sm text-start text-sm pl-5 w-36 flex gap-2"
-                          >
-                            <p>{item?.name}</p>
-                          </Link>
-                        ))}
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <button className="bg-teal-800 text-white px-2.5 py-2 w-2/6 rounded-r-sm text-xs">
-                {" "}
-                <IoSearchSharp size={25}></IoSearchSharp>
-              </button>
-            </div>
-          </div>
-
-          <div className="flex text-white relative mr-1">
+          <div className="grid grid-cols-3 justify-center items-center text-white relative gap-8">
             <div className="lg:hidden block">
               <input
                 onFocus={() => {
@@ -320,35 +277,21 @@ const Header = ({ data }) => {
               />
             </div>
 
-            {/* offer + blog */}
-            <div className="items-center gap-3 hidden lg:flex">
               <Link
-                href="/blogs"
-                className="flex transition ease-in-out p-2 px-4 rounded-md font-normal items-center text-white gap-1 text-sm  hover:bg-teal-800"
+                href="/"
+                className="flex transition ease-in-out rounded-md font-normal items-center text-white gap-1 text-sm  hover:bg-teal-800"
               >
                 <IoSearch size={25}></IoSearch> 
                
               </Link>
 
-              {/* <Link href="/offer">
-                <div className="flex text-white items-center group gap-1 bg-[#302e31] p-2 px-3 rounded-md text-sm hover:bg-teal-800">
-                  <div className="relative rounded-full text-white">
-                    <Gift
-                      size={20}
-                      className="group-hover:text-[#ffffff] text-white cursor-pointer"
-                    />
-                  </div>
-                  <p className="group-hover:text-[#ffffff] text-white font-normal">
-                    Offers
-                  </p>
-                </div>
-              </Link> */}
+             
 
               <div
                 onClick={() => setOpenCart(!openCart)}
-                className="flex group items-center cursor-pointer  px-3 rounded-md text-sm mr-3 hover:bg-teal-800"
+                className="flex group items-center cursor-pointer  rounded-md text-sm hover:bg-teal-800"
               >
-                <div className="relative p-1 rounded-full">
+                <div className="relative rounded-full">
                   <ShoppingBag
                     size={25}
                     className="cursor-pointer group-hover:text-[#ffffff] text-white"
@@ -359,15 +302,15 @@ const Header = ({ data }) => {
                 </div>
                
               </div>
-            </div>
+           
 
             <div>
               {!user ? (
                 <div
                   onClick={() => setIsLoginModal(true)}
-                  className="lg:flex items-center lg:mr-2.5 pr-3 cursor-pointer hidden group p-1 px-3 rounded-md text-sm hover:bg-teal-800"
+                  className="lg:flex items-center cursor-pointer hidden group rounded-md text-sm hover:bg-teal-800"
                 >
-                  <div className="p-1 rounded-full hidden lg:block">
+                  <div className=" rounded-full hidden lg:block">
                     <User
                       size={25}
                       className="group-hover:text-[#ffffff] text-white"
@@ -378,7 +321,7 @@ const Header = ({ data }) => {
               ) : (
                 <Link
                   href="/profileDashboard"
-                  className="items-center hidden lg:flex gap-2 px-2 p-1.5 lg:pr-2.5 lg:mr-4 cursor-pointer"
+                  className="items-center hidden lg:flex gap-2 cursor-pointer"
                 >
                   <div className="rounded-full hidden lg:block">
                     <Image

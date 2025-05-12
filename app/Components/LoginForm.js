@@ -95,7 +95,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
 
         <button
           type="submit"
-          className="w-full py-2 bg-[#c03b2c] text-white rounded-lg "
+          className="w-full py-2 bg-[#115e59] text-white rounded-lg "
         >
           Login
         </button>
@@ -105,7 +105,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
             <Link
               onClick={() => setIsRegistered(!isRegistered)}
               href={"/register"}
-              className="hover:text-[#c03b2c]"
+              className="hover:text-[#115e59]"
             >
               Register
             </Link>
@@ -115,7 +115,7 @@ const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReloa
             Do Not Have an Account?{" "}
             <span
               onClick={() => setIsRegistered(!isRegistered)}
-              className="hover:text-[#c03b2c] cursor-pointer"
+              className="hover:text-[#115e59] cursor-pointer"
             >
               Register
             </span>

@@ -92,7 +92,7 @@ const Page = ({ params }) => {
       
       {/* Mobile Filter Button */}
       <button
-  className="md:hidden fixed bottom-24 left-7 bg-[#c03b2c] text-white p-2 rounded-lg z-50"
+  className="md:hidden fixed bottom-24 left-7 bg-[#115e59] text-white p-2 rounded-lg z-50"
   onClick={() => setIsSidebarOpen(true)} 
 >
   <IoFilter size={24} />

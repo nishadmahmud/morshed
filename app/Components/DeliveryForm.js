@@ -336,7 +336,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
       </div>
 
       <div className="md:pr-6 ">
-      <div className="bg-[#c03b2c] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs lg:text-sm text-xs font-bangla flex items-center justify-center md:gap-2 md:flex-row flex-col">
+      <div className="bg-[#115e59] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs lg:text-sm text-xs font-bangla flex items-center justify-center md:gap-2 md:flex-row flex-col">
       অর্ডার সংক্রান্ত যেকোনো প্রয়োজনে কথা বলুন আমাদের কাস্টমার সার্ভিস প্রতিনিধির সাথে <div className="flex items-center gap-1">
       <Headset size={17}></Headset>+8801898931468
       </div>
@@ -766,7 +766,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
         {/* Conditional Billing Address */}
         
        
-        <button className="w-full font-medium transition ease-in-out bg-[#c03b2c] py-2 rounded-sm text-white mt-6">
+        <button className="w-full font-medium transition ease-in-out bg-[#115e59] py-2 rounded-sm text-white mt-6">
          <div className="hover:scale-105 transition ease-in-out flex items-center gap-1 justify-center">
           <ShoppingBag size={22}></ShoppingBag> 
           

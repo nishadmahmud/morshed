@@ -93,7 +93,7 @@ const FeaturedProducts = ({ banner }) => {
                                   </span>
                                   {product?.retails_price}
                                 </span>
-                                <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
+                                <span className="text-sm lg:text-lg font-bold text-[#115e59]">
                                   <span className="font-bangla text-sm lg:text-sm">
                                     ৳
                                   </span>{" "}
@@ -106,7 +106,7 @@ const FeaturedProducts = ({ banner }) => {
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
+                              <span className="text-sm lg:text-lg font-bold text-[#115e59]">
                                 <span className="font-bangla text-sm lg:text-sm">
                                   ৳
                                 </span>{" "}

@@ -274,7 +274,7 @@ const Page = ({ params }) => {
               {/* discount ribon */}
               {product?.data.discount ? (
                 <p
-                  className="text-white bg-[#c03b2c] rounded-md  absolute py-1 
+                  className="text-white bg-[#115e59] rounded-md  absolute py-1 
               px-[6px] text-sm top-5 md:top-3 lg:top-3 left-12"
                 >
                   SAVE {product?.data?.discount}%
@@ -325,7 +325,7 @@ const Page = ({ params }) => {
                     ) : (
                       ""
                     )}
-                    <span className="text-sm font-bold text-[#C03B2C]  font-bangla">
+                    <span className="text-sm font-bold text-[#115e59]  font-bangla">
                       {selectedSalePrice ?? product?.data.retails_price} ৳
                     </span>
                   </div>
@@ -434,7 +434,7 @@ const Page = ({ params }) => {
                             <button
                               key={rgn}
                               className={`rounded-md px-2 ${
-                                selectedRegion === rgn ? "bg-[#c03b2c] text-white" : "bg-[#EDEDED] text-gray-700"
+                                selectedRegion === rgn ? "bg-[#115e59] text-white" : "bg-[#EDEDED] text-gray-700"
                               }`}
                               onClick={() => handleRegionChange(rgn)}
                             >
@@ -455,7 +455,7 @@ const Page = ({ params }) => {
                           key={storage}
                           onClick={() => handleStorageChange(storage)}
                           className={`px-4 text-xs py-2 rounded ${
-                            selectedStorage === storage ? "bg-[#c03b2c] text-white" : "bg-gray-200 text-gray-800"
+                            selectedStorage === storage ? "bg-[#115e59] text-white" : "bg-gray-200 text-gray-800"
                           }`}
                         >
                           {storage}
@@ -489,14 +489,14 @@ const Page = ({ params }) => {
                 <div className="flex gap-4">
                   <button
                     onClick={() => handleBuy(product?.data, quantity)}
-                    className="lg:px-5 px-2.5 py-0.5 text-sm  md:py-1 bg-[#c03b2c] text-white hover:bg-white hover:text-[#c03b2c] hover:border-[#c03b2c] rounded-sm border border-transparent"
+                    className="lg:px-5 px-2.5 py-0.5 text-sm  md:py-1 bg-[#115e59] text-white hover:bg-white hover:text-[#115e59] hover:border-[#115e59] rounded-sm border border-transparent"
                   >
                     Buy Now
                   </button>
 
                   <button
                     disabled={isCartItem !== undefined}
-                    className={`border border-[#c03b2c] md:px-4 text-sm md:py-1 px-2.5 py-1 bg-transparent text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white rounded-sm ${
+                    className={`border border-[#115e59] md:px-4 text-sm md:py-1 px-2.5 py-1 bg-transparent text-[#115e59] hover:bg-[#115e59] hover:text-white rounded-sm ${
                       isCartItem !== undefined ? "bg-gray-300 text-gray-500 cursor-not-allowed" : ""
                     }`}
                     onClick={() =>
@@ -538,7 +538,7 @@ const Page = ({ params }) => {
             <div className="border p-4 rounded-lg">
               <h2 className="text-[#4D5959] text-xl mb-2 font-semibold">Specification</h2>
 
-              <div className="w-[7.5rem] h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
+              <div className="w-[7.5rem] h-[2px] bg-[#115e59] mt-1 mb-4"></div>
               <table id="Specification" className="table-auto w-full text-sm text-left">
                 <tbody>
                   {product?.data.specifications && product?.data.specifications.length > 0
@@ -579,7 +579,7 @@ const Page = ({ params }) => {
             {/* extra descriptions */}
             <div id="Description" className="mt-5 p-3 text-sm border rounded-lg">
               <h2 className="text-xl font-bold text-gray-900">Description</h2>
-              <div className="w-[6.5rem] h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
+              <div className="w-[6.5rem] h-[2px] bg-[#115e59] mt-1 mb-4"></div>
               {product?.data.description ? (
                 <p className="text-gray-600 mb-4">{product?.data.description}</p>
               ) : (
@@ -589,10 +589,10 @@ const Page = ({ params }) => {
             {/* warranty */}
             <div id="Warranty" className="bg-white text-sm border rounded-lg p-6 mt-5 shadow-sm">
               <h2 className="text-xl font-bold text-gray-900">Warranty</h2>
-              <div className="w-24 h-[2px] bg-[#c03b2c] mt-1 mb-4"></div>
+              <div className="w-24 h-[2px] bg-[#115e59] mt-1 mb-4"></div>
               <p className="text-gray-700">
                 Explore our{" "}
-                <a href="/warranty-policy" className="text-[#c03b2c] font-semibold hover:underline">
+                <a href="/warranty-policy" className="text-[#115e59] font-semibold hover:underline">
                   Warranty Policy
                 </a>{" "}
                 page for detailed information about our warranty coverage.
@@ -706,7 +706,7 @@ const Page = ({ params }) => {
             <button
               disabled={isCartItem !== undefined}
               onClick={() => handleCart(product?.data, quantity)}
-              className={`border px-4 rounded-md py-1 border-[#c03b2c] text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white  ${
+              className={`border px-4 rounded-md py-1 border-[#115e59] text-[#115e59] hover:bg-[#115e59] hover:text-white  ${
                 isCartItem !== undefined ? "bg-gray-300 text-gray-500 cursor-not-allowed" : ""
               }`}
             >
@@ -765,7 +765,7 @@ const Page = ({ params }) => {
             <button
               disabled={isCartItem !== undefined}
               onClick={() => handleCart(product?.data, quantity)}
-              className={`border px-4 py-1 border-[#c03b2c] text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white  ${
+              className={`border px-4 py-1 border-[#115e59] text-[#115e59] hover:bg-[#115e59] hover:text-white  ${
                 isCartItem !== undefined ? "bg-gray-300 text-gray-500 cursor-not-allowed" : ""
               }`}
             >

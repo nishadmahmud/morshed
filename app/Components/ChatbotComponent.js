@@ -28,9 +28,9 @@ const OffersWidget = () => (
 const OptionsWidget = (props) => {
   return (
     <div className="flex gap-2 flex-col justify-center ml-4">
-      <button className="bg-gradient-to-t from-[#c03b2c] to-[#9c1405] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showLocation()}>📍 শপ লোকেশন</button>
-      <button className="bg-gradient-to-t from-[#9c1405] to-[#c03b2c] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showContact()}>📞 যোগাযোগ</button>
-      <button className="bg-gradient-to-t from-[#c03b2c] to-[#9c1405] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showOffers()}>🎉 অফার</button>
+      <button className="bg-gradient-to-t from-[#115e59] to-[#9c1405] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showLocation()}>📍 শপ লোকেশন</button>
+      <button className="bg-gradient-to-t from-[#9c1405] to-[#115e59] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showContact()}>📞 যোগাযোগ</button>
+      <button className="bg-gradient-to-t from-[#115e59] to-[#9c1405] pr-2 rounded-xl p-1" onClick={() => props.actionProvider.showOffers()}>🎉 অফার</button>
     </div>
   );
 };

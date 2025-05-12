@@ -41,7 +41,7 @@ const PromotionModal = () => {
                 className="relative p-1.5 lg:p-2 rounded-lg flex flex-col justify-center bg-white text-black w-[90%] md:w-[90%] lg:w-[60%] h-auto"
             >
                 {/* Close Button */}
-                <div className="absolute top-1 right-1 bg-[#c03b2cZ] p-1 rounded-md z-30">
+                <div className="absolute top-1 right-1 bg-[#115e59Z] p-1 rounded-md z-30">
                     <IoClose className="cursor-pointer text-white" onClick={handleClose} />
                 </div>
 
@@ -51,7 +51,7 @@ const PromotionModal = () => {
                         <Image unoptimized className='rounded-md' src={lastImage} priority={true} alt='promo' fill style={{ objectFit: 'cover' }} />
                     ) : (
                         <div>
-                            <FadeLoader color='#c03b2c' />
+                            <FadeLoader color='#115e59' />
                         </div>
                     )}
                 </div>

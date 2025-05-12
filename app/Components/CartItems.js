@@ -108,7 +108,7 @@ const CartItems = () => {
 
                     <p className="lg:text-lg text-xs text-ellipsis line-clamp-1">{item?.name}</p>
 
-                    <p className="md:text-sm text-xs text-[#c03b2c]">{item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price} ৳</p>
+                    <p className="md:text-sm text-xs text-[#115e59]">{item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price} ৳</p>
                     
                     <div className="flex items-center border border-gray-300 rounded md:h-auto h-10 w-fit">
                       <input
@@ -160,7 +160,7 @@ const CartItems = () => {
 
           <h5 className="flex justify-between items-center text-black font-bold md:text-lg text-sm">
             Subtotal :{" "}
-            <span className="text-[#c03b2c] font-semibold">
+            <span className="text-[#115e59] font-semibold">
               {" "}
               {(items.reduce(
               (prev, curr) => prev + ((curr?.discount ?  (curr?.retails_price - ((curr?.retails_price * curr.discount) / 100).toFixed(0)) * curr.quantity  : curr?.retails_price * curr.quantity)),
@@ -194,7 +194,7 @@ const CartItems = () => {
               handleRedirect();
             }}
 
-            className="py-2 w-full bg-[#c03b2c] text-white mt-3 mb-6 rounded-md"
+            className="py-2 w-full bg-[#115e59] text-white mt-3 mb-6 rounded-md"
 
           >
             Check Out
@@ -218,7 +218,7 @@ const CartItems = () => {
         onClick={() => setOpenCart(!openCart)}
       ></div>
       <div className="fixed bg-white text-black w-96  top-0 right-0 flex flex-col h-screen overflow-y-scroll z-50">
-      <div className="bg-[#c03b2c] text-white flex p-5 items-center justify-between">
+      <div className="bg-[#115e59] text-white flex p-5 items-center justify-between">
          
           <div className="flex items-center gap-1">
             <ShoppingCart size={20}></ShoppingCart>
@@ -235,7 +235,7 @@ const CartItems = () => {
         </div>
         <div className="flex flex-col justify-center items-center h-[80vh]">
 
-            <div className="bg-[#c03b2c] p-4 rounded-full text-white">
+            <div className="bg-[#115e59] p-4 rounded-full text-white">
               <ShoppingBag></ShoppingBag>
             </div>
         <p className="text-xl font-sans font-bold text-center mt-2 text-gray-900">Your cart is empty</p>

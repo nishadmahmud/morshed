@@ -78,7 +78,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                       )}?category=${encodeURIComponent(
                         item?.name
                       )}&total=${encodeURIComponent(item?.product_count)}`}
-                      className={`text-[#ffffff] text-md text-nowrap font-medium flex items-center gap-2 hover:text-[#c03b2c] transition-all ease-in-out`}
+                      className={`text-[#ffffff] text-md text-nowrap font-medium flex items-center gap-2 hover:text-[#115e59] transition-all ease-in-out`}
                     >
                       <div className="flex gap-1">
                         {/* <Image
@@ -100,16 +100,16 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
         {/* <div className="text-gray-100 font-semibold flex justify-end items-center gap-5">
   <Link
     href="/"
-    className="text-transparent bg-clip-text bg-gradient-to-r from-[#d50233] to-[#c03b2c] hover:scale-105 hover:font-bold animate-pulse drop-shadow-lg flex items-center gap-1"
+    className="text-transparent bg-clip-text bg-gradient-to-r from-[#d50233] to-[#115e59] hover:scale-105 hover:font-bold animate-pulse drop-shadow-lg flex items-center gap-1"
   >
-    <IoNewspaperOutline size={20} color='#c03b2c'></IoNewspaperOutline>
+    <IoNewspaperOutline size={20} color='#115e59'></IoNewspaperOutline>
     Tech News
   </Link>
   <Link
     href="/blogs"
-    className="text-transparent bg-clip-text bg-gradient-to-r from-[#c03b2c] to-red-700 hover:scale-105 hover:font-bold animate-pulse drop-shadow-lg flex items-center gap-1"
+    className="text-transparent bg-clip-text bg-gradient-to-r from-[#115e59] to-red-700 hover:scale-105 hover:font-bold animate-pulse drop-shadow-lg flex items-center gap-1"
   >
-    <NotebookPen size={19} color='#c03b2c'></NotebookPen>
+    <NotebookPen size={19} color='#115e59'></NotebookPen>
     Blog
   </Link>
 </div> */}
@@ -121,7 +121,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
           <div className="flex justify-around items-center py-2">
             <Link
               href="/"
-              className="flex flex-col items-center text-sm hover:text-white text-[#c03b2c]"
+              className="flex flex-col items-center text-sm hover:text-white text-[#115e59]"
             >
               <House className="text-2xl" />
               <span className="text-white">Home</span>
@@ -129,7 +129,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
 
             <Link
               href="/offer"
-              className="flex flex-col items-center text-sm hover:text-white text-[#c03b2c]"
+              className="flex flex-col items-center text-sm hover:text-white text-[#115e59]"
             >
               <Gift className="text-2xl" />
               <span className="text-white">Offers</span>
@@ -137,11 +137,11 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
 
             <div
               onClick={() => setOpenCart(!openCart)}
-              className="flex flex-col items-center text-sm hover:text-white text-[#c03b2c]"
+              className="flex flex-col items-center text-sm hover:text-white text-[#115e59]"
             >
               <div>
                 <ShoppingCart className="text-2xl" />
-                <p className="bg-[#ffffff] z-[900] h-fit text-[#c03b2c] w-fit px-1 text-xs rounded-full absolute top-2 md:right-96 lg:right-80 right-[8rem]">
+                <p className="bg-[#ffffff] z-[900] h-fit text-[#115e59] w-fit px-1 text-xs rounded-full absolute top-2 md:right-96 lg:right-80 right-[8rem]">
                   {total}
                 </p>
               </div>
@@ -150,11 +150,11 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             {loggedInUser ? (
               <Link
                 href="/profileDashboard"
-                className="flex flex-col items-center text-sm text-[#c03b2c] hover:text-white"
+                className="flex flex-col items-center text-sm text-[#115e59] hover:text-white"
               >
                 <Image
                   unoptimized
-                  className="border-2 p-0.5 border-[#c03b2c] rounded-full"
+                  className="border-2 p-0.5 border-[#115e59] rounded-full"
                   src={loginLogo}
                   alt="navLogo"
                   width={28}
@@ -165,7 +165,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             ) : (
               <div
                 onClick={() => setIsLoginModal(true)}
-                className="flex flex-col items-center text-sm text-[#c03b2c] hover:text-white cursor-pointer"
+                className="flex flex-col items-center text-sm text-[#115e59] hover:text-white cursor-pointer"
               >
                 <LogIn className="text-2xl" />
                 <span className="text-white">Login</span>

@@ -51,7 +51,7 @@ const Brands = ({ brands }) => {
                 <div className='pb-5 flex flex-col justify-center items-center'>
                     <Link
                         href="/brands"
-                        className="text-[#c03b2c] hover:bg-[#c03b2c] text-nowrap lg:w-40 w-32 justify-center hover:text-white transition-all ease-in-out border rounded-2xl border-[#c03b2c] flex items-center gap-2 px-2 h-fit py-1 lg:text-md text-sm pl-2"
+                        className="text-[#115e59] hover:bg-[#115e59] text-nowrap lg:w-40 w-32 justify-center hover:text-white transition-all ease-in-out border rounded-2xl border-[#115e59] flex items-center gap-2 px-2 h-fit py-1 lg:text-md text-sm pl-2"
                     >
                         All Brands
                         <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

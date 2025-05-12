@@ -50,7 +50,7 @@ const ProductCard = ({ product }) => {
           />
         </div>
         {product?.discount && (
-          <p className="absolute top-3 -left-2 bg-[#c03b2c] text-white text-[10px] font-bold py-1 px-2 rounded-md">
+          <p className="absolute top-3 -left-2 bg-[#115e59] text-white text-[10px] font-bold py-1 px-2 rounded-md">
             SAVE {product?.discount || null}%
           </p>
         )}
@@ -61,7 +61,7 @@ const ProductCard = ({ product }) => {
           <div>
             {product?.discount ? (
               <div className="flex items-center gap-2">
-                <span className="md:text-lg text-sm font-bold text-[#c03b2c]">
+                <span className="md:text-lg text-sm font-bold text-[#115e59]">
                   <span className="font-bangla text-sm md:text-sm">৳</span> {discountedPrice || 0}
                 </span>
                 <span className="text-sm font-bold text-[#504f4d] line-through">
@@ -69,7 +69,7 @@ const ProductCard = ({ product }) => {
                 </span>
               </div>
             ) : (
-              <span className="md:text-lg text-sm font-bold text-[#c03b2c]">
+              <span className="md:text-lg text-sm font-bold text-[#115e59]">
                 <span className="font-bangla text-sm lg:text-sm">৳</span> {product?.retails_price || 0}
               </span>
             )}
@@ -79,7 +79,7 @@ const ProductCard = ({ product }) => {
       <div className="mt-auto flex flex-col md:flex-col lg:flex-row gap-2 p-3 pt-2 border-gray-200 cardBtn pb-4">
         <button
           onClick={() => handleBuy(product, 1)}
-          className="bg-[#c03b2c32] border text-xs text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white w-full px-2 py-1.5 rounded-md font-semibold transition-colors text-nowrap"
+          className="bg-[#115e5932] border text-xs text-[#115e59] hover:bg-[#115e59] hover:text-white w-full px-2 py-1.5 rounded-md font-semibold transition-colors text-nowrap"
         >
           Buy Now
         </button>

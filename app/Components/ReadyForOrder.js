@@ -106,7 +106,7 @@ const ReadyForOrder = () => {
                             quality={100}
                           />
                           {product?.discount ? (
-                            <p className="absolute top-2 left-2 bg-[#c03b2c] text-white text-xs font-bold py-1 px-2 rounded-md">
+                            <p className="absolute top-2 left-2 bg-[#115e59] text-white text-xs font-bold py-1 px-2 rounded-md">
                               SAVE {product?.discount || 0}%
                             </p>
                           ) : (
@@ -120,13 +120,13 @@ const ReadyForOrder = () => {
                           <div className="mt-auto">
                             {product?.discount ? (
                               <div className="flex justify-center items-center gap-2">
-                                <span className="text-sm lg:text-lg font-bold text-[#c03b2c] line-through">
+                                <span className="text-sm lg:text-lg font-bold text-[#115e59] line-through">
                                   <span className="font-bangla text-sm lg:text-sm">
                                     ৳
                                   </span>
                                   {product?.retails_price}
                                 </span>
-                                <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
+                                <span className="text-sm lg:text-lg font-bold text-[#115e59]">
                                   <span className="font-bangla text-sm lg:text-sm">
                                     ৳
                                   </span>{" "}
@@ -139,7 +139,7 @@ const ReadyForOrder = () => {
                                 </span>
                               </div>
                             ) : (
-                              <span className="text-sm lg:text-lg font-bold text-[#c03b2c]">
+                              <span className="text-sm lg:text-lg font-bold text-[#115e59]">
                                 <span className="font-bangla text-sm lg:text-sm">
                                   ৳
                                 </span>{" "}
@@ -153,7 +153,7 @@ const ReadyForOrder = () => {
                       <div className="mt-auto flex flex-col md:flex-col lg:flex-row gap-2 p-3 pt-2 border-gray-200 cardBtn pb-4">
                         <button
                           onClick={() => handleBuy(product, 1)}
-                          className="bg-[#c03b2c32] border text-xs text-[#c03b2c] hover:bg-[#c03b2c] hover:text-white w-full px-2 py-1.5 rounded-md font-semibold transition-colors text-nowrap"
+                          className="bg-[#115e5932] border text-xs text-[#115e59] hover:bg-[#115e59] hover:text-white w-full px-2 py-1.5 rounded-md font-semibold transition-colors text-nowrap"
                         >
                           Buy Now
                         </button>

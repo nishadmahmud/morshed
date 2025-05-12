@@ -24,7 +24,7 @@ const FeaturedCategories = ({ categories }) => {
               className="group "
             >
               <div className="flex flex-col items-center justify-between flex-grow text-black lg:h-30 py-1 
-              group-hover:text-[#c03b2c] transition ease-in-out ">
+              group-hover:text-[#115e59] transition ease-in-out ">
                 
                 {/* Image Wrapper */}
                 <div className="bg-gray-200 rounded-full">

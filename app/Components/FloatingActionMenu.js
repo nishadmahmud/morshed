@@ -21,8 +21,8 @@ const FloatingActionMenu = () => {
       >
         <MainButton
         className="bg-white"
-          iconResting={<Headset style={{ fontSize: 25, color: "#c03b2c" }} />}
-          iconActive={<MdClose style={{ fontSize: 20, color: "#c03b2c" }} />}
+          iconResting={<Headset style={{ fontSize: 25, color: "#115e59" }} />}
+          iconActive={<MdClose style={{ fontSize: 20, color: "#115e59" }} />}
           backgroundColor="white"
           onClick={() => setIsOpen(!isOpen)}
           size={56}
@@ -46,7 +46,7 @@ const FloatingActionMenu = () => {
         {/* Support/Contact Button with Icon Background */}
         <ChildButton
         className="bg-white" 
-          icon={<FaPhoneAlt style={{ fontSize: 15, color: "#c03b2c" }} />}
+          icon={<FaPhoneAlt style={{ fontSize: 15, color: "#115e59" }} />}
           backgroundColor="white" 
           size={40}
           onClick={() => window.open("tel: +8801898931468")}
