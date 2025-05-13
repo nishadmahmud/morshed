@@ -150,7 +150,7 @@ const Header = ({ data }) => {
       >
         {/* <TopHeader></TopHeader> */}
         {/* desktop menu */}
-        <div className="flex justify-between items-center bg-gray-500/20 backdrop-blur-md text-white p-3 py-0.5 lg:px-16">
+        <div className="flex justify-between items-center bg-teal-800/60 backdrop-blur-md text-white p-3 py-0.5 lg:px-16">
           <div
             className="xl:hidden flex items-center lg:gap-3 gap-1"
             onClick={toggleSidebar}

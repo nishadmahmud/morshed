@@ -1,7 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 
-import companyLogo from '/public/logo.png'
+import companyLogo from '/public/morshed-mart-logo-removebg-preview.png'
 import { FaBehance, FaFacebook, FaInstagram, FaTiktok, FaWhatsapp } from "react-icons/fa6"
 import { FaLinkedin, FaYoutube } from "react-icons/fa"
 import { Mail, MapPin, Phone } from "lucide-react"
@@ -21,8 +21,8 @@ export default function Footer() {
             unoptimized
               src={companyLogo || noImg} 
               alt="apple-newton"
-              width={280}
-              height={150}
+              width={150}
+              height={100}
               className="mb-4 md:block hidden"
             />
             </Link>

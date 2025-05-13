@@ -22,14 +22,14 @@ const MagnifiedImage= ({ image_path,alt }) => {
   return (
     <div className="flex relative items-center gap-5">
       {/* Image Container */}
-      <div className="relative w-[350px] border rounded-md  h-[300px]" onMouseLeave={() => setIsZooming(false)} onMouseMove={handleMouseMove} onMouseUp={() => setIsZooming(true)}>
+      <div className="relative w-[350px] border rounded-md p-1 h-[400px]" onMouseLeave={() => setIsZooming(false)} onMouseMove={handleMouseMove} onMouseUp={() => setIsZooming(true)}>
         <NextImage 
         unoptimized
         src={image_path}
         alt={alt}
         fill={true}
         style={{objectFit : 'cover'}}
-        className="p-1"
+        className="p-2"
         priority={true}
         />
       </div>

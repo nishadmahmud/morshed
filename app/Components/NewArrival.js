@@ -22,10 +22,10 @@ const NewArrival = () => {
             <div>
                 
                 {/* products */}
-                <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-6 md:col-span-3 gap-2 lg:grid-cols-4 xl:grid-cols-6 mt-7">
+                <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-10 md:col-span-3 gap-4 lg:grid-cols-4 xl:grid-cols-6 mt-7">
                 {
                     isLoading ?
-                    <div className='col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-2'>
+                    <div className='col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4'>
                       {
                         Array.from({length : 12}).map((_,idx) => {
                           return  <CardSkeleton key={idx} />
