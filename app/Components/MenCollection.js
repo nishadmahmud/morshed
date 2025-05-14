@@ -8,9 +8,9 @@ import CardSkeleton from './CardSkeleton';
 import ProductCard from './ProductCard';
 
 
-const BestDeals = () => {
-    const {data : newPhones,isLoading} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/latest-phones/${userId}}`,fetcher);
-  console.log('best saller', newPhones?.data);
+const MenCollection = () => {
+    const {data : menCollection,isLoading} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/best-sellers/${userId}`,fetcher);
+  console.log('latest phone', menCollection?.data);
 
     return (
         <div className="mt-12 w-11/12 mx-auto">
@@ -29,13 +29,16 @@ const BestDeals = () => {
                       }
                       </div>  
                       :
-                    newPhones?.data && newPhones?.data.length > 0 ? 
-                    newPhones?.data.slice(0, 12).map((product) => {
-                      return (
-                       <ProductCard product={product} key={product.id}/>
-                     );
-                 })
-                    : <p className='text-black text-center'>No products found</p>
+                   menCollection?.data.length > 0 ? 
+  Array.from({ length: 12 }).map((_, index) => {
+    const product = menCollection.data[index % menCollection.data.length];
+    return (
+      <ProductCard product={product} key={index} />
+    );
+  })
+: <p className='text-black text-center'>No products found</p>
+
+
                 }
                 </div>
             </div>
@@ -43,4 +46,4 @@ const BestDeals = () => {
     );
 };
 
-export default BestDeals;
+export default MenCollection;

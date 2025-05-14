@@ -12,12 +12,12 @@ import ProductCard from './ProductCard';
 
 const ReadyForOrder = () => {
     const { handleCart, handleBuy } = useStore();
-    const { data: bestSellers, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API}/public/best-sellers/${userId}`, fetcher);
+    const { data: bestSellers, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API}/public/products/${userId}?page=1&limit=12`, fetcher);
     console.log('best saller', bestSellers);
 
     return (
         <div className="mt-12 w-11/12 mx-auto">
-            <Heading title={'New Arrival'} />
+            <Heading title={'Ready for order'} />
             <div>
                 {/* products */}
                 <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-10 md:col-span-3 gap-4 lg:grid-cols-4 xl:grid-cols-6 mt-7">

@@ -11,10 +11,12 @@ import TopBrandProducts from "../Components/TopBrandProducts";
 import PromotionModal from "../Components/PromotionModal";
 import SmallBanner from "../Components/SmallBanner";
 import Paragraph from "../Components/Paragraph";
-import GadgetsAndGear from "../Components/GadgetsAndGear";
-import WideBanner from "../Components/WideBanner";
+import GadgetsAndGear from "../Components/WomenCollection";
 import Fitness from "../Components/Fitness";
-import BestDeals from "../Components/BestDeals";
+import BestDeals from "../Components/MenCollection";
+import MensBanner from "../Components/MensBanner";
+import MenCollection from "../Components/MenCollection";
+import WomenCollection from "../Components/WomenCollection";
 
 
 export const userId = 203;
@@ -58,18 +60,18 @@ export default async function Home() {
         {/* <OurFeatures /> */}
       <div>
         <FeaturedCategories categories={categories}/>
-        <ReadyForOrder />  
-        <WideBanner banner={banner}></WideBanner>
-        <BestDeals></BestDeals>
-        <SmallBanner banner={banner}/>
-        <GadgetsAndGear></GadgetsAndGear>
-        <Fitness></Fitness>
-        <BannerSection banner={banner}/>
         <NewArrival banner={banner}/> 
+        {/* <ReadyForOrder />   */}
+        <MensBanner banner={banner}></MensBanner>
+        <MenCollection></MenCollection>
+        <SmallBanner banner={banner}/>
+        <WomenCollection></WomenCollection>
+        {/* <Fitness></Fitness> */}
+        <BannerSection banner={banner}/>
         <FeaturedProducts banner={banner}/>
-        <Brands brands={brands}/>    
+        {/* <Brands brands={brands}/>     */}
         {/* <TopBrandProducts brands={brands}/>  */}
-        <Paragraph></Paragraph>
+        {/* <Paragraph></Paragraph> */}
       </div>
         
     </>

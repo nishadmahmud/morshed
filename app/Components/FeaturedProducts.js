@@ -51,7 +51,7 @@ const FeaturedProducts = ({ banner }) => {
   };
 
   return (
-    <div className="lg:mt-24 mt-16 poppins">
+    <div className="lg:py-20 lg:pt-10 py-16 poppins">
       {/* <Heading title={"Flash Sale"} /> */}
 
       <div className="w-[90%] mx-auto md:gap-5 gap-2 grid md:grid-cols-5  md:justify-between justify-center items-center">
@@ -68,7 +68,7 @@ const FeaturedProducts = ({ banner }) => {
           </div>
         </div>
 
-        <div className="bg-[#cf4a3ccc] rounded-xl mt-5 p-5 md:col-span-2 lg:h-[65vh] h-[40vh] text-black overflow-y-auto">
+        <div className="bg-teal-800 bg-opacity-90 rounded-xl mt-5 p-5 md:col-span-2 lg:h-[65vh] h-[40vh] text-black overflow-y-auto">
           <h3 className="text-white text-base md:text-xl font-medium">🔥Hot Deal of The Day</h3>
           <div>
             {
