@@ -150,7 +150,7 @@ const Header = ({ data }) => {
       >
         {/* <TopHeader></TopHeader> */}
         {/* desktop menu */}
-        <div className="flex justify-between items-center bg-teal-800/60 backdrop-blur-md text-white p-3 py-0.5 lg:px-16">
+        <div className="flex justify-between items-center bg-teal-800/90 backdrop-blur-md text-white p-3 py-0.5 lg:px-16">
           <div
             className="xl:hidden flex items-center lg:gap-3 gap-1"
             onClick={toggleSidebar}
@@ -279,7 +279,7 @@ const Header = ({ data }) => {
 
               <Link
                 href="/"
-                className="flex transition ease-in-out rounded-md font-normal items-center text-white gap-1 text-sm  hover:bg-teal-800"
+                className="flex transition ease-in-out rounded-md font-normal items-center text-white gap-1 text-sm"
               >
                 <IoSearch size={25}></IoSearch> 
                
@@ -289,7 +289,7 @@ const Header = ({ data }) => {
 
               <div
                 onClick={() => setOpenCart(!openCart)}
-                className="flex group items-center cursor-pointer  rounded-md text-sm hover:bg-teal-800"
+                className="flex group items-center cursor-pointer  rounded-md text-sm"
               >
                 <div className="relative rounded-full">
                   <ShoppingBag
@@ -308,7 +308,7 @@ const Header = ({ data }) => {
               {!user ? (
                 <div
                   onClick={() => setIsLoginModal(true)}
-                  className="lg:flex items-center cursor-pointer hidden group rounded-md text-sm hover:bg-teal-800"
+                  className="lg:flex items-center cursor-pointer hidden group rounded-md text-sm"
                 >
                   <div className=" rounded-full hidden lg:block">
                     <User
@@ -328,7 +328,7 @@ const Header = ({ data }) => {
                       unoptimized
                       alt="navLogo"
                       src={navLogo}
-                      className="w-8 rounded-full border-2 border-teal-800 p-0.5"
+                      className="w-8 rounded-full border-2 border-white p-0.5"
                     ></Image>
                   </div>
                 </Link>

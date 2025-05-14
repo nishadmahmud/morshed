@@ -174,7 +174,7 @@ const ProductPage = ({ params }) => {
   }
 
   return (
-    <section className=" text-black lg:pt-16 md:pt-10 pt-8">
+    <section className=" text-black lg:pt-16 md:pt-16 pt-14">
       <div className="px-4 lg:px-8 pt-6 lg:pt-12 mx-auto max-w-7xl">
         <div className="flex flex-col md:flex-row gap-8 mb-12">
           {/* Product Images */}
@@ -220,7 +220,7 @@ const ProductPage = ({ params }) => {
                     alt={product?.data?.name || "Product image"}
                     width={600}
                     height={600}
-                    className="w-full md:h-[70vh] object-cover rounded-lg"
+                    className="w-full md:h-[70vh] h-[50vh] object-cover rounded-lg"
                   />
                 ) : product?.data?.image_path ? (
                   <Image

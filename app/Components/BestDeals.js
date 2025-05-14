@@ -14,7 +14,7 @@ const BestDeals = () => {
 
     return (
         <div className="mt-12 w-11/12 mx-auto">
-          <Heading title={'Brand New Phone'}/>
+          <Heading title={'Men Collections'}/>
             <div>
                 
                 {/* products */}

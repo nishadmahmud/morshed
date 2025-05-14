@@ -7,13 +7,14 @@ const FeaturedCategories = ({ categories }) => {
   return (
     <div>
       <div className="lg:mt-8 lg:mb-4">
-        <Heading title={"Featured Categories"} />   
+        {/* <Heading title={"Categories"} />    */}
       </div>
 
       <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 w-11/12 mx-auto my-8">
         {categories.data &&
           categories.data.length > 0 &&
           categories.data.map((item, idx) => (
+            
             <Link
               href={`category/${encodeURIComponent(
                 item?.category_id
@@ -23,20 +24,21 @@ const FeaturedCategories = ({ categories }) => {
               key={idx}
               className="group "
             >
+              
               <div className="flex flex-col items-center justify-between flex-grow text-black lg:h-30 py-1 
               group-hover:text-[#115e59] transition ease-in-out ">
                 
                 {/* Image Wrapper */}
-                <div className="bg-gray-200 rounded-full">
+                <div>
                   <Image
                   unoptimized
                     src={item?.image_url ?? noImg}
                     alt={item?.name || "mobile-phone"}
-                    height={120}
-                    width={120}
+                    height={100}
+                    width={100}
                     style={{ objectFit: "cover" }}
                     loading="lazy"
-                    className="rounded-full transition-transform duration-300 border-2 p-4 border-gray-200 group-hover:scale-105"
+                    className="bg-transparent transition-transform duration-300 p-2 group-hover:scale-105"
                   />
                 </div>
 
