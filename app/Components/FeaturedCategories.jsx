@@ -4,55 +4,83 @@ import Link from "next/link";
 import noImg from "/public/no-image.jpg";
 
 const FeaturedCategories = ({ categories }) => {
+  // Ensure we have an array of category data
+  const categoryList = categories?.data ?? [];
+
+  // Create an array of 8 items, repeating from categoryList
+  const repeatedCategories = Array.from({ length: 4 }, (_, i) => categoryList[i % categoryList.length]);
+
   return (
     <div>
       <div className="lg:mt-8 lg:mb-4">
-        {/* <Heading title={"Categories"} />    */}
+        {/* <Heading title={"Categories"} /> */}
       </div>
 
       <div className="grid grid-cols-4 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-8 gap-4 w-11/12 mx-auto my-8">
-        {categories.data &&
-          categories.data.length > 0 &&
-          categories.data.map((item, idx) => (
-            
-            <Link
-              href={`category/${encodeURIComponent(
-                item?.category_id
-              )}?category=${encodeURIComponent(
-                item?.name
-              )}&total=${encodeURIComponent(item?.product_count)}`}
-              key={idx}
-              className="group "
-            >
-              
-              <div className="flex flex-col items-center justify-between flex-grow text-black lg:h-30 py-1 
-              group-hover:text-[#115e59] transition ease-in-out ">
-                
-                {/* Image Wrapper */}
-                <div>
-                  <Image
+        {repeatedCategories.map((item, idx) => (
+          <>
+          
+          <Link
+            href={`category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(
+              item?.name
+            )}&total=${encodeURIComponent(item?.product_count)}`}
+            key={idx}
+            className="group"
+          >
+            <div className="flex flex-col items-center justify-between flex-grow text-black lg:h-30 py-1 group-hover:text-[#115e59] transition ease-in-out">
+              {/* Image Wrapper */}
+              <div>
+                <Image
                   unoptimized
-                    src={item?.image_url ?? noImg}
-                    alt={item?.name || "mobile-phone"}
-                    height={100}
-                    width={100}
-                    style={{ objectFit: "cover" }}
-                    loading="lazy"
-                    className="bg-transparent transition-transform duration-300 p-2 group-hover:scale-105"
-                  />
-                </div>
-
-                {/* Category Name */}
-                <h3 className="text-[9.3px] mt-2.5 md:text-[15px] text-center group-hover:font-semibold 
-                transition-transform duration-300 group-hover:scale-105">
-                  {item?.name}
-                </h3>
+                  src={item?.image_url ?? noImg}
+                  alt={item?.name || "category"}
+                  height={100}
+                  width={100}
+                  style={{ objectFit: "cover" }}
+                  loading="lazy"
+                  className="bg-transparent transition-transform duration-300 p-2 group-hover:scale-105"
+                />
               </div>
-            </Link>
-          ))}
+
+              {/* Category Name */}
+              <h3 className="text-[9.3px] mt-2.5 md:text-[15px] text-center group-hover:font-semibold transition-transform duration-300 group-hover:scale-105">
+                {item?.name}
+              </h3>
+            </div>
+          </Link>
+          <Link
+            href={`category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(
+              item?.name
+            )}&total=${encodeURIComponent(item?.product_count)}`}
+            key={idx}
+            className="group"
+          >
+            <div className="flex flex-col items-center justify-between flex-grow text-black lg:h-30 py-1 group-hover:text-[#115e59] transition ease-in-out">
+              {/* Image Wrapper */}
+              <div>
+                <Image
+                  unoptimized
+                  src={item?.image_url ?? noImg}
+                  alt={item?.name || "category"}
+                  height={100}
+                  width={100}
+                  style={{ objectFit: "cover" }}
+                  loading="lazy"
+                  className="bg-transparent transition-transform duration-300 p-2 group-hover:scale-105"
+                />
+              </div>
+
+              {/* Category Name */}
+              <h3 className="text-[9.3px] mt-2.5 md:text-[15px] text-center group-hover:font-semibold transition-transform duration-300 group-hover:scale-105">
+                {item?.name}
+              </h3>
+            </div>
+          </Link></>
+        ))}
       </div>
     </div>
   );
 };
+
 
 export default FeaturedCategories;

@@ -54,9 +54,9 @@ const FeaturedProducts = ({ banner }) => {
     <div className="lg:py-20 lg:pt-10 py-16 poppins">
       {/* <Heading title={"Flash Sale"} /> */}
 
-      <div className="w-[90%] mx-auto md:gap-5 gap-2 grid md:grid-cols-5  md:justify-between justify-center items-center">
+      <div className="lg:w-[90%] w-11/12 mx-auto md:gap-5 gap-2 grid md:grid-cols-5 grid-cols-1 md:justify-between justify-center items-center">
         <div className="flex mt-5 lg:col-span-3">
-          <div className="w-full md:h-[65vh] h-[25vh] object-cover">
+          <div className="w-full md:h-[65vh] h-[40vh] object-cover">
             <Image
             unoptimized
               width={400}

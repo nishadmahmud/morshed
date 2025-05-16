@@ -1,64 +1,80 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import React from 'react';
-import noImg from '/public/no-image.jpg'
+"use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import noImg from "/public/no-image.jpg";
 
-const Search = ({searchedItem,setKeyword
-    ,setSearchedItem,searchBarRef}) => {
-    const sanitizeSlug = (str) => {
-        return str
-          ?.toLowerCase()
-          .replace(/\s+/g, "-") // Replace spaces with dashes
-          .replace(/[^a-z0-9-]/g, ""); // Remove special characters
-      };
-    return (
-        <>
-        {   searchedItem && searchedItem.length > 0 ? 
-            <div ref={searchBarRef} className='bg-white text-black min-w-[23rem] md:min-w-[35rem] max-w-[27rem] lg:w-[35rem] p-5 absolute lg:top-[4rem] top-[5.5rem] z-[1000] lg:z-50 lg:left-[41rem] left-1/2 transform -translate-x-1/2 rounded-md max-h-[21.5rem] overflow-y-auto'>
-            <h5 className='text-right'>Products</h5>
-            <div className='flex flex-col gap-3'>
-                {
-                    searchedItem.map((item,idx) => {setKeyword
-                        return <Link onClick={() => {setKeyword(''),setSearchedItem([])}} href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`} key={idx} className='flex gap-2 items-center z-50 hover:bg-gray-200'>
-                            {
-                                item?.images?.length > 0 ? 
-                                <Image
-                                unoptimized={true}
-                                    src={item?.images[0]}
-                                    height={50} 
-                                    width={50} 
-                                    alt="mobile-phone"
-                                    quality={75}
-                                />  : 
-                                item?.image_path ? 
-                                <Image 
-                                src={item.image_path}
-                                height={50}
-                                width={50}
-                                alt='product'
-                                />
-                                :
-                                <Image
-                                    src={noImg}
-                                    height={50} 
-                                    width={50} 
-                                    alt="mobile-phone"
-                                    quality={75}
-                                />
-                            }
-                            <h3 className='text-black text-sm font-medium z-50 text-wrap'>{item.name}</h3>
-                        </Link>
-                    })
-                }
-            </div>
-            
+const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) => {
+  const sanitizeSlug = (str) => {
+    return str
+      ?.toLowerCase()
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+  };
+
+  const updateRecentViews = (product) => {
+    if (!product?.id) return;
+
+    let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+
+    recentViews = recentViews.filter((p) => p.id !== product.id);
+
+    recentViews.unshift({
+      id: product.id,
+      name: product.name,
+      image: product.image_path || (product.images && product.images[0]) || noImg.src,
+      price: product.retails_price,
+      discount: product.discount || 0,
+    });
+
+    if (recentViews.length > 6) recentViews.pop();
+
+    localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
+  };
+
+  return (
+    <>
+      <div
+        ref={searchBarRef}
+        className="bg-white text-black min-w-[25rem] md:w-[20rem] lg:w-[36rem] p-5 absolute lg:top-[5rem] top-[10rem] z-[1000] lg:left-[33rem] lg:z-50 left-1/2 transform -translate-x-1/2 rounded-md max-h-[21.5rem] overflow-y-auto shadow-xl"
+      >
+        <h5 className="text-right">Products</h5>
+        <div className="flex flex-col gap-3">
+          {searchedItem && searchedItem.length > 0 ? (
+            searchedItem.map((item, idx) => (
+              <Link
+                onClick={() => {
+                  setSearchText("");
+                  setSearchedItem([]);
+                  updateRecentViews(item);
+                }}
+                href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
+                key={idx}
+                className="flex gap-2 items-center z-50 hover:bg-gray-200"
+              >
+                {item?.images?.length > 0 ? (
+                  <Image
+                    src={item?.images[0] || "/placeholder.svg"}
+                    height={50}
+                    width={50}
+                    alt="mobile-phone"
+                    quality={75}
+                  />
+                ) : item?.image_path ? (
+                  <Image src={item.image_path || "/placeholder.svg"} height={50} width={50} alt="product" />
+                ) : (
+                  <Image src={noImg || "/placeholder.svg"} height={50} width={50} alt="mobile-phone" quality={75} />
+                )}
+                <h3 className="text-black text-sm font-medium z-50 text-wrap">{item.name}</h3>
+              </Link>
+            ))
+          ) : (
+            <p>No Products</p>
+          )}
         </div>
-        : <p>No Products</p>
-
-        }
-        </>
-    );
+      </div>
+    </>
+  );
 };
 
 export default Search;

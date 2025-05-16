@@ -1,438 +1,436 @@
-"use client";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { FaChevronDown, FaRegHeart, FaRegUser, FaUsers } from "react-icons/fa6";
-import companyLogo from "/public/morshed-mart-logo-removebg-preview.png";
-import logoSmallDevice from "/public/logoPhone.png";
-import { HiMiniShoppingCart } from "react-icons/hi2";
-import Navbar from "./Navbar";
-import Image from "next/image";
-import useStore from "../CustomHooks/useStore";
-import CartItems from "./CartItems";
-import Link from "next/link";
-import Search from "./Search";
-import LoginForm from "./LoginForm";
-import Modal from "./Modal";
-import RegisterForm from "./RegisterForm";
-import "animate.css";
-import axios from "axios";
-import { Toaster } from "react-hot-toast";
-import { useSearchParams } from "next/navigation";
-import { userId } from "../(home)/page";
-import { CircleUser, Headset, SearchIcon, ShoppingBag, User } from "lucide-react";
-import { LiaShoppingCartSolid } from "react-icons/lia";
-import { IoCloseSharp, IoSearch, IoSearchSharp } from "react-icons/io5";
-import { RiMenu4Fill } from "react-icons/ri";
-import { Menu } from "lucide-react";
-import sidebarLogo from "../../public/sidebarLogo.png";
-import { Gift } from "lucide-react";
-import TopHeader from "./TopHeader";
-import navLogo from "/public/user.png";
-import { LogIn } from "lucide-react";
-import { NotebookPen } from "lucide-react";
-import logo2 from "/public/favicon.png";
+"use client"
 
+import { useCallback, useEffect, useRef, useState } from "react"
+import { FaUsers } from "react-icons/fa6"
+import Image from "next/image"
+import Link from "next/link"
+import { Gift, Menu, NotebookPen, ShoppingBag, User } from "lucide-react"
+import { IoCloseSharp, IoSearch } from "react-icons/io5"
+import axios from "axios"
+import noImg from "/public/no-image.jpg"
+import Search from "./Search"
+
+import companyLogo from "/public/morshed-mart-logo-removebg-preview.png"
+;
 const Header = ({ data }) => {
-  const {
-    getCartItems,
-    refetch,
-    setRefetch,
-    setOpenCart,
-    openCart,
-    getWishList,
-    isLoginModal,
-    setIsLoginModal,
-    setToken,
-    setHasToken,
-  } = useStore();
-  const [keyword, setKeyword] = useState("");
-  const [searchedItem, setSearchedItem] = useState([]);
-  const [isRegistered, setIsRegistered] = useState(false);
-  const [showUserInfo, setShowUserInfo] = useState(false);
-  const [searchBar, setSearchBar] = useState(false);
-  const [showBar, setShowBar] = useState(false);
-  const [focused, setfocused] = useState(false);
-  const [email, setEmail] = useState(null);
-  const [reload, setReload] = useState(false);
-  const pathname = useSearchParams();
-  const searchBarRef = useRef(null);
-  const categoryRef = useRef(null);
-  const [showCategory, setShowCategory] = useState(false);
-  const debounceRef = useRef();
-  const user = localStorage.getItem("user");
+  const [keyword, setKeyword] = useState("")
+  const [searchedItem, setSearchedItem] = useState([])
+  const [isSearching, setIsSearching] = useState(false)
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false)
+  const [isSearchSidebarOpen, setIsSearchSidebarOpen] = useState(false)
+  const [openCart, setOpenCart] = useState(false)
+  const debounceRef = useRef()
+  const searchBarRef = useRef(null)
 
-  useEffect(() => {
-    getCartItems();
-    if (refetch) {
-      getCartItems();
-      setRefetch(false);
-    }
-  }, [refetch, getCartItems, setRefetch]);
-
-  useEffect(() => {
-    getWishList();
-    if (refetch) {
-      setRefetch(false);
-      getWishList();
-    }
-  }, [refetch, getWishList, setRefetch]);
-
-  useEffect(() => {
-    if (pathname.get("login") == "false") {
-      setIsLoginModal(true);
-    }
-  }, [pathname, setIsLoginModal]);
-
-  const items = getCartItems();
-  const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const searchedItems = async(keyword) => {
-      setShowBar(true);
-      try {
-       const response = await axios
-        .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, {
-          keyword,
-          user_id: userId,
-        });
-        const result = await response.data;
-        setSearchedItem(result.data.data)
-      } catch (error) {
-        console.log(error);
-      }
-  }
-
-  const handleClose = useCallback(() => {
-    if (!keyword) {
-      if (showBar) {
-        setShowBar(false);
-      } else if (searchBar) {
-        setSearchBar(false);
-      }
-    } else if ((!focused && searchBarRef.current && showBar) || searchBar) {
-      if (showBar) {
-        setShowBar(false);
-      } else if (searchBar) {
-        setSearchBar(false);
-      }
-    }
-  }, [keyword, searchBarRef, showBar, focused, searchBar]);
-
-
-
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setKeyword(value);
-    if(debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      searchedItems(value);
-    },700)
-  }
-
-  const handleModalClose = () => setIsLoginModal(false);
-
-  useEffect(() => {
-    document.addEventListener("click", handleClose);
-    return () => document.removeEventListener("click", handleClose);
-  }, [handleClose]);
-
-  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  // Mock user and cart data
+  const user = typeof window !== "undefined" ? localStorage.getItem("user") : null
+  const cartItems = []
+  const cartTotal = cartItems?.length || 0
 
   const toggleSidebar = () => {
-    setIsSidebarOpen((prev) => !prev);
-  };
+    setIsSidebarOpen((prev) => !prev)
+  }
 
+  const toggleSearchSidebar = () => {
+    setIsSearchSidebarOpen((prev) => !prev)
+    if (!isSearchSidebarOpen) {
+      setTimeout(() => {
+        document.getElementById("search-input")?.focus()
+      }, 300)
+    }
+  }
 
+  const searchProducts = async (keyword) => {
+    if (!keyword.trim()) {
+      setSearchedItem([])
+      return
+    }
+
+    setIsSearching(true)
+
+    try {
+      // Replace with your actual API endpoint
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API || "https://api.example.com"}/public/search-product`,
+        {
+          keyword,
+          user_id: "userId",
+        },
+      )
+      const result = await response.data
+      setSearchedItem(result?.data?.data || [])
+    } catch (error) {
+      console.log(error)
+      // Mock data for demonstration
+      setSearchedItem([
+        {
+          id: 1,
+          name: "Wireless Headphones",
+          images: ["/placeholder.svg?height=80&width=80"],
+          retails_price: 99.99,
+          discount: 10,
+          brand_name: "Audio Tech",
+        },
+        {
+          id: 2,
+          name: "Smartphone Case",
+          image_path: "/placeholder.svg?height=80&width=80",
+          retails_price: 19.99,
+          brand_name: "PhonePro",
+        },
+        {
+          id: 3,
+          name: "Laptop Backpack",
+          images: [],
+          retails_price: 59.99,
+          brand_name: "TravelGear",
+        },
+        {
+          id: 4,
+          name: "Smart Watch",
+          image_path: "/placeholder.svg?height=80&width=80",
+          retails_price: 149.99,
+          discount: 15,
+          brand_name: "TechWear",
+        },
+      ])
+    } finally {
+      setIsSearching(false)
+    }
+  }
+
+  const handleChange = (e) => {
+    const value = e.target.value
+    setKeyword(value)
+
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+
+    debounceRef.current = setTimeout(() => {
+      searchProducts(value)
+    }, 500)
+  }
+
+  const handleClickOutside = useCallback(
+    (event) => {
+      // Close sidebars when clicking outside
+      if (
+        isSidebarOpen &&
+        !event.target.closest('[data-sidebar="mobile"]') &&
+        !event.target.closest('[data-sidebar-trigger="mobile"]')
+      ) {
+        setIsSidebarOpen(false)
+      }
+
+      if (
+        isSearchSidebarOpen &&
+        !event.target.closest('[data-sidebar="search"]') &&
+        !event.target.closest('[data-sidebar-trigger="search"]') &&
+        !event.target.closest("[data-search-results]")
+      ) {
+        setIsSearchSidebarOpen(false)
+      }
+    },
+    [isSidebarOpen, isSearchSidebarOpen],
+  )
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside)
+    return () => document.removeEventListener("mousedown", handleClickOutside)
+  }, [handleClickOutside])
 
   return (
     <div>
-      <div
-        className={`w-full z-50 text-white  transition-all duration-500 ease-[cubic-bezier(0.25,0.1,0.25,1)] fixed mt-0`}
-      >
-        {/* <TopHeader></TopHeader> */}
-        {/* desktop menu */}
-        <div className="flex justify-between items-center bg-teal-800/90 backdrop-blur-md text-white p-3 py-0.5 lg:px-16">
-          <div
-            className="xl:hidden flex items-center lg:gap-3 gap-1"
-            onClick={toggleSidebar}
-          >
-            <Menu className="text-[#ffffff] text-right text-lg" />
-
-            <div className="flex items-center gap-1">
-              <Link href={"/"}>
-                <Image
-                  src={logoSmallDevice}
-                  unoptimized
-                  alt="company-logo"
-                  height={300}
-                  width={300}
-                  className="w-6 h-auto"
-                />
-              </Link>
-
-             
-            </div>
+      <div className="w-full z-50 text-white transition-all duration-500 fixed mt-0">
+        {/* Main header */}
+        <div className="flex justify-between items-center bg-teal-800/90 backdrop-blur-md text-white p-3 py-3 md:py-2 lg:px-16">
+          {/* Mobile menu button and logo */}
+          <div className="xl:hidden flex items-center lg:gap-3 gap-1">
+            <button onClick={toggleSidebar} aria-label="Toggle menu" data-sidebar-trigger="mobile">
+              <Menu className="text-white text-right" />
+            </button>
+            
           </div>
 
-          {/* mobile sidebar */}
-          <div
-            className={`fixed top-0 left-0 w-3/5 max-w-xs bg-[#ffffff] text-black px-5 pt-5 pb-[4.5rem] z-50 transform transition-transform overflow-y-auto duration-300 h-full ${
-              isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
-          >
-            <div className="flex justify-between items-center p-2  border-b-2 border-teal-800">
-              <Link href={'/'} onClick={toggleSidebar}>
-                <Image unoptimized width={140} src={sidebarLogo} alt="logo"></Image>
-              </Link>
-              <IoCloseSharp
-                size={24}
-                className="cursor-pointer"
-                onClick={toggleSidebar}
-              />
-            </div>
-            <ul className="mt-4 space-y-4 px-3 ">
-              {data?.data.map((item, idx) => {
-                return (
-                  <Link
-                    key={idx}
-                    onClick={toggleSidebar}
-                    href={`/category/${encodeURIComponent(
-                      item?.category_id
-                    )}?category=${encodeURIComponent(
-                      item?.name
-                    )}&total=${encodeURIComponent(item?.product_count)}`}
-                    className={`text-black text-sm text-nowrap hover:text-[FF8800] transition ease-in-out hover:font-semibold flex items-center gap-1`}
-                  >
-                    {item.name}
-                  </Link>
-                );
-              })}
-              <div className="flex flex-col gap-2 font-medium text-teal-800">
-                <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/offer">
-                  {" "}
-                  <Gift size={15}></Gift> Latest Offer
-                </Link>
-                <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/blogs">
-                  <NotebookPen size={15}></NotebookPen> Blog
-                </Link>
-                <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/about-us">
-                  {" "}
-                  <FaUsers size={16}></FaUsers> About Us
-                </Link>
-              </div>
-            </ul>
-          </div>
-
-          {/* Overlay for Sidebar */}
-          {isSidebarOpen && (
-            <div
-              className="fixed inset-0 bg-white bg-opacity-50 z-40"
-              onClick={toggleSidebar}
-            />
-          )}
-
-          {/* logo large device */}
-          <Link href={"/"}>
-            <Image
-              src={companyLogo}
-              unoptimized
-              alt="company-logo"
-              height={500}
-              width={500}
-              className="hidden xl:block md:w-10 h-auto"
-            />
+          {/* Desktop logo */}
+          <Link href={"/"} className="hidden xl:block">
+           <Image width={500} height={500} className="hidden xl:block md:w-9 h-auto" alt="logo" src={companyLogo}></Image>
           </Link>
 
-         {/* ==========category display only========== */}
-<div className="hidden relative md:flex lg:flex lg:justify-center py-1.5">
-  <div className="xl:flex hidden h-10 text-white px-4 rounded-sm items-center gap-6">
-    {data?.data?.slice(0, 3).map((item) => (
-      <Link
-        key={item?.category_id}
-        href={`/category/${encodeURIComponent(item?.category_id)}?category=${encodeURIComponent(item?.name)}&total=${encodeURIComponent(item?.product_count)}`}
-        className="hover:text-gray-300 transition-all text-sm hover:tracking-wide"
-      >
-        {item?.name}
-      </Link>
-    ))}
-  </div>
-</div>
-
-
-          <div className="grid grid-cols-3 justify-center items-center text-white relative gap-8">
-            <div className="lg:hidden block">
-              <input
-                onFocus={() => {
-                  setfocused(true), setShowBar(true);
-                }}
-                onChange={handleChange}
-                value={keyword}
-                onBlur={() => setfocused(false)}
-                type="text"
-                placeholder="Search Products.."
-                className="p-1 px-2 rounded-sm border-t border-b border-l  outline-none text-black bg-white text-xs"
-              />
-              <SearchIcon
-                size={14}
-                className="absolute top-1.5 right-2 text-gray-400"
-              />
-            </div>
-
+          {/* Categories - desktop only */}
+          <div className="hidden xl:flex h-10 text-white px-4 rounded-sm items-center gap-6">
+            {data?.data?.slice(0, 5).map((item, index) => (
               <Link
-                href="/"
-                className="flex transition ease-in-out rounded-md font-normal items-center text-white gap-1 text-sm"
+                key={item?.category_id || index}
+                href={`/category/${encodeURIComponent(item?.category_id || "")}?category=${encodeURIComponent(item?.name || "")}&total=${encodeURIComponent(item?.product_count || 0)}`}
+                className="hover:text-gray-300 transition-all text-sm hover:tracking-wide"
               >
-                <IoSearch size={25}></IoSearch> 
-               
+                {item?.name || `Category ${index + 1}`}
               </Link>
+            ))}
+          </div>
 
-             
-
-              <div
-                onClick={() => setOpenCart(!openCart)}
-                className="flex group items-center cursor-pointer  rounded-md text-sm"
-              >
-                <div className="relative rounded-full">
-                  <ShoppingBag
-                    size={25}
-                    className="cursor-pointer group-hover:text-[#ffffff] text-white"
-                  />
-                  {/* <p className="bg-white h-4 text-teal-800 w-fit px-1 rounded-full text-[10px] absolute -top-1 right-1">
-                    <span className="relative bottom-[2px] font-semibold">{total}</span>
-                  </p> */}
-                </div>
-               
-              </div>
+          {/* Right side icons */}
+          <div className="flex items-center justify-end gap-6">
+           
            
 
-            <div>
-              {!user ? (
-                <div
-                  onClick={() => setIsLoginModal(true)}
-                  className="lg:flex items-center cursor-pointer hidden group rounded-md text-sm"
-                >
-                  <div className=" rounded-full hidden lg:block">
-                    <User
-                      size={25}
-                      className="group-hover:text-[#ffffff] text-white"
-                    />
-                  </div>
-                 
+            {/* Search icon - desktop */}
+            <button
+              onClick={toggleSearchSidebar}
+              className="flex items-center transition ease-in-out text-white"
+              aria-label="Search"
+              data-sidebar-trigger="search"
+            >
+              <IoSearch size={22} />
+            </button>
+
+            {/* Cart icon */}
+            <button
+              onClick={() => setOpenCart(!openCart)}
+              className="flex items-center cursor-pointer"
+              aria-label="Cart"
+            >
+              <div className="relative">
+                <ShoppingBag size={22} className="text-white" />
+                {cartTotal > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-white text-teal-800 text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                    {cartTotal}
+                  </span>
+                )}
+              </div>
+            </button>
+
+            {/* User account */}
+            {!user ? (
+              <button className="hidden lg:flex items-center cursor-pointer" aria-label="Login">
+                <User size={22} className="text-white" />
+              </button>
+            ) : (
+              <Link href="/profileDashboard" className="hidden lg:flex items-center cursor-pointer">
+                <div className="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
+                  <Image src="/placeholder.svg?height=32&width=32" alt="User" width={32} height={32} />
                 </div>
-              ) : (
-                <Link
-                  href="/profileDashboard"
-                  className="items-center hidden lg:flex gap-2 cursor-pointer"
+              </Link>
+            )}
+          </div>
+        </div>
+
+        {/* Mobile sidebar */}
+        <div
+          data-sidebar="mobile"
+          className={`fixed top-0 left-0 w-3/5 max-w-xs bg-white text-black px-5 pt-5 pb-[4.5rem] z-50 transform transition-transform overflow-y-auto duration-300 h-full ${
+            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+          }`}
+        >
+          <div className="flex justify-between items-center p-2 border-b-2 border-teal-800">
+            <Link href={"/"} onClick={toggleSidebar}>
+              <div className=" text-teal-800 flex items-center justify-center">
+                <span className="text-sm font-bold">Morshed Mart</span>
+              </div>
+            </Link>
+            <button onClick={toggleSidebar} aria-label="Close menu">
+              <IoCloseSharp size={24} className="cursor-pointer" />
+            </button>
+          </div>
+          <ul className="mt-4 space-y-4 px-3">
+            {data?.data?.map((item, idx) => (
+              <Link
+                key={idx}
+                onClick={toggleSidebar}
+                href={`/category/${encodeURIComponent(item?.category_id || "")}?category=${encodeURIComponent(item?.name || "")}&total=${encodeURIComponent(item?.product_count || 0)}`}
+                className="text-black text-sm hover:text-teal-800 transition ease-in-out hover:font-semibold flex items-center gap-1"
+              >
+                {item?.name || `Category ${idx + 1}`}
+              </Link>
+            ))}
+            <div className="flex flex-col gap-2 font-medium text-teal-800 pt-4 border-t">
+              <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/offer">
+                <Gift size={15} /> Latest Offer
+              </Link>
+              <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/blogs">
+                <NotebookPen size={15} /> Blog
+              </Link>
+              <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/about-us">
+                <FaUsers size={16} /> About Us
+              </Link>
+            </div>
+          </ul>
+        </div>
+
+        {/* Search sidebar - slides from top */}
+        <div
+          data-sidebar="search"
+          className={`fixed inset-x-0 top-0 bg-white text-black z-50 transform transition-transform duration-500 ease-in-out shadow-lg ${
+            isSearchSidebarOpen ? "translate-y-0" : "-translate-y-full"
+          }`}
+        >
+          <div className="container mx-auto p-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-medium text-teal-800">Search Products</h2>
+              <button onClick={toggleSearchSidebar} aria-label="Close search">
+                <IoCloseSharp size={24} className="cursor-pointer text-teal-800" />
+              </button>
+            </div>
+
+            <div className="relative mb-6">
+              <input
+                id="search-input"
+                type="text"
+                value={keyword}
+                onChange={handleChange}
+                placeholder="Search for products..."
+                className="w-full p-3 pl-10 border border-gray-400 bg-gray-100 rounded-md focus:outline-none focus:ring-1 focus:ring-teal-500"
+              />
+              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                 >
-                  <div className="rounded-full hidden lg:block">
-                    <Image
-                      unoptimized
-                      alt="navLogo"
-                      src={navLogo}
-                      className="w-8 rounded-full border-2 border-white p-0.5"
-                    ></Image>
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+              </div>
+            </div>
+
+            {/* Search results */}
+            <div className="max-h-[calc(100vh-180px)] overflow-y-auto" data-search-results>
+              {isSearching ? (
+                <div className="py-8 text-center">
+                  <div
+                    className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-teal-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
+                    role="status"
+                  >
+                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
+                      Loading...
+                    </span>
                   </div>
-                </Link>
+                  <p className="mt-2 text-gray-500">Searching...</p>
+                </div>
+              ) : keyword && searchedItem.length > 0 ? (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                  {searchedItem.map((item, idx) => {
+                    const sanitizeSlug = (str) => {
+                      return str
+                        ?.toLowerCase()
+                        .replace(/\s+/g, "-") // Replace spaces with dashes
+                        .replace(/[^a-z0-9-]/g, "") // Remove special characters
+                    }
+
+                    return (
+                      <Link
+                        href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
+                        key={idx}
+                        onClick={() => {
+                          setKeyword("")
+                          setSearchedItem([])
+                          toggleSearchSidebar()
+
+                          // Handle recent view when product card is clicked
+                          if (!item?.id) return
+
+                          let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
+
+                          // Remove existing entry if present
+                          recentViews = recentViews.filter((p) => p.id !== item.id)
+
+                          // Add new entry to beginning
+                          recentViews.unshift({
+                            id: item.id,
+                            name: item.name,
+                            image: item.image_path || (item.images && item.images[0]) || noImg.src,
+                            price: item.retails_price,
+                            discount: item.discount || 0,
+                          })
+
+                          // Keep only last 6 items
+                          if (recentViews.length > 6) recentViews.pop()
+
+                          localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
+                        }}
+                        className="flex items-center gap-3 p-3 rounded-md hover:bg-gray-100 transition-colors"
+                      >
+                        <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
+                          {item?.images?.length > 0 ? (
+                            <Image
+                              src={item.images[0] || "/placeholder.svg"}
+                              alt={item.name}
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : item?.image_path ? (
+                            <Image
+                              src={item.image_path || "/placeholder.svg"}
+                              alt={item.name}
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <Image
+                              src={noImg || "/placeholder.svg"}
+                              alt={item.name}
+                              width={64}
+                              height={64}
+                              className="w-full h-full object-cover"
+                            />
+                          )}
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-medium text-gray-900 line-clamp-2 text-sm">{item.name}</h3>
+                          <div className="flex items-center gap-2 mt-1">
+                            <p className="text-teal-700 font-semibold">
+                              ${(item.retails_price - (item.retails_price * (item.discount || 0)) / 100).toFixed(2)}
+                            </p>
+                            {item.discount > 0 && (
+                              <p className="text-gray-500 line-through text-xs">${item.retails_price.toFixed(2)}</p>
+                            )}
+                          </div>
+                        </div>
+                      </Link>
+                    )
+                  })}
+                </div>
+              ) : keyword ? (
+                <div className="text-center py-8 text-gray-500">No products found matching &ldquo;{keyword}&#34;</div>
+              ) : (
+                <div className="text-center py-8 text-gray-500">Start typing to search for products</div>
               )}
             </div>
           </div>
-          
         </div>
-        {/* <div className="">
-          <Navbar
-            setIsLoginModal={setIsLoginModal}
-            openCart={openCart}
-            setOpenCart={setOpenCart}
-            data={data}
-          />
-        </div> */}
-        {openCart && (
-          <div className="fixed inset-0 bg-black bg-opacity-30 z-40">
-            <CartItems />
+
+        {/* Mobile search results */}
+        {keyword && searchedItem.length > 0 && !isSearchSidebarOpen && (
+          <div className="lg:hidden">
+            <Search
+              searchedItem={searchedItem}
+              setSearchText={setKeyword}
+              setSearchedItem={setSearchedItem}
+              searchBarRef={searchBarRef}
+            />
           </div>
         )}
 
-        {/* searchedItems */}
-        {showBar && keyword && !searchBar ? (
-          <Search
-            searchBarRef={searchBarRef}
-            searchedItem={searchedItem}
-            setKeyword={setKeyword}
-            setSearchedItem={setSearchedItem}
-          />
-        ) : null}
-
-        {isLoginModal && (
-          <Modal
-            content={
-              isRegistered ? (
-                <LoginForm
-                  isLoginModal={isLoginModal}
-                  onClose={handleModalClose}
-                  setIsRegistered={setIsRegistered}
-                  setReload={setReload}
-                  isRegistered={isRegistered}
-                />
-              ) : (
-                <RegisterForm
-                  setIsRegistered={setIsRegistered}
-                  isLoginModal={isLoginModal}
-                  isRegistered={isRegistered}
-                />
-              )
-            }
-            onClose={handleModalClose}
-            setReload={setReload}
-            title={isRegistered ? "Sign In" : "Sign Up"}
+        {/* Overlay for sidebar */}
+        {(isSidebarOpen || isSearchSidebarOpen) && (
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            onClick={() => {
+              if (isSidebarOpen) toggleSidebar()
+              if (isSearchSidebarOpen) toggleSearchSidebar()
+            }}
           />
         )}
-
-        {searchBar ? (
-          <div className=" modal-overlay fixed lg:hidden inset-0 bg-black bg-opacity-50 flex justify-center z-[99] items-start px-4">
-            <dialog
-              open
-              className=" mt-20 p-5 rounded-2xl flex flex-col justify-center bg-white  text-black w-[90%] md:w-[450px]"
-            >
-              <input
-                onFocus={() => setSearchBar(true)}
-                autoFocus={searchBar}
-                type="text"
-                onChange={handleChange}
-                placeholder="Search"
-                className="focus:outline-none bg-white"
-                value={keyword}
-              />
-            </dialog>
-          </div>
-        ) : null}
-
-        {searchBar && keyword ? (
-          <Search
-            searchBarRef={searchBarRef}
-            searchedItem={searchedItem}
-            setKeyword={setKeyword}
-            setSearchedItem={setSearchedItem}
-          />
-        ) : null}
-
-        <Toaster
-          toastOptions={{
-            className: "",
-            style: {
-              background: "#161616",
-              padding: "10px 16px 10px 16px",
-              color: "#C7C6D3",
-            },
-          }}
-          containerStyle={{
-            top: 20,
-            left: 50,
-            bottom: 20,
-            // right: 20,
-          }}
-        />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header

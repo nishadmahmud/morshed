@@ -7,7 +7,8 @@ import { Heart, Minus, Plus, ShoppingBag } from "lucide-react"
 import useSWR from "swr"
 import axios from "axios"
 import toast from "react-hot-toast"
-
+import InnerImageZoom from 'react-inner-image-zoom';
+import 'react-inner-image-zoom/lib/styles.min.css'
 // Fetcher function from the original code
 const fetcher = (url) => fetch(url).then((res) => res.json())
 const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : ""
@@ -214,14 +215,13 @@ const ProductPage = ({ params }) => {
                   </div>
                 )}
                 {imageArray && imageArray.length > 0 ? (
-                  <Image
-                    unoptimized
-                    src={imageArray[imageIndex] || "/placeholder.svg?height=600&width=600"}
-                    alt={product?.data?.name || "Product image"}
-                    width={600}
-                    height={600}
-                    className="w-full md:h-[70vh] h-[50vh] object-cover rounded-lg"
-                  />
+                  <InnerImageZoom
+  src={imageArray[imageIndex]} // or whatever your image URL is
+  zoomSrc={imageArray[imageIndex]} // optional, can be higher-res version
+  zoomType="hover"
+  zoomPreload={true}
+  className="w-full md:h-[70vh] h-[50vh] object-cover rounded-lg"
+/>
                 ) : product?.data?.image_path ? (
                   <Image
                     unoptimized

@@ -39,8 +39,8 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="bg-white border border-gray-300 shadow-sm rounded-lg flex flex-col poppins transition w-56 ease-in-out relative hover:scale-105 h-80">
-      <div className="relative">
+    <div className="bg-white rounded-lg flex flex-col poppins transition w-52 ease-in-out relative hover:scale-105 h-72 mb-10">
+      <div className="h-56">
         <Link
           onClick={updateRecentViews}
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
@@ -50,9 +50,9 @@ const ProductCard = ({ product }) => {
             src={validImage || noImg}
             alt={product?.name}
             width={800}
-            height={200}
+            height={300}
             unoptimized
-            className="object-cover w-full h-52 rounded-t-md"
+            className="object-cover w-full h-56 rounded-t-md"
             quality={100}
           />
         </Link>
@@ -73,42 +73,43 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content pushed to bottom */}
-      <div className="flex flex-col flex-grow px-4 pb-3">
+      <div className="flex flex-col flex-grow px-1 pb-1">
         <Link
-          onClick={updateRecentViews}
-          href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-          className="text-sm font-semibold text-black line-clamp-2 text-ellipsis text-start mb-2"
-        >
-          {product?.name || "N/A"}
-        </Link>
+  onClick={updateRecentViews}
+  href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
+  className="text-sm font-semibold text-black line-clamp-2 text-ellipsis text-start my-2"
+>
+  {product?.name || "N/A"}
+</Link>
 
-        <div className="mt-auto flex justify-between items-center w-full">
-          {product?.discount ? (
-            <div className="flex items-center gap-2">
-              <span className="md:text-lg text-sm font-bold text-[#115e59]">
-                <span className="font-bangla text-sm md:text-sm">৳</span> {discountedPrice || 0}
-              </span>
-              <span className="text-sm font-bold text-[#504f4d] line-through">
-                <span className="font-bangla md:text-sm text-sm">৳</span>{product?.retails_price || 0}
-              </span>
-            </div>
-          ) : (
-            <span className="md:text-lg text-sm font-bold text-[#115e59]">
-              <span className="font-bangla text-sm lg:text-sm">৳</span> {product?.retails_price || 0}
-            </span>
-          )}
+<div className="mt-auto flex justify-between items-center w-full">
+  {product?.discount ? (
+    <div className="flex items-center gap-2">
+      <span className="md:text-lg text-sm font-bold text-[#115e59]">
+        <span className="font-bangla text-sm md:text-sm">৳</span> {discountedPrice || 0}
+      </span>
+      <span className="text-sm font-bold text-[#504f4d] line-through">
+        <span className="font-bangla md:text-sm text-sm">৳</span>{product?.retails_price || 0}
+      </span>
+    </div>
+  ) : (
+    <span className="md:text-lg text-sm font-bold text-[#115e59]">
+      <span className="font-bangla text-sm lg:text-sm">৳</span> {product?.retails_price || 0}
+    </span>
+  )}
 
-          <div
-            className="cursor-pointer"
-            onClick={(e) => {
-              e.preventDefault();
-              handleCart(product, 1);
-            }}
-            title="Add to cart"
-          >
-            <ShoppingCart size={18} color="black" />
-          </div>
-        </div>
+  <div
+    className="cursor-pointer p-1 rounded hover:bg-gray-100"
+    onClick={(e) => {
+      e.preventDefault();
+      handleCart(product, 1);
+    }}
+    title="Add to cart"
+  >
+    <ShoppingCart size={18} color="black" />
+  </div>
+</div>
+
       </div>
     </div>
   );

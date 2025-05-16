@@ -27,16 +27,19 @@ const NewArrival = () => {
                     isLoading ?
                     <div className='col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4'>
                       {
-                        Array.from({length : 12}).map((_,idx) => {
+                        Array.from({length : 8}).map((_,idx) => {
                           return  <CardSkeleton key={idx} />
                       })
                       }
                       </div>  
                       :
                     bestSellers?.data.length > 0 ? 
-                    bestSellers?.data.slice(0, 12).map((product) => {
+                    bestSellers?.data.slice(0, 8).map((product) => {
                       return (
+                      <>
                        <ProductCard product={product} key={product.id}/>
+                       <ProductCard product={product} key={product.id}/>
+                      </>
                      );
                  })
                     : <p className='text-black text-center'>No products found</p>
