@@ -4,10 +4,9 @@ import Link from "next/link";
 import noImg from "/public/no-image.jpg";
 
 const FeaturedCategories = ({ categories }) => {
-  // Ensure we have an array of category data
+  
   const categoryList = categories?.data ?? [];
 
-  // Create an array of 8 items, repeating from categoryList
   const repeatedCategories = Array.from({ length: 4 }, (_, i) => categoryList[i % categoryList.length]);
 
   return (

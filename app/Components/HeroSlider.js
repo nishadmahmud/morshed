@@ -42,14 +42,14 @@ const HeroSlider = ({ slider, banner, data }) => {
   }, []);
 
   return (
-    <div className="lg:max-w-[98%] pt-[4.5rem] max-w-[100%] w-full mx-auto flex lg:flex-row items-center">
+    <div className="lg:max-w-[100%] pt-[4rem] max-w-[100%] w-full mx-auto flex lg:flex-row items-center">
       
       {/* Grid Layout */}
       <div className="flex gap-4">
         <div className="grid">
 
           {/* Slider Section */}
-          <div className="md:w-[100%] mx-auto w-full flex flex-col h-[42vh] justify-center overflow-hidden relative lg:h-[87vh] md:h-[87vh] lg:mb-4">
+          <div className="md:w-[100%] mx-auto w-full flex flex-col h-[42vh] justify-center overflow-hidden relative lg:h-[92vh] md:h-[87vh] lg:mb-4">
             
             <Swiper
               pagination={true}

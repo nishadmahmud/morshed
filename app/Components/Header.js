@@ -4,21 +4,24 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { FaUsers } from "react-icons/fa6"
 import Image from "next/image"
 import Link from "next/link"
-import { Gift, Menu, NotebookPen, ShoppingBag, User } from "lucide-react"
+import { Gift, NotebookPen, ShoppingBag, User } from "lucide-react"
 import { IoCloseSharp, IoSearch } from "react-icons/io5"
 import axios from "axios"
 import noImg from "/public/no-image.jpg"
 import Search from "./Search"
 
 import companyLogo from "/public/morshed-mart-logo-removebg-preview.png"
-;
+import useStore from "../CustomHooks/useStore"
+import CartItems from "./CartItems"
+
 const Header = ({ data }) => {
+  const { setOpenCart, openCart } = useStore()
   const [keyword, setKeyword] = useState("")
   const [searchedItem, setSearchedItem] = useState([])
   const [isSearching, setIsSearching] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isSearchSidebarOpen, setIsSearchSidebarOpen] = useState(false)
-  const [openCart, setOpenCart] = useState(false)
+
   const debounceRef = useRef()
   const searchBarRef = useRef(null)
 
@@ -140,44 +143,63 @@ const Header = ({ data }) => {
 
   return (
     <div>
-      <div className="w-full z-50 text-white transition-all duration-500 fixed mt-0">
+      <style jsx global>{`
+      
+        .burger-menu span {
+          transform-origin: center;
+          transition: all 0.3s ease;
+        }
+        
+        .burger-menu.open span:first-child {
+          transform: translateY(0.25rem) rotate(45deg);
+        }
+        
+        .burger-menu.open span:nth-child(2) {
+          opacity: 0;
+        }
+        
+        .burger-menu.open span:last-child {
+          transform: translateY(-0.25rem) rotate(-45deg);
+        }
+      `}</style>
+      <div className="w-full z-50 text-black transition-all duration-500 fixed mt-0">
         {/* Main header */}
-        <div className="flex justify-between items-center bg-teal-800/90 backdrop-blur-md text-white p-3 py-3 md:py-2 lg:px-16">
-          {/* Mobile menu button and logo */}
-          <div className="xl:hidden flex items-center lg:gap-3 gap-1">
-            <button onClick={toggleSidebar} aria-label="Toggle menu" data-sidebar-trigger="mobile">
-              <Menu className="text-white text-right" />
+        <div className="flex justify-between items-center bg-white backdrop-blur-md text-black p-3 pb-2 pt-3.5 lg:px-16">
+          {/* Mobile menu button */}
+          <div className="flex items-center lg:gap-3 gap-1">
+            <button
+              onClick={toggleSidebar}
+              aria-label="Toggle menu"
+              data-sidebar-trigger="mobile"
+              className="relative z-50 w-8 h-8 flex items-center justify-center"
+            >
+              <div className={`burger-menu text-white bg-white ${isSidebarOpen ? "open" : ""}`}>
+                <span
+                  className={`block w-5 h-0.5 bg-black transition-all duration-300 ${isSidebarOpen ? "rotate-45 translate-y-1" : ""}`}
+                ></span>
+                <span
+                  className={`block w-5 h-0.5 bg-black my-1 transition-all duration-300 ${isSidebarOpen ? "opacity-0" : ""}`}
+                ></span>
+                <span
+                  className={`block w-5 h-0.5 bg-black transition-all duration-300 ${isSidebarOpen ? "-rotate-45 -translate-y-1" : ""}`}
+                ></span>
+              </div>
             </button>
-            
           </div>
 
-          {/* Desktop logo */}
-          <Link href={"/"} className="hidden xl:block">
-           <Image width={500} height={500} className="hidden xl:block md:w-9 h-auto" alt="logo" src={companyLogo}></Image>
-          </Link>
-
-          {/* Categories - desktop only */}
-          <div className="hidden xl:flex h-10 text-white px-4 rounded-sm items-center gap-6">
-            {data?.data?.slice(0, 5).map((item, index) => (
-              <Link
-                key={item?.category_id || index}
-                href={`/category/${encodeURIComponent(item?.category_id || "")}?category=${encodeURIComponent(item?.name || "")}&total=${encodeURIComponent(item?.product_count || 0)}`}
-                className="hover:text-gray-300 transition-all text-sm hover:tracking-wide"
-              >
-                {item?.name || `Category ${index + 1}`}
-              </Link>
-            ))}
+          {/* Centered logo for all screen sizes */}
+          <div className="absolute left-1/2 transform -translate-x-1/2 flex justify-center">
+            <Link href={"/"}>
+              <h4 className="logoFont text-xl font-semibold tracking-widest">Morshed  Mart</h4>
+            </Link>
           </div>
 
           {/* Right side icons */}
           <div className="flex items-center justify-end gap-6">
-           
-           
-
-            {/* Search icon - desktop */}
+            {/* Search icon */}
             <button
               onClick={toggleSearchSidebar}
-              className="flex items-center transition ease-in-out text-white"
+              className="flex items-center transition ease-in-out text-black"
               aria-label="Search"
               data-sidebar-trigger="search"
             >
@@ -191,9 +213,9 @@ const Header = ({ data }) => {
               aria-label="Cart"
             >
               <div className="relative">
-                <ShoppingBag size={22} className="text-white" />
+                <ShoppingBag size={22} className="text-black" />
                 {cartTotal > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-white text-teal-800 text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-black text-teal-800 text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
                     {cartTotal}
                   </span>
                 )}
@@ -203,11 +225,11 @@ const Header = ({ data }) => {
             {/* User account */}
             {!user ? (
               <button className="hidden lg:flex items-center cursor-pointer" aria-label="Login">
-                <User size={22} className="text-white" />
+                <User size={22} className="text-black" />
               </button>
             ) : (
               <Link href="/profileDashboard" className="hidden lg:flex items-center cursor-pointer">
-                <div className="w-8 h-8 rounded-full border-2 border-white overflow-hidden">
+                <div className="w-8 h-8 rounded-full border-2 border-black overflow-hidden">
                   <Image src="/placeholder.svg?height=32&width=32" alt="User" width={32} height={32} />
                 </div>
               </Link>
@@ -218,43 +240,59 @@ const Header = ({ data }) => {
         {/* Mobile sidebar */}
         <div
           data-sidebar="mobile"
-          className={`fixed top-0 left-0 w-3/5 max-w-xs bg-white text-black px-5 pt-5 pb-[4.5rem] z-50 transform transition-transform overflow-y-auto duration-300 h-full ${
+          className={`fixed top-0 left-0 w-3/5 max-w-xs bg-white text-black px-5 pt-5 pb-[4.5rem] z-50 transform transition-all duration-300 ease-in-out h-full shadow-xl ${
             isSidebarOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
-          <div className="flex justify-between items-center p-2 border-b-2 border-teal-800">
+          <div className="flex justify-between items-center p-2 border-b-2 border-teal-800 mb-4">
             <Link href={"/"} onClick={toggleSidebar}>
-              <div className=" text-teal-800 flex items-center justify-center">
+              <div className="text-teal-800 flex items-center justify-center">
                 <span className="text-sm font-bold">Morshed Mart</span>
               </div>
             </Link>
-            <button onClick={toggleSidebar} aria-label="Close menu">
+            <button onClick={toggleSidebar} aria-label="Close menu" className="text-teal-800">
               <IoCloseSharp size={24} className="cursor-pointer" />
             </button>
           </div>
-          <ul className="mt-4 space-y-4 px-3">
+
+          <h3 className="font-medium text-teal-800 mb-2">Categories</h3>
+          <ul className="space-y-3 px-2">
             {data?.data?.map((item, idx) => (
-              <Link
-                key={idx}
-                onClick={toggleSidebar}
-                href={`/category/${encodeURIComponent(item?.category_id || "")}?category=${encodeURIComponent(item?.name || "")}&total=${encodeURIComponent(item?.product_count || 0)}`}
-                className="text-black text-sm hover:text-teal-800 transition ease-in-out hover:font-semibold flex items-center gap-1"
-              >
-                {item?.name || `Category ${idx + 1}`}
-              </Link>
+              <li key={idx}>
+                <Link
+                  onClick={toggleSidebar}
+                  href={`/category/${encodeURIComponent(item?.category_id || "")}?category=${encodeURIComponent(item?.name || "")}&total=${encodeURIComponent(item?.product_count || 0)}`}
+                  className="text-gray-700 text-sm hover:text-teal-800 transition-all duration-200 hover:font-semibold flex items-center gap-1 py-1"
+                >
+                  {item?.name || `Category ${idx + 1}`}
+                </Link>
+              </li>
             ))}
-            <div className="flex flex-col gap-2 font-medium text-teal-800 pt-4 border-t">
-              <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/offer">
-                <Gift size={15} /> Latest Offer
-              </Link>
-              <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/blogs">
-                <NotebookPen size={15} /> Blog
-              </Link>
-              <Link onClick={toggleSidebar} className="flex items-center gap-1" href="/about-us">
-                <FaUsers size={16} /> About Us
-              </Link>
-            </div>
           </ul>
+
+          <div className="flex flex-col gap-3 font-medium text-teal-800 pt-6 mt-6 border-t">
+            <Link
+              onClick={toggleSidebar}
+              className="flex items-center gap-2 hover:translate-x-1 transition-transform duration-200"
+              href="/offer"
+            >
+              <Gift size={16} /> <span>Latest Offer</span>
+            </Link>
+            <Link
+              onClick={toggleSidebar}
+              className="flex items-center gap-2 hover:translate-x-1 transition-transform duration-200"
+              href="/blogs"
+            >
+              <NotebookPen size={16} /> <span>Blog</span>
+            </Link>
+            <Link
+              onClick={toggleSidebar}
+              className="flex items-center gap-2 hover:translate-x-1 transition-transform duration-200"
+              href="/about-us"
+            >
+              <FaUsers size={16} /> <span>About Us</span>
+            </Link>
+          </div>
         </div>
 
         {/* Search sidebar - slides from top */}
@@ -418,10 +456,16 @@ const Header = ({ data }) => {
           </div>
         )}
 
+        {openCart && (
+          <div className="fixed inset-0 bg-black bg-opacity-30 z-40">
+            <CartItems />
+          </div>
+        )}
+
         {/* Overlay for sidebar */}
         {(isSidebarOpen || isSearchSidebarOpen) && (
           <div
-            className="fixed inset-0 bg-black bg-opacity-50 z-40"
+            className="fixed inset-0 bg-black bg-opacity-50 z-40 transition-opacity duration-300 ease-in-out"
             onClick={() => {
               if (isSidebarOpen) toggleSidebar()
               if (isSearchSidebarOpen) toggleSearchSidebar()

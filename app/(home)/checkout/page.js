@@ -4,7 +4,7 @@ import WithAuth from '@/app/Components/WithAuth';
 import useStore from '@/app/CustomHooks/useStore';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import toast from 'react-hot-toast';
 
 

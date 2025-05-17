@@ -61,7 +61,7 @@ const CartItems = () => {
       ></div>
 
       <div className=" fixed bg-white text-black lg:max-w-96 max-w-72 top-0 right-0 flex flex-col h-screen overflow-y-scroll z-[9999]">
-        <div className="bg-[#000000] text-white flex p-3 items-center">
+        <div className="bg-[#ffffff] text-black flex p-3 items-center">
           <IoClose
             onClick={() => setOpenCart(!openCart)}
             className="text-red-500 bg-white rounded-md p-0.5 text-xl cursor-pointer"
@@ -218,27 +218,27 @@ const CartItems = () => {
         onClick={() => setOpenCart(!openCart)}
       ></div>
       <div className="fixed bg-white text-black w-96  top-0 right-0 flex flex-col h-screen overflow-y-scroll z-50">
-      <div className="bg-[#115e59] text-white flex p-5 items-center justify-between">
+      <div className="bg-[#ffffff] border-b text-black flex p-5 items-center justify-between">
          
-          <div className="flex items-center gap-1">
-            <ShoppingCart size={20}></ShoppingCart>
-          <p className="text-center flex-1  font-semibold font-sans">Mini Cart</p>
+          <div className="flex items-center gap-2">
+            <ShoppingCart size={22}></ShoppingCart>
+          <p className="text-center flex-1  font-semibold">Mini Cart</p>
           </div>
 
           <IoClose
           size={22}
             onClick={() => setOpenCart(!openCart)}
 
-            className="text-red-600 text-lg cursor-pointer bg-white rounded-full p-0.5"
+            className="text-red-600 text-lg cursor-pointer rounded-full"
 
           />
         </div>
         <div className="flex flex-col justify-center items-center h-[80vh]">
 
-            <div className="bg-[#115e59] p-4 rounded-full text-white">
-              <ShoppingBag></ShoppingBag>
+            <div className="bg-[#ffffff] p-4 rounded-full text-red-500">
+              <ShoppingBag size={25}></ShoppingBag>
             </div>
-        <p className="text-xl font-sans font-bold text-center mt-2 text-gray-900">Your cart is empty</p>
+        <p className="text-xl font-bold text-center text-gray-900">Your cart is empty</p>
 
         <p className="text-sm text-center text-gray-500 w-72">No items added in your cart. Please add product to your cart list.</p>
 
