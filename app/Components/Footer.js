@@ -102,7 +102,7 @@ export default function Footer() {
           <div className="flex items-start gap-2 border border-white p-3 rounded-md">
             <MapPin className="text-white w-5 h-5" />
             <p className="text-white text-xs">
-              Level-4 | Block - A | Shop 029B, Jamuna Future Park, Dhaka, Bangladesh.
+              Dhaka, Bangladesh
             </p>
           </div>
         </Link>
