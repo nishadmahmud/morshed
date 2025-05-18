@@ -17,6 +17,7 @@
     "color-name-list": "^11.5.0",
     "colornames": "^1.1.1",
     "framer-motion": "^12.0.5",
+    "html-to-text": "^9.0.5",
     "lucide-react": "^0.456.0",
     "motion": "^12.0.5",
     "next": "14.2.14",

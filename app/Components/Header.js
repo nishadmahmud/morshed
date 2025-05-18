@@ -13,18 +13,41 @@ import Search from "./Search"
 import companyLogo from "/public/morshed-mart-logo-removebg-preview.png"
 import useStore from "../CustomHooks/useStore"
 import CartItems from "./CartItems"
+import { useSearchParams } from "next/navigation"
+import RegisterForm from "./RegisterForm"
+import LoginForm from "./LoginForm"
+import Modal from "./Modal"
 
 const Header = ({ data }) => {
-  const { setOpenCart, openCart } = useStore()
+  const {  getCartItems,
+    refetch,
+    setRefetch,
+    setOpenCart,
+    openCart,
+    getWishList,
+    isLoginModal,
+    setIsLoginModal,
+    setToken,
+    setHasToken,
+    setIsRegistered,
+    isRegistered,
+    setReload,
+    reload,
+    userInfo,
+    setUserInfo,
+   } = useStore()
   const [keyword, setKeyword] = useState("")
   const [searchedItem, setSearchedItem] = useState([])
   const [isSearching, setIsSearching] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isSearchSidebarOpen, setIsSearchSidebarOpen] = useState(false)
+  const [showUserInfo, setShowUserInfo] = useState(false);
 
   const debounceRef = useRef()
   const searchBarRef = useRef(null)
-
+const handleUserInfo = () => {
+    setShowUserInfo(true);
+  };
   // Mock user and cart data
   const user = typeof window !== "undefined" ? localStorage.getItem("user") : null
   const cartItems = []
@@ -141,6 +164,16 @@ const Header = ({ data }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside)
   }, [handleClickOutside])
 
+  const pathname = useSearchParams();
+  useEffect(() => {
+    if (pathname.get("login") == "false") {
+      setIsLoginModal(true);
+    }
+  }, [pathname, setIsLoginModal]);
+
+  const handleModalClose = () => setIsLoginModal(false);
+
+
   return (
     <div>
       <style jsx global>{`
@@ -203,7 +236,7 @@ const Header = ({ data }) => {
               aria-label="Search"
               data-sidebar-trigger="search"
             >
-              <IoSearch size={22} />
+              <IoSearch size={23} />
             </button>
 
             {/* Cart icon */}
@@ -224,13 +257,13 @@ const Header = ({ data }) => {
 
             {/* User account */}
             {!user ? (
-              <button className="hidden lg:flex items-center cursor-pointer" aria-label="Login">
+              <Link href='/login'  className="hidden lg:flex items-center cursor-pointer" aria-label="Login">
                 <User size={22} className="text-black" />
-              </button>
+              </Link>
             ) : (
               <Link href="/profileDashboard" className="hidden lg:flex items-center cursor-pointer">
-                <div className="w-8 h-8 rounded-full border-2 border-black overflow-hidden">
-                  <Image src="/placeholder.svg?height=32&width=32" alt="User" width={32} height={32} />
+                <div className="w-6 h-6 rounded-full overflow-hidden">
+                  <Image src="/userLogin.png" alt="User" width={32} height={32} />
                 </div>
               </Link>
             )}
@@ -472,6 +505,35 @@ const Header = ({ data }) => {
             }}
           />
         )}
+
+        {isLoginModal && (
+        <Modal
+          isOpen={isLoginModal}
+          onClose={handleModalClose}
+          title={isRegistered ? "Sign In" : "Sign Up"}
+          content={
+            isRegistered ? (
+              <LoginForm
+                isLoginModal={isLoginModal}
+                onClose={handleModalClose}
+                setIsRegistered={setIsRegistered}
+                setReload={setReload}
+                isRegistered={isRegistered}
+                modal={true}
+              />
+            ) : (
+              <RegisterForm
+                setIsRegistered={setIsRegistered}
+                isLoginModal={isLoginModal}
+                onClose={handleModalClose}
+                isRegistered={isRegistered}
+                setReload={setReload}
+                modal={true} // ✅ Added for consistency
+              />
+            )
+          }
+        />
+      )}
       </div>
     </div>
   )

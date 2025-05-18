@@ -68,9 +68,9 @@ const PersonalInfo = () => {
             className="w-full p-2 border rounded bg-gray-100 text-black"
           />
         </div>
-        <button className="mt-6 px-4 py-2 bg-teal-800 text-white rounded hover:bg-teal-900">
+        {/* <button className="mt-6 px-4 py-2 bg-teal-800 text-white rounded hover:bg-teal-900">
           Update
-        </button>
+        </button> */}
       </div>
     </>
   );

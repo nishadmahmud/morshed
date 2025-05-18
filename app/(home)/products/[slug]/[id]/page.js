@@ -7,6 +7,8 @@ import { Heart, Minus, Plus, ShoppingBag } from "lucide-react"
 import useSWR from "swr"
 import axios from "axios"
 import toast from "react-hot-toast"
+import noImg from '/public/no-image.jpg'
+import { htmlToText } from "html-to-text";
 import InnerImageZoom from 'react-inner-image-zoom';
 import 'react-inner-image-zoom/lib/styles.min.css'
 // Fetcher function from the original code
@@ -14,7 +16,8 @@ const fetcher = (url) => fetch(url).then((res) => res.json())
 const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : ""
 
 const ProductPage = ({ params }) => {
-  const { id } = params
+  const { id } = params;
+  console.log(id);
   const [quantity, setQuantity] = useState(1)
   const [imageIndex, setImageIndex] = useState(0)
   const [scroll, setScroll] = useState(0)
@@ -29,13 +32,13 @@ const ProductPage = ({ params }) => {
   const sizes = ["S", "M", "L", "XL"]
   const [selectedSize, setSelectedSize] = useState("M")
 
-  // Fetch product data using SWR
+  
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
     fetcher,
   )
 
-  // Get cart items from store
+ 
   useEffect(() => {
     const getCartItems = () => {
       const storedCart = localStorage.getItem("cart")
@@ -44,14 +47,15 @@ const ProductPage = ({ params }) => {
 
     setCartItems(getCartItems())
 
-    // Check if product is in cart
+   
     if (product?.data) {
       const isProductInCart = getCartItems().find((item) => item?.id === product?.data.id)
       setIsInCart(!!isProductInCart)
     }
   }, [product?.data])
 
-  // Fetch related products
+
+
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       if (!id) return
@@ -70,7 +74,7 @@ const ProductPage = ({ params }) => {
     fetchRelatedProducts()
   }, [id])
 
-  // Get recently viewed products
+
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("recentlyViewed")) || []
     if (storedProducts.length) {
@@ -79,7 +83,7 @@ const ProductPage = ({ params }) => {
     }
   }, [id])
 
-  // Set up image array
+
   useEffect(() => {
     if (product?.data) {
       if (product.data?.have_variant === "1" && product.data?.imei_image && product?.data?.imei_image?.length > 0) {
@@ -90,7 +94,7 @@ const ProductPage = ({ params }) => {
     }
   }, [product?.data])
 
-  // Handle scroll for sticky cart
+
   useEffect(() => {
     const handleScroll = () => {
       setScroll(window.scrollY)
@@ -110,11 +114,11 @@ const ProductPage = ({ params }) => {
     Olive: "#556b2f",
   }
 
-  // Handle add to cart
+
   const handleAddToCart = () => {
     if (!product?.data) return
 
-    // Mock implementation - in a real app, you would use your actual cart logic
+ 
     const newCartItem = {
       ...product.data,
       size: selectedSize,
@@ -130,13 +134,13 @@ const ProductPage = ({ params }) => {
     toast.success("Added to cart")
   }
 
-  // Handle buy now
+
   const handleBuyNow = () => {
     if (!product?.data) return
 
-    // Mock implementation - in a real app, you would navigate to checkout
+
     handleAddToCart()
-    // Navigate to checkout
+    
     console.log("Buy now:", {
       product: product.data.id,
       quantity,
@@ -148,7 +152,7 @@ const ProductPage = ({ params }) => {
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
   const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
 
-  // Helper function to sanitize slugs
+
   const sanitizeSlug = (str) => {
     return str
       ?.toLowerCase()
@@ -156,7 +160,7 @@ const ProductPage = ({ params }) => {
       .replace(/[^a-z0-9-]/g, "")
   }
 
-  // Loading state
+
   if (!product && !error) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -165,7 +169,6 @@ const ProductPage = ({ params }) => {
     )
   }
 
-  // Error state
   if (error) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -173,6 +176,16 @@ const ProductPage = ({ params }) => {
       </div>
     )
   }
+
+
+  const descriptionText = product?.data?.description
+  ? htmlToText(product.data.description, {
+      wordwrap: false, 
+      selectors: [
+        { selector: 'a', options: { ignoreHref: true } }, 
+      ],
+    })
+  : null;
 
   return (
     <section className=" text-black lg:pt-16 md:pt-16 pt-14">
@@ -372,16 +385,17 @@ const ProductPage = ({ params }) => {
           </div>
 
           <div className={`pt-6 ${activeTab === "description" ? "block" : "hidden"}`}>
-            <div className="prose max-w-none">
-              <p>{product?.data?.description || "No description available"}</p>
-              <ul className="mt-4 list-disc pl-5 space-y-1">
-                <li>Premium quality fabric</li>
-                <li>Regular fit</li>
-                <li>Stylish design</li>
-                <li>Comfortable to wear</li>
-                <li>Machine washable</li>
-              </ul>
-            </div>
+           <div id="Description" className="mt-5 p-3 text-sm border rounded-lg">
+  <h2 className="text-xl font-bold text-gray-900">Description</h2>
+  <div className="w-[6.5rem] h-[2px] bg-[#212121] mt-1 mb-4"></div>
+  {descriptionText ? (
+    <p className="text-gray-600 whitespace-pre-line mb-4">
+      {descriptionText}
+    </p>
+  ) : (
+    <p>Description is not available</p>
+  )}
+</div>
           </div>
         </div>
 
@@ -399,7 +413,7 @@ const ProductPage = ({ params }) => {
                   <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
                     <Image
                       unoptimized
-                      src={item.image_path || "/placeholder.svg?height=300&width=300"}
+                      src={item.image_path || noImg}
                       alt={item.name}
                       width={300}
                       height={300}
@@ -419,7 +433,7 @@ const ProductPage = ({ params }) => {
         {/* Recently Viewed */}
         <div className="mb-12">
           <h2 className="text-xl font-bold mb-6">Recently Viewed</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pb-10">
             {recentProducts && recentProducts.length > 0 ? (
               recentProducts.map((item) => (
                 <Link
@@ -430,7 +444,7 @@ const ProductPage = ({ params }) => {
                   <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
                     <Image
                       unoptimized
-                      src={item.image || "/placeholder.svg?height=300&width=300"}
+                      src={item.image || noImg}
                       alt={item.name}
                       width={300}
                       height={300}
