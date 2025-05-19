@@ -7,17 +7,18 @@ import { Heart, Minus, Plus, ShoppingBag } from "lucide-react"
 import useSWR from "swr"
 import axios from "axios"
 import toast from "react-hot-toast"
-import noImg from '/public/no-image.jpg'
-import { htmlToText } from "html-to-text";
-import InnerImageZoom from 'react-inner-image-zoom';
-import 'react-inner-image-zoom/lib/styles.min.css'
+import noImg from "/public/no-image.jpg"
+import { htmlToText } from "html-to-text"
+import InnerImageZoom from "react-inner-image-zoom"
+import "react-inner-image-zoom/lib/styles.min.css"
+import useStore from "@/app/CustomHooks/useStore"
 // Fetcher function from the original code
 const fetcher = (url) => fetch(url).then((res) => res.json())
 const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : ""
 
 const ProductPage = ({ params }) => {
-  const { id } = params;
-  console.log(id);
+  const { id } = params
+  console.log(id)
   const [quantity, setQuantity] = useState(1)
   const [imageIndex, setImageIndex] = useState(0)
   const [scroll, setScroll] = useState(0)
@@ -27,18 +28,17 @@ const ProductPage = ({ params }) => {
   const [relatedProducts, setRelatedProducts] = useState([])
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
+    const { handleCart, handleBuy } = useStore();
 
   // Demo data for sizes
   const sizes = ["S", "M", "L", "XL"]
   const [selectedSize, setSelectedSize] = useState("M")
 
-  
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
     fetcher,
   )
 
- 
   useEffect(() => {
     const getCartItems = () => {
       const storedCart = localStorage.getItem("cart")
@@ -47,14 +47,11 @@ const ProductPage = ({ params }) => {
 
     setCartItems(getCartItems())
 
-   
     if (product?.data) {
       const isProductInCart = getCartItems().find((item) => item?.id === product?.data.id)
       setIsInCart(!!isProductInCart)
     }
   }, [product?.data])
-
-
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
@@ -74,7 +71,6 @@ const ProductPage = ({ params }) => {
     fetchRelatedProducts()
   }, [id])
 
-
   useEffect(() => {
     const storedProducts = JSON.parse(localStorage.getItem("recentlyViewed")) || []
     if (storedProducts.length) {
@@ -82,7 +78,6 @@ const ProductPage = ({ params }) => {
       setRecentProducts(withoutThisProduct)
     }
   }, [id])
-
 
   useEffect(() => {
     if (product?.data) {
@@ -93,7 +88,6 @@ const ProductPage = ({ params }) => {
       }
     }
   }, [product?.data])
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,11 +108,9 @@ const ProductPage = ({ params }) => {
     Olive: "#556b2f",
   }
 
-
   const handleAddToCart = () => {
     if (!product?.data) return
 
- 
     const newCartItem = {
       ...product.data,
       size: selectedSize,
@@ -134,13 +126,11 @@ const ProductPage = ({ params }) => {
     toast.success("Added to cart")
   }
 
-
   const handleBuyNow = () => {
     if (!product?.data) return
 
-
     handleAddToCart()
-    
+
     console.log("Buy now:", {
       product: product.data.id,
       quantity,
@@ -152,14 +142,12 @@ const ProductPage = ({ params }) => {
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
   const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
 
-
   const sanitizeSlug = (str) => {
     return str
       ?.toLowerCase()
       .replace(/\s+/g, "-")
       .replace(/[^a-z0-9-]/g, "")
   }
-
 
   if (!product && !error) {
     return (
@@ -177,15 +165,16 @@ const ProductPage = ({ params }) => {
     )
   }
 
-
   const descriptionText = product?.data?.description
-  ? htmlToText(product.data.description, {
-      wordwrap: false, 
-      selectors: [
-        { selector: 'a', options: { ignoreHref: true } }, 
-      ],
-    })
-  : null;
+    ? htmlToText(product.data.description, {
+        wordwrap: false,
+        selectors: [{ selector: "a", options: { ignoreHref: true } }],
+      })
+    : null
+
+      const isCartItem = cartItems.find(
+    (item) => item?.id === product?.data.id || undefined
+  );
 
   return (
     <section className=" text-black lg:pt-16 md:pt-16 pt-14">
@@ -229,12 +218,12 @@ const ProductPage = ({ params }) => {
                 )}
                 {imageArray && imageArray.length > 0 ? (
                   <InnerImageZoom
-  src={imageArray[imageIndex]} // or whatever your image URL is
-  zoomSrc={imageArray[imageIndex]} // optional, can be higher-res version
-  zoomType="hover"
-  zoomPreload={true}
-  className="w-full md:h-[70vh] h-[50vh] object-cover rounded-lg"
-/>
+                    src={imageArray[imageIndex]} // or whatever your image URL is
+                    zoomSrc={imageArray[imageIndex]} // optional, can be higher-res version
+                    zoomType="hover"
+                    zoomPreload={true}
+                    className="w-full md:h-[70vh] h-[50vh] object-cover rounded-lg"
+                  />
                 ) : product?.data?.image_path ? (
                   <Image
                     unoptimized
@@ -273,9 +262,11 @@ const ProductPage = ({ params }) => {
             </div>
 
             <p className="text-sm text-gray-600 mb-6">
-              {product?.data?.description
-                ? product.data.description.substring(0, 120) + "..."
-                : "No description available"}
+              {descriptionText ? (
+                <p className="text-gray-600 whitespace-pre-line mb-4">{descriptionText.substring(0, 33)}</p>
+              ) : (
+                <p>Description is not available</p>
+              )}
             </p>
 
             {/* Color Selection (Demo) */}
@@ -304,19 +295,33 @@ const ProductPage = ({ params }) => {
                 <button className="text-sm text-gray-600 underline">Size Guide</button>
               </div>
               <div className="flex gap-3">
-                {sizes.map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setSelectedSize(size)}
-                    className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${
-                      selectedSize === size
-                        ? "border-black bg-black text-white"
-                        : "border-gray-300 hover:border-gray-400"
-                    }`}
-                  >
-                    {size}
-                  </button>
-                ))}
+                {product?.data?.product_variants && product.data.product_variants.length > 0
+                  ? product.data.product_variants.map((variant) => (
+                      <button
+                        key={variant.name}
+                        onClick={() => setSelectedSize(variant.name)}
+                        className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${
+                          selectedSize === variant.name
+                            ? "border-black bg-black text-white"
+                            : "border-gray-300 hover:border-gray-400"
+                        }`}
+                      >
+                        {variant.name}
+                      </button>
+                    ))
+                  : sizes.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${
+                          selectedSize === size
+                            ? "border-black bg-black text-white"
+                            : "border-gray-300 hover:border-gray-400"
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
               </div>
             </div>
 
@@ -385,17 +390,15 @@ const ProductPage = ({ params }) => {
           </div>
 
           <div className={`pt-6 ${activeTab === "description" ? "block" : "hidden"}`}>
-           <div id="Description" className="mt-5 p-3 text-sm border rounded-lg">
-  <h2 className="text-xl font-bold text-gray-900">Description</h2>
-  <div className="w-[6.5rem] h-[2px] bg-[#212121] mt-1 mb-4"></div>
-  {descriptionText ? (
-    <p className="text-gray-600 whitespace-pre-line mb-4">
-      {descriptionText}
-    </p>
-  ) : (
-    <p>Description is not available</p>
-  )}
-</div>
+            <div id="Description" className="mt-5 p-3 text-sm border rounded-lg">
+              <h2 className="text-xl font-bold text-gray-900">Description</h2>
+              <div className="w-[6.5rem] h-[2px] bg-[#212121] mt-1 mb-4"></div>
+              {descriptionText ? (
+                <p className="text-gray-600 whitespace-pre-line mb-4">{descriptionText}</p>
+              ) : (
+                <p>Description is not available</p>
+              )}
+            </div>
           </div>
         </div>
 
@@ -504,17 +507,27 @@ const ProductPage = ({ params }) => {
               </div>
 
               <button
-                onClick={handleAddToCart}
+                 onClick={() =>
+                      handleCart(
+                        {
+                          ...product?.data,
+                          storage: selectedStorage,
+                          color: selectedColor,
+                          price: selectedSalePrice,
+                        },
+                        quantity
+                      )
+                    }
                 className={`py-2 px-4 rounded-md font-medium ${
-                  isInCart ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
+                  isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
                 }`}
-                disabled={isInCart}
+                disabled={isCartItem}
               >
-                {isInCart ? "Added to Cart" : "Add to Cart"}
+                {isCartItem !== undefined ? "Added" : "Add to Cart"}
               </button>
 
               <button
-                onClick={handleBuyNow}
+                onClick={() => handleBuy(product?.data, quantity)}
                 className="hidden md:block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium"
               >
                 Buy Now
