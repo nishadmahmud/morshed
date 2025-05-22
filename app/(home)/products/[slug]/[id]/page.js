@@ -31,7 +31,7 @@ const ProductPage = ({ params }) => {
     const { handleCart, handleBuy } = useStore();
 
   // Demo data for sizes
-  const sizes = ["S", "M", "L", "XL"]
+
   const [selectedSize, setSelectedSize] = useState("M")
 
   const { data: product, error } = useSWR(
@@ -176,6 +176,10 @@ const ProductPage = ({ params }) => {
     (item) => item?.id === product?.data.id || undefined
   );
 
+  console.log(product);
+
+  
+
   return (
     <section className=" text-black lg:pt-16 md:pt-16 pt-14">
       <div className="px-4 lg:px-8 pt-6 lg:pt-12 mx-auto max-w-7xl">
@@ -299,29 +303,17 @@ const ProductPage = ({ params }) => {
                   ? product.data.product_variants.map((variant) => (
                       <button
                         key={variant.name}
-                        onClick={() => setSelectedSize(variant.name)}
+                        onClick={() => setSelectedSize(variant?.name)}
                         className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${
                           selectedSize === variant.name
                             ? "border-black bg-black text-white"
                             : "border-gray-300 hover:border-gray-400"
                         }`}
                       >
-                        {variant.name}
+                        {variant?.name}
                       </button>
                     ))
-                  : sizes.map((size) => (
-                      <button
-                        key={size}
-                        onClick={() => setSelectedSize(size)}
-                        className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${
-                          selectedSize === size
-                            ? "border-black bg-black text-white"
-                            : "border-gray-300 hover:border-gray-400"
-                        }`}
-                      >
-                        {size}
-                      </button>
-                    ))}
+                  : "No size availavle"}
               </div>
             </div>
 

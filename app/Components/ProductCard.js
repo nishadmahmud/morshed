@@ -39,8 +39,8 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="bg-white rounded-lg flex flex-col poppins transition w-52 ease-in-out relative hover:scale-105 h-72 mb-10">
-      <div className="h-56">
+    <div className="bg-white rounded-lg flex flex-col poppins transition w-52 ease-in-out relative hover:scale-105 h-80 mb-10">
+      <div className="h-60">
         <Link
           onClick={updateRecentViews}
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
@@ -52,7 +52,7 @@ const ProductCard = ({ product }) => {
             width={800}
             height={300}
             unoptimized
-            className="object-cover w-full h-56 rounded-t-md"
+            className="object-cover w-full h-60 rounded-t-md"
             quality={100}
           />
         </Link>
@@ -82,7 +82,7 @@ const ProductCard = ({ product }) => {
   {product?.name || "N/A"}
 </Link>
 
-<div className="mt-auto flex justify-between items-center w-full">
+<div className="mt-auto absolute bottom-0 flex justify-between items-center w-full">
   {product?.discount ? (
     <div className="flex items-center gap-2">
       <span className="md:text-lg text-sm font-bold text-[#115e59]">

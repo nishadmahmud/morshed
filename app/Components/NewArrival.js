@@ -13,8 +13,11 @@ import ProductCard from './ProductCard';
 
 const NewArrival = () => {
     const {handleCart,handleBuy} = useStore();
-    const {data : bestSellers,isLoading} = useSWR(`${process.env.NEXT_PUBLIC_API}/public/best-sellers/${userId}`,fetcher);
-    console.log('best saller', bestSellers);
+     const { data: newArrival, isLoading } = useSWR(
+    `${process.env.NEXT_PUBLIC_API}/public/products/${userId}?page=1&limit=6`,
+    fetcher
+  );
+    // console.log('best saller', newArrival);
 
     return (
         <div className="my-12 w-11/12 mx-auto">
@@ -33,12 +36,12 @@ const NewArrival = () => {
                       }
                       </div>  
                       :
-                    bestSellers?.data.length > 0 ? 
-                    bestSellers?.data.slice(0, 8).map((product) => {
+                    newArrival?.data.length > 0 ? 
+                    newArrival?.data.slice(0, 8).map((product) => {
                       return (
                       <>
                        <ProductCard product={product} key={product.id}/>
-                       <ProductCard product={product} key={product.id}/>
+                      
                       </>
                      );
                  })

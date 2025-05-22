@@ -7,8 +7,10 @@ import NewArrival from "../Components/NewArrival";
 import PromotionModal from "../Components/PromotionModal";
 import SmallBanner from "../Components/SmallBanner";
 import MensBanner from "../Components/MensBanner";
-import MenCollection from "../Components/MenCollection";
-import WomenCollection from "../Components/WomenCollection";
+import MenCollection from "../Components/EidCollection";
+import WomenCollection from "../Components/SolidTshirt";
+import SolidTshirt from "../Components/SolidTshirt";
+import EidCollection from "../Components/EidCollection";
 
 
 export const userId = 203;
@@ -39,6 +41,8 @@ export default async function Home() {
   });
   const categories = await categoriesRes.json();
 
+  console.log(categories);
+
   const brandsRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/brands/${userId}`,{
     cache : "no-cache"
   });
@@ -55,9 +59,9 @@ export default async function Home() {
         <NewArrival banner={banner}/> 
         {/* <ReadyForOrder />   */}
         <MensBanner banner={banner}></MensBanner>
-        <MenCollection></MenCollection>
+        <EidCollection></EidCollection>
         <SmallBanner banner={banner}/>
-        <WomenCollection></WomenCollection>
+        <SolidTshirt></SolidTshirt>
         {/* <Fitness></Fitness> */}
         <BannerSection banner={banner}/>
         <FeaturedProducts banner={banner}/>
