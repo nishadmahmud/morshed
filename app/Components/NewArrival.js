@@ -20,12 +20,12 @@ const NewArrival = () => {
     // console.log('best saller', newArrival);
 
     return (
-        <div className="my-12 w-11/12 mx-auto">
+        <div className="my-12 md:w-10/12 w-11/12 mx-auto">
           <Heading title={'New Arrival'}/>
             <div>
                 
                 {/* products */}
-                <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-10 md:col-span-3 gap-4 lg:grid-cols-4 xl:grid-cols-6 mt-7">
+                <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-10 md:col-span-3 gap-6 lg:grid-cols-3 xl:grid-cols-5 mt-7">
                 {
                     isLoading ?
                     <div className='col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4'>

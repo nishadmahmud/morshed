@@ -42,7 +42,7 @@ const HeroSlider = ({ slider, banner, data }) => {
   }, []);
 
   return (
-    <div className="lg:max-w-[100%] h-screen pt-[4rem] max-w-[100%] w-full mx-auto flex lg:flex-row items-center">
+    <div className="lg:max-w-[100%] lg:h-screen pt-[4rem] max-w-[100%] w-full mx-auto flex lg:flex-row items-center">
       
       {/* Grid Layout */}
       <div className="flex gap-4">

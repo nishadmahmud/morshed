@@ -22,7 +22,7 @@ const SmallBanner = ({banner}) => {
                         )}
                          <div>
              <div>
-               <h1 className='text-center text-4xl font-medium tracking-wider text-gray-600'>
+               <h1 className='text-center text-4xl font-medium tracking-wider text-gray-600 py-8 md:py-0'>
               The New Era of <br></br> Feminine Style
               </h1>
              </div>

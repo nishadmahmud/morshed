@@ -1,20 +1,53 @@
+"use client"
+
 import Image from 'next/image';
-import React from 'react';
+import React, { useRef } from 'react';
+import { motion, useInView } from 'framer-motion';
 import noImg from '/public/no-image.jpg';
+
+const textVariants = {
+  hidden: { opacity: 0, x: -50 },
+  visible: (i) => ({
+    opacity: 1,
+    x: 0,
+    transition: {
+      delay: i * 0.3,
+      duration: 0.6,
+      ease: 'easeOut',
+    },
+  }),
+};
 
 const MensBanner = ({ banner }) => {
   const imageSrc = banner?.data?.[1]?.image_path || noImg;
+  const textRef = useRef(null);
+  const isInView = useInView(textRef, { once: true, margin: '-100px' });
 
   return (
     <div className="w-full lg:h-[80vh] h-auto flex flex-col lg:flex-row">
-      {/* Left Side - Text with solid black background */}
-      <div className="bg-teal-800/90 backdrop-blur-lg text-white flex flex-col justify-center px-8 lg:w-1/2 w-full py-10">
-       <h1 className="text-4xl lg:text-6xl font-semibold mb-4">Redefining Modern Elegance</h1>
-<h2 className="text-3xl lg:text-5xl font-semibold mb-6">A Curated Selection for Him</h2>
-<p className="text-sm lg:text-base mb-6">
-  Discover timeless silhouettes, sharp tailoring, and elevated essentials — designed for the modern man.
-</p>
-
+      {/* Left Side - Text */}
+      <div
+        className="bg-teal-800/90 backdrop-blur-lg text-white flex flex-col justify-center px-8 lg:w-1/2 w-full py-10"
+        ref={textRef}
+      >
+        {['Redefining Modern Elegance', 'A Curated Selection for Him', 'Discover timeless silhouettes, sharp tailoring, and elevated essentials — designed for the modern man.'].map(
+          (text, i) => (
+            <motion.div
+              key={i}
+              custom={i}
+              initial="hidden"
+              animate={isInView ? 'visible' : 'hidden'}
+              variants={textVariants}
+              className={i === 0
+                ? 'text-4xl lg:text-6xl font-semibold mb-4'
+                : i === 1
+                ? 'text-3xl lg:text-5xl font-semibold mb-6'
+                : 'text-sm lg:text-base mb-6'}
+            >
+              {text}
+            </motion.div>
+          )
+        )}
       </div>
 
       {/* Right Side - Image */}

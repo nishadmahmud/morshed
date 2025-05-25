@@ -23,7 +23,7 @@ const SolidTshirt = () => {
 
   useEffect(() => {
     if (bestDeals && bestDeals.data && bestDeals.data.length > 0) {
-      const limited = bestDeals.data.slice(0, 12); // ✅ Only take first 12 products
+      const limited = bestDeals.data.slice(0, 12); 
       setFilteredItems(limited);
     }
   }, [bestDeals]);
