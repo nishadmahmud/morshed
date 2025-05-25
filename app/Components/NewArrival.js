@@ -21,7 +21,8 @@ const NewArrival = () => {
 
     return (
         <div className="my-12 md:w-10/12 w-11/12 mx-auto">
-          <Heading title={'New Arrival'}/>
+          <h1 className='text-2xl text-center py-2 text-black font-semibold'>New Arrival</h1>
+          <p className='text-center w-7/12 mx-auto text-gray-800'> Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the  standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled </p>
             <div>
                 
                 {/* products */}
