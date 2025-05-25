@@ -125,16 +125,28 @@ const handleUserInfo = () => {
     }
   }
 
-  const handleChange = (e) => {
-    const value = e.target.value
-    setKeyword(value)
+ const handleChange = async (e) => {
+  const value = e.target.value;
+  setKeyword(value);
 
-    if (debounceRef.current) clearTimeout(debounceRef.current)
-
-    debounceRef.current = setTimeout(() => {
-      searchProducts(value)
-    }, 500)
+  if (value.trim() === "") {
+    setSearchedItem([]);
+    return;
   }
+
+  setIsSearching(true);
+
+  try {
+    const res = await axios.get(`/api/products/search?keyword=${encodeURIComponent(value)}`);
+    setSearchedItem(res.data?.products || []);
+  } catch (error) {
+    console.error("Search error:", error);
+    setSearchedItem([]);
+  } finally {
+    setIsSearching(false);
+  }
+};
+
 
   const handleClickOutside = useCallback(
     (event) => {
@@ -330,152 +342,106 @@ const handleUserInfo = () => {
 
         {/* Search sidebar - slides from top */}
         <div
-          data-sidebar="search"
-          className={`fixed inset-x-0 top-0 bg-white text-black z-50 transform transition-transform duration-500 ease-in-out shadow-lg ${
-            isSearchSidebarOpen ? "translate-y-0" : "-translate-y-full"
-          }`}
-        >
-          <div className="container mx-auto p-4">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-lg font-medium text-teal-800">Search Products</h2>
-              <button onClick={toggleSearchSidebar} aria-label="Close search">
-                <IoCloseSharp size={24} className="cursor-pointer text-teal-800" />
-              </button>
-            </div>
+  data-sidebar="search"
+  className={`fixed inset-0 top-0 bg-white text-black z-50 transform transition-transform duration-500 ease-in-out shadow-lg ${
+    isSearchSidebarOpen ? "translate-y-0" : "-translate-y-full"
+  }`}
+>
+  <div className="max-w-4xl mx-auto p-6">
+    <div className="flex justify-between items-center mb-6">
+      <h2 className="text-xl font-semibold text-teal-700">🔍 Search Products</h2>
+      <button onClick={toggleSearchSidebar} aria-label="Close search">
+        <IoCloseSharp size={28} className="text-teal-800 hover:text-red-600 transition" />
+      </button>
+    </div>
 
-            <div className="relative mb-6">
-              <input
-                id="search-input"
-                type="text"
-                value={keyword}
-                onChange={handleChange}
-                placeholder="Search for products..."
-                className="w-full p-3 pl-10 border border-gray-400 bg-gray-100 rounded-md focus:outline-none focus:ring-1 focus:ring-teal-500"
-              />
-              <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-                <svg
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-              </div>
-            </div>
+    <div className="relative mb-8">
+      <input
+        type="text"
+        id="search-input"
+        value={keyword}
+        onChange={handleChange}
+        placeholder="Start typing product name..."
+        className="w-full py-3 pl-12 pr-4 text-base border border-gray-300 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
+      />
+      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+      </div>
+    </div>
 
-            {/* Search results */}
-            <div className="max-h-[calc(100vh-180px)] overflow-y-auto" data-search-results>
-              {isSearching ? (
-                <div className="py-8 text-center">
-                  <div
-                    className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-teal-500 border-r-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite]"
-                    role="status"
-                  >
-                    <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                      Loading...
-                    </span>
-                  </div>
-                  <p className="mt-2 text-gray-500">Searching...</p>
-                </div>
-              ) : keyword && searchedItem.length > 0 ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {searchedItem.map((item, idx) => {
-                    const sanitizeSlug = (str) => {
-                      return str
-                        ?.toLowerCase()
-                        .replace(/\s+/g, "-") // Replace spaces with dashes
-                        .replace(/[^a-z0-9-]/g, "") // Remove special characters
-                    }
-
-                    return (
-                      <Link
-                        href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
-                        key={idx}
-                        onClick={() => {
-                          setKeyword("")
-                          setSearchedItem([])
-                          toggleSearchSidebar()
-
-                          // Handle recent view when product card is clicked
-                          if (!item?.id) return
-
-                          let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
-
-                          // Remove existing entry if present
-                          recentViews = recentViews.filter((p) => p.id !== item.id)
-
-                          // Add new entry to beginning
-                          recentViews.unshift({
-                            id: item.id,
-                            name: item.name,
-                            image: item.image_path || (item.images && item.images[0]) || noImg.src,
-                            price: item.retails_price,
-                            discount: item.discount || 0,
-                          })
-
-                          // Keep only last 6 items
-                          if (recentViews.length > 6) recentViews.pop()
-
-                          localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
-                        }}
-                        className="flex items-center gap-3 p-3 rounded-md hover:bg-gray-100 transition-colors"
-                      >
-                        <div className="w-16 h-16 bg-gray-100 rounded-md overflow-hidden flex-shrink-0">
-                          {item?.images?.length > 0 ? (
-                            <Image
-                              src={item.images[0] || "/placeholder.svg"}
-                              alt={item.name}
-                              width={64}
-                              height={64}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : item?.image_path ? (
-                            <Image
-                              src={item.image_path || "/placeholder.svg"}
-                              alt={item.name}
-                              width={64}
-                              height={64}
-                              className="w-full h-full object-cover"
-                            />
-                          ) : (
-                            <Image
-                              src={noImg || "/placeholder.svg"}
-                              alt={item.name}
-                              width={64}
-                              height={64}
-                              className="w-full h-full object-cover"
-                            />
-                          )}
-                        </div>
-                        <div className="flex-1">
-                          <h3 className="font-medium text-gray-900 line-clamp-2 text-sm">{item.name}</h3>
-                          <div className="flex items-center gap-2 mt-1">
-                            <p className="text-teal-700 font-semibold">
-                              ${(item.retails_price - (item.retails_price * (item.discount || 0)) / 100).toFixed(2)}
-                            </p>
-                            {item.discount > 0 && (
-                              <p className="text-gray-500 line-through text-xs">${item.retails_price.toFixed(2)}</p>
-                            )}
-                          </div>
-                        </div>
-                      </Link>
-                    )
-                  })}
-                </div>
-              ) : keyword ? (
-                <div className="text-center py-8 text-gray-500">No products found matching &ldquo;{keyword}&#34;</div>
-              ) : (
-                <div className="text-center py-8 text-gray-500">Start typing to search for products</div>
-              )}
-            </div>
-          </div>
+    <div className="max-h-[calc(100vh-200px)] overflow-y-auto" data-search-results>
+      {isSearching ? (
+        <div className="text-center py-8">
+          <div className="w-10 h-10 mx-auto border-4 border-teal-500 border-r-transparent rounded-full animate-spin"></div>
+          <p className="mt-3 text-gray-500">Searching...</p>
         </div>
+      ) : keyword && searchedItem.length > 0 ? (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {searchedItem.map((item, idx) => {
+            const sanitizeSlug = (str) =>
+              str?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
+
+            return (
+              <Link
+                href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
+                key={idx}
+                onClick={() => {
+                  setKeyword("");
+                  setSearchedItem([]);
+                  toggleSearchSidebar();
+
+                  let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+                  recentViews = recentViews.filter((p) => p.id !== item.id);
+                  recentViews.unshift({
+                    id: item.id,
+                    name: item.name,
+                    image: item.image_path || (item.images && item.images[0]) || noImg.src,
+                    price: item.retails_price,
+                    discount: item.discount || 0,
+                  });
+                  if (recentViews.length > 6) recentViews.pop();
+                  localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
+                }}
+                className="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition"
+              >
+                <div className="w-16 h-16 rounded-md overflow-hidden bg-gray-100">
+                  <Image
+                    src={item.image_path || item.images?.[0] || noImg || "/placeholder.svg"}
+                    alt={item.name}
+                    width={64}
+                    height={64}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-medium text-gray-900 text-sm line-clamp-2">{item.name}</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <p className="text-teal-700 font-semibold">
+                      ${(item.retails_price - (item.retails_price * (item.discount || 0)) / 100).toFixed(2)}
+                    </p>
+                    {item.discount > 0 && (
+                      <p className="text-xs text-gray-500 line-through">${item.retails_price.toFixed(2)}</p>
+                    )}
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
+      ) : keyword ? (
+        <div className="text-center py-8 text-gray-500">
+          No products found matching &ldquo;{keyword}&rdquo;
+        </div>
+      ) : (
+        <div className="text-center py-8 text-gray-400">Start typing to search for products</div>
+      )}
+    </div>
+  </div>
+</div>
+
 
         {/* Mobile search results */}
         {keyword && searchedItem.length > 0 && !isSearchSidebarOpen && (
