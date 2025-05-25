@@ -15,9 +15,9 @@ const EidCollection = () => {
   );
 
   return (
-    <div className="mt-12 w-11/12 mx-auto">
+    <div className="mt-12 w-11/12 md:w-10/12 mx-auto">
       <Heading title={'Eid Collections'} />
-      <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-6 md:col-span-3 gap-2 lg:grid-cols-4 xl:grid-cols-6 mt-7">
+      <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-6 md:col-span-3 gap-6 lg:grid-cols-4 xl:grid-cols-5 mt-7">
         {isLoading ? (
           Array.from({ length: 12 }).map((_, idx) => (
             <CardSkeleton key={idx} />

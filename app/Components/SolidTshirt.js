@@ -29,9 +29,9 @@ const SolidTshirt = () => {
   }, [bestDeals]);
 
   return (
-    <div className="lg:mt-20 mt-10 w-11/12 mx-auto">
+    <div className="lg:mt-20 mt-10 md:w-10/12 w-11/12 mx-auto">
       <Heading title={"Solid Pattern T-shirt"} />
-      <div className="grid grid-cols-2 mt-5 md:grid-cols-3 xl:grid-cols-6 lg:grid-cols-5 gap-3">
+      <div className="grid grid-cols-2 mt-5 md:grid-cols-3 xl:grid-cols-5 lg:grid-cols-4 gap-3">
         {isLoading ? (
           Array.from({ length: 6 }).map((_, idx) => (
             <CardSkeleton key={idx} />
