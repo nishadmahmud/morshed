@@ -39,12 +39,12 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="group bg-white rounded-sm transition-all duration-300 w-56 h-96 md:h-[25.5rem] relative overflow-hidden flex flex-col">
+    <div className="group bg-white rounded-sm transition-all duration-300 md:w-56 w-48 h-96 md:h-[25.5rem] relative overflow-hidden flex flex-col">
       {/* Image */}
       <Link
         href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
         onClick={updateRecentViews}
-        className="block w-full h-72 relative overflow-hidden"
+        className="block w-full md:h-72 h-64 relative overflow-hidden"
       >
         <Image
           src={frontImage}

@@ -17,6 +17,8 @@ import { useSearchParams } from "next/navigation"
 import RegisterForm from "./RegisterForm"
 import LoginForm from "./LoginForm"
 import Modal from "./Modal"
+import Navbar from "./Navbar"
+import { userId } from "../(home)/page"
 
 const Header = ({ data }) => {
   const {  getCartItems,
@@ -37,7 +39,8 @@ const Header = ({ data }) => {
     setUserInfo,
    } = useStore()
   const [keyword, setKeyword] = useState("")
-  const [searchedItem, setSearchedItem] = useState([])
+  const [searchedItem, setSearchedItem] = useState([]);
+console.log(keyword);
   const [isSearching, setIsSearching] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isSearchSidebarOpen, setIsSearchSidebarOpen] = useState(false)
@@ -57,95 +60,50 @@ const handleUserInfo = () => {
     setIsSidebarOpen((prev) => !prev)
   }
 
-  const toggleSearchSidebar = () => {
-    setIsSearchSidebarOpen((prev) => !prev)
-    if (!isSearchSidebarOpen) {
-      setTimeout(() => {
-        document.getElementById("search-input")?.focus()
-      }, 300)
-    }
-  }
+ 
 
-  const searchProducts = async (keyword) => {
-    if (!keyword.trim()) {
-      setSearchedItem([])
-      return
-    }
 
-    setIsSearching(true)
 
-    try {
-      // Replace with your actual API endpoint
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API || "https://api.example.com"}/public/search-product`,
-        {
+  // search api
+useEffect(() => {
+  if (keyword) {
+    const timer = setTimeout(() => {
+      setIsSearching(true);
+      axios
+        .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, {
           keyword,
-          user_id: "userId",
-        },
-      )
-      const result = await response.data
-      setSearchedItem(result?.data?.data || [])
-    } catch (error) {
-      console.log(error)
-      // Mock data for demonstration
-      setSearchedItem([
-        {
-          id: 1,
-          name: "Wireless Headphones",
-          images: ["/placeholder.svg?height=80&width=80"],
-          retails_price: 99.99,
-          discount: 10,
-          brand_name: "Audio Tech",
-        },
-        {
-          id: 2,
-          name: "Smartphone Case",
-          image_path: "/placeholder.svg?height=80&width=80",
-          retails_price: 19.99,
-          brand_name: "PhonePro",
-        },
-        {
-          id: 3,
-          name: "Laptop Backpack",
-          images: [],
-          retails_price: 59.99,
-          brand_name: "TravelGear",
-        },
-        {
-          id: 4,
-          name: "Smart Watch",
-          image_path: "/placeholder.svg?height=80&width=80",
-          retails_price: 149.99,
-          discount: 15,
-          brand_name: "TechWear",
-        },
-      ])
-    } finally {
-      setIsSearching(false)
-    }
-  }
+          user_id: userId,
+        })
+        .then((res) => {
+          const items = res?.data?.data?.data;
+          setSearchedItem(Array.isArray(items) ? items : []);
+          setIsSearching(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setSearchedItem([]); // prevent undefined state
+          setIsSearching(false);
+        });
+    }, 600);
 
- const handleChange = async (e) => {
-  const value = e.target.value;
-  setKeyword(value);
-
-  if (value.trim() === "") {
+    return () => clearTimeout(timer);
+  } else {
     setSearchedItem([]);
-    return;
   }
+}, [keyword]);
 
-  setIsSearching(true);
 
-  try {
-    const res = await axios.get(`/api/products/search?keyword=${encodeURIComponent(value)}`);
-    setSearchedItem(res.data?.products || []);
-  } catch (error) {
-    console.error("Search error:", error);
-    setSearchedItem([]);
-  } finally {
-    setIsSearching(false);
-  }
+ const handleChange = (e) => {
+  setKeyword(e.target.value);
 };
+
+const toggleSearchSidebar = () => {
+  setIsSearchSidebarOpen(!isSearchSidebarOpen);
+  setKeyword("");
+  setSearchedItem([]);
+};
+
+
 
 
   const handleClickOutside = useCallback(
@@ -355,22 +313,33 @@ const handleUserInfo = () => {
       </button>
     </div>
 
-    <div className="relative mb-8">
-      <input
-        type="text"
-        id="search-input"
-        value={keyword}
-        onChange={handleChange}
-        placeholder="Start typing product name..."
-        className="w-full py-3 pl-12 pr-4 text-base border border-gray-300 bg-gray-100 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500"
-      />
-      <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
-        <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-          <circle cx="11" cy="11" r="8" />
-          <line x1="21" y1="21" x2="16.65" y2="16.65" />
-        </svg>
-      </div>
-    </div>
+   <div className="relative w-full mb-8">
+  <input
+    type="text"
+    id="search"
+    value={keyword}
+    onChange={handleChange}
+    placeholder=" " // invisible but needed for `peer-placeholder-shown`
+    className="peer w-full py-3 pl-12 pr-4 text-base border-b border-gray-500 bg-transparent text-black placeholder-transparent focus:outline-none focus:border-teal-500"
+  />
+  <label
+  htmlFor="search"
+  className={`absolute left-12 text-base text-gray-400 transition-all duration-200
+    ${keyword ? 'top-0 text-sm text-teal-500' : 'top-3'}
+  `}
+>
+  Search for a product
+</label>
+
+  <div className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+    <svg className="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <circle cx="11" cy="11" r="8" stroke="currentColor" strokeWidth="2" />
+      <line x1="21" y1="21" x2="16.65" y2="16.65" stroke="currentColor" strokeWidth="2" />
+    </svg>
+  </div>
+</div>
+
+
 
     <div className="max-h-[calc(100vh-200px)] overflow-y-auto" data-search-results>
       {isSearching ? (
@@ -441,6 +410,15 @@ const handleUserInfo = () => {
     </div>
   </div>
 </div>
+
+
+ <Navbar
+          setIsLoginModal={setIsLoginModal}
+          openCart={openCart}
+          setOpenCart={setOpenCart}
+          data={data}
+          user={userInfo}
+        />
 
 
         {/* Mobile search results */}

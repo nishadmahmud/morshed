@@ -55,65 +55,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
   return (
     <div className="relative">
       {/* desktop menu */}
-      <div className="w-full bg-[#000000] text-white z-40 py-2.5 px-5 hidden items-center text-center gap-16 roboto text-sm xl:flex justify-center">
-        <div className="px-16 flex justify-between items-center ">
-          {/* <div onMouseEnter={() => setIsHovered(true)}  className='flex mr-2 items-center justify-center gap-3'>
-                    <Link href={'/'} className='font-semibold text-[14px]'>Home</Link>
-                </div> */}
-
-          {/* <hr className='border border-gray-300 w-5 rotate-90 '/> */}
-
-          <div className="flex items-center justify-center">
-            <div className="flex items-center gap-5">
-              {/* <Link className='ml-2' href='/'>
-                 <House color='gray' size={16}></House>
-                 </Link> */}
-              {data?.data.length &&
-                data?.data.slice(0, 10).map((item, idx) => {
-                  return (
-                    <Link
-                      key={idx}
-                      href={`/category/${encodeURIComponent(
-                        item?.category_id
-                      )}?category=${encodeURIComponent(
-                        item?.name
-                      )}&total=${encodeURIComponent(item?.product_count)}`}
-                      className={`text-[#ffffff] text-md text-nowrap font-medium flex items-center gap-2 hover:text-[#115e59] transition-all ease-in-out`}
-                    >
-                      <div className="flex gap-1">
-                        {/* <Image
-                          src={item.image_url}
-                          height={20}
-                          width={20}
-                          alt={item.name}
-                          className="rounded-sm"
-                        /> */}
-                        <p>{item.name}</p>
-                      </div>
-                    </Link>
-                  );
-                })}
-            </div>
-          </div>
-        </div>
-
-        {/* <div className="text-gray-100 font-semibold flex justify-end items-center gap-5">
-  <Link
-    href="/"
-    className="text-transparent bg-clip-text bg-gradient-to-r from-[#d50233] to-[#115e59] hover:scale-105 hover:font-bold animate-pulse drop-shadow-lg flex items-center gap-1"
-  >
-    <IoNewspaperOutline size={20} color='#115e59'></IoNewspaperOutline>
-    Tech News
-  </Link>
-  <Link
-    href="/blogs"
-    className="text-transparent bg-clip-text bg-gradient-to-r from-[#115e59] to-red-700 hover:scale-105 hover:font-bold animate-pulse drop-shadow-lg flex items-center gap-1"
-  >
-    <NotebookPen size={19} color='#115e59'></NotebookPen>
-    Blog
-  </Link>
-</div> */}
-      </div>
+      
 
       {/* mobile & tablet menu */}
       <div className="relative">
