@@ -21,22 +21,20 @@ import Navbar from "./Navbar"
 import { userId } from "../(home)/page"
 
 const Header = ({ data }) => {
-  const {  getCartItems,
-    refetch,
-    setRefetch,
+  const {  
+ 
     setOpenCart,
     openCart,
-    getWishList,
+
     isLoginModal,
     setIsLoginModal,
-    setToken,
-    setHasToken,
+   
     setIsRegistered,
     isRegistered,
     setReload,
-    reload,
+
     userInfo,
-    setUserInfo,
+   
    } = useStore()
   const [keyword, setKeyword] = useState("")
   const [searchedItem, setSearchedItem] = useState([]);

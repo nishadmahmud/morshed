@@ -17,7 +17,7 @@ const NewArrival = () => {
     `${process.env.NEXT_PUBLIC_API}/public/products/${userId}?page=1&limit=6`,
     fetcher
   );
-    // console.log('best saller', newArrival);
+    console.log('new arrival', newArrival);
 
     return (
         <div className="my-12 md:w-10/12 w-11/12 mx-auto">
