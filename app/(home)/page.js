@@ -13,6 +13,7 @@ import SolidTshirt from "../Components/SolidTshirt";
 import EidCollection from "../Components/EidCollection";
 import OfferPage from "../Components/OfferPage";
 import HalfSelveePolo from "../Components/HalfSelveePolo";
+import BenefitsSection from "../Components/BenefitsSection";
 
 
 export const userId = 203;
@@ -68,6 +69,7 @@ export default async function Home() {
         <BannerSection banner={banner}/>
         <HalfSelveePolo></HalfSelveePolo>
         <OfferPage></OfferPage>
+        <BenefitsSection></BenefitsSection>
         {/* <FeaturedProducts banner={banner}/> */}
         {/* <Brands brands={brands}/>     */}
         {/* <TopBrandProducts brands={brands}/>  */}
