@@ -39,10 +39,10 @@ const MensBanner = ({ banner }) => {
               animate={isInView ? 'visible' : 'hidden'}
               variants={textVariants}
               className={i === 0
-                ? 'text-4xl lg:text-6xl font-semibold mb-4'
+                ? 'text-3xl lg:text-6xl font-semibold mb-4 text-center md:text-start'
                 : i === 1
-                ? 'text-3xl lg:text-5xl font-semibold mb-6'
-                : 'text-sm lg:text-base mb-6'}
+                ? 'text-2xl lg:text-5xl font-semibold mb-6 text-center md:text-start'
+                : 'text-sm lg:text-base mb-6 text-center md:text-start'}
             >
               {text}
             </motion.div>

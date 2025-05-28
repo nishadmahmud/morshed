@@ -36,26 +36,33 @@ const StoreProvider = ({children}) => {
         }
     },[])
 
-    const handleCart = (item,quantity) => {
-        if(!isMounted) return;
-        setRefetch(true);
-        const newItem = {...item,retails_price : item.price ?? item.retails_price}
-        const cartItems =JSON.parse(localStorage.getItem('cart')) || [];
-        const existingProducts = cartItems.find(product => product.id === item.id);
-        if ((newItem.status && newItem.status.toLowerCase() !== "stock out") || newItem.current_stock > 0)
-            {
-            if(existingProducts){
-                existingProducts.quantity += quantity;
-            }else{
-                const itemWithQty = {...newItem,'quantity' : quantity}
-                cartItems.push(itemWithQty);
-            }
-            toast.success('Item added to cart successfully');
-        }else{
-            toast.error('Out of stock!')
-        }
-        localStorage.setItem('cart',JSON.stringify(cartItems));
+   const handleCart = (item, quantity) => {
+    if (!isMounted) return;
+
+    setRefetch(true);
+    const newItem = { ...item, retails_price: item.price ?? item.retails_price };
+    const cartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    const existingProduct = cartItems.find(product => product.id === item.id);
+
+    // Check stock
+    const isInStock = (newItem.status && newItem.status.toLowerCase() !== "stock out") || newItem.current_stock > 0;
+    if (!isInStock) {
+        toast.error('Out of stock!');
+        return;
     }
+
+    // Prevent duplicates
+    if (existingProduct) {
+        toast.error('Item already in cart');
+        return;
+    }
+
+    const itemWithQty = { ...newItem, quantity };
+    cartItems.push(itemWithQty);
+    localStorage.setItem('cart', JSON.stringify(cartItems));
+    toast.success('Item added to cart successfully');
+};
+
 
     const getCartItems = () => {
         if(!isMounted) return [];

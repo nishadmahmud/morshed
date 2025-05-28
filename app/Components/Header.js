@@ -9,8 +9,6 @@ import { IoCloseSharp, IoSearch } from "react-icons/io5"
 import axios from "axios"
 import noImg from "/public/no-image.jpg"
 import Search from "./Search"
-
-import companyLogo from "/public/morshed-mart-logo-removebg-preview.png"
 import useStore from "../CustomHooks/useStore"
 import CartItems from "./CartItems"
 import { useSearchParams } from "next/navigation"
@@ -25,14 +23,12 @@ const Header = ({ data }) => {
  
     setOpenCart,
     openCart,
-
     isLoginModal,
     setIsLoginModal,
-   
     setIsRegistered,
     isRegistered,
     setReload,
-
+    getCartItems,
     userInfo,
    
    } = useStore()
@@ -51,9 +47,8 @@ const handleUserInfo = () => {
   };
   // Mock user and cart data
   const user = typeof window !== "undefined" ? localStorage.getItem("user") : null
-  const cartItems = []
-  const cartTotal = cartItems?.length || 0
-
+   const items =  getCartItems();
+   const total = items?.reduce((acc,curr) => acc += curr.quantity,0) || 0;
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev)
   }
@@ -79,7 +74,7 @@ useEffect(() => {
         })
         .catch((err) => {
           console.error(err);
-          setSearchedItem([]); // prevent undefined state
+          setSearchedItem([]); 
           setIsSearching(false);
         });
     }, 600);
@@ -106,7 +101,7 @@ const toggleSearchSidebar = () => {
 
   const handleClickOutside = useCallback(
     (event) => {
-      // Close sidebars when clicking outside
+     
       if (
         isSidebarOpen &&
         !event.target.closest('[data-sidebar="mobile"]') &&
@@ -215,9 +210,9 @@ const toggleSearchSidebar = () => {
             >
               <div className="relative">
                 <ShoppingBag size={22} className="text-black" />
-                {cartTotal > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-black text-teal-800 text-[10px] font-bold rounded-full w-4 h-4 flex items-center justify-center">
-                    {cartTotal}
+                {total > 0 && (
+                  <span className="absolute -top-1 -right-0 bg-black text-white text-[8px] rounded-full w-3 h-3 flex items-center justify-center">
+                    {total}
                   </span>
                 )}
               </div>
@@ -240,61 +235,71 @@ const toggleSearchSidebar = () => {
 
         {/* Mobile sidebar */}
         <div
-          data-sidebar="mobile"
-          className={`fixed top-0 left-0 w-3/5 max-w-xs bg-white text-black px-5 pt-5 pb-[4.5rem] z-50 transform transition-all duration-300 ease-in-out h-full shadow-xl ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
-        >
-          <div className="flex justify-between items-center p-2 border-b-2 border-teal-800 mb-4">
-            <Link href={"/"} onClick={toggleSidebar}>
-              <div className="text-teal-800 flex items-center justify-center">
-                <span className="text-sm font-bold">Morshed Mart</span>
-              </div>
-            </Link>
-            <button onClick={toggleSidebar} aria-label="Close menu" className="text-teal-800">
-              <IoCloseSharp size={24} className="cursor-pointer" />
-            </button>
-          </div>
+  data-sidebar="mobile"
+  className={`fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white text-gray-800 z-50 transform transition-transform duration-300 ease-in-out shadow-lg ${
+    isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+  }`}
+>
+  {/* Header */}
+  <div className="flex justify-between items-center p-4 border-b">
+    <Link href="/" onClick={toggleSidebar} className="text-xl font-bold text-teal-700">
+      Morshed Mart
+    </Link>
+    <button onClick={toggleSidebar} aria-label="Close sidebar">
+      <IoCloseSharp size={24} className="text-gray-600 hover:text-red-500 transition" />
+    </button>
+  </div>
 
-          <h3 className="font-medium text-teal-800 mb-2">Categories</h3>
-          <ul className="space-y-3 px-2">
-            {data?.data?.map((item, idx) => (
-              <li key={idx}>
-                <Link
-                  onClick={toggleSidebar}
-                  href={`/category/${encodeURIComponent(item?.category_id || "")}?category=${encodeURIComponent(item?.name || "")}&total=${encodeURIComponent(item?.product_count || 0)}`}
-                  className="text-gray-700 text-sm hover:text-teal-800 transition-all duration-200 hover:font-semibold flex items-center gap-1 py-1"
-                >
-                  {item?.name || `Category ${idx + 1}`}
-                </Link>
-              </li>
-            ))}
-          </ul>
+  {/* Categories */}
+  <div className="p-4 overflow-y-auto h-[calc(100vh-120px)]">
+    <h3 className="text-sm font-semibold text-teal-700 mb-3">Categories</h3>
+    <ul className="space-y-2">
+      {data?.data?.map((item, idx) => (
+        <li key={idx}>
+          <Link
+            onClick={toggleSidebar}
+            href={`/category/${encodeURIComponent(item?.category_id || "")}?category=${encodeURIComponent(item?.name || "")}&total=${encodeURIComponent(item?.product_count || 0)}`}
+            className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-teal-50 transition"
+          >
+            <span className="text-sm font-medium">{item?.name || `Category ${idx + 1}`}</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
 
-          <div className="flex flex-col gap-3 font-medium text-teal-800 pt-6 mt-6 border-t">
-            <Link
-              onClick={toggleSidebar}
-              className="flex items-center gap-2 hover:translate-x-1 transition-transform duration-200"
-              href="/offer"
-            >
-              <Gift size={16} /> <span>Latest Offer</span>
-            </Link>
-            <Link
-              onClick={toggleSidebar}
-              className="flex items-center gap-2 hover:translate-x-1 transition-transform duration-200"
-              href="/blogs"
-            >
-              <NotebookPen size={16} /> <span>Blog</span>
-            </Link>
-            <Link
-              onClick={toggleSidebar}
-              className="flex items-center gap-2 hover:translate-x-1 transition-transform duration-200"
-              href="/about-us"
-            >
-              <FaUsers size={16} /> <span>About Us</span>
-            </Link>
-          </div>
-        </div>
+    {/* Divider */}
+    <hr className="my-5 border-t" />
+
+    {/* Navigation */}
+    <div className="space-y-4">
+      <Link
+        onClick={toggleSidebar}
+        className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-teal-50 transition"
+        href="/offer"
+      >
+        <Gift size={18} className="text-teal-600" />
+        <span className="text-sm font-medium">Latest Offer</span>
+      </Link>
+      <Link
+        onClick={toggleSidebar}
+        className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-teal-50 transition"
+        href="/blogs"
+      >
+        <NotebookPen size={18} className="text-teal-600" />
+        <span className="text-sm font-medium">Blog</span>
+      </Link>
+      <Link
+        onClick={toggleSidebar}
+        className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-teal-50 transition"
+        href="/about-us"
+      >
+        <FaUsers size={18} className="text-teal-600" />
+        <span className="text-sm font-medium">About Us</span>
+      </Link>
+    </div>
+  </div>
+</div>
+
 
         {/* Search sidebar - slides from top */}
         <div

@@ -9,6 +9,7 @@ import { Suspense } from "react";
 import Loader from "../Components/Loader";
 import Compare from "../Components/Compare";
 import TawkTo from "../Components/TawkTo";
+import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -43,7 +44,7 @@ export default async function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased nunito`}
       >
-        
+        <Toaster></Toaster>
       <StoreProvider>
           <Suspense fallback={<Loader />}>
           <div>

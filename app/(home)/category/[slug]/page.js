@@ -4,6 +4,8 @@ import React, { useEffect, useState, useRef } from "react"
 import { useSearchParams } from "next/navigation"
 import useSWR from "swr"
 import Image from "next/image"
+import { FaHeart, FaRegHeart } from "react-icons/fa6"
+import useWishlist from "@/app/CustomHooks/useWishlist"
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -12,7 +14,7 @@ export default function ProductListing({ params }) {
   const searchedCategory = searchParams.get("category") || "All Products"
   const searchedTotal = searchParams.get("total") || "100"
 
-  const limit = 20
+  const limit = 20;
   const totalPage = Math.ceil(Number.parseInt(searchedTotal) / limit)
   const { slug: id } = params
 
@@ -43,6 +45,9 @@ export default function ProductListing({ params }) {
     `${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`,
     fetcher,
   )
+
+
+  console.log(products?.data);
 
   useEffect(() => {
     if (products) {
@@ -124,6 +129,7 @@ export default function ProductListing({ params }) {
       [section]: !prev[section],
     }))
   }
+
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl text-black">
@@ -716,6 +722,9 @@ export default function ProductListing({ params }) {
 function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false)
 
+  const { toggleWishlist, isInWishlist } = useWishlist();
+
+
   return (
     <div className="group relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <div className="aspect-[3/4] overflow-hidden rounded-md bg-gray-100 relative">
@@ -728,26 +737,24 @@ function ProductCard({ product }) {
         />
 
         {/* Quick actions */}
-        <div
-          className={`absolute top-0 right-0 p-2 transition-opacity duration-200 ${isHovered ? "opacity-100" : "opacity-0"}`}
-        >
-          <button className="flex items-center justify-center h-8 w-8 rounded-full bg-white text-gray-900 shadow-sm hover:bg-gray-100">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-            </svg>
-            <span className="sr-only">Add to wishlist</span>
-          </button>
-        </div>
+         <div
+                className="absolute top-5 right-3 p-1.5 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  toggleWishlist(product);
+                }}
+                title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+              >
+                {isInWishlist(product.id) ? (
+                  <FaHeart
+                    color="teal"
+                    size={18}
+                    className="transition-all duration-300 animate-heart-bounce"
+                  />
+                ) : (
+                  <FaRegHeart color="black" size={18} className="transition-all duration-300" />
+                )}
+              </div>
 
         {/* New badge */}
         {product.is_new && (
@@ -759,13 +766,13 @@ function ProductCard({ product }) {
         )}
 
         {/* Quick shop button */}
-        <div
+        <z
           className={`absolute bottom-0 inset-x-0 flex justify-center p-4 transition-all duration-200 ${isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
         >
           <button className="w-full py-2 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors">
             Quick Shop
           </button>
-        </div>
+        </z>
       </div>
 
       <div className="mt-3">

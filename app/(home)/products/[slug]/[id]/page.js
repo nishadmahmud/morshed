@@ -184,6 +184,7 @@ const ProductPage = ({ params }) => {
     <section className=" text-black lg:pt-16 md:pt-16 pt-14">
       <div className="px-4 lg:px-8 pt-6 lg:pt-12 mx-auto max-w-7xl">
         <div className="flex flex-col md:flex-row gap-8 mb-12">
+
           {/* Product Images */}
           <div className="md:w-1/2">
             <div className="flex flex-col-reverse md:flex-row gap-4">
@@ -274,7 +275,7 @@ const ProductPage = ({ params }) => {
             </p>
 
             {/* Color Selection (Demo) */}
-            <div className="mb-6">
+            {/* <div className="mb-6">
               <h3 className="font-medium text-sm mb-3">Color: {selectedColor}</h3>
               <div className="flex gap-3">
                 {demoColors.map((color) => (
@@ -290,7 +291,7 @@ const ProductPage = ({ params }) => {
                   </button>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Size Selection (Demo) */}
             <div className="mb-6">

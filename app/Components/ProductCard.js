@@ -39,12 +39,12 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="group bg-white rounded-sm transition-all duration-300 md:w-56 w-48 h-96 md:h-[25.5rem] relative overflow-hidden flex flex-col">
+    <div className="group bg-white rounded-sm transition-all duration-300 md:w-56 w-44 h-[23rem] md:h-[25.5rem] relative overflow-hidden flex flex-col">
       {/* Image */}
       <Link
         href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
         onClick={updateRecentViews}
-        className="block w-full md:h-72 h-64 relative overflow-hidden"
+        className="block w-full md:h-72 h-56 relative overflow-hidden"
       >
         <Image
           src={frontImage}
@@ -57,7 +57,7 @@ const ProductCard = ({ product }) => {
 
       {/* Discount Tag */}
       {product?.discount && (
-        <span className="absolute top-3 left-2 bg-red-600 text-white text-xs font-bold py-1 px-2 rounded z-10">
+        <span className="absolute top-3 left-2 bg-gray-800 text-white text-xs font-semibold py-1 px-2 rounded z-10">
           SAVE {product.discount}%
         </span>
       )}
@@ -113,9 +113,8 @@ const ProductCard = ({ product }) => {
 
           <button
             onClick={(e) => {
-              e.preventDefault();
-              handleCart(product, 1);
-            }}
+            e.preventDefault(), handleCart(product, 1);
+          }}
             className="p-2 rounded-full hover:bg-gray-100 text-black transition"
             title="Add to cart"
           >

@@ -1,10 +1,5 @@
 'use client'
 import React from 'react';
-import Heading from '../CustomHooks/heading';
-import useStore from '../CustomHooks/useStore';
-import Link from 'next/link';
-import SubHeading from '../CustomHooks/subHeading';
-import Image from 'next/image';
 import useSWR from 'swr';
 import { fetcher, userId } from '../(home)/page';
 import CardSkeleton from './CardSkeleton';
@@ -12,7 +7,7 @@ import ProductCard from './ProductCard';
 
 
 const NewArrival = () => {
-    const {handleCart,handleBuy} = useStore();
+   
      const { data: newArrival, isLoading } = useSWR(
     `${process.env.NEXT_PUBLIC_API}/public/products/${userId}?page=1&limit=6`,
     fetcher
@@ -26,7 +21,7 @@ const NewArrival = () => {
             <div>
                 
                 {/* products */}
-                <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-10 md:col-span-3 gap-6 lg:grid-cols-3 xl:grid-cols-5 mt-7">
+                <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-10 md:col-span-3 gap-5 lg:grid-cols-3 xl:grid-cols-5 mt-7">
                 {
                     isLoading ?
                     <div className='col-span-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-4'>

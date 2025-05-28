@@ -217,7 +217,7 @@ const CartItems = () => {
         className={`overlay z-20 ${openCart ? "active" : ""}`}
         onClick={() => setOpenCart(!openCart)}
       ></div>
-      <div className="fixed bg-white text-black w-96  top-0 right-0 flex flex-col h-screen overflow-y-scroll z-50">
+      <div className="fixed lg:max-w-96 max-w-72 bg-white text-black w-96  top-0 right-0 flex flex-col h-screen overflow-y-scroll z-50">
       <div className="bg-[#ffffff] border-b text-black flex p-5 items-center justify-between">
          
           <div className="flex items-center gap-2">

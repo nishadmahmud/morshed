@@ -105,13 +105,14 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                 <span className="text-white">Account</span>
               </Link>
             ) : (
-              <div
-                onClick={() => setIsLoginModal(true)}
+              <Link 
+              href="/login"
+               
                 className="flex flex-col items-center text-sm text-[#115e59] hover:text-white cursor-pointer"
               >
                 <LogIn className="text-2xl" />
                 <span className="text-white">Login</span>
-              </div>
+              </Link>
             )}
           </div>
         </div>
