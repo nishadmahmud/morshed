@@ -218,6 +218,8 @@ const toggleSearchSidebar = () => {
               </div>
             </Link>
 
+            
+
             {/* User account */}
             {!user ? (
               <Link href='/login'  className="hidden lg:flex items-center cursor-pointer" aria-label="Login">
