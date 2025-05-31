@@ -77,8 +77,9 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
               <span className="text-white">Offers</span>
             </Link>
 
-            <div
-              onClick={() => setOpenCart(!openCart)}
+            <Link
+            href='/cart'
+              
               className="flex flex-col items-center text-sm hover:text-white text-[#115e59]"
             >
               <div>
@@ -88,7 +89,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                 </p>
               </div>
               <span className="text-white">Cart</span>
-            </div>
+            </Link>
             {loggedInUser ? (
               <Link
                 href="/profileDashboard"

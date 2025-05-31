@@ -31,34 +31,53 @@ const ProductCard = ({ product }) => {
     ? (product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)
     : null;
 
-  const frontImage =
-    product?.image_path || (Array.isArray(product?.images) && product.images[0]) || noImg;
-
   const sanitizeSlug = (str) => {
-    return str?.toLowerCase().replace(/\s+/g, "-").replace(/[^a-z0-9-]/g, "");
-  };
+  return str
+    ?.toLowerCase()
+    .split(" ")
+    .slice(0, 2)
+    .join(" ")
+    .replace(/\s+/g, "-")
+    .replace(/[^a-z0-9-]/g, "");
+};
 
   return (
     <div className="group bg-white rounded-sm transition-all duration-300 md:w-56 w-44 h-[23rem] md:h-[25.5rem] relative overflow-hidden flex flex-col">
+      
       {/* Image */}
-      <Link
-        href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-        onClick={updateRecentViews}
-        className="block w-full md:h-72 h-56 relative overflow-hidden"
-      >
-        <Image
-          src={frontImage}
-          alt={product?.name}
-          fill
-          unoptimized
-          className="object-cover transition-transform duration-300 group-hover:scale-110"
-        />
-      </Link>
+   <Link
+  href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
+  onClick={updateRecentViews}
+  className="block w-full md:h-72 h-56 relative overflow-hidden"
+>
+  {/* Base image */}
+  <Image
+    src={product?.image_path || noImg}
+    alt={product?.name}
+    fill
+    unoptimized
+    className="object-cover transition-opacity duration-300"
+  />
+
+  {/* Hover image (fades in on hover) */}
+  {product?.image_path1 && (
+    <Image
+      src={product.image_path1}
+      alt={`${product?.name} hover`}
+      fill
+      unoptimized
+      className="object-cover absolute top-0 left-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+    />
+  )}
+</Link>
+
+
+
 
       {/* Discount Tag */}
       {product?.discount && (
-        <span className="absolute top-3 left-2 bg-gray-800 text-white text-xs font-semibold py-1 px-2 rounded z-10">
-          SAVE {product.discount}%
+        <span className="absolute top-3 left-2 bg-gray-200 text-red-500 text-xs font-semibold py-1 px-2 rounded z-10">
+          -{product.discount}%
         </span>
       )}
 
@@ -83,7 +102,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content */}
-      <div className="relative flex-grow  pb-16"> {/* add pb-16 for spacing */}
+      <div className="relative flex-grow pb-16">
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
           onClick={updateRecentViews}
@@ -94,7 +113,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Fixed bottom bar */}
-      <div className="absolute bottom-0 left-0 w-full  py-2 bg-white">
+      <div className="absolute bottom-0 left-0 w-full py-2 bg-white">
         <div className="flex items-center justify-between">
           {product?.discount ? (
             <div className="flex flex-col">
@@ -113,8 +132,9 @@ const ProductCard = ({ product }) => {
 
           <button
             onClick={(e) => {
-            e.preventDefault(), handleCart(product, 1);
-          }}
+              e.preventDefault();
+              handleCart(product, 1);
+            }}
             className="p-2 rounded-full hover:bg-gray-100 text-black transition"
             title="Add to cart"
           >
@@ -123,23 +143,8 @@ const ProductCard = ({ product }) => {
         </div>
       </div>
 
-      {/* Heart animation */}
-      <style jsx>{`
-        @keyframes heart-bounce {
-          0% {
-            transform: scale(1);
-          }
-          50% {
-            transform: scale(1.3);
-          }
-          100% {
-            transform: scale(1);
-          }
-        }
-        .animate-heart-bounce {
-          animation: heart-bounce 0.4s ease-in-out;
-        }
-      `}</style>
+ 
+      
     </div>
   );
 };

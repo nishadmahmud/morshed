@@ -64,7 +64,7 @@ const FeaturedCategories = ({ categories }) => {
                 )}?category=${encodeURIComponent(
                   category?.name
                 )}&total=${encodeURIComponent(category?.product_count)}`}
-                className="bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-shadow duration-300 relative block lg:w-60"
+                className="bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-shadow duration-300 relative block lg:w-56 h-60"
               >
                 <div className="relative h-56 md:h-60">
                   <Image

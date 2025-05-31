@@ -58,7 +58,7 @@ export default async function RootLayout({ children }) {
         {/* <div className="fixed cursor-pointer lg:bottom-20 bottom-20 right-5 bg-green-700 p-10">
         <TawkTo className="bottom-9"></TawkTo>
         </div> */}
-            {/* <AvatarChat /> */}
+            <AvatarChat />
           </div>
           <Footer/>
           </Suspense>

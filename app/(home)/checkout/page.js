@@ -1,117 +1,227 @@
-"use client"
-import DeliveryForm from '@/app/Components/DeliveryForm';
-import WithAuth from '@/app/Components/WithAuth';
-import useStore from '@/app/CustomHooks/useStore';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import toast from 'react-hot-toast';
 
 
+"use client";
+// import DeliveryForm from "@/app/Components/DeliveryForm";
+import useStore from "@/app/CustomHooks/useStore";
+import Image from "next/image";
+import { useState } from "react";
+import { ShoppingCart, Package } from "lucide-react";
+import dynamic from "next/dynamic";
+import WithAuth from "@/app/Components/WithAuth";
+const DeliveryForm = dynamic(() => import('../../Components/DeliveryForm'), {
+  ssr: false,
+});
 const CheckoutPage = () => {
-    const [shippingFee, setShippingFee] = useState(70); 
-    const {getCartItems} = useStore();
-    const router = useRouter();
-    const cartItems = getCartItems();
-    const quantity = cartItems.reduce((acc,curr) => acc + curr.quantity,0);
-    const Subtotal = (cartItems.reduce(
-        (prev, curr) => prev + ((curr?.discount ?  (curr?.retails_price - ((curr?.retails_price * curr.discount) / 100).toFixed(0)) * curr.quantity  : curr?.retails_price * curr.quantity)),
-        0
-      )).toFixed(2) ;
+  const { getCartItems } = useStore();
 
+  const cartItems = getCartItems();
+  const quantity = cartItems.reduce((acc, curr) => acc + curr.quantity, 0);
 
-    // useEffect(() => {
-    // },[cartItems.length,router])
-    if(!cartItems.length){
-        toast('Please add atleast one product in cart');
-        router.push('/')
-    }
+  const Subtotal = cartItems.reduce((prev, curr) => {
+    const priceAfterDiscount = curr.discount
+      ? curr.discount_type === "Fixed"
+        ? curr.retails_price - curr.discount
+        : curr.retails_price - (curr.retails_price * curr.discount) / 100
+      : curr.retails_price;
 
+    return prev + priceAfterDiscount * curr.quantity;
+  }, 0);
 
+  const SubtotalWithoutDiscount = cartItems.reduce((prev, curr) => {
+    return prev + curr.retails_price * curr.quantity;
+  }, 0);
 
-    return (
-            <div className='text-black flex flex-col-reverse md:flex-col-reverse lg:grid lg:grid-cols-3 relative  pt-16 lg:pt-32 md:pt-28 w-11/12 mx-auto'>
-            <div className='col-span-1 md:col-span-2 border-gray-300 border-r '>
-                <DeliveryForm shippingFee={shippingFee} setShippingFee={setShippingFee} cartItems={cartItems} cartTotal={Subtotal} />
+  const TotalDiscount = cartItems.reduce((prev, curr) => {
+    if (!curr.discount) return prev;
+
+    const discountAmount =
+      curr.discount_type === "Fixed"
+        ? curr.discount
+        : (curr.retails_price * curr.discount) / 100;
+
+    return prev + discountAmount * curr.quantity;
+  }, 0);
+
+  const [shippingFee, setShippingFee] = useState(70);
+
+  return (
+    <div className="min-h-screen bg-gray-50 pt-14">
+      {/* Header */}
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-10">
+        <div className="w-full md:w-11/12 mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between h-12">
+            <div className="flex items-center space-x-2">
+              <Package className="h-8 w-8 text-[#115e59]" />
+              <h1 className="text-xl sm:text-2xl  font-bold text-gray-900">
+                Checkout
+              </h1>
             </div>
-
-            {
-                cartItems.length > 0 ?  
-                <div className='col-span-1 bg-[#FAFAFA] md:py-10 md:px-5 space-y-5 rounded-tr-lg rounded-br-lg'>
-                <div className=' w-full gap-2 '>
-                {
-                    cartItems.length > 0 &&
-                        cartItems.map((item) => {
-                            return <div key={item.id} className='flex justify-between items-center '>
-                                <div className='flex gap-3 items-center '>
-                                    <div className='relative  p-2 '>
-                                    {
-                                       item?.images?.length > 0 ? (
-                                        <Image
-                                            height={60} 
-                                            width={60} 
-                                            alt="product" unoptimized
-                                            src={item.images[0]} 
-                                            className="border border-gray-300" 
-                                        />
-                                    ) : item?.image_path ? (
-                                        <Image 
-                                            height={60} 
-                                            width={60} 
-                                            alt="product" 
-                                            src={item.image_path} 
-
-                                            className="border border-gray-300" 
-                                        />
-                                    ) : (
-                                        <Image
-                                        src={'https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg'}
-                                        height={60} 
-                                        width={60}
-                                        loading='lazy'
-                                        alt="mobile-phone"
-                                        />
-                                    )
-                                    }
-                                   
-                                    
-                                    <p className='absolute bg-[rgba(0,0,0,0.5)] text-[12px] text-white flex items-center justify-center w-6 h-6 -right-1 -top-2 rounded-full'>{item.quantity}</p>
-                                    </div>
-                                    <h3 className='md:w-[225px] w-44 line-clamp-2 text-ellipsis text-wrap'>{item.name}</h3>
-                                   
-                                </div>
-                                <p>{item?.discount ? item?.retails_price - ((item?.retails_price * item.discount) / 100).toFixed(0) : item?.retails_price} ৳</p>
-                            </div>
-                        })     
-                   
-                }
-                
-                </div>
-                <div className='flex gap-4'>
-                    <input type="text" className='p-3 text-black bg-white outline-none border w-96 rounded-md' placeholder='Discount Code '/>
-                    <button type="submit" className='border p-3 bg-[#F1F1F1] text-gray-400 rounded-md'>Apply</button>
-                </div>
-
-                <div className='flex justify-between text-sm font-medium'>
-                    <p className='flex gap-2 items-center'>Subtotal<span>{quantity}</span></p>
-                    <p>{Subtotal}৳</p>
-                </div>
-                <div className="flex items-center justify-between text-sm font-medium">
-                    <p>Shipping</p>
-                    <p>{shippingFee}৳</p>
-                </div>
-                <div className='flex justify-between items-center font-medium text-gray-600 text-lg pb-12'>
-                    <p>Total</p>
-                    <p>{((Number(Subtotal) || 0) + (Number(shippingFee) || 0)).toFixed(2)}৳</p>
-                </div>
+            <div className="flex items-center space-x-2 text-sm text-gray-600">
+              <ShoppingCart className="h-4 w-4" />
+              <span>{quantity} items</span>
             </div>
-                : <p className='font-bold text-2xl text-center'>Cart is Empty</p>
-            }
-
-            
+          </div>
         </div>
-    );
-};
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
+        <div className="grid lg:grid-cols-12 gap-4 lg:gap-8">
+          {/* Main Content */}
+          <div className="lg:col-span-7 order-last lg:order-first">
+            <DeliveryForm
+              shippingFee={shippingFee}
+              setShippingFee={setShippingFee}
+              cartItems={cartItems}
+              cartTotal={Subtotal}
+            />
+          </div>
+
+          {/* Order Summary Sidebar */}
+          <div className="lg:col-span-5 mt-4 md:mt-8 lg:mt-0 order-first lg:order-last">
+            <div className="bg-white rounded-xl shadow-sm border border-gray-200 sticky top-24">
+              {cartItems.length > 0 ? (
+                <>
+                  {/* Header */}
+                  <div className="px-6 py-4 border-b border-gray-200">
+                    <h2 className="text-lg font-semibold text-gray-900 flex items-center">
+                      <ShoppingCart className="h-5 w-5 mr-2 text-[#115e59]" />
+                      Order Summary
+                    </h2>
+                  </div>
+
+                  {/* Cart Items */}
+                  <div className="px-6 py-4 max-h-96 overflow-y-auto">
+                    <div className="space-y-4">
+                      {cartItems.map((item) => (
+                        <div
+                          key={item.id}
+                          className="flex items-start space-x-4 p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
+                        >
+                          <div className="relative flex-shrink-0">
+                            {item?.images?.length > 0 ? (
+                              <Image
+                                height={80}
+                                width={80}
+                                alt="product"
+                                src={item.images[0] || "/placeholder.svg"}
+                                className="rounded-lg border border-gray-200 object-cover"
+                              />
+                            ) : item?.image_path ? (
+                              <Image
+                                height={80}
+                                width={80}
+                                alt="product"
+                                src={item.image_path || "/placeholder.svg"}
+                                className="rounded-lg border border-gray-200 object-cover"
+                              />
+                            ) : (
+                              <Image
+                                src="https://i.postimg.cc/ZnfKKrrw/Whats-App-Image-2025-02-05-at-14-10-04-beb2026f.jpg"
+                                height={80}
+                                width={80}
+                                loading="lazy"
+                                alt="mobile-phone"
+                                className="rounded-lg border border-gray-200 object-cover"
+                              />
+                            )}
+                            <div className="absolute -top-2 -right-2 bg-[#115e59] text-white text-xs font-medium rounded-full h-6 w-6 flex items-center justify-center">
+                              {item.quantity}
+                            </div>
+                          </div>
+
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">
+                              {item.name}
+                            </h3>
+                            <div className="flex items-center justify-between">
+                              <div className="text-sm text-gray-600">
+                                Qty: {item.quantity}
+                              </div>
+                              <div className="text-sm font-semibold text-gray-900">
+                                ৳{item?.retails_price}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Price Breakdown */}
+                  <div className="px-6 py-4 border-t border-gray-200 space-y-3">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">
+                        Subtotal ({quantity} items)
+                      </span>
+                      <span className="font-medium text-gray-900">
+                        ৳{SubtotalWithoutDiscount}
+                      </span>
+                    </div>
+
+                    {TotalDiscount > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Discount</span>
+                        <span className="font-medium text-green-600">
+                          -৳{TotalDiscount}
+                        </span>
+                      </div>
+                    )}
+
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Shipping</span>
+                      <span className="font-medium text-gray-900">
+                        ৳{shippingFee}
+                      </span>
+                    </div>
+
+                    <div className="border-t border-gray-200 pt-3">
+                      <div className="flex justify-between">
+                        <span className="text-lg font-semibold text-gray-900">
+                          Total
+                        </span>
+                        <span className="text-lg font-bold text-[#115e59]">
+                          ৳
+                          {(Number.parseInt(Subtotal) + shippingFee).toFixed(2)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Security Badge */}
+                  <div className="px-6 py-4 bg-gray-50 rounded-b-xl">
+                    <div className="flex items-center justify-center space-x-2 text-xs text-gray-600">
+                      <svg
+                        className="h-4 w-4 text-green-500"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                      <span>Secure checkout powered by SSL encryption</span>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <div className="px-6 py-12 text-center">
+                  <ShoppingCart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                    Your cart is empty
+                  </h3>
+                  <p className="text-gray-600">
+                    Add some products to get started
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export default WithAuth(CheckoutPage);

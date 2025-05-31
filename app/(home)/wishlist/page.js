@@ -9,8 +9,8 @@ const WishlistPage = () => {
   const { wishlist, toggleWishlist } = useWishlist();
 
   return (
-    <div className="p-5 pt-20 text-black">
-      <h2 className="text-2xl font-bold mb-4">My Wishlist</h2>
+    <div className="p-5 pt-20 text-black w-11/12 mx-auto">
+      <h2 className="text-2xl flex items-center gap-1 font-bold mb-4"><Heart></Heart> My Wishlist</h2>
       {wishlist.length === 0 ? (
         <p>No items in wishlist.</p>
       ) : (

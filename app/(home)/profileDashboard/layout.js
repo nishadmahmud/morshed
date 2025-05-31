@@ -52,7 +52,7 @@ const DashboardLayout = ({ children }) => {
 
 
   return (
-    <div className="md:flex w-11/12 min-h-screen mx-auto relative lg:pt-28 md:pt-24 pt-20 pb-5">
+    <div className="md:flex w-11/12 min-h-screen mx-auto relative lg:pt-24 md:pt-20 pt-16 pb-5">
       {/* Mobile Menu Button */}
       <button
         className="md:hidden p-4 text-gray-700"

@@ -4,6 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { CheckCircle, Copy, ShoppingBag } from "lucide-react"
 import { useParams } from "next/navigation"
+import { Truck } from "lucide-react"
 
 
 export default function Page() {
@@ -24,7 +25,7 @@ export default function Page() {
   }
 
   return (
-    <div className="container max-w-md mx-auto pb-12 pt-20 px-4 lg:pt-40">
+    <div className="container max-w-md mx-auto pb-12 md:pt-20 px-4">
       {/* Toast notification */}
       {showToast && (
       <div className="fixed inset-0 flex items-start justify-center z-50 pointer-events-none mt-10">
@@ -73,21 +74,22 @@ export default function Page() {
             <div className="flex justify-between py-1">
               <span className="text-sm text-gray-500">Status</span>
               <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold bg-green-50 text-green-700 border-green-200">
-                Paid
+                Confirmed
               </span>
             </div>
           </div>
         </div>
 
         <div className="p-6 flex flex-col gap-2">
-          <Link href={'/order-tracking'} className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-md font-medium flex items-center justify-center transition-colors">
-            <ShoppingBag className="mr-2 h-4 w-4" />
-            View Order Details
+          <Link href={'/order-tracking'} className="w-full bg-teal-600 hover:bg-teal-700 text-white py-2 px-4 rounded-md font-medium flex items-center justify-center transition-colors">
+            <Truck className="mr-3 h-5 w-5" />
+            Track Your Order
           </Link>
           <Link
             href="/"
             className="w-full border border-gray-300 text-gray-700 hover:bg-gray-50 py-2 px-4 rounded-md font-medium flex items-center justify-center transition-colors"
           >
+            <ShoppingBag className="mr-3 h-5 w-5"></ShoppingBag>
             Continue Shopping
           </Link>
         </div>

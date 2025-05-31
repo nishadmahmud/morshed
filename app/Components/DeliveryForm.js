@@ -1,47 +1,61 @@
-"use client"
+"use client";
 
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 import { fetcher, userId } from "../(home)/page";
 import Image from "next/image";
 import Modal from "./Modal";
 import PaymentMethodForm from "./PaymentMethodForm";
-import { ShoppingBag } from 'lucide-react';
-import { Headset } from "lucide-react";
+import {
+  ShoppingBag,
+  Headset,
+  MapPin,
+  CreditCard,
+  Shield,
+  Truck,
+  CheckCircle,
+  AlertCircle,
+  Phone,
+  Mail,
+  User,
+  Home,
+  Building,
+} from "lucide-react";
 
 
 
-const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
-  const { data : paymentMethods, error } = useSWR(`${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`, fetcher);
+
+
+const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
+  const { data: paymentMethods, error } = useSWR(
+    `${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`,
+    fetcher
+  );
   const date = new Date().toISOString();
-  const [showPaymentModal,setShowPaymentModal] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [payment, setPayment] = useState("Cash");
-  const [isCod,setIsCod] = useState(true);
-  const [isSSL, setIsSSL] = useState(false);
+  const [isCod, setIsCod] = useState(true);
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
-  const [user,setUser] = useState(null); 
-  const router = useRouter(); 
+  const [user, setUser] = useState(null);
+  const router = useRouter();
   const [userEmail, setUserEmail] = useState(null);
   const userData = JSON.parse(localStorage.getItem("user"));
   const customer_id = userData?.id;
   const customer_phone = userData?.mobile_number;
-  const [loading, setLoading] = useState(false); 
-  const [invoice, setInvoice] = useState(null);
-  // console.log(shippingFee);
+  const [location, setLocation] = useState("inside");
 
-//   const shippingFee = location === "inside" ? 70 : 130;
-//   useEffect(() => {
-//     const shippingFeee = location === "inside" ? 70 : 130;
-//     setShippingFee(shippingFee); // Send shipping fee to parent
-// }, [location, setShippingFee, shippingFee]);
-    
-  
+  const shippingFee = location === "inside" ? 70 : 130;
+
+  useEffect(() => {
+    setShippingFee(shippingFee);
+  }, [location, setShippingFee, shippingFee]);
+
   const [formData, setFormData] = useState({
     country: "Bangladesh",
-    email : userEmail || '',
+    email: userEmail || "",
     firstName: "",
     lastName: "",
     address: "",
@@ -49,27 +63,24 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
     city: "",
     postalCode: "",
     phone: "",
-    billCountry : '',
-    billFirstName : '',
-    billLastName : '',
-    billAddress : '',
-    billApartment : '',
-    billCity : '',
-    billPostalCode : '',
-    billPhone : '',
+    billCountry: "",
+    billFirstName: "",
+    billLastName: "",
+    billAddress: "",
+    billApartment: "",
+    billCity: "",
+    billPostalCode: "",
+    billPhone: "",
   });
-  // const [dueAmount,setDueAmount] = useState(0);
-  const [selectedMethodId,setSelectedMethodId] = useState(null);
 
-  
+  const [selectedMethodId, setSelectedMethodId] = useState(null);
 
   const handleClose = () => setShowPaymentModal(false);
-
 
   const [orderSchema, setOrderSchema] = useState({
     pay_mode: payment,
     paid_amount: 0,
-    sub_total:(Number(cartTotal) + Number(shippingFee)),
+    sub_total: Number(cartTotal) + shippingFee,
     vat: 0,
     tax: 0,
     discount: 0,
@@ -86,7 +97,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
     delivery_info_id: 1,
     delivery_customer_name: formData.firstName + formData.lastName,
     delivery_customer_address: formData.address || formData.billAddress,
-    delivery_customer_phone: formData?.phone ? formData?.phone : 'N/A',
+    delivery_customer_phone: formData?.phone ? formData?.phone : "N/A",
     delivery_fee: shippingFee,
     payment_method: paymentMethods?.data?.data.map((item) => ({
       payment_type_category_id: item.payment_type_category[0]?.id,
@@ -96,7 +107,7 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
     variants: [],
     imeis: cartItems.map((item) => {
       if (item?.imeis && item?.imeis.length > 0) {
-        return parseInt(item?.imeis[0]?.id);
+        return Number.parseInt(item?.imeis[0].imei);
       } else {
         return null;
       }
@@ -111,175 +122,90 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
     status: 3,
   });
 
-  const getProductName = () => {
-    const name = cartItems.flatMap((item) => item.name);
-    return name;
-  };
-  
-  useEffect(() => {
-    orderSchema.product = cartItems.map((item) => ({
-       product_id: item.id,
-       qty: item.quantity,
-       price: item.retails_price,
-       mode: 1,
-       size: 1,
-       sales_id: 3,
-       imei_id: item?.imeis ? item.imeis.find(imei => imei.storage === item?.storage)?.id : null,
-     }))
-    orderSchema.imeis = cartItems.map((item) => {
-       if (item?.imeis && item?.imeis.length > 0) {
-         const imeiItem = item.imeis.find(imei => imei.storage === item?.storage);
-         return imeiItem.id 
-       } else {
-         return null;
-       }
-     }),
-     orderSchema.sub_total = (Number(cartTotal) + Number(shippingFee)).toFixed(0)
-   // eslint-disable-next-line react-hooks/exhaustive-deps
-   },[cartItems])
-   
-
   const handleChange = (e) => {
-    const {name,value} = e.target;
-    setFormData({ ...formData, [name]: value });
+    const { name, value } = e.target;
+    const updatedFormData = { ...formData, [name]: value };
+    setFormData(updatedFormData);
     setOrderSchema((prev) => ({
       ...prev,
-      ['customer_name'] : `${formData.firstName}  ${formData.lastName}`,
-      ['delivery_customer_name'] : `${formData.firstName}  ${formData.lastName}`,
-      ['delivery_customer_address'] : formData.address || formData.billAddress,
-      ['delivery_customer_address'] : formData.address || formData.billAddress,
-      ['customer_phone'] : formData?.phone ? formData?.phone : formData?.billPhone ? formData.billPhone :  "N/A",
-      ['delivery_customer_phone'] : formData?.phone ? formData?.phone : formData?.billPhone ? formData.billPhone :  "N/A",
-      ['customer_id'] : customer_id,
-    }))
+      ["customer_name"]: `${updatedFormData.firstName}  ${updatedFormData.lastName}`,
+      ["delivery_customer_name"]: `${updatedFormData.firstName}  ${updatedFormData.lastName}`,
+      ["delivery_customer_address"]: updatedFormData.address || updatedFormData.billAddress,
+      ["customer_phone"]: customer_phone,
+      ["delivery_customer_phone"]: updatedFormData?.phone ? updatedFormData?.phone : "N/A",
+      ["customer_id"]: customer_id,
+    }));
   };
 
-  const sslPayment = (invoice) => {
-    console.log(invoice);
-    setPayment("SSL");
-    const sslSchema = {
-      amount: Number(cartTotal) + orderSchema.delivery_fee,
-      customer_name:
-        `${formData.firstName}  ${formData.lastName}` ||
-        `${formData.billFirstName}  ${formData.billLastName}`,
-      customer_email: userEmail,
-      customer_phone: formData.phone || formData.billPhone,
-      customer_address: formData.address || formData.billAddress,
-      customer_city: formData.city || formData.billCity,
-      customer_country: "Bangladesh",
-      product_name: getProductName(),
-      invoice_id: invoice,
-      product_category: "Electronics",
-    }
-    const hasEmptyField = Object.values(sslSchema).some((value) => !value);
-    console.log(sslSchema);
-    if (!hasEmptyField) {
-      axios
-        .post(`${process.env.NEXT_PUBLIC_API}/payment/initiate`, sslSchema)
-        .then((res) => {
-          window.open(res.data.url, "_self");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-    // else if (!schema.amount){
-    //   toast.error('Product Price Must be Greater than 0')
-    // }
-    else {
-      toast.error("Please fill everything first");
-    }
+  const handlePayment = (e) => {
+    setPayment(e.target.value);
   };
-
-  const  handlePayment = (e) => {
-    setPayment(e.target.value)
-  }
 
   const handleBillingChange = (e) => {
-    setBillingSameAsShipping(e.target.value === 'same');
+    setBillingSameAsShipping(e.target.value === "same");
   };
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
+    const user = JSON.parse(localStorage.getItem("user"));
     if (user) {
       setUserEmail(user?.email || null);
     }
-  }, []); 
-
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const storedUser = localStorage.getItem('user');
-      if (storedUser) {
-        setUser(JSON.parse(storedUser));
-      }
-    }
   }, []);
 
-
-  const handleCmsPayment = async () => {
-    try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
-        orderSchema
-      );
-      if(response.status === 200) {
-        setLoading(false);
-        setInvoice(response.data.data.invoice_id);
-        if (!isSSL){
-          toast.success("Order placed successfully");
-            setTimeout(() => {
-              router.push(`/payment-success/${response.data.data.invoice_id}`);
-           },2000)
-        }else{
-          sslPayment(response.data.data.invoice_id)
-        }
-        localStorage.removeItem("cart");
-      }
-    } catch (error) {
-      console.log(error);
-      toast.error("error occured try again");
+  useEffect(() => {
+  try {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
     }
-  };
+  } catch (err) {
+    console.error("Failed to parse user from localStorage", err);
+  }
+}, []);
 
+
+
+
+ 
   const handleOrderComplete = (e) => {
     e.preventDefault();
-    if (cartItems.length === 0) {
-      toast.error("Add Some Products First to the cart");
-      return;
+    if (cartItems.length > 0) {
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
+          orderSchema
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            const _invoiceId = res?.data?.data?.invoice_id;
+           
+            localStorage.removeItem("cart");
+            toast.success("Order placed successfully!");
+            // Check amount
+          
+            router.push(`/payment-success/${_invoiceId}`)
+         
+          
+          }
+        })
+        .catch((err) => {
+          toast.error("Error occurred. Try again.");
+          console.log(err);
+        });
+    } else {
+      alert("Add some products to the cart first.");
+      router.push("/");
     }
-    setLoading(true);
-    handleCmsPayment();
   };
 
-  // const handleOrderComplete = (e) => {
-  //   e.preventDefault();
-  //  if(cartItems.length > 0){
-  //    axios.post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,orderSchema)
-  //    .then((res) => {
-  //      if(res.status === 200){
-  //       localStorage.removeItem('cart');
-  //       setTimeout(() => {
-  //         router.push('/');
-  //       },2000)
-  //       toast.success('Order placed successfully!');
-  //     }
-  //    })
-  //    .catch(err => {
-  //     toast.error('error occured try again');
-  //     console.log(err);
-  //    })
-  //  }else{
-  //    alert('Add Some Products First to the cart')
-  //    router.push('/')
-  //  }
-  // }
+
 
   const handlePaymentMethod = (item) => {
     setShowPaymentModal(true);
-    if(item.payment_type_category && item.payment_type_category.length > 0){
+    if (item.payment_type_category && item.payment_type_category.length > 0) {
       setPayment(item.payment_type_category[0].payment_category_name);
-      setSelectedMethodId(item.payment_type_category[0].id)
-    }else{
+      setSelectedMethodId(item.payment_type_category[0].id);
+    } else {
       setPayment(item.value);
       setSelectedMethodId(item.category_id);
     }
@@ -288,9 +214,13 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
         ...prevSchema,
         payment_method: [
           {
-            payment_type_category_id: item.payment_type_category?.[0]?.id || item.category_id,
-            payment_type_id: item.payment_type_category?.[0]?.payment_type_id || item.id,
-            account_number : item.payment_type_category?.[0]?.account_number || item.account_number,
+            payment_type_category_id:
+              item.payment_type_category?.[0]?.id || item.category_id,
+            payment_type_id:
+              item.payment_type_category?.[0]?.payment_type_id || item.id,
+            account_number:
+              item.payment_type_category?.[0]?.account_number ||
+              item.account_number,
           },
         ],
       };
@@ -300,263 +230,384 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
   const handleAmount = (e) => {
     const amount = e.target.value;
     const updatedMethod = [...orderSchema.payment_method];
-    const existingMethodIndex = updatedMethod.findIndex(item => item.payment_type_category_id === selectedMethodId);
-    updatedMethod[existingMethodIndex].payment_amount = parseInt(amount);
-  }
+    const existingMethodIndex = updatedMethod.findIndex(
+      (item) => item.payment_type_category_id === selectedMethodId
+    );
+    updatedMethod[existingMethodIndex].payment_amount = Number.parseInt(amount);
+  };
+
   const handleRefId = (e) => {
     const refId = e.target.value;
     const updatedMethod = [...orderSchema.payment_method];
-    const existingMethodIndex = updatedMethod.findIndex(item => item.payment_type_category_id === selectedMethodId);
+    const existingMethodIndex = updatedMethod.findIndex(
+      (item) => item.payment_type_category_id === selectedMethodId
+    );
     updatedMethod[existingMethodIndex].ref_id = refId;
-  }
-
-  const handleShippingFee = (e) => {
-    console.log();
-    const fee = parseInt(e.target.value);
-    setShippingFee(fee);
-    orderSchema.delivery_fee = fee;
-    orderSchema.sub_total += fee;
-  }
-// console.log('payment method',paymentMethods);
-// console.log(orderSchema)
+  };
 
   return (
-    <div className=" bg-white rounded-tl-lg rounded-bl-lg">
-      {/* {
-        userEmail ? <div className="border-b">
-        <div className="flex items-center  cursor-pointer">
-           <p className="hover:text-blue-500 ">Account</p>
-        </div>
-        <p>{userEmail}</p>
-        </div> : <p>No user</p>
-        
-      } */}
-      <div className="hidden">
-{/* <CheckoutPage shippingFee={shippingFee}></CheckoutPage> */}
-      </div>
+    <div className="space-y-4">
+      {/* Customer Support Banner */}
+     
 
-      <div className="md:pr-6 ">
-      <div className="bg-[#115e59] bg-opacity-90 text-center text-white p-2 px-4 rounded-xs lg:text-sm text-xs font-bangla flex items-center justify-center md:gap-2 md:flex-row flex-col">
-      অর্ডার সংক্রান্ত যেকোনো প্রয়োজনে কথা বলুন আমাদের কাস্টমার সার্ভিস প্রতিনিধির সাথে <div className="flex items-center gap-1">
-      <Headset size={17}></Headset>+8801898931468
-      </div>
-      </div>
-      </div>
-       
-      <h2 className="text-2xl font-bold sans my-4 mb-5">Delivery</h2>
-      <form className="md:pr-6 pb-5" onSubmit={handleOrderComplete}>
-        {/* Country/Region */}
-        <div className="mb-4 flex flex-col relative">
-        <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Country/Region</label>
-          <select
-            name="country"
-            value={formData.country}
-            onChange={handleChange}
-            className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
-          >
-            <option value="Bangladesh">Bangladesh</option>
-            {/* Add other country options as needed */}
-          </select>
-        </div>
-
-        {/* First Name and Last Name */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
-
-          <div className="flex flex-col relative">
-          <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">First Name</label>
-            <input
-              type="text"
-              name="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              placeholder="First name"
-              required
-              className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
-            />
+      <form onSubmit={handleOrderComplete} className="space-y-8">
+        {/* Delivery Information */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="bg-blue-100 p-2 rounded-lg">
+              <MapPin className="h-6 w-6 text-blue-600" />
+            </div>
+            <div>
+              <h2 className="text-xl font-semibold text-gray-900">
+                Delivery Information
+              </h2>
+              <p className="text-sm text-gray-600">
+                Where should we deliver your order?
+              </p>
+            </div>
           </div>
 
-          <div className="flex flex-col relative">
-          <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Last Name</label>
-            <input
-              type="text"
-              name="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              placeholder="Last name"
-              required
-              className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Country/Region */}
+            {/* <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Country/Region
+              </label>
+              <select
+                name="country"
+                value={formData.country}
+                onChange={handleChange}
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors bg-white"
+              >
+                <option value="Bangladesh">Bangladesh</option>
+              </select>
+            </div> */}
+
+            {/* First Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <User className="inline h-4 w-4 mr-1" />
+                First Name
+              </label>
+              <input
+                type="text"
+                name="firstName"
+                value={formData.firstName}
+                onChange={handleChange}
+                placeholder="Enter your first name"
+                required
+                className="w-full px-4 py-3 border border-gray-300 dark:bg-white rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
+
+            {/* Last Name */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Last Name
+              </label>
+              <input
+                type="text"
+                name="lastName"
+                value={formData.lastName}
+                onChange={handleChange}
+                placeholder="Enter your last name"
+                required
+                className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
+
+            {/* Address */}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <Home className="inline h-4 w-4 mr-1" />
+                Address
+              </label>
+              <input
+                type="text"
+                name="address"
+                value={formData.address}
+                onChange={handleChange}
+                placeholder="House number and street name"
+                required
+                className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
+
+            {/* Apartment */}
+            {/* <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <Building className="inline h-4 w-4 mr-1" />
+                Apartment, Suite, etc. (Optional)
+              </label>
+              <input
+                type="text"
+                name="apartment"
+                value={formData.apartment}
+                onChange={handleChange}
+                placeholder="Apartment, suite, unit, building, floor, etc."
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div> */}
+
+            {/* City */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                <Building size={18}></Building>
+                City
+              </label>
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                placeholder="Enter your city"
+                required
+                className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
+
+            {/* Postal Code */}
+            {/* <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Postal Code
+              </label>
+              <input
+                type="text"
+                name="postalCode"
+                value={formData.postalCode}
+                onChange={handleChange}
+                placeholder="Enter postal code"
+                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div> */}
+
+            {/* Phone */}
+            <div className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <Phone className="inline h-4 w-4 mr-1" />
+                Phone Number
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter your phone number"
+                required
+                className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
           </div>
-        </div>
-
-        {/* Address and Apartment */}
-        <div className="flex flex-col relative mb-4">
-
-        <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Address</label>
-          <input
-            type="text"
-            name="address"
-            value={formData.address}
-            onChange={handleChange}
-            placeholder="Address"
-            required
-            className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
-          />
-        </div>
-        <div className="flex flex-col relative mb-4">
-
-        <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Apartment</label>
-          <input
-            type="text"
-            name="apartment"
-            value={formData.apartment}
-            onChange={handleChange}
-            placeholder="Apartment, suite, etc."
-            className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
-          />
-        </div>
-
-        {/* City and Postal Code */}
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <div className="flex flex-col relative">
-          <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">City</label>
-            <input
-              type="text"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              placeholder="City"
-              required
-              className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
-            />
-          </div>
-          <div className="flex flex-col relative">
-          <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Postal Code</label>
-            <input
-              type="text"
-              name="postalCode"
-              value={formData.postalCode}
-              onChange={handleChange}
-              placeholder="Postal code"
-              className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
-            />
-          </div>
-        </div>
-
-        {/* Phone */}
-        <div className="flex flex-col relative mb-4">
-
-        <label className="absolute font-nunito text-xs text-[#102048] -top-[9px] left-[12px] bg-white px-1 font-semibold">Phone No.</label>
-          <input
-            type="tel"
-            name="phone"
-            value={formData.phone}
-            onChange={handleChange}
-            placeholder="Phone"
-            required
-            autoComplete="off"
-            className="p-2 px-3 border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-sm bg-white dark:bg-white"
-          />
         </div>
 
         {/* Shipping Method */}
-        <div className="mb-6 rounded-sm">
-      <h3 className="text-2xl font-bold my-4 mb-5">Shipping Method</h3>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="bg-green-100 p-2 rounded-lg">
+              <Truck className="h-6 w-6 text-green-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Shipping Method
+              </h3>
+              <p className="text-sm text-gray-600">
+                Choose your preferred delivery option
+              </p>
+            </div>
+          </div>
 
-      <div className="space-y-3">
-        {/* Inside Dhaka Option */}
-        <label
-          className={`flex overflow-hidden transition-all duration-300 px-3 py-2 items-center cursor-pointer ${
-            shippingFee === 70 ? "bg-[#F0F7FF] border border-blue-400" : ""
-          }`}
-        >
-          <input
-            type="radio"
-            name="shipping"
-            value={70}
-            checked={shippingFee == 70}
-            onChange={handleShippingFee}
-            // onChange={handle}
-            className="mr-2"
-          />
-          Inside Dhaka (৳70)
-        </label>
-
-        {/* Outside Dhaka Option */}
-        <label
-          className={`flex overflow-hidden transition-all duration-300 px-3 py-2 items-center cursor-pointer ${
-            shippingFee === 130 ? "bg-[#F0F7FF] border border-blue-400" : ""
-          }`}
-        >
-          <input
-            type="radio"
-            name="shipping"
-            value={130}
-            checked={shippingFee == 130}
-            onChange={handleShippingFee}
-            className="mr-2"
-          />
-          Outside Dhaka (৳130)
-        </label>
-      </div>
-
-      {/* Shipping Details - Shown when an option is selected */}
-      <div className="p-3 text-black bg-[#F4F4F4] mt-3">
-        <p>Shipping cost: <span className="font-semibold">৳{shippingFee}</span></p>
-        <p className="text-gray-600">Shipping charge depends on your location.</p>
-      </div>
-    </div>
-
-        {/* Payment Section */}
-        <h2 className="text-2xl font-bold sans mt-4 mb-1">Payment Method</h2>
-        <p className="text-sm text-gray-500 mb-3">
-          All transactions are secure and encrypted.
-        </p>
-
-        <div className="mb-6 border border-gray-300 rounded-sm">
           <div className="space-y-3">
-            <label className={`flex overflow-hidden transition-all duration-300 px-3 py-2 items-center ${payment === 'Cash' ? 'bg-[#F0F7FF] border border-blue-400' : ''}`}>
+            <label
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                location === "inside"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+            >
               <input
                 type="radio"
-                name="payment"
-                value="Cash"
-                checked={payment === "Cash"}
-                onChange={(e) => {handlePayment(e);setIsCod(true)}}
-                className="mr-2 bg-white"
+                name="shipping"
+                value="inside"
+                checked={location === "inside"}
+                onChange={() => setLocation("inside")}
+                className="sr-only"
               />
-              Payment Cash On Delivery
+              <div className="flex items-center space-x-4 flex-1">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    location === "inside"
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
+                >
+                  {location === "inside" && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-gray-900">
+                      Inside Dhaka
+                    </span>
+                    <span className="font-semibold text-gray-900">৳70</span>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Delivery within 1-2 business days
+                  </p>
+                </div>
+              </div>
             </label>
-            <label className={`flex px-3 py-2 items-center ${payment === 'online' ? 'bg-[#F0F7FF] border border-blue-400' : ''}`}>
+
+            <label
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                location === "outside"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+            >
               <input
                 type="radio"
-                name="payment"
-                value="online"
-                className="mr-2 bg-white"
-                onChange={(e) => {handlePayment(e);setIsCod(false)}}
+                name="shipping"
+                value="outside"
+                checked={location === "outside"}
+                onChange={() => setLocation("outside")}
+                className="sr-only"
               />
-              Pay By Credit Card / Mobile Banking / Net Banking
+              <div className="flex items-center space-x-4 flex-1">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    location === "outside"
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
+                >
+                  {location === "outside" && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <div className="flex items-center justify-between">
+                    <span className="font-medium text-gray-900">
+                      Outside Dhaka
+                    </span>
+                    <span className="font-semibold text-gray-900">৳130</span>
+                  </div>
+                  <p className="text-sm text-gray-600">
+                    Delivery within 3-5 business days
+                  </p>
+                </div>
+              </div>
             </label>
-            {/* <label
-              className={`flex px-3 py-2 items-center ${
-                payment === "SSL" ? "bg-[#F0F7FF] border border-blue-400" : ""
+          </div>
+
+          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+            <div className="flex items-center space-x-2 text-sm text-gray-700">
+              <CheckCircle className="h-4 w-4 text-green-500" />
+              <span>Free returns within 7 days</span>
+            </div>
+          </div>
+        </div>
+
+        {/* Payment Method */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="bg-purple-100 p-2 rounded-lg">
+              <CreditCard className="h-6 w-6 text-purple-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Payment Method
+              </h3>
+              <p className="text-sm text-gray-600 flex items-center">
+                <Shield className="h-4 w-4 mr-1" />
+                All transactions are secure and encrypted
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                payment === "Cash"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               <input
                 type="radio"
                 name="payment"
-                value="SSL"
-                className="mr-2 bg-white"
+                value="Cash"
+                checked={payment === "Cash"}
                 onChange={(e) => {
-                  setIsSSL(true);
-                  setPayment(e.target.value);
+                  handlePayment(e);
+                  setIsCod(true);
+                }}
+                className="sr-only"
+              />
+              <div className="flex items-center space-x-4 flex-1">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    payment === "Cash" ? "border-blue-500" : "border-gray-300"
+                  }`}
+                >
+                  {payment === "Cash" && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <span className="font-medium text-gray-900">
+                    Cash on Delivery
+                  </span>
+                  <p className="text-sm text-gray-600">
+                    Pay when you receive your order
+                  </p>
+                </div>
+              </div>
+            </label>
+
+            <label
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                payment === "online"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+            >
+              <input
+                type="radio"
+                name="payment"
+                value="online"
+                checked={payment === "online"}
+                onChange={(e) => {
+                  handlePayment(e);
                   setIsCod(false);
                 }}
+                className="sr-only"
               />
-              Pay By SSL Commerz
-            </label> */}
+              <div className="flex items-center space-x-4 flex-1">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    payment === "online" ? "border-blue-500" : "border-gray-300"
+                  }`}
+                >
+                  {payment === "online" && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <span className="font-medium text-gray-900">
+                    Online Payment
+                  </span>
+                  <p className="text-sm text-gray-600">
+                    Credit Card / Mobile Banking / Net Banking
+                  </p>
+                </div>
+              </div>
+            </label>
           </div>
-          {!isCod && <div className="p-3 text-black bg-[#F4F4F4] flex gap-5">
-            {paymentMethods?.data?.data &&
+
+          {!isCod && (
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg">
+              {paymentMethods?.data?.data &&
               paymentMethods?.data?.data?.length > 0 ? (
                 (() => {
                   const otherMethods = paymentMethods?.data?.data?.filter(
@@ -564,239 +615,298 @@ const DeliveryForm = ({cartItems,cartTotal,shippingFee, setShippingFee}) => {
                   );
 
                   return otherMethods.length > 0 ? (
-                    otherMethods.map((item) => (
-                      <div
-                        onClick={() => handlePaymentMethod(item)}
-                        key={item.id}
-                        className={`flex flex-col items-center justify-center gap-2 cursor-pointer ${
-                          item.payment_type_category[0]
-                            .payment_category_name === payment
-                            ? "bg-blue-200 p-2 rounded-lg"
-                            : ""
-                        }`}
-                      >
-                        <Image
-                          unoptimized
-                          src={item?.icon_image}
-                          alt={
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                      {otherMethods.map((item) => (
+                        <div
+                          onClick={() => handlePaymentMethod(item)}
+                          key={item.id}
+                          className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${
                             item?.payment_type_category[0]
-                              ?.payment_category_name
-                          }
-                          height={40}
-                          width={40}
-                          className="rounded-md h-auto w-auto"
-                        />
-                        <h3 className="text-black">
-                          {
-                            item?.payment_type_category[0]
-                              ?.payment_category_name
-                          }
-                        </h3>
-                      </div>
-                    ))
+                              ?.payment_category_name === payment
+                              ? "border-blue-500 bg-blue-50"
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
+                        >
+                          <Image
+                            unoptimized
+                            src={item?.icon_image || "/placeholder.svg"}
+                            alt={
+                              item?.payment_type_category[0]
+                                ?.payment_category_name
+                            }
+                            height={40}
+                            width={40}
+                            className="rounded-md h-12 w-12 mb-2"
+                          />
+                          <span className="text-xs font-medium text-center">
+                            {
+                              item?.payment_type_category[0]
+                                ?.payment_category_name
+                            }
+                          </span>
+                        </div>
+                      ))}
+                    </div>
                   ) : (
-                    <p className="text-black">Only Cash On Delivery  & SSLCommerz is available right now</p>
+                    <div className="flex items-center space-x-2 text-sm text-amber-700">
+                      <AlertCircle className="h-4 w-4" />
+                      <span>Only Cash On Delivery is available right now</span>
+                    </div>
                   );
                 })()
               ) : (
-                <p className="text-black">
-                  You won&apos;t be redirected to a Payment Link immediately due to
-                  stock limitation at real time. After your order is placed, our
-                  team will call you with stock confirmation in real time and
-                  will provide an SSL Wireless Gadget Bodda Secure Payment Link.
-                  You can proceed with the payment then.
-                </p>
+                <div className="text-sm text-gray-700">
+                  <p>
+                    You won&apos;t be redirected to a Payment Link immediately
+                    due to stock limitation at real time. After your order is
+                    placed, our team will call you with stock confirmation in
+                    real time and will provide an SSL Wireless Gadget Bodda
+                    Secure Payment Link. You can proceed with the payment then.
+                  </p>
+                </div>
               )}
-              
-              
-
-            </div>}
+            </div>
+          )}
         </div>
-     
 
         {/* Billing Address */}
-        <h2 className="text-2xl font-bold sans mt-4 mb-4">Billing Address</h2>
-        <div className="border rounded-b-lg">
-        <div className={`px-4 py-3 ${billingSameAsShipping ? 'bg-[#F0F7FF] border border-blue-400' : ''} `}>
-            <label className="flex items-center">
-            <input
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="bg-indigo-100 p-2 rounded-lg">
+              <Mail className="h-6 w-6 text-indigo-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Billing Address
+              </h3>
+              <p className="text-sm text-gray-600">
+                Select the billing address that matches your payment method
+              </p>
+            </div>
+          </div>
+
+          <div className="space-y-3">
+            <label
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                billingSameAsShipping
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+            >
+              <input
                 type="radio"
                 name="billingAddress"
                 value="same"
                 checked={billingSameAsShipping}
                 onChange={handleBillingChange}
-                className="mr-2 bg-white"
-            />
-            Same as shipping address
+                className="sr-only"
+              />
+              <div className="flex items-center space-x-4">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    billingSameAsShipping
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
+                >
+                  {billingSameAsShipping && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
+                <span className="font-medium text-gray-900">
+                  Same as shipping address
+                </span>
+              </div>
             </label>
-        </div>
-        <div className={`px-4 py-3  ${!billingSameAsShipping ? 'bg-[#F0F7FF] border border-blue-400' :''}`}>
-            <label className="flex items-center ">
-            <input
+
+            <label
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                !billingSameAsShipping
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
+            >
+              <input
                 type="radio"
                 name="billingAddress"
                 value="different"
                 checked={!billingSameAsShipping}
                 onChange={handleBillingChange}
-                
-                className="mr-2 bg-white"
-            />
-            Use a different billing address
+                className="sr-only"
+              />
+              <div className="flex items-center space-x-4">
+                <div
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    !billingSameAsShipping
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
+                >
+                  {!billingSameAsShipping && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
+                </div>
+                <span className="font-medium text-gray-900">
+                  Use a different billing address
+                </span>
+              </div>
             </label>
-        </div>
-        {
-            !billingSameAsShipping &&  <div className="space-y-4 p-4 bg-[#F4F4F4]  ">
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Country/Region
-              </label>
-              <select
-              onChange={handleChange}
-              value={formData.billCountry}
-                className="w-full bg-white border-gray-300 rounded-sm p-2 outline-none"
-                name="billCountry"
-                required
-              >
-                <option value="Bangladesh">Bangladesh</option>
-                <option value="">----</option>
-              {/* {
-                data.length > 0 ? 
-                data.map((country,idx) => {
-                    return <option key={idx} value={country.name.common}>{country.name.common}</option>
-                })
-                :null
-              } */}
-                {/* Additional country options */}
-              </select>
-            </div>
-            <div className="flex space-x-4">
-              <div className="w-1/2">
-                <label className="block text-sm font-medium mb-1">
-                  First Name
-                </label>
-                <input
-                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
-                  type="text"
-                  name="billFirstName"
-                  onChange={handleChange}
-                  value={formData.billFirstName}
-                  required
-                />
-              </div>
-              <div className="w-1/2">
-                <label className="block text-sm font-medium mb-1">
-                  Last Name
-                </label>
-                <input
-                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
-                  type="text"
-                  name="billLastName"
-                  onChange={handleChange}
-                  value={formData.billLastName}
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">Address</label>
-              <input
-                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
-                type="text"
-                name="billAddress"
-                onChange={handleChange}
-                value={formData.billAddress}
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Apartment, suite, etc. (optional)
-              </label>
-              <input
-                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
-                type="text"
-                name="billApartment"
-                onChange={handleChange}
-                value={formData.billApartment}
-              />
-            </div>
-            <div className="flex space-x-4">
-              <div className="w-1/2">
-                <label className="block text-sm font-medium mb-1">City</label>
-                <input
-                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
-                  type="text"
-                  name="billCity"
-                  onChange={handleChange}
-                  value={formData.billCity}
-                  required
-                />
-              </div>
-              <div className="w-1/2">
-                <label className="block text-sm font-medium mb-1">
-                  Postal Code (optional)
-                </label>
-                <input
-                  className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
-                  type="text"
-                  name="billPostalCode"
-                  onChange={handleChange}
-                  value={formData.billPostalCode}
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                Phone (optional)
-              </label>
-              <input
-                className="w-full bg-white outline-none p-2 border border-gray-300 rounded-sm "
-                type="text"
-                name="billPhone"
-                onChange={handleChange}
-                value={formData.billPhone}
-              />
-            </div>
           </div>
-  
-        }
-      </div>
 
+          {!billingSameAsShipping && (
+            <div className="mt-6 p-6 bg-gray-50 rounded-lg space-y-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
 
-        {/* Conditional Billing Address */}
-        
-       
-        <button className="w-full font-medium transition ease-in-out bg-[#115e59] py-2 rounded-sm text-white mt-6">
-         <div className="hover:scale-105 transition ease-in-out flex items-center gap-1 justify-center">
-          <ShoppingBag size={22}></ShoppingBag> 
-          
-          {loading ? "Order Processing..." : "Complete Order"}</div>
-        </button>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    First Name
+                  </label>
+                  <input
+                   placeholder="Enter Your First Name"
+                    className="w-full px-4 py-3 dark:bg-white border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                    type="text"
+                    name="billFirstName"
+                    onChange={handleChange}
+                    value={formData.billFirstName}
+                    required
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Last Name
+                  </label>
+                  <input
+                   placeholder="Enter Your Last Name"
+                    className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                    type="text"
+                    name="billLastName"
+                    onChange={handleChange}
+                    value={formData.billLastName}
+                    required
+                  />
+                </div>
+
+                <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Address
+                  </label>
+                  <input
+                   placeholder="Enter Your Full Address"
+                    className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                    type="text"
+                    name="billAddress"
+                    onChange={handleChange}
+                    value={formData.billAddress}
+                    required
+                  />
+                </div>
+
+                {/* <div className="md:col-span-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Apartment, suite, etc. (optional)
+                  </label>
+                  <input
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                    type="text"
+                    name="billApartment"
+                    onChange={handleChange}
+                    value={formData.billApartment}
+                  />
+                </div> */}
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    City
+                  </label>
+                  <input
+                   placeholder="Enter Your City"
+                    className="w-full px-4 py-3 dark:bg-white border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                    type="text"
+                    name="billCity"
+                    onChange={handleChange}
+                    value={formData.billCity}
+                    required
+                  />
+                </div>
+
+                {/* <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Postal Code (optional)
+                  </label>
+                  <input
+                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                    type="text"
+                    name="billPostalCode"
+                    onChange={handleChange}
+                    value={formData.billPostalCode}
+                  />
+                </div> */}
+
+                <div className="block text-sm font-medium text-gray-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone (optional)
+                  </label>
+                  <input
+                  placeholder="Enter Your Phone Number"
+                    className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                    type="text"
+                    name="billPhone"
+                    onChange={handleChange}
+                    value={formData.billPhone}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Complete Order Button */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <button
+            type="submit"
+            className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+          >
+            <div className="flex items-center justify-center space-x-2">
+              <ShoppingBag className="h-5 w-5" />
+              <span>Complete Order</span>
+            </div>
+          </button>
+
+          <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-gray-500">
+            <Shield className="h-4 w-4" />
+            <span>
+              Your payment information is protected by 256-bit SSL encryption
+            </span>
+          </div>
+        </div>
       </form>
 
-
-      {
-        showPaymentModal && <Modal 
-          title={'Payment Info'}
+      {showPaymentModal && (
+        <Modal
+          title={"Payment Info"}
           content={
-          <PaymentMethodForm 
-          totalAmount={cartTotal}
-          methodName={payment}
-          selectedMethodId={selectedMethodId}
-          methods={paymentMethods.data.data}
-          firstValueFunction={handlePaymentMethod}
-          paymentMethodSelection={orderSchema.payment_method}
-          setOrderSchema={setOrderSchema}
-          // orderSchema={orderSchema}
-          onAmountUpdate={handleAmount}
-          onRefIdUpdate={handleRefId}
-          setSelectedMethodId={setSelectedMethodId}
+            <PaymentMethodForm
+              totalAmount={cartTotal}
+              methodName={payment}
+              selectedMethodId={selectedMethodId}
+              methods={paymentMethods.data.data}
+              firstValueFunction={handlePaymentMethod}
+              paymentMethodSelection={orderSchema.payment_method}
+              setOrderSchema={setOrderSchema}
+              onAmountUpdate={handleAmount}
+              onRefIdUpdate={handleRefId}
+              setSelectedMethodId={setSelectedMethodId}
+              onClose={handleClose}
+            />
+          }
           onClose={handleClose}
-          />
-        }
-        onClose={handleClose}
         />
-      }
+      )}
+
+     
+
     </div>
   );
 };

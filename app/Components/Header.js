@@ -203,8 +203,8 @@ const toggleSearchSidebar = () => {
             </button>
 
             {/* Cart icon */}
-            <button
-              onClick={() => setOpenCart(!openCart)}
+            <Link
+             href='/cart'
               className="flex items-center cursor-pointer"
               aria-label="Cart"
             >
@@ -216,7 +216,7 @@ const toggleSearchSidebar = () => {
                   </span>
                 )}
               </div>
-            </button>
+            </Link>
 
             {/* User account */}
             {!user ? (

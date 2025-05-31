@@ -2,107 +2,87 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { FaArrowRight } from "react-icons/fa6";
-import Heading from "../CustomHooks/heading";
 
 const BannerSection = ({ banner }) => {
   return (
-    <div className="lg:mt-12 mt-10 lg:mb-10 relative w-[90%] mx-auto">
-      
-      <div className="grid grid-cols-1 lg:gap-5 md:grid-cols-1 gap-4 lg:grid-cols-2 rounded-xl mt-5 lg:m-0">
-       
-        <div className="relative lg:h-[40vh] xl:h-[50vh] h-[30vh]">
-          {banner?.data && banner?.data[3] ? (
-            <Image
-              src={
-                banner?.data && banner?.data[3] && banner?.data[3]?.image_path
-              }
-              alt="banner"
-              unoptimized
-              // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              fill={true}
-              style={{ objectFit: "cover" }}
-              quality={100}
-              className="cursor-pointer shadow-md rounded-lg h-full w-full"
-            />
-          ) : (
-            <div className="bg-gradient-to-b from-darkBlue to-lightBlue text-white p-8 rounded-lg flex flex-col-reverse  items-center gap-5 md:flex-row md:justify-between md:items-center">
-              <div className="flex flex-col items-center md:items-start">
-                <h2 className="text-xl font-medium mb-5">
-                  Discounts 50% <br /> On All Watches
-                </h2>
-                <div className="flex items-center gap-3 ">
-                  <Link
-                    className="flex  items-center border-b text-white font-medium text-lg p-0"
-                    href={"/category/Smart Watch"}
-                  >
-                    Shop Now
-                  </Link>
-                  <span className="text-white">
-                    <FaArrowRight />
-                  </span>
-                </div>
-              </div>
-              <Image
-                src={
-                  "https://www.jvssmartzone.com/wp-content/uploads/2024/04/slide1-watches.png"
-                }
-                height={"256"}
-                width={"256"}
-                alt="Watches"
-                unoptimized
-              />
-            </div>
-          )}
-        </div>
+    <section className="w-[90%] text-black mx-auto flex flex-col lg:flex-row items-center justify-between py-20 gap-10 lg:gap-20">
+      {/* Left side - Images */}
+    
+<div className="relative flex-1 flex justify-center items-center">
 
-        <div className="relative w-full lg:h-[40vh] xl:h-[50vh] h-[30vh]">
-          {banner?.data && banner?.data[4] ? (
-            <Image
-              src={
-                banner?.data && banner?.data[4] && banner?.data[4]?.image_path
-              }
-              alt="banner"
-              // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              fill={true}
-              style={{ objectFit: "cover" }}
-              className="cursor-pointer rounded-md h-full w-full"
-              quality={100}
-              unoptimized
-            />
-          ) : (
-            <div className="bg-gradient-to-br from-[#1B054E] to-[#6C157E] text-white p-8 rounded-lg flex flex-col-reverse gap-5 items-center md:flex-row md:justify-between md:items-center">
-              <div className="flex flex-col items-center md:items-start">
-                <h2 className="text-xl font-medium mb-5">
-                  Mega Discounts <br /> 50% Off{" "}
-                  <span className="text-orange-400 italic">This Week</span>
-                </h2>
-                <div className="flex items-center gap-3 ">
-                  <Link
-                    className="flex  items-center border-b text-white font-medium text-lg p-0"
-                    href={"/category/Smart Buds"}
-                  >
-                    Shop Now
-                  </Link>
+   {/* Foreground Image with white background */}
+  <div className="rounded-md z-0">
+    <div className="relative w-[27rem] h-[70vh] rounded overflow-hidden">
+      {banner?.data && banner?.data[4] ? (
+        <Image
+          src={banner.data[4].image_path}
+          alt="Sub Model"
+          fill
+          className="object-cover rounded"
+          loading="lazy"
 
-                  <span className="text-white">
-                    <FaArrowRight />
-                  </span>
-                </div>
-              </div>
-              <Image
-                src={
-                  "https://i.ibb.co.com/jvxzJxP/MTJV3-1-removebg-preview.png"
-                }
-                height={"200"}
-                width={"200"}
-                alt="Watches"
-                unoptimized
-              />
-            </div>
-          )}
-        </div>
-      </div>
+        />
+      ) : (
+        <div className="bg-gray-200 w-full h-full" />
+      )}
     </div>
+  </div>
+
+
+  {/* Background Image */}
+  <div className="relative right-28 -bottom-40 w-72 h-80 rounded-sm overflow-hidden z-30  border-[10px] border-white">
+    {banner?.data && banner?.data[3] ? (
+      <Image
+        src={banner.data[3].image_path}
+        alt="Main Model"
+        fill
+        className="object-cover"
+        unoptimized
+      />
+    ) : (
+      <div className="bg-gray-300 w-full h-full" />
+    )}
+  </div>
+
+ 
+</div>
+
+
+      {/* Right side - Text */}
+      <div className="flex-1 max-w-xl">
+        <p className="text-base font-semibold uppercase tracking-widest">New Collections</p>
+        <h2 className="text-5xl font-semibold mt-2 mb-5 leading-tight">
+          Best Solid Pattern T-shirt <br className="hidden md:block" /> For Everyone!
+        </h2>
+        <p className="text-gray-600 mb-6 text-lg">
+         Experience comfort and style with our premium solid pattern T-shirt, designed to suit all body types and every occasion. Made from soft, breathable fabric, it’s perfect for everyday wear.
+
+
+        </p>
+        <Link href="/category/6785?category=New%20Eid%20Collection&total=2">
+          <div className="inline-flex items-center gap-2 border border-black px-5 py-2 font-medium hover:bg-black hover:text-white transition-all">
+            Shop Now <FaArrowRight />
+          </div>
+        </Link>
+
+        {/* Divider */}
+        {/* <hr className="my-8" /> */}
+
+        {/* Rating Section */}
+        {/* <div>
+          <div className="flex items-center gap-2 text-yellow-500 mb-2">
+            {Array.from({ length: 5 }).map((_, i) => (
+              <span key={i}>★</span>
+            ))}
+            <span className="text-gray-600 ml-2">4.5 (10,000+) Rating</span>
+          </div>
+          <p className="text-gray-600">
+           Experience ultimate comfort and effortless style. Made for everyday wear, this T-shirt blends simplicity with quality to keep you looking and feeling great.
+          </p>
+          <p className="mt-2 font-semibold">– Happy Customer</p>
+        </div> */}
+      </div>
+    </section>
   );
 };
 

@@ -64,9 +64,10 @@ export default function Footer() {
         <h3 className="font-bold text-lg text-white mb-4 uppercase">Company</h3>
         <ul className="space-y-2">
           <li><Link href="/" className="text-white hover:underline">About Us</Link></li>
-          <li><Link href="/brands" className="text-white hover:underline">Our Brands</Link></li>
+          
           <li><Link href="/order-tracking" className="text-white hover:underline">Order Tracking</Link></li>
           <li><Link href="/blogs" className="text-white hover:underline">Blogs</Link></li>
+          <li><Link href="/wishlist" className="text-white hover:underline">Wishlist</Link></li>
         </ul>
       </div>
 
