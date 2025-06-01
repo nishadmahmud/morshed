@@ -38,18 +38,18 @@ const PromotionModal = () => {
     }
 
     return (
-        <div className={`modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center z-[9999] items-center px-4 ${isOpenPromoBanner && isFirstVisit  && offer?.length > 0 ? '' : 'hidden'}`}>
+        <div className={`modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center z-[9999] items-center px-4 ${isOpenPromoBanner  && offer?.length > 0 ? '' : 'hidden'}`}>
             <dialog
                 open
-                className="relative p-0.5 lg:p-1 rounded-lg flex flex-col justify-center bg-white text-black w-[90%] md:w-[25%] lg:w-[30%] h-[70vh]"
+                className="relative p-1.5 lg:p-2 rounded-lg flex flex-col justify-center bg-white text-black w-[30%] h-[50vh] md:h-[70vh]"
             >
                 {/* Close Button */}
                <button
           onClick={handleClose}
-          className="absolute top-3 right-3 z-30 bg-red-500 hover:bg-red-600 p-1 rounded-full shadow-lg transition-all duration-200 hover:scale-110 group focus:outline-none focus:ring-2 focus:ring-red-300"
+          className="absolute top-3 right-3 z-30 bg-red-500 hover:bg-red-600 p-2 rounded-full shadow-lg transition-all duration-200 hover:scale-110 group focus:outline-none focus:ring-2 focus:ring-red-300"
           aria-label="Close promotion"
         >
-          <X className="w-4 h-4 text-white group-hover:text-gray-100 transition-colors duration-200" />
+          <X className="w-5 h-5 text-white group-hover:text-gray-100 transition-colors duration-200" />
         </button>
 
                 {/* Image Container */}
