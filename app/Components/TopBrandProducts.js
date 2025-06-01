@@ -25,9 +25,7 @@ const TopBrandProducts = ({ brands }) => {
   // Fetch data using SWR
   const { data: pdcByBrands, isLoading } = useSWR(apiUrl, fetcher);
 
-  console.log("Brand IDs List:", brandIds);
-  console.log("Selected Brand ID:", selectedBrandId);
-  console.log("API URL:", apiUrl);
+
 
   return (
     <div className="lg:mt-10 mt-5 pb-10">

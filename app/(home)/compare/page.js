@@ -35,7 +35,7 @@ const Page = () => {
     }
   };
 
-  console.log(products);
+
 
   const { handleBuy } = useStore()
 
@@ -43,11 +43,11 @@ useEffect(() => {
   if (products?.specifications?.length > 0) {
     const names = products?.specifications?.map((dName) => dName.name); // Extract names
     setHello(names); // Store as an array in state
-    console.log(names);
+ ;
   }
 }, [products]); // Runs when `products` changes
 
-console.log(selectedProduct1);
+
 
 
 

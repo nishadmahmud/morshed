@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { FaUsers } from "react-icons/fa6"
 import Image from "next/image"
 import Link from "next/link"
-import { Gift, NotebookPen, ShoppingBag, User } from "lucide-react"
+import { Gift, Globe, NotebookPen, ShoppingBag, User } from "lucide-react"
 import { IoCloseSharp, IoSearch } from "react-icons/io5"
 import axios from "axios"
 import noImg from "/public/no-image.jpg"
@@ -17,6 +17,8 @@ import LoginForm from "./LoginForm"
 import Modal from "./Modal"
 import Navbar from "./Navbar"
 import { userId } from "../(home)/page"
+import CurrencyConverter from "./CurrencyConverter"
+import RegionModal from "./RegionModal"
 
 const Header = ({ data }) => {
   const {  
@@ -34,12 +36,12 @@ const Header = ({ data }) => {
    } = useStore()
   const [keyword, setKeyword] = useState("")
   const [searchedItem, setSearchedItem] = useState([]);
-console.log(keyword);
+
   const [isSearching, setIsSearching] = useState(false)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isSearchSidebarOpen, setIsSearchSidebarOpen] = useState(false)
   const [showUserInfo, setShowUserInfo] = useState(false);
-
+const [isModalOpen, setIsModalOpen] = useState(false)
   const debounceRef = useRef()
   const searchBarRef = useRef(null)
 const handleUserInfo = () => {
@@ -232,6 +234,12 @@ const toggleSearchSidebar = () => {
                 </div>
               </Link>
             )}
+
+            {/* <button onClick={() => setIsModalOpen(true)}>
+         <Globe></Globe>
+            </button> */}
+
+
           </div>
         </div>
 
@@ -484,6 +492,10 @@ const toggleSearchSidebar = () => {
         />
       )}
       </div>
+
+       <RegionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+        <CurrencyConverter baseBDT={1000} /> {/* example value */}
+      </RegionModal>
     </div>
   )
 }

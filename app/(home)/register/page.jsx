@@ -27,7 +27,7 @@ export default function RegisterPage() {
   }
 
   const handleSubmit = (e) => {
-    console.log('clicked');
+    
     e.preventDefault()
 
    

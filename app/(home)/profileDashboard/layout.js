@@ -35,7 +35,6 @@ const DashboardLayout = ({ children }) => {
     }
   }, [email, reload]);
 
-  console.log(firstName);
 
 
   const handleLogout = () => {

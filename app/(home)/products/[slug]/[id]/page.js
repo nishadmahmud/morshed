@@ -18,7 +18,7 @@ const userId = typeof window !== "undefined" ? localStorage.getItem("userId") ||
 
 const ProductPage = ({ params }) => {
   const { id } = params
-  console.log(id)
+
   const [quantity, setQuantity] = useState(1)
   const [imageIndex, setImageIndex] = useState(0)
   const [scroll, setScroll] = useState(0)
@@ -176,8 +176,7 @@ const ProductPage = ({ params }) => {
     (item) => item?.id === product?.data.id || undefined
   );
 
-  console.log(product);
-
+ 
   
 
   return (

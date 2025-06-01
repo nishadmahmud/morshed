@@ -14,8 +14,7 @@ const Page = () => {
         new_password_confirmation: "",
     });
 
-    console.log(formData);
-
+  
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState(null);
     const [error, setError] = useState(null);

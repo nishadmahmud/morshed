@@ -30,7 +30,7 @@ const Page = ({ params }) => {
                 `${process.env.NEXT_PUBLIC_API}/public/best-deals-brand-id/${userId}/${params.id}?page=${pageNum}`
             );
 
-            console.log("API Response:", response.data);
+          
 
             if (response.data) {
                 setProducts(response.data.data || []);
@@ -52,10 +52,10 @@ const Page = ({ params }) => {
 
     // Ensure `offer` exists and contains a `data` array before accessing it
     const offerData = offer?.data || [];
-    console.log("Offer Data:", offerData);
+
 
     const filteredOffer = offerData.find((offerItem) => offerItem.brand_id == params.id) || null;
-    console.log("Filtered Offer:", filteredOffer);
+   
 
     // Sorting function
     const sortProducts = (order) => {

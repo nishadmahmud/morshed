@@ -6,12 +6,14 @@ import useStore from "../CustomHooks/useStore"
 
 
 const CurrencyConverter = ({ baseBDT }) => {
-  const {selectedCountry, setSelectedCountry, countries, setConvertedPrice, convertedPrice} = useStore()
+  const {selectedCountry, setSelectedCountry, countries, setConvertedPrice} = useStore()
 
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
   const [exchangeRate, setExchangeRate] = useState(null)
 
+
+ 
   const convertCurrency = async (targetCurrency) => {
     if (targetCurrency === "BDT") {
       setConvertedPrice(baseBDT)
@@ -60,6 +62,8 @@ const CurrencyConverter = ({ baseBDT }) => {
       setSelectedCountry(country)
     }
   }
+
+
 
   return (
     <div className="w-full max-w-md mx-auto bg-white text-black rounded-lg shadow-md overflow-hidden border border-gray-200">

@@ -33,7 +33,7 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
         // Update formData with customer_id before saving it
         const updatedFormData = { ...formData, customer_id: customerId };
         setFormData(updatedFormData);
-        console.log(updatedFormData,"rrrrrrrrr");
+        
         setIsRegistered(!isRegistered);
         toast.success("Register Successful!");
   

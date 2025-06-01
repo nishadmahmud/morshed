@@ -30,7 +30,7 @@ const Chatbot = () => {
       );
       
     
-      console.log("API Response:", response.data); // Log response to check errors
+    
       const botMessage = { role: "assistant", content: response.data.choices[0].message.content };
       setMessages([...updatedMessages, botMessage]);
     } catch (error) {

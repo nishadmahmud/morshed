@@ -13,8 +13,7 @@ import ProductCard from './ProductCard';
 const ReadyForOrder = () => {
     const { handleCart, handleBuy } = useStore();
     const { data: bestSellers, isLoading } = useSWR(`${process.env.NEXT_PUBLIC_API}/public/products/${userId}?page=1&limit=12`, fetcher);
-    console.log('best saller', bestSellers);
-
+    
     return (
         <div className="mt-12 w-11/12 mx-auto">
             <Heading title={'Ready for order'} />

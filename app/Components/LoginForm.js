@@ -9,7 +9,7 @@ import { userId } from "../(home)/page";
 
 const LoginForm = ({ isRegistered,setIsRegistered, isLoginModal,onClose,setReload }) => {
   const userData = JSON.parse(localStorage.getItem("user"));
-  console.log('object', userData);
+ 
   const customer_id = userData?.customer_id;
   const first_name = userData?.first_name;
   const last_name = userData?.last_name;

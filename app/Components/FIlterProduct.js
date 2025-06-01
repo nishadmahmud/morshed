@@ -54,7 +54,7 @@ const FilterProduct = ({products,setFilteredItems}) => {
             setFilteredItems(rangedProducts);
       },[range,products])
 
-      // console.log(uniqueStorageList);
+     
 
 
       useEffect(() => {
@@ -177,9 +177,7 @@ const FilterProduct = ({products,setFilteredItems}) => {
                     <label htmlFor="in-stock" className="ml-2 text-base">In Stock</label>
                     </div>
                     <div>
-                      {/* {console.log(isInStock)} */}
-                    {/* <input type="checkbox" name="online-order" id="online-order" /> */}
-                    {/* <label htmlFor="online-order" className="ml-2 text-base">Online Order</label> */}
+                     
                     </div>
                     <div>
                     {/* <input type="checkbox" name="pre-order" id="pre-order" />

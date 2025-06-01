@@ -34,10 +34,7 @@ const Page = ({ params }) => {
   // const brands = [...new Set(items.map(item  => item.brand_name))];
   const contentRef = useRef(null);
   
-  // const maxPrice = products?.data ? products.data.filter((item) => {
-  //   console.log(item);
-  //   return item.retails_price > minPrice;
-  // }) : 0;
+ 
 
   
 

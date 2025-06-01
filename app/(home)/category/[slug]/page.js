@@ -47,7 +47,7 @@ export default function ProductListing({ params }) {
   )
 
 
-  console.log(products?.data);
+
 
   useEffect(() => {
     if (products) {

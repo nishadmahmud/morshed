@@ -12,8 +12,7 @@ const NewArrival = () => {
     `${process.env.NEXT_PUBLIC_API}/public/products/${userId}?page=1&limit=6`,
     fetcher
   );
-    console.log('new arrival', newArrival);
-
+ 
     return (
         <div className="my-12 md:w-10/12 w-11/12 mx-auto">
           <h1 className='md:text-2xl text-lg text-center py-2 text-black font-semibold'>New Arrival</h1>

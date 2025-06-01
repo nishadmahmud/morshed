@@ -110,6 +110,13 @@ export default function Footer() {
       </div>
     </div>
   </div>
+  
+       <div className="w-full pt-8 text-center">
+      <hr className="text-gray-500 w-11/12 mx-auto"></hr>
+      <p className="text-gray-100 text-sm pt-8">
+        Copyright 2025 © <span className="font-medium">Morshed Mart</span>. All rights reserved. Developed & Desinged by <Link href='https://squadinnovators.com' target="_blank" className="font-medium hover:text-blue-400 transition hover:font-medium">Squad Innovators</Link>.
+      </p>
+    </div>
 </footer>
 
   )

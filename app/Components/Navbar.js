@@ -59,41 +59,41 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
 
       {/* mobile & tablet menu */}
       <div className="relative">
-        <div className="fixed -bottom-1 left-0 right-0 bg-[#171717] pt-1 z-50 shadow-lg lg:hidden">
+        <div className="fixed border-t -bottom-1 left-0 right-0 bg-[#f9f9f9] pt-1 z-50 shadow-lg lg:hidden">
           <div className="flex justify-around items-center py-2">
             <Link
               href="/"
-              className="flex flex-col items-center text-sm hover:text-white text-[#115e59]"
+              className="flex flex-col items-center text-sm text-[#115e59]"
             >
               <House className="text-2xl" />
-              <span className="text-white">Home</span>
+              <span className="text-black">Home</span>
             </Link>
 
             <Link
               href="/offer"
-              className="flex flex-col items-center text-sm hover:text-white text-[#115e59]"
+              className="flex flex-col items-center text-sm text-[#115e59]"
             >
               <Gift className="text-2xl" />
-              <span className="text-white">Offers</span>
+              <span className="text-black">Offers</span>
             </Link>
 
             <Link
             href='/cart'
               
-              className="flex flex-col items-center text-sm hover:text-white text-[#115e59]"
+              className="flex flex-col items-center text-sm text-[#115e59]"
             >
               <div>
                 <ShoppingCart className="text-2xl" />
-                <p className="bg-[#ffffff] z-[900] h-fit text-[#115e59] w-fit px-1 text-xs rounded-full absolute top-2 md:right-96 lg:right-80 right-[8rem]">
+                <p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
                   {total}
                 </p>
               </div>
-              <span className="text-white">Cart</span>
+              <span className="text-black">Cart</span>
             </Link>
             {loggedInUser ? (
               <Link
                 href="/profileDashboard"
-                className="flex flex-col items-center text-sm text-[#115e59] hover:text-white"
+                className="flex flex-col items-center text-sm text-[#115e59]"
               >
                 <Image
                   unoptimized
@@ -103,13 +103,13 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                   width={28}
                   height={28}
                 />
-                <span className="text-white">Account</span>
+                <span className="text-black">Account</span>
               </Link>
             ) : (
               <Link 
               href="/login"
                
-                className="flex flex-col items-center text-sm text-[#115e59] hover:text-white cursor-pointer"
+                className="flex flex-col items-center text-sm text-[#115e59] cursor-pointer"
               >
                 <LogIn className="text-2xl" />
                 <span className="text-white">Login</span>
