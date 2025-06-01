@@ -112,7 +112,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                 className="flex flex-col items-center text-sm text-[#115e59] cursor-pointer"
               >
                 <LogIn className="text-2xl" />
-                <span className="text-white">Login</span>
+                <span className="text-black">Login</span>
               </Link>
             )}
           </div>
