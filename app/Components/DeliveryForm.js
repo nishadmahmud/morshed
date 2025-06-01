@@ -24,9 +24,76 @@ import {
   Home,
   Building,
 } from "lucide-react";
+import PrizeModal from "./PrizeModal";
+import { Dialog } from "@headlessui/react";
+import { Wheel } from "react-custom-roulette";
 
 
-
+const prizeData = [
+  {
+    option: "10% off",
+    image: {
+      uri: "/ten.png",
+      sizeMultiplier: 1,
+      offsetX: 0,
+      offsetY: 0,
+      landscape: false,
+    },
+  },
+   {
+    option: "4 pc Solid Shirt",
+    image: {
+      uri: "/fourshirt.png",
+      sizeMultiplier: 1,
+      offsetX: 0,
+      offsetY: 0,
+      landscape: false,
+    },
+  },
+  {
+    option: "30% off",
+    image: {
+      uri: "/therty.png",
+      sizeMultiplier: 1,
+      offsetX: 0,
+      offsetY: 0,
+      landscape: false,
+    },
+  },
+  {
+    option: "50% off",
+    image: {
+      uri: "/fifty.png",
+      sizeMultiplier: 1,
+      offsetX: 0,
+      offsetY: 0,
+      landscape: false,
+    },
+  },
+  {
+    option: "One pis Stripe T-shirt",
+    image: {
+      uri: "/shirtPrize.png",
+      sizeMultiplier: 1,
+      offsetX: 0,
+      offsetY: 0,
+      landscape: false,
+    },
+  },
+ 
+  {
+    option: "Solid Shirt",
+    image: {
+      uri: "/solid-shirt.png",
+      sizeMultiplier: 1,
+      offsetX: 0,
+      offsetY: 0,
+      landscape: false,
+    },
+  },
+ 
+ 
+];
 
 
 const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
@@ -46,7 +113,6 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
   const customer_id = userData?.id;
   const customer_phone = userData?.mobile_number;
   const [location, setLocation] = useState("inside");
-
   const shippingFee = location === "inside" ? 70 : 130;
 
   useEffect(() => {
@@ -163,11 +229,29 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
   }
 }, []);
 
+// spining wheel code
+
+   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [wonPrize, setWonPrize] = useState("");
+
+  const handleSpinComplete = (prize) => {
+    setWonPrize(prize);
+    setIsModalOpen(true);
+  };
+
+
+  const [showWheelModal, setShowWheelModal] = useState(false);
+  const [mustSpin, setMustSpin] = useState(false);
+  const [prizeNumber, setPrizeNumber] = useState(0);
+  const [result, setResult] = useState("");
+  const [prizeName, setPrizeName] = useState("");
+  const [invoiceId, setInvoiceId] = useState(null);
+
 
 
 
  
-  const handleOrderComplete = (e) => {
+ const handleOrderComplete = (e) => {
     e.preventDefault();
     if (cartItems.length > 0) {
       axios
@@ -178,14 +262,19 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
         .then((res) => {
           if (res.status === 200) {
             const _invoiceId = res?.data?.data?.invoice_id;
-           
+            console.log(res?.data);
+            setInvoiceId(_invoiceId);
             localStorage.removeItem("cart");
-            toast.success("Order placed successfully!");
+            toast.success("Order Placed Successfully!");
             // Check amount
-          
-            router.push(`/payment-success/${_invoiceId}`)
-         
-          
+            const total = Number(cartTotal) + shippingFee;
+            if (total >= 100) {
+            
+
+              setShowWheelModal(true);
+            } else {
+              router.push(`/payment-success/${_invoiceId}`);
+            }
           }
         })
         .catch((err) => {
@@ -197,6 +286,43 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
       router.push("/");
     }
   };
+
+
+  const [spinCount, setSpinCount] = useState(0);
+  const handleSpinClick = () => {
+  const nextTimeIndex = prizeData.findIndex((item) => item.option === "10% off");
+  const cashPrizeIndex = prizeData.findIndex((item) => item.option === "50% off");
+
+  const newSpinCount = spinCount + 1;
+  setSpinCount(newSpinCount);
+
+  if (newSpinCount === 60) {
+    setPrizeNumber(cashPrizeIndex); // Show "500tk Cash Money"
+  } else {
+    setPrizeNumber(nextTimeIndex); // Always show "Next Time"
+  }
+
+  setMustSpin(true);
+  setResult("");
+};
+
+
+  const handleSpinEnd = () => {
+  const selectedPrize = prizeData[prizeNumber]?.image?.uri || "Unknown";
+  const selectedPrizeName = prizeData[prizeNumber]?.option || "Unknown";
+  setPrizeName(selectedPrizeName)
+  setResult(selectedPrize);
+  setMustSpin(false);
+  setShowWheelModal(false)
+  setIsModalOpen(true);
+};
+
+const handleModalClose = () => {
+  setIsModalOpen(false);
+  setTimeout(() => {
+    router.push(`/payment-success/${invoiceId}`);
+  }, 500);
+};
 
 
 
@@ -866,7 +992,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-600 hover:to-teal-700 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+            className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
           >
             <div className="flex items-center justify-center space-x-2">
               <ShoppingBag className="h-5 w-5" />
@@ -905,7 +1031,63 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
         />
       )}
 
-     
+      <Dialog
+        open={showWheelModal}
+        onClose={() => {}}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="bg-transparent flex flex-col items-center">
+            <div className="relative">
+
+              <Wheel
+                mustStartSpinning={mustSpin}
+                prizeNumber={prizeNumber}
+                data={prizeData}
+                backgroundColors={["#008080", "#ffffff"]}
+                textColors={["#000000", "#008080"]}
+                outerBorderColor={["#000000", "#ffffff"]}
+                outerBorderWidth={2}
+                radiusLineColor="#008080"
+                radiusLineWidth={1}
+                fontSize={14}
+                textDistance={70}
+                onStopSpinning={handleSpinEnd}
+                perpendicularText={true}
+                isOnlyOnce={false}
+              />
+
+              <button
+                onClick={handleSpinClick}
+                className="absolute z-50 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-black text-white px-5 py-2 flex items-center gap-1 rounded-full text-lg font-semibold shadow hover:bg-gray-900"
+              >
+                {/* <FaGamepad size={20}></FaGamepad> */}
+                Play
+              </button>
+            </div>
+            {/* {result && (
+              <p className="mt-6 text-center text-xl bg-white p-2 px-4 rounded-lg text-green-400 font-semibold">
+                🎉You won:{" "}
+                <Image
+                  width={500}
+                  height={500}
+                  src={result}
+                  alt="prize"
+                ></Image>
+              </p>
+            )} */}
+          </Dialog.Panel>
+        </div>
+      </Dialog>
+
+      <PrizeModal
+      invoiceId={invoiceId}
+      prizeName={prizeName}
+  isOpen={isModalOpen}
+  onClose={handleModalClose}
+  prize={result}
+/>
 
     </div>
   );

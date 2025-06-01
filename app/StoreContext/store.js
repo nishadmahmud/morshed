@@ -4,6 +4,17 @@ import { useRouter } from 'next/navigation';
 import toast from 'react-hot-toast';
 import useSWR from 'swr';
 import { fetcher, userId } from '../(home)/page';
+const countries = [
+  { label: "United States", value: "USD", symbol: "$" },
+  { label: "United Kingdom", value: "GBP", symbol: "£" },
+  { label: "India", value: "INR", symbol: "₹" },
+  { label: "Europe", value: "EUR", symbol: "€" },
+  { label: "Bangladesh", value: "BDT", symbol: "৳" },
+  { label: "Japan", value: "JPY", symbol: "¥" },
+  { label: "Canada", value: "CAD", symbol: "C$" },
+  { label: "Australia", value: "AUD", symbol: "A$" },
+]
+
 
 export const storeContext = createContext(null);
 const StoreProvider = ({children}) => {
@@ -16,6 +27,9 @@ const StoreProvider = ({children}) => {
     const [hasToken,setHasToken] = useState(false);
     const [loading,setLoading] = useState(true);
     const [isOpenPromoBanner,setIsOpenPromoBanner] = useState(false);
+    const [isSelectRegion,setIsSelectRegion] = useState(false);
+  const [selectedCountry, setSelectedCountry] = useState(countries[0])
+  const [convertedPrice, setConvertedPrice] = useState(null)
 
     useEffect(() => {
         setIsMounted(true);
@@ -156,10 +170,18 @@ const StoreProvider = ({children}) => {
         setIsOpenPromoBanner(false);
     }
 
+    const handleSelectRegion = () => {
+        setIsSelectRegion(true)
+    }
+
+    const handleCloseRegion = () => {
+        setIsSelectRegion(false);
+    }
+
 
     const {data : blogs} = useSWR(`${process.env.NEXT_PUBLIC_API}/latest-ecommerce-blog-list/${userId}`,fetcher)
     
-    const values = {handleCart,getCartItems,refetch,openCart,setOpenCart,reload,handleIncQuantity,handleDncQuantity,cartItems,setRefetch,handleCartItemDelete,handleWishlist,getWishList,handleBuy,handleWishlistDelete,isLoginModal,setIsLoginModal,token,setToken,hasToken,setHasToken,loading,setLoading,isOpenPromoBanner,handleClosePromo,handlePromoBanner,setIsOpenPromoBanner,blogs}
+    const values = {handleCart, setIsSelectRegion, isSelectRegion, handleSelectRegion, handleCloseRegion, getCartItems,refetch,openCart,setOpenCart,reload,handleIncQuantity,handleDncQuantity,cartItems,setRefetch,handleCartItemDelete,handleWishlist,getWishList,handleBuy,handleWishlistDelete,isLoginModal,setIsLoginModal,token,setToken,hasToken,setHasToken,loading,setLoading,isOpenPromoBanner,handleClosePromo,handlePromoBanner,setIsOpenPromoBanner,blogs, setSelectedCountry, selectedCountry, countries, convertedPrice, setConvertedPrice}
     
     return (
         <storeContext.Provider value={values}>

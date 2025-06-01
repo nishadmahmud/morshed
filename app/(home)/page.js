@@ -14,6 +14,7 @@ import EidCollection from "../Components/EidCollection";
 import OfferPage from "../Components/OfferPage";
 import HalfSelveePolo from "../Components/HalfSelveePolo";
 import BenefitsSection from "../Components/BenefitsSection";
+import SelectRegionModal from "../Components/SelectRegionModal";
 
 
 export const userId = 203;
@@ -54,7 +55,8 @@ export default async function Home() {
 
   return (
     <>
-      <PromotionModal promotionBanner={promotion?.data}/>
+    {/* <SelectRegionModal></SelectRegionModal> */}
+      <PromotionModal promotionBanner={promotion?.data[0]}/>
       <HeroSlider slider={slider} banner={banner} data={categories}/>
         {/* <OurFeatures /> */}
       <div>

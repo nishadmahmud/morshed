@@ -9,7 +9,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import "../globals.css";
 
 const ProductCard = ({ product }) => {
-  const { handleCart } = useStore();
+  const { handleCart, selectedCountry, convertedPrice } = useStore();
   const { toggleWishlist, isInWishlist } = useWishlist();
 
   const updateRecentViews = () => {
@@ -83,7 +83,7 @@ const ProductCard = ({ product }) => {
 
       {/* Wishlist Icon */}
       <div
-        className="absolute top-5 right-3 p-1.5 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10"
+        className="absolute top-5 right-3 p-1.5 bg-white rounded-full opacity-100 transition-opacity duration-300 cursor-pointer z-10"
         onClick={(e) => {
           e.stopPropagation();
           toggleWishlist(product);
@@ -126,7 +126,7 @@ const ProductCard = ({ product }) => {
             </div>
           ) : (
             <span className="text-lg font-bold text-[#115e59]">
-              <span className="font-bangla">৳</span> {product.retails_price}
+              <span className="font-bangla">{selectedCountry.symbol}</span> {convertedPrice}
             </span>
           )}
 

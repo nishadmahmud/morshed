@@ -66,7 +66,9 @@ export default function Page() {
   return (
     <div className="w-full min-h-screen flex flex-col items-center px-4 py-20 lg:pt-20 md:pt-16 pt-14">
       
-      {/* <CurrencyConverter baseBDT={500}></CurrencyConverter> */}
+      <CurrencyConverter baseBDT={500}></CurrencyConverter>
+
+      
       <div className="w-full text-black pt-5">
         <h1 className="text-2xl font-semibold mb-2 text-center">
           Check Your Order Status
