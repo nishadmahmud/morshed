@@ -9,8 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
     "@headlessui/react": "^2.2.4",
     "@lottiefiles/react-lottie-player": "^3.5.4",
+    "@mui/material": "^7.1.1",
     "@smastrom/react-rating": "^1.5.0",
     "@tanstack/react-query": "^5.60.5",
     "animate.css": "^4.1.1",
@@ -51,7 +54,7 @@
     "string-to-color": "^2.2.2",
     "string-to-hex-code-color": "^1.0.8",
     "styled-components": "^6.1.16",
-    "swiper": "^11.2.4",
+    "swiper": "^11.2.8",
     "swr": "^2.2.5"
   },
   "devDependencies": {

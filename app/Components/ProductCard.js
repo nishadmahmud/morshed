@@ -32,47 +32,42 @@ const ProductCard = ({ product }) => {
     : null;
 
   const sanitizeSlug = (str) => {
-  return str
-    ?.toLowerCase()
-    .split(" ")
-    .slice(0, 2)
-    .join(" ")
-    .replace(/\s+/g, "-")
-    .replace(/[^a-z0-9-]/g, "");
-};
+    return str
+      ?.toLowerCase()
+      .split(" ")
+      .slice(0, 2)
+      .join(" ")
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+  };
 
   return (
-    <div className="group bg-white rounded-sm transition-all duration-300 md:w-56 w-44 h-[23rem] md:h-[25.5rem] relative overflow-hidden flex flex-col">
+    <div className="group bg-white rounded-sm transition-all duration-300 w-full sm:w-48 md:w-72 h-[23rem] md:h-[31rem] relative overflow-hidden flex flex-col shadow-sm">
       
       {/* Image */}
-   <Link
-  href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-  onClick={updateRecentViews}
-  className="block w-full md:h-72 h-56 relative overflow-hidden"
->
-  {/* Base image */}
-  <Image
-    src={product?.image_path || noImg}
-    alt={product?.name}
-    fill
-    unoptimized
-    className="object-cover transition-opacity duration-300"
-  />
+      <Link
+        href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
+        onClick={updateRecentViews}
+        className="block w-full md:h-96 h-64 relative overflow-hidden"
+      >
+        <Image
+          src={product?.image_path || noImg}
+          alt={product?.name}
+          fill
+          unoptimized
+          className="object-cover transition-opacity duration-300"
+        />
 
-  {/* Hover image (fades in on hover) */}
-  {product?.image_path1 && (
-    <Image
-      src={product.image_path1}
-      alt={`${product?.name} hover`}
-      fill
-      unoptimized
-      className="object-cover absolute top-0 left-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
-    />
-  )}
-</Link>
-
-
-
+        {product?.image_path1 && (
+          <Image
+            src={product.image_path1}
+            alt={`${product?.name} hover`}
+            fill
+            unoptimized
+            className="object-cover absolute top-0 left-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
+          />
+        )}
+      </Link>
 
       {/* Discount Tag */}
       {product?.discount && (
@@ -83,7 +78,7 @@ const ProductCard = ({ product }) => {
 
       {/* Wishlist Icon */}
       <div
-        className="absolute top-5 right-3 p-1.5 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10"
+        className="absolute top-5 right-3 p-1.5 bg-white rounded-full transition-opacity duration-300 cursor-pointer z-10"
         onClick={(e) => {
           e.stopPropagation();
           toggleWishlist(product);
@@ -101,22 +96,22 @@ const ProductCard = ({ product }) => {
         )}
       </div>
 
-      {/* Content */}
-      <div className="relative flex-grow pb-16">
+      {/* Content - Product Name */}
+      <div className="relative flex-grow px-3 pt-2 pb-16 flex">
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
           onClick={updateRecentViews}
-          className="text-sm font-semibold text-gray-800 line-clamp-2 hover:text-[#115e59]"
+          className="text-sm font-semibold text-gray-800 line-clamp-2 hover:text-[#115e59] text-start"
         >
           {product?.name || "N/A"}
         </Link>
       </div>
 
-      {/* Fixed bottom bar */}
-      <div className="absolute bottom-0 left-0 w-full py-2 bg-white">
+      {/* Bottom Bar - Price and Cart */}
+      <div className="absolute bottom-0 left-0 w-full px-3 py-3 bg-white border-t border-gray-100">
         <div className="flex items-center justify-between">
           {product?.discount ? (
-            <div className="flex flex-col">
+            <div className="flex items-center gap-1">
               <span className="text-lg font-bold text-[#115e59]">
                 <span className="font-bangla">৳</span> {discountedPrice}
               </span>
@@ -129,7 +124,6 @@ const ProductCard = ({ product }) => {
               <span className="font-bangla">৳</span> {product.retails_price}
             </span>
           )}
-
           <button
             onClick={(e) => {
               e.preventDefault();
@@ -142,9 +136,6 @@ const ProductCard = ({ product }) => {
           </button>
         </div>
       </div>
-
- 
-      
     </div>
   );
 };

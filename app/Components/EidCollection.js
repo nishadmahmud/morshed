@@ -6,6 +6,11 @@ import { fetcher } from '../(home)/page';
 import CardSkeleton from './CardSkeleton';
 import ProductCard from './ProductCard';
 
+// Swiper imports
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay } from 'swiper/modules';
+import 'swiper/css';
+
 const EidCollection = () => {
   const eidCategoryId = 6785;
 
@@ -17,19 +22,52 @@ const EidCollection = () => {
   return (
     <div className="mt-12 w-11/12 md:w-10/12 mx-auto">
       <Heading title={'Eid Collections'} />
-      <div className="grid grid-cols-2 md:grid-cols-3 md:gap-5 lg:gap-6 md:col-span-3 gap-6 lg:grid-cols-4 xl:grid-cols-5 mt-7">
-        {isLoading ? (
-          Array.from({ length: 12 }).map((_, idx) => (
-            <CardSkeleton key={idx} />
-          ))
-        ) : menCollection?.data?.length > 0 ? (
-          menCollection.data.slice(0, 12).map((product, index) => (
-            <ProductCard product={product} key={product.id || index} />
-          ))
-        ) : (
-          <p className="text-black text-center col-span-6">No products found</p>
-        )}
-      </div>
+
+      <Swiper
+        spaceBetween={20}
+        slidesPerView={4}
+        slidesPerGroup={4}
+        loop={true}
+        speed={800}
+        autoplay={{
+          delay: 2000,
+          disableOnInteraction: false,
+        }}
+        modules={[Autoplay]}
+        breakpoints={{
+          320: {
+            slidesPerView: 2,
+            slidesPerGroup: 2,
+          },
+          768: {
+            slidesPerView: 3,
+            slidesPerGroup: 3,
+          },
+          1024: {
+            slidesPerView: 4,
+            slidesPerGroup: 4,
+          },
+        }}
+        className="mt-7"
+      >
+        {isLoading
+          ? Array.from({ length: 12 }).map((_, idx) => (
+              <SwiperSlide key={idx}>
+                <CardSkeleton />
+              </SwiperSlide>
+            ))
+          : menCollection?.data?.length > 0
+          ? menCollection.data.slice(0, 12).map((product, index) => (
+              <SwiperSlide key={product.id || index}>
+                <ProductCard product={product} />
+              </SwiperSlide>
+            ))
+          : (
+              <div className="w-full text-center col-span-6">
+                <p className="text-black">No products found</p>
+              </div>
+            )}
+      </Swiper>
     </div>
   );
 };

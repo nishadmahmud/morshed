@@ -1,5 +1,17 @@
 "use client"
-
+import {
+  Modal,
+  Box,
+ 
+  Tab,
+  Tabs,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
@@ -12,13 +24,15 @@ import { htmlToText } from "html-to-text"
 import InnerImageZoom from "react-inner-image-zoom"
 import "react-inner-image-zoom/lib/styles.min.css"
 import useStore from "@/app/CustomHooks/useStore"
+import useWishlist from "@/app/CustomHooks/useWishlist"
+import { FaHeart, FaRegHeart } from "react-icons/fa6"
+import SizeGuideModal from "@/app/Components/SizeGuideModal"
 // Fetcher function from the original code
 const fetcher = (url) => fetch(url).then((res) => res.json())
 const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : ""
 
 const ProductPage = ({ params }) => {
   const { id } = params
-
   const [quantity, setQuantity] = useState(1)
   const [imageIndex, setImageIndex] = useState(0)
   const [scroll, setScroll] = useState(0)
@@ -29,6 +43,26 @@ const ProductPage = ({ params }) => {
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
     const { handleCart, handleBuy } = useStore();
+    const { toggleWishlist, isInWishlist } = useWishlist();
+
+    // size guide modal
+
+   const [open, setOpen] = useState(false);
+    const [tab, setTab] = useState(0);
+  
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+    const handleTabChange = (event, newValue) => setTab(newValue);
+  
+    const inches = [
+      ["1/2 CHEST", "20.75", "21.75", "22.75", "24", "25.5", "27.25", "28.75"],
+      ["BODY LENGTH", "52", "54", "54/56", "56/58", "60", "62", "64"],
+    ];
+  
+    const cm = [
+      ["1/2 CHEST", "52.7", "55.2", "57.8", "61", "64.7", "69.2", "73"],
+      ["BODY LENGTH", "132", "137", "137/142", "142/147", "152", "157", "162"],
+    ];
 
   // Demo data for sizes
 
@@ -176,6 +210,11 @@ const ProductPage = ({ params }) => {
     (item) => item?.id === product?.data.id || undefined
   );
 
+
+  
+
+
+
  
   
 
@@ -296,7 +335,7 @@ const ProductPage = ({ params }) => {
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
                 <h3 className="font-medium text-sm">Size: {selectedSize}</h3>
-                <button className="text-sm text-gray-600 underline">Size Guide</button>
+                <button onClick={handleOpen} className="text-sm text-gray-600 underline">Size Guide</button>
               </div>
               <div className="flex gap-3">
                 {product?.data?.product_variants && product.data.product_variants.length > 0
@@ -358,10 +397,22 @@ const ProductPage = ({ params }) => {
                   {isInCart ? "Added to Cart" : "Add to Cart"}
                 </button>
                 <button
+                onClick={(e) => {
+          e.stopPropagation();
+          toggleWishlist(product);
+        }}
                   className="p-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
                   aria-label="Add to wishlist"
                 >
-                  <Heart className="h-4 w-4" />
+                  {isInWishlist(product.id) ? (
+                            <FaHeart
+                              color="teal"
+                              size={18}
+                              className="transition-all duration-300 animate-heart-bounce"
+                            />
+                          ) : (
+                            <FaRegHeart color="black" size={18} className="transition-all duration-300" />
+                          )}
                 </button>
               </div>
             </div>
@@ -528,6 +579,54 @@ const ProductPage = ({ params }) => {
           </div>
         </div>
       )}
+
+      <Modal open={open} onClose={handleClose}>
+        <Box
+          sx={{
+            width: 700,
+            bgcolor: "background.paper",
+            margin: "100px auto",
+            padding: 4,
+            outline: "none",
+            borderRadius: 2,
+          }}
+        >
+          <Typography color="black" variant="h6" mb={2}>
+            MEN&apos;S THOBE - REGULAR FIT
+          </Typography>
+
+          <Tabs value={tab} onChange={handleTabChange} aria-label="Size Guide Tabs">
+            <Tab label="IN" />
+            <Tab label="CM" />
+          </Tabs>
+
+          <Box mt={2}>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Measurement Points</TableCell>
+                  <TableCell>XS</TableCell>
+                  <TableCell>S</TableCell>
+                  <TableCell>M</TableCell>
+                  <TableCell>L</TableCell>
+                  <TableCell>XL</TableCell>
+                  <TableCell>2XL</TableCell>
+                  <TableCell>3XL</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {(tab === 0 ? inches : cm).map((row, i) => (
+                  <TableRow key={i}>
+                    {row.map((cell, j) => (
+                      <TableCell key={j}>{cell}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        </Box>
+      </Modal>
     </section>
   )
 }
