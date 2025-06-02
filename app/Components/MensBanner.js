@@ -51,7 +51,7 @@ const MensBanner = ({ banner }) => {
       </div>
 
       {/* Right Side - Image */}
-      <div className="relative lg:w-1/2 w-full h-[60vh] lg:h-full">
+      <div className="relative lg:w-1/2 w-full h-[35vh] lg:h-full">
         <Image
           src={imageSrc}
           alt="Mens Banner"

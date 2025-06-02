@@ -273,7 +273,9 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
 
               setShowWheelModal(true);
             } else {
-              router.push(`/payment-success/${_invoiceId}`);
+              setTimeout(() => {
+    router.push(`/payment-success/${invoiceId}`);
+  }, 2000);
             }
           }
         })

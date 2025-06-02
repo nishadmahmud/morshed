@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { FaUsers } from "react-icons/fa6"
 import Image from "next/image"
 import Link from "next/link"
-import { Gift, Globe, NotebookPen, ShoppingBag, User } from "lucide-react"
+import { Gift, Globe, Heart, NotebookPen, ShoppingBag, User } from "lucide-react"
 import { IoCloseSharp, IoSearch } from "react-icons/io5"
 import axios from "axios"
 import noImg from "/public/no-image.jpg"
@@ -193,7 +193,7 @@ const toggleSearchSidebar = () => {
           </div>
 
           {/* Right side icons */}
-          <div className="flex items-center justify-end gap-6">
+          <div className="flex items-center justify-end gap-2 md:gap-6">
             {/* Search icon */}
             <button
               onClick={toggleSearchSidebar}
@@ -210,14 +210,14 @@ const toggleSearchSidebar = () => {
               className="flex items-center cursor-pointer"
               aria-label="Cart"
             >
-              <div className="relative">
-                <ShoppingBag size={22} className="text-black" />
-                {total > 0 && (
+              <Link href='/wishlist' className="relative">
+                <Heart size={22} className="text-black" />
+                {/* {total > 0 && (
                   <span className="absolute -top-1 -right-0 bg-black text-white text-[8px] rounded-full w-3 h-3 flex items-center justify-center">
                     {total}
                   </span>
-                )}
-              </div>
+                )} */}
+              </Link>
             </Link>
 
             
@@ -301,7 +301,7 @@ const toggleSearchSidebar = () => {
       <Link
         onClick={toggleSidebar}
         className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-teal-50 transition"
-        href="/about-us"
+        href="/"
       >
         <FaUsers size={18} className="text-teal-600" />
         <span className="text-sm font-medium">About Us</span>

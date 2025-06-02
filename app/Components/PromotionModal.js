@@ -41,7 +41,7 @@ const PromotionModal = () => {
         <div className={`modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center z-[9999] items-center px-4 ${isOpenPromoBanner  && offer?.length > 0 ? '' : 'hidden'}`}>
             <dialog
                 open
-                className="relative p-1.5 lg:p-2 rounded-lg flex flex-col justify-center bg-white text-black lg:w-[30%] w-[70%] h-[55vh] md:h-[70vh]"
+                className="relative p-1.5 lg:p-2 rounded-lg flex flex-col justify-center bg-white text-black lg:w-[30%] w-[85%] h-[40vh] md:h-[70vh]"
             >
                 {/* Close Button */}
                <button
