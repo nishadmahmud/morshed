@@ -261,11 +261,12 @@ const ProductPage = ({ params }) => {
                 )}
                 {imageArray && imageArray.length > 0 ? (
                   <InnerImageZoom
-                    src={imageArray[imageIndex]} // or whatever your image URL is
+                    src={imageArray[imageIndex]} 
                     zoomSrc={imageArray[imageIndex]} // optional, can be higher-res version
                     zoomType="hover"
+                    zoomScale={0.9} 
                     zoomPreload={true}
-                    className="w-full md:h-[70vh] h-[50vh] object-cover rounded-lg"
+                    className="w-full md:h-[70vh] h-[50vh] object-contain rounded-lg"
                   />
                 ) : product?.data?.image_path ? (
                   <Image
@@ -479,7 +480,7 @@ const ProductPage = ({ params }) => {
         {/* Recently Viewed */}
         <div className="mb-12">
           <h2 className="text-xl font-bold mb-6">Recently Viewed</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 pb-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-10">
             {recentProducts && recentProducts.length > 0 ? (
               recentProducts.map((item) => (
                 <Link

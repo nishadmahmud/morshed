@@ -97,7 +97,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content - Product Name */}
-      <div className="relative flex-grow px-3 pt-2 pb-16 flex">
+      <div className="relative flex-grow px-3 pt-2 pb-10 flex">
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
           onClick={updateRecentViews}
@@ -108,7 +108,7 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Bottom Bar - Price and Cart */}
-      <div className="absolute bottom-0 left-0 w-full px-3 py-3 bg-white border-t border-gray-100">
+      <div className="absolute bottom-0 left-0 w-full px-3 py-3 bg-white">
         <div className="flex items-center justify-between">
           {product?.discount ? (
             <div className="flex items-center gap-1">

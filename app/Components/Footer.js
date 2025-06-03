@@ -78,6 +78,7 @@ export default function Footer() {
           <li><Link href="/faq" className="text-white hover:underline">FAQ</Link></li>
           <li><Link href="tel:+8801970085954" className="text-white hover:underline">Support Center</Link></li>
           <li><Link href="https://wa.me/+8801970085954" className="text-white hover:underline">Feedback</Link></li>
+          <li><Link href="/export-info" className="text-white hover:underline">Export Information</Link></li>
         </ul>
       </div>
 
