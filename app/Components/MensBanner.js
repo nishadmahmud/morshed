@@ -24,7 +24,7 @@ const MensBanner = ({ banner }) => {
   const isInView = useInView(textRef, { once: true, margin: '-100px' });
 
   return (
-    <div className="w-full lg:h-[80vh] h-auto flex flex-col lg:flex-row">
+    <div className="w-full lg:h-[65vh] h-auto flex flex-col lg:flex-row">
       {/* Left Side - Text */}
       <div
         className="bg-teal-800/90 backdrop-blur-lg text-white flex flex-col justify-center px-8 lg:w-1/2 w-full py-10"
