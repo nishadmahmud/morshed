@@ -28,7 +28,6 @@ export default async function Home() {
 
 
 
-
   const promotionRes = await fetch(`${process.env.NEXT_PUBLIC_API}/latest-ecommerce-offer-list/${userId}`);
   const promotion = await promotionRes.json();
 
