@@ -298,7 +298,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
   const newSpinCount = spinCount + 1;
   setSpinCount(newSpinCount);
 
-  if (newSpinCount === 60) {
+  if (newSpinCount === 2) {
     setPrizeNumber(cashPrizeIndex); // Show "500tk Cash Money"
   } else {
     setPrizeNumber(nextTimeIndex); // Always show "Next Time"
