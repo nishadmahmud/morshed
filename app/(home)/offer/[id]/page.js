@@ -78,8 +78,8 @@ const Page = ({ params }) => {
     };
 
     return (
-        <div className="lg:pt-0 pt-2 w-11/12 mx-auto text-black">
-            <div className="w-full bg-white rounded-lg shadow-md overflow-hidden">
+        <div className="lg:pt-20 pt-16 py-5 w-11/12 mx-auto text-black">
+            <div className="w-full bg-gray-200 rounded-lg shadow-md overflow-hidden">
                 <div className="relative">
                     <Image
                         width={1500}

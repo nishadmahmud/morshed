@@ -22,7 +22,7 @@ const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) 
     recentViews.unshift({
       id: product.id,
       name: product.name,
-      image: product.image_path || (product.images && product.images[0]) || noImg.src,
+      image: product.image_path || (product.images && product.images[0]) || noImg,
       price: product.retails_price,
       discount: product.discount || 0,
     });
@@ -54,16 +54,16 @@ const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) 
               >
                 {item?.images?.length > 0 ? (
                   <Image
-                    src={item?.images[0] || "/placeholder.svg"}
+                    src={item?.images[0] || noImg}
                     height={50}
                     width={50}
                     alt="mobile-phone"
                     quality={75}
                   />
                 ) : item?.image_path ? (
-                  <Image src={item.image_path || "/placeholder.svg"} height={50} width={50} alt="product" />
+                  <Image src={item.image_path || noImg} height={50} width={50} alt="product" />
                 ) : (
-                  <Image src={noImg || "/placeholder.svg"} height={50} width={50} alt="mobile-phone" quality={75} />
+                  <Image src={noImg || noImg} height={50} width={50} alt="mobile-phone" quality={75} />
                 )}
                 <h3 className="text-black text-sm font-medium z-50 text-wrap">{item.name}</h3>
               </Link>

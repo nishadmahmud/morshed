@@ -479,7 +479,7 @@ const ProductPage = ({ params }) => {
         {/* Recently Viewed */}
         <div className="mb-12">
           <h2 className="text-xl font-bold mb-6">Recently Viewed</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pb-10">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-4 pb-10">
             {recentProducts && recentProducts.length > 0 ? (
               recentProducts.map((item) => (
                 <Link

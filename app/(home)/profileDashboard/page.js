@@ -146,7 +146,7 @@ const PersonalInfo = () => {
           </div>
           <input
             type="text"
-            value={address}
+            value={address || "N/A"}
             onChange={(e) => setAddress(e.target.value)}
             className="w-full p-2 border rounded dark:bg-white text-black"
           />

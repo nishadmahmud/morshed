@@ -252,7 +252,7 @@ const toggleSearchSidebar = () => {
 >
   {/* Header */}
   <div className="flex justify-between items-center p-4 border-b">
-    <Link href="/" onClick={toggleSidebar} className="text-xl font-bold text-teal-700">
+    <Link href="/" onClick={toggleSidebar} className="text-lg text-center font-semibold logoFont">
       Morshed Mart
     </Link>
     <button onClick={toggleSidebar} aria-label="Close sidebar">
@@ -332,13 +332,13 @@ const toggleSearchSidebar = () => {
     id="search"
     value={keyword}
     onChange={handleChange}
-    placeholder=" " // invisible but needed for `peer-placeholder-shown`
-    className="peer w-full py-3 pl-12 pr-4 text-base border-b border-gray-500 bg-transparent text-black placeholder-transparent focus:outline-none focus:border-teal-500"
+    placeholder=" "
+    className="peer w-full py-3 pt-4 pl-12 pr-4 text-base border-b border-gray-500 bg-transparent text-black placeholder-transparent focus:outline-none focus:border-teal-600"
   />
   <label
   htmlFor="search"
   className={`absolute left-12 text-base text-gray-400 transition-all duration-200
-    ${keyword ? 'top-0 text-sm text-teal-500' : 'top-3'}
+    ${keyword ? 'top-0 text-sm text-teal-600' : 'top-4'}
   `}
 >
   Search for a product
@@ -357,7 +357,7 @@ const toggleSearchSidebar = () => {
     <div className="max-h-[calc(100vh-200px)] overflow-y-auto" data-search-results>
       {isSearching ? (
         <div className="text-center py-8">
-          <div className="w-10 h-10 mx-auto border-4 border-teal-500 border-r-transparent rounded-full animate-spin"></div>
+          <div className="w-10 h-10 mx-auto border-4 border-teal-600 border-r-transparent rounded-full animate-spin"></div>
           <p className="mt-3 text-gray-500">Searching...</p>
         </div>
       ) : keyword && searchedItem.length > 0 ? (
