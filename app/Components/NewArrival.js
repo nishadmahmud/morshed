@@ -31,7 +31,7 @@ const NewArrival = () => {
           slidesPerView={4}
           slidesPerGroup={4}
           loop={true}
-          speed={2000}
+          speed={1500}
           autoplay={{
             delay: 3000,
             disableOnInteraction: false,

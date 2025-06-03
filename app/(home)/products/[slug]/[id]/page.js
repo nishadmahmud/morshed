@@ -382,13 +382,13 @@ const ProductPage = ({ params }) => {
               <div className="flex gap-3 mt-3">
                 <button
                   onClick={handleBuyNow}
-                  className="flex-1 bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium transition-colors"
+                  className="flex-1 bg-black md:text-base text-sm hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium transition-colors"
                 >
                   Buy Now
                 </button>
                 <button
                   onClick={handleAddToCart}
-                  className={`flex-1 flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
+                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
                     isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
                   }`}
                   disabled={isInCart}

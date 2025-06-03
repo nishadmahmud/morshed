@@ -24,6 +24,8 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
     }
   };
 
+  const user = typeof window !== "undefined" ? localStorage.getItem("user") : null
+
   useEffect(() => {
     document.addEventListener("click", handleCategoryClose);
     return () => document.removeEventListener("click", handleCategoryClose);
@@ -90,7 +92,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
               </div>
               <span className="text-black">Cart</span>
             </Link>
-            {loggedInUser ? (
+            {user ? (
               <Link
                 href="/profileDashboard"
                 className="flex flex-col items-center text-sm text-[#115e59]"
@@ -100,8 +102,8 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                   className="border-2 p-0.5 border-[#115e59] rounded-full"
                   src={loginLogo}
                   alt="navLogo"
-                  width={28}
-                  height={28}
+                  width={30}
+                  height={30}
                 />
                 <span className="text-black">Account</span>
               </Link>

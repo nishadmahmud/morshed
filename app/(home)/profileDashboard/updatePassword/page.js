@@ -62,6 +62,7 @@ const Page = () => {
                 }
             );
 
+
             toast.success("Password updated successfully!");
             setFormData({
                 email,

@@ -2,29 +2,84 @@
 
 import WithAuth from "@/app/Components/WithAuth";
 import { useEffect, useState } from "react";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { House, Mail, Phone, RefreshCcw, User } from "lucide-react";
 
 const PersonalInfo = () => {
-  const [email, setEmail] = useState(null);
+  const [email, setEmail] = useState("");
+  const [address, setAddress] = useState("");
+  const [mobileNumber, setMobileNumber] = useState("");
   const [user, setUser] = useState(null);
-  const [reload, setReload] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("user"));
 
     if (userInfo) {
       setUser(userInfo);
-      setEmail(userInfo?.email);
-      setReload(false);
+      setEmail(userInfo?.email || "");
+      setAddress(userInfo?.address || "");
+      setMobileNumber(userInfo?.mobile_number || "");
 
-      // Ensure name is a valid string before splitting
       const fullName = userInfo?.name || "";
       const nameParts = fullName.split(" ");
-      setFirstName(nameParts[0] || ""); // First word
-      setLastName(nameParts.slice(1).join(" ") || ""); // Rest of the name
+      setFirstName(nameParts[0] || ""); 
+      setLastName(nameParts.slice(1).join(" ") || "");
     }
-  }, [reload]);
+  }, []);
+
+  const handleUpdate = async () => {
+  setLoading(true);
+
+  const token = localStorage.getItem("token"); 
+
+  try {
+    const response = await axios.post(
+      `${process.env.NEXT_PUBLIC_API}/customer/update-profile`,
+      {
+        id: user?.id,
+       
+        first_name: firstName,
+        last_name: lastName,
+        email,
+        address,
+        mobile_number: mobileNumber,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          
+        },
+      }
+    );
+
+    console.log(response);
+
+    if (response.data) {
+      toast.success("Customer info updated successfully!");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          ...user,
+           first_name: firstName,
+        last_name: lastName,
+          email,
+          address,
+          mobile_number: mobileNumber,
+        })
+      );
+    }
+  } catch (error) {
+    console.error("Update error:", error);
+    toast.error(error?.response?.data?.message || "An error occurred while updating.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   return (
     <>
@@ -32,12 +87,16 @@ const PersonalInfo = () => {
       <div className="bg-white p-6 shadow-md rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-gray-700">First Name</label>
+          <div className="flex gap-1 items-center">
+            <User className="mb-1" color="gray" size={18}></User>
+              <label className="block text-gray-700">
+              First Name</label>
+          </div>
             <input
               type="text"
               value={firstName}
-              disabled
-              className="w-full p-2 border rounded bg-gray-100 text-black"
+              onChange={(e) => setFirstName(e.target.value)}
+              className="w-full p-2 dark:bg-white border rounded text-black"
             />
           </div>
           <div>
@@ -45,32 +104,62 @@ const PersonalInfo = () => {
             <input
               type="text"
               value={lastName}
-              disabled
-              className="w-full p-2 border rounded bg-gray-100 text-black"
+              onChange={(e) => setLastName(e.target.value)}
+              className="w-full p-2 border dark:bg-white rounded text-black"
             />
           </div>
         </div>
+
         <div className="mt-4">
-          <label className="block text-gray-700">Mobile Number</label>
+         <div className="flex gap-1.5 items-center">
+            <Phone color="gray" size={17}></Phone>
+              <label className="block text-gray-700">
+              Mobile Number</label>
+          </div>
           <input
             type="text"
-            value={user?.mobile_number || "N/A"}
-            disabled
-            className="w-full p-2 border rounded bg-gray-100 text-black"
+            value={mobileNumber}
+            onChange={(e) => setMobileNumber(e.target.value)}
+            className="w-full p-2 border rounded dark:bg-white text-black"
           />
         </div>
+
         <div className="mt-4">
-          <label className="block text-gray-700">Email</label>
+          <div className="flex gap-1.5 items-center">
+            <Mail  color="gray" size={18}></Mail>
+              <label className="block text-gray-700">
+              Email</label>
+          </div>
           <input
             type="email"
-            value={email || "email"}
-            disabled
-            className="w-full p-2 border rounded bg-gray-100 text-black"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full p-2 border rounded dark:bg-white text-black"
           />
         </div>
-        {/* <button className="mt-6 px-4 py-2 bg-teal-800 text-white rounded hover:bg-teal-900">
-          Update
-        </button> */}
+
+        <div className="mt-4">
+           <div className="flex gap-1.5 items-center">
+            <House className="mb-1" color="gray" size={18}></House>
+              <label className="block text-gray-700">
+              Address</label>
+          </div>
+          <input
+            type="text"
+            value={address}
+            onChange={(e) => setAddress(e.target.value)}
+            className="w-full p-2 border rounded dark:bg-white text-black"
+          />
+        </div>
+
+        <button
+          onClick={handleUpdate}
+          disabled={loading}
+          className="mt-6 px-4 flex justify-center items-center gap-1 w-full py-2 bg-teal-800 text-white rounded hover:bg-teal-900"
+        >
+          <RefreshCcw size={18}></RefreshCcw>
+          {loading ? "Updating..." : "Update Info"}
+        </button>
       </div>
     </>
   );

@@ -124,16 +124,17 @@ const ProductCard = ({ product }) => {
               <span className="font-bangla">৳</span> {product.retails_price}
             </span>
           )}
-          <button
+          <Link
             onClick={(e) => {
               e.preventDefault();
               handleCart(product, 1);
             }}
+            href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
             className="p-2 rounded-full hover:bg-gray-100 text-black transition"
             title="Add to cart"
           >
             <ShoppingCart size={18} />
-          </button>
+          </Link>
         </div>
       </div>
     </div>

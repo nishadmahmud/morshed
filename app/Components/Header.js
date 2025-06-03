@@ -210,14 +210,14 @@ const toggleSearchSidebar = () => {
               className="flex items-center cursor-pointer"
               aria-label="Cart"
             >
-              <Link href='/wishlist' className="relative">
-                <Heart size={22} className="text-black" />
-                {/* {total > 0 && (
+              <div className="relative">
+                <ShoppingBag size={22} className="text-black" />
+                {total > 0 && (
                   <span className="absolute -top-1 -right-0 bg-black text-white text-[8px] rounded-full w-3 h-3 flex items-center justify-center">
                     {total}
                   </span>
-                )} */}
-              </Link>
+                )}
+              </div>
             </Link>
 
             

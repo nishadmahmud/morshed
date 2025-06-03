@@ -26,7 +26,6 @@ const geistMono = localFont({
 export const metadata = {
   title: "Morshed Mart",
   description: "Elevate Your Style – Premium Men’s Fashion for Every Occasion.",
-  
 };
 
 
