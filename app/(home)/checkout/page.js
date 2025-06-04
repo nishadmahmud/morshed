@@ -8,6 +8,8 @@ import { useState } from "react";
 import { ShoppingCart, Package } from "lucide-react";
 import dynamic from "next/dynamic";
 import WithAuth from "@/app/Components/WithAuth";
+import toast from "react-hot-toast";
+import axios from "axios";
 const DeliveryForm = dynamic(() => import('../../Components/DeliveryForm'), {
   ssr: false,
 });
@@ -43,6 +45,41 @@ const CheckoutPage = () => {
   }, 0);
 
   const [shippingFee, setShippingFee] = useState(70);
+   const [couponCode, setCouponCode] = useState('');
+  const [couponAmount, setCouponAmount] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  const handleApply = async () => {
+  if (!couponCode.trim()) {
+    toast.error('Please enter a coupon code.');
+    return;
+  }
+
+  setLoading(true);
+
+  try {
+    const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/apply-coupon`, {
+      coupon_code: couponCode,
+    });
+
+    const data = response.data;
+
+    if (data?.success && data?.data?.amount) {
+      setCouponAmount(data.data.amount);
+      toast.success(data.message || 'Coupon applied successfully!');
+    } else {
+      setCouponAmount(0); // Reset couponAmount on invalid coupon
+      toast.error(data.message || 'Invalid coupon code.');
+    }
+  } catch (error) {
+    setCouponAmount(0); // Also reset on network error
+    toast.error(error?.response?.data?.message || 'Something went wrong. Please try again.');
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14">
@@ -73,6 +110,8 @@ const CheckoutPage = () => {
               setShippingFee={setShippingFee}
               cartItems={cartItems}
               cartTotal={Subtotal}
+              couponCode={couponCode}
+              couponAmount={couponAmount}
             />
           </div>
 
@@ -149,6 +188,21 @@ const CheckoutPage = () => {
 
                   {/* Price Breakdown */}
                   <div className="px-6 py-4 border-t border-gray-200 space-y-3">
+
+                    <div>
+    
+      <div className="flex items-center gap-2">
+        <input
+          onChange={(e) => setCouponCode(e.target.value)}
+          type="text"
+          placeholder="Enter coupon code"
+          className="flex-1 text-black dark:bg-white px-4 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+        />
+        <button disabled={loading} onClick={handleApply} type="submit" className="px-4 py-2 bg-teal-600 text-white font-medium rounded-sm hover:bg-teal-700 transition">
+          {loading ? 'Applying...' : 'Apply'}
+        </button>
+      </div>
+    </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">
                         Subtotal ({quantity} items)
@@ -161,11 +215,21 @@ const CheckoutPage = () => {
                     {TotalDiscount > 0 && (
                       <div className="flex justify-between text-sm">
                         <span className="text-gray-600">Discount</span>
-                        <span className="font-medium text-green-600">
+                        <span className="font-medium text-red-600">
                           -৳{TotalDiscount}
                         </span>
                       </div>
                     )}
+
+
+                    
+                      <div className="flex justify-between text-sm">
+                        <span className="text-gray-600">Coupon Discount</span>
+                        <span className="font-medium text-red-600">
+                          -৳{Number(couponAmount)}
+                        </span>
+                      </div>
+                   
 
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Shipping</span>
@@ -181,7 +245,7 @@ const CheckoutPage = () => {
                         </span>
                         <span className="text-lg font-bold text-[#115e59]">
                           ৳
-                          {(Number.parseInt(Subtotal) + shippingFee).toFixed(2)}
+                          {(Number.parseInt(Subtotal) + shippingFee - couponAmount).toFixed(2)}
                         </span>
                       </div>
                     </div>

@@ -204,7 +204,7 @@ const ProductPage = ({ params }) => {
         wordwrap: false,
         selectors: [{ selector: "a", options: { ignoreHref: true } }],
       })
-    : null
+    : null;
 
       const isCartItem = cartItems.find(
     (item) => item?.id === product?.data.id || undefined

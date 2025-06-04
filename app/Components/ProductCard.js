@@ -42,7 +42,7 @@ const ProductCard = ({ product }) => {
   };
 
   return (
-    <div className="group bg-white rounded-sm transition-all duration-300 w-full sm:w-48 md:w-72 h-[23rem] md:h-[31rem] relative overflow-hidden flex flex-col shadow-sm">
+    <div className="group bg-white rounded-sm transition-all duration-300 w-full sm:w-48 md:w-72 h-[23rem] md:h-[30rem] relative overflow-hidden flex flex-col shadow-sm">
       
       {/* Image */}
       <Link

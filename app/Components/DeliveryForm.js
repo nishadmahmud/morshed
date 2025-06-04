@@ -51,9 +51,9 @@ const prizeData = [
     },
   },
   {
-    option: "30% off",
+    option: "Try Again",
     image: {
-      uri: "/therty.png",
+      uri: "/tryAgain.png",
       sizeMultiplier: 1,
       offsetX: 0,
       offsetY: 0,
@@ -96,7 +96,9 @@ const prizeData = [
 ];
 
 
-const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
+const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, couponCode }) => {
+
+  console.log({couponCode, couponAmount});
   const { data: paymentMethods, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`,
     fetcher
@@ -114,7 +116,15 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
   const customer_phone = userData?.mobile_number;
   const [location, setLocation] = useState("inside");
   const shippingFee = location === "inside" ? 70 : 130;
+  
+  const [couponValue, setCouponValue] = useState(couponAmount)
 
+  useEffect(() => {
+  setCouponValue(couponAmount);
+}, [couponAmount]);
+
+ 
+  
   useEffect(() => {
     setShippingFee(shippingFee);
   }, [location, setShippingFee, shippingFee]);
@@ -149,7 +159,8 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
     sub_total: Number(cartTotal) + shippingFee,
     vat: 0,
     tax: 0,
-    discount: 0,
+    discount: couponValue,
+    coupon_code: couponCode,
     product: cartItems.map((item) => ({
       product_id: item.id,
       qty: item.quantity,
@@ -187,6 +198,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
     wholeseller_id: 1,
     status: 3,
   });
+
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -253,7 +265,11 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
  
  const handleOrderComplete = (e) => {
     e.preventDefault();
+  
+
     if (cartItems.length > 0) {
+      console.log(orderSchema);
+      
       axios
         .post(
           `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
@@ -266,7 +282,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
             setInvoiceId(_invoiceId);
             localStorage.removeItem("cart");
             toast.success("Order Placed Successfully!");
-            // Check amount
+            
             const total = Number(cartTotal) + shippingFee;
             if (total >= 100) {
             
@@ -292,16 +308,16 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee }) => {
 
   const [spinCount, setSpinCount] = useState(0);
   const handleSpinClick = () => {
-  const nextTimeIndex = prizeData.findIndex((item) => item.option === "10% off");
-  const cashPrizeIndex = prizeData.findIndex((item) => item.option === "50% off");
+  const nextTimeIndex = prizeData.findIndex((item) => item.option === "Try Again");
+  const cashPrizeIndex = prizeData.findIndex((item) => item.option === "10% off");
 
   const newSpinCount = spinCount + 1;
   setSpinCount(newSpinCount);
 
   if (newSpinCount === 2) {
-    setPrizeNumber(cashPrizeIndex); // Show "500tk Cash Money"
+    setPrizeNumber(cashPrizeIndex); 
   } else {
-    setPrizeNumber(nextTimeIndex); // Always show "Next Time"
+    setPrizeNumber(nextTimeIndex); 
   }
 
   setMustSpin(true);

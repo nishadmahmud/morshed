@@ -20,7 +20,7 @@ const PrizeModal = ({ isOpen, invoiceId, prize, prizeName }) => {
   )
 }
 
-      <Image src={prize} alt="prize" width={500} height={500}></Image>
+      <Image src={prize} alt="prize" width={300} height={300}></Image>
 
          {
   prizeName === "Next Time" ? (
