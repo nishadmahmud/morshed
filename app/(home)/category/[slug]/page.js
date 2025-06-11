@@ -286,7 +286,7 @@ export default function ProductListing({ params }) {
               </div>
 
               {/* Color */}
-              <div className="border-b border-gray-200 pb-4">
+              {/* <div className="border-b border-gray-200 pb-4">
                 <button
                   className="flex w-full items-center justify-between py-3 text-base font-medium"
                   onClick={() => toggleAccordion("color")}
@@ -327,10 +327,10 @@ export default function ProductListing({ params }) {
                     ))}
                   </div>
                 )}
-              </div>
+              </div> */}
 
               {/* Brand */}
-              <div className="border-b border-gray-200 pb-4">
+              {/* <div className="border-b border-gray-200 pb-4">
                 <button
                   className="flex w-full items-center justify-between py-3 text-base font-medium"
                   onClick={() => toggleAccordion("brand")}
@@ -364,7 +364,7 @@ export default function ProductListing({ params }) {
                     ))}
                   </div>
                 )}
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
@@ -479,7 +479,7 @@ export default function ProductListing({ params }) {
                   </div>
 
                   {/* Color */}
-                  <div className="border-b border-gray-200 pb-4">
+                  {/* <div className="border-b border-gray-200 pb-4">
                     <button
                       className="flex w-full items-center justify-between py-3 text-base font-medium"
                       onClick={() => toggleAccordion("color")}
@@ -523,10 +523,10 @@ export default function ProductListing({ params }) {
                         ))}
                       </div>
                     )}
-                  </div>
+                  </div> */}
 
                   {/* Brand */}
-                  <div className="border-b border-gray-200 pb-4">
+                  {/* <div className="border-b border-gray-200 pb-4">
                     <button
                       className="flex w-full items-center justify-between py-3 text-base font-medium"
                       onClick={() => toggleAccordion("brand")}
@@ -560,7 +560,7 @@ export default function ProductListing({ params }) {
                         ))}
                       </div>
                     )}
-                  </div>
+                  </div> */}
                 </div>
 
                 <div className="mt-6">
@@ -605,7 +605,10 @@ export default function ProductListing({ params }) {
                   </button>
                 </span>
               ))}
-              {selectedColors.map((color) => (
+
+              {/* =======color======= */}
+              
+              {/* {selectedColors.map((color) => (
                 <span
                   key={`badge-color-${color}`}
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800"
@@ -628,8 +631,9 @@ export default function ProductListing({ params }) {
                     </svg>
                   </button>
                 </span>
-              ))}
-              {selectedBrands.map((brand) => (
+              ))} */}
+              
+              {/* {selectedBrands.map((brand) => (
                 <span
                   key={`badge-brand-${brand}`}
                   className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-gray-100 text-gray-800"
@@ -652,7 +656,7 @@ export default function ProductListing({ params }) {
                     </svg>
                   </button>
                 </span>
-              ))}
+              ))} */}
             </div>
           )}
 
