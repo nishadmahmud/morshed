@@ -6,6 +6,7 @@ import useSWR from "swr"
 import Image from "next/image"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import useWishlist from "@/app/CustomHooks/useWishlist"
+import Link from "next/link"
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -724,6 +725,31 @@ function ProductCard({ product }) {
 
   const { toggleWishlist, isInWishlist } = useWishlist();
 
+const sanitizeSlug = (str) => {
+    return str
+      ?.toLowerCase()
+      .split(" ")
+      .slice(0, 2)
+      .join(" ")
+      .replace(/\s+/g, "-")
+      .replace(/[^a-z0-9-]/g, "");
+  };
+
+  const updateRecentViews = () => {
+      if (!product?.id) return;
+      let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
+      recentViews = recentViews.filter((p) => p.id !== product.id);
+      recentViews.unshift({
+        id: product.id,
+        name: product.name,
+        image: product.image_path || product.images?.[0] || noImg.src,
+        price: product.retails_price,
+        discount: product.discount || 0,
+      });
+      if (recentViews.length > 6) recentViews.pop();
+      localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
+    };
+  
 
   return (
     <div className="group relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
@@ -769,9 +795,10 @@ function ProductCard({ product }) {
         <z
           className={`absolute bottom-0 inset-x-0 flex justify-center p-4 transition-all duration-200 ${isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
         >
-          <button className="w-full py-2 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors">
+          <Link  href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
+        onClick={updateRecentViews} className="w-full mx-auto text-center py-2 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors">
             Quick Shop
-          </button>
+          </Link>
         </z>
       </div>
 
@@ -781,11 +808,11 @@ function ProductCard({ product }) {
           <div className="flex items-center">
             {product.discount_price ? (
               <div className="flex flex-col items-end">
-                <span className="text-sm font-medium text-gray-900">${product.discount_price}</span>
-                <span className="text-xs text-gray-500 line-through">${product.retails_price}</span>
+                <span className="text-sm font-medium text-gray-900">৳{product.discount_price}</span>
+                <span className="text-xs text-gray-500 line-through">৳{product.retails_price}</span>
               </div>
             ) : (
-              <span className="text-sm font-medium text-gray-900">${product.retails_price}</span>
+              <span className="text-sm font-medium text-gray-900">৳{product.retails_price}</span>
             )}
           </div>
         </div>

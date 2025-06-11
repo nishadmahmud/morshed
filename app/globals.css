@@ -69,6 +69,7 @@ html{
     transition: opacity 0.75s, visibility 0.75s;
 
 }
+
 @keyframes stroke{
     0%
     {
@@ -94,6 +95,7 @@ html{
         stroke-width: 0;
     }
 }
+
 
 .logoFont{
   font-family: "Cinzel", serif;

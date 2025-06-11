@@ -27,6 +27,8 @@ import useStore from "@/app/CustomHooks/useStore"
 import useWishlist from "@/app/CustomHooks/useWishlist"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import SizeGuideModal from "@/app/Components/SizeGuideModal"
+import CustomImageZoom from "@/app/Components/CustomImageZoom";
+import CursorImageZoom from "@/app/Components/CustomImageZoom";
 // Fetcher function from the original code
 const fetcher = (url) => fetch(url).then((res) => res.json())
 const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : ""
@@ -260,14 +262,13 @@ const ProductPage = ({ params }) => {
                   </div>
                 )}
                 {imageArray && imageArray.length > 0 ? (
-                  <InnerImageZoom
-                    src={imageArray[imageIndex]} 
-                    zoomSrc={imageArray[imageIndex]} // optional, can be higher-res version
-                    zoomType="hover"
-                    zoomScale={0.9} 
-                    zoomPreload={true}
-                    className="w-full md:h-[70vh] h-[50vh] object-contain rounded-lg"
-                  />
+                  <CursorImageZoom
+  src={imageArray[imageIndex]}
+  alt={product?.data?.name || noImg}
+  className="w-full md:h-[75vh] h-[55vh] rounded-lg"
+  zoomScale={2.5}
+/>
+
                 ) : product?.data?.image_path ? (
                   <Image
                     unoptimized

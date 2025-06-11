@@ -19,8 +19,8 @@ const FeaturedCategories = ({ categories }) => {
   const nextRef = useRef(null);
 
   return (
-    <div className="lg:mt-16 md:mt-10 mt-0 bg-black ">
-      <div className="md:w-11/12 mx-auto min-h-[50vh] text-white px-4 sm:px-6 md:px-8 py-12 pb-14 relative ">
+    <div className="lg:mt-16 md:mt-10 mt-0 bg-black">
+      <div className="md:w-11/12 mx-auto min-h-[50vh] text-white px-4 py-12 pb-14 relative ">
         <h2 className="md:text-3xl text-xl font-bold mb-1">Categories that inspire</h2>
         <p className="md:text-xl text-lg text-white/70 mb-6">Featured categories</p>
 
@@ -36,26 +36,28 @@ const FeaturedCategories = ({ categories }) => {
 
         {/* Swiper Slider */}
         <Swiper
-          modules={[Navigation]}
-          spaceBetween={10}
-          slidesPerView={5}
-          breakpoints={{
-            640: { slidesPerView: 3 },
-            768: { slidesPerView: 4 },
-            1024: { slidesPerView: 5 },
-          }}
-          navigation={{
-            prevEl: prevRef.current,
-            nextEl: nextRef.current,
-          }}
-          onInit={(swiper) => {
-            swiper.params.navigation.prevEl = prevRef.current;
-            swiper.params.navigation.nextEl = nextRef.current;
-            swiper.navigation.init();
-            swiper.navigation.update();
-          }}
-          className="pb-10"
-        >
+  modules={[Navigation]}
+  spaceBetween={10}
+  slidesPerView={3} // default for smallest viewports
+  breakpoints={{
+    640: { slidesPerView: 3 },      // small devices
+    768: { slidesPerView: 4 },      // medium devices
+    1024: { slidesPerView: 5 },     // large tablets
+    1280: { slidesPerView: 6 },     // desktops and up
+  }}
+  navigation={{
+    prevEl: prevRef.current,
+    nextEl: nextRef.current,
+  }}
+  onInit={(swiper) => {
+    swiper.params.navigation.prevEl = prevRef.current;
+    swiper.params.navigation.nextEl = nextRef.current;
+    swiper.navigation.init();
+    swiper.navigation.update();
+  }}
+  className="pb-10"
+>
+
           {categoryList.map((category, index) => (
             <SwiperSlide key={index}>
               <Link
@@ -64,7 +66,7 @@ const FeaturedCategories = ({ categories }) => {
                 )}?category=${encodeURIComponent(
                   category?.name
                 )}&total=${encodeURIComponent(category?.product_count)}`}
-                className="bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-shadow duration-300 relative block lg:w-56 h-60"
+                className="bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-shadow duration-300 relative block lg:w-52 h-60"
               >
                 <div className="relative h-56 md:h-60">
                   <Image
