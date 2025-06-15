@@ -23,6 +23,7 @@ import {
   User,
   Home,
   Building,
+  HandHelping,
 } from "lucide-react";
 import PrizeModal from "./PrizeModal";
 import { Dialog } from "@headlessui/react";
@@ -96,7 +97,7 @@ const prizeData = [
 ];
 
 
-const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, couponCode }) => {
+const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, couponCode, selectedDonate, setSelectedDonate, donations }) => {
 
   console.log({couponCode, couponAmount});
   const { data: paymentMethods, error } = useSWR(
@@ -156,7 +157,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
   const [orderSchema, setOrderSchema] = useState({
     pay_mode: payment,
     paid_amount: 0,
-    sub_total: Number(cartTotal) + shippingFee,
+    sub_total: Number(cartTotal) + shippingFee + selectedDonate,
     vat: 0,
     tax: 0,
     discount: couponValue,
@@ -388,6 +389,11 @@ const handleModalClose = () => {
     );
     updatedMethod[existingMethodIndex].ref_id = refId;
   };
+
+
+  const handleDonationClick = (donation) => {
+    setSelectedDonate(donation);
+  }
 
   return (
     <div className="space-y-4">
@@ -1004,6 +1010,51 @@ const handleModalClose = () => {
               </div>
             </div>
           )}
+        </div>
+
+        {/* Donation */}
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+          <div className="flex items-center space-x-3 mb-6">
+            <div className="bg-green-100 p-2 rounded-lg">
+              <HandHelping className="h-6 w-6 text-green-600" />
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Donation
+              </h3>
+              <p className="text-sm text-gray-600">
+               Even a small donation can make a big impact.
+              </p>
+            </div>
+
+            
+          </div>
+
+           <div className="flex flex-row gap-2">
+        {donations.map((donation) => {
+          const isSelected = selectedDonate === donation;
+          const displayText = typeof donation === "number" ? `Tk ${donation}` : donation;
+        
+
+          return (
+            <button
+            type="button"
+              key={donation}
+              onClick={() => handleDonationClick(donation)}
+              className={`px-4 py-2 rounded-full border text-sm ${
+                isSelected
+                  ? "bg-gray-800 text-white border-gray-800"
+                  : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
+              }`}
+            >
+              {displayText}
+            
+            </button>
+          );
+        })}
+      </div>
+
+        
         </div>
 
         {/* Complete Order Button */}

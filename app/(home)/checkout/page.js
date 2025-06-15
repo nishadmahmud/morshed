@@ -68,11 +68,11 @@ const CheckoutPage = () => {
       setCouponAmount(data.data.amount);
       toast.success(data.message || 'Coupon applied successfully!');
     } else {
-      setCouponAmount(0); // Reset couponAmount on invalid coupon
+      setCouponAmount(0); 
       toast.error(data.message || 'Invalid coupon code.');
     }
   } catch (error) {
-    setCouponAmount(0); // Also reset on network error
+    setCouponAmount(0);
     toast.error(error?.response?.data?.message || 'Something went wrong. Please try again.');
   } finally {
     setLoading(false);
@@ -80,6 +80,11 @@ const CheckoutPage = () => {
 };
 
 
+
+    const [selectedDonate, setSelectedDonate] = useState(null);
+  const donations = [10, 20, 30, 50, 100];
+
+console.log(selectedDonate);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14">
@@ -106,6 +111,9 @@ const CheckoutPage = () => {
           {/* Main Content */}
           <div className="lg:col-span-7 order-last lg:order-first">
             <DeliveryForm
+            selectedDonate={selectedDonate}
+            setSelectedDonate={setSelectedDonate}
+            donations={donations}
               shippingFee={shippingFee}
               setShippingFee={setShippingFee}
               cartItems={cartItems}
@@ -231,6 +239,13 @@ const CheckoutPage = () => {
                       </div>
                    
 
+                    {selectedDonate ? (<div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Donation</span>
+                      <span className="font-medium text-gray-900">
+                        ৳{selectedDonate}
+                      </span>
+                    </div>) : ""}
+
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Shipping</span>
                       <span className="font-medium text-gray-900">
@@ -245,7 +260,7 @@ const CheckoutPage = () => {
                         </span>
                         <span className="text-lg font-bold text-[#115e59]">
                           ৳
-                          {(Number.parseInt(Subtotal) + shippingFee - couponAmount).toFixed(2)}
+                          {(Number.parseInt(Subtotal) + selectedDonate + shippingFee - couponAmount).toFixed(2)}
                         </span>
                       </div>
                     </div>

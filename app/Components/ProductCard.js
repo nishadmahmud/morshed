@@ -97,11 +97,11 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content - Product Name */}
-      <div className="relative flex-grow px-3 pt-2 pb-10 flex">
+      <div className="relative flex-grow px-3 pb-12 flex">
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
           onClick={updateRecentViews}
-          className="text-sm font-semibold text-gray-800 line-clamp-2 hover:text-[#115e59] text-start"
+          className="text-sm md:text-base font-semibold text-black line-clamp-2 z-50 hover:text-[#115e59] text-start"
         >
           {product?.name || "N/A"}
         </Link>
