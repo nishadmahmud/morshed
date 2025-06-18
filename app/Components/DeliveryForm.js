@@ -144,6 +144,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
     billFirstName: "",
     billLastName: "",
     billAddress: "",
+    address2: "",
     billApartment: "",
     billCity: "",
     billPostalCode: "",
@@ -157,7 +158,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
   const [orderSchema, setOrderSchema] = useState({
     pay_mode: payment,
     paid_amount: 0,
-    sub_total: Number(cartTotal) + shippingFee + selectedDonate,
+    sub_total: Number(cartTotal) + shippingFee,
     vat: 0,
     tax: 0,
     discount: couponValue,
@@ -174,7 +175,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
     delivery_method_id: 1,
     delivery_info_id: 1,
     delivery_customer_name: formData.firstName + formData.lastName,
-    delivery_customer_address: formData.address || formData.billAddress,
+    delivery_customer_address: formData.address || formData.address2,
     delivery_customer_phone: formData?.phone ? formData?.phone : "N/A",
     delivery_fee: shippingFee,
     payment_method: paymentMethods?.data?.data.map((item) => ({
@@ -285,15 +286,19 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
             toast.success("Order Placed Successfully!");
             
             const total = Number(cartTotal) + shippingFee;
-            if (total >= 100) {
+  //           if (total >= 100) {
             
 
-              setShowWheelModal(true);
-            } else {
-              setTimeout(() => {
+  //             setShowWheelModal(true);
+  //           } else {
+  //             setTimeout(() => {
+  //   router.push(`/payment-success/${invoiceId}`);
+  // }, 2000);
+  //           }
+
+      setTimeout(() => {
     router.push(`/payment-success/${invoiceId}`);
   }, 2000);
-            }
           }
         })
         .catch((err) => {
@@ -437,7 +442,7 @@ const handleModalClose = () => {
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <User className="inline h-4 w-4 mr-1" />
-                First Name
+                First Name <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -446,14 +451,14 @@ const handleModalClose = () => {
                 onChange={handleChange}
                 placeholder="Enter your first name"
                 required
-                className="w-full px-4 py-3 border border-gray-300 dark:bg-white rounded-lg focus:ring-2 transition-colors"
+                className="w-full px-4 py-3 border border-gray-300 text-black dark:bg-white rounded-lg focus:ring-2 transition-colors"
               />
             </div>
 
             {/* Last Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name
+                Last Name <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -462,7 +467,58 @@ const handleModalClose = () => {
                 onChange={handleChange}
                 placeholder="Enter your last name"
                 required
-                className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
+
+             {/* email */}
+            <div>
+              <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
+                <Mail size={18}></Mail>
+                Email
+              </label>
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleChange}
+                placeholder="Enter your email"
+                
+                className="w-full dark:bg-white text-black px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
+
+             {/* Phone */}
+            <div className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <Phone className="inline h-4 w-4 mr-1" />
+                Phone Number <span className="text-red-600">*</span>
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter your phone number"
+                required
+                className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
+
+            {/* City */}
+            <div className="hidden">
+              <label className="text-sm  font-medium text-gray-700 mb-2 items-center gap-1">
+                <Building size={18}></Building>
+                City
+              </label>
+              <input
+                type="text"
+                name="city"
+                value={formData.city}
+                onChange={handleChange}
+                placeholder="Enter your city"
+                
+                className="w-full text-black dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
               />
             </div>
 
@@ -470,7 +526,7 @@ const handleModalClose = () => {
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Home className="inline h-4 w-4 mr-1" />
-                Address
+                Address <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -479,7 +535,24 @@ const handleModalClose = () => {
                 onChange={handleChange}
                 placeholder="House number and street name"
                 required
-                className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+                className="w-full text-black dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
+            </div>
+
+            {/* Address2 */}
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <Home className="inline h-4 w-4 mr-1" />
+                Address 2 (Optional)
+              </label>
+              <input
+                type="text"
+                name="address2"
+                value={formData.address2}
+                onChange={handleChange}
+                placeholder="House number and street name"
+                
+                className="w-full text-black dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
               />
             </div>
 
@@ -499,22 +572,7 @@ const handleModalClose = () => {
               />
             </div> */}
 
-            {/* City */}
-            <div>
-              <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
-                <Building size={18}></Building>
-                City
-              </label>
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleChange}
-                placeholder="Enter your city"
-                required
-                className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
-              />
-            </div>
+           
 
             {/* Postal Code */}
             {/* <div>
@@ -531,22 +589,7 @@ const handleModalClose = () => {
               />
             </div> */}
 
-            {/* Phone */}
-            <div className="block text-sm font-medium text-gray-700 mb-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <Phone className="inline h-4 w-4 mr-1" />
-                Phone Number
-              </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Enter your phone number"
-                required
-                className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
-              />
-            </div>
+           
           </div>
         </div>
 

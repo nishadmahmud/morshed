@@ -4,7 +4,7 @@ import useStore from "../../CustomHooks/useStore";
 import Image from "next/image";
 import noImg from "/public/no-image.jpg";
 import Link from "next/link";
-import { Trash2 } from "lucide-react";
+import { NotebookPen, ShoppingCart, Trash2 } from "lucide-react";
 import toast from "react-hot-toast";
 import CartSkeleton from "@/app/Components/CartSkeleton";
 import { ShoppingBag } from "lucide-react";
@@ -15,7 +15,7 @@ const CartPage = () => {
   const [cartItems, setCartItems] = useState([]);
 
 
-
+ const [note, setNote] = useState("");
   const [termsAgreed, setTermsAgreed] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
@@ -520,44 +520,23 @@ const CartPage = () => {
             </div>
 
             {/* Cart Summary and Actions */}
-            <div className="grid md:grid-cols-2 gap-8 mt-8">
-              {/* Left Column - Coupon/Voucher */}
-              <div>
-                {/* <div className="flex flex-col md:flex-row gap-4">
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      placeholder="Promo / Coupon Code"
-                      value={couponCode}
-                      onChange={(e) => setCouponCode(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-4 py-2"
-                    />
-                  </div>
-                  <button
-                    onClick={handleApplyCoupon}
-                    className="bg-teal-500 text-white px-4 py-2 rounded uppercase font-medium"
-                  >
-                    Apply Coupon
-                  </button>
-                </div>
-                <div className="flex flex-col md:flex-row gap-4 mt-4">
-                  <div className="flex-1">
-                    <input
-                      type="text"
-                      placeholder="Gift Voucher"
-                      value={voucherCode}
-                      onChange={(e) => setVoucherCode(e.target.value)}
-                      className="w-full border border-gray-300 rounded px-4 py-2"
-                    />
-                  </div>
-                  <button
-                    onClick={handleApplyVoucher}
-                    className="bg-teal-500 text-white px-4 py-2 rounded uppercase font-medium"
-                  >
-                    Apply Voucher
-                  </button>
-                </div> */}
-              </div>
+            <div className="grid md:grid-cols-2 items-start gap-8 mt-8">
+            
+            <div className="w-full max-w-2xl mx-auto">
+      <label htmlFor="order-note" className="md:text-base text-sm font-medium text-gray-700 mb-2 flex justify-start items-center gap-1">
+        <NotebookPen size={19}></NotebookPen>
+        Special instructions or delivery notes
+      </label>
+      <textarea
+        id="order-note"
+        rows={3}
+        placeholder="e.g., Please deliver between 5 PM - 8 PM"
+        value={note}
+        onChange={(e) => setNote(e.target.value)}
+        className="w-full px-4 py-2 border border-gray-300 rounded-sm shadow-sm focus:ring-teal-600 focus:border-teal-600 dark:text-black text-white dark:bg-white resize-none"
+      ></textarea>
+      
+    </div>
 
               {/* Right Column - Order Summary */}
               <div className="bg-white rounded-lg dark:text-black">
@@ -591,7 +570,7 @@ const CartPage = () => {
                 </div>
 
                 <div className="mt-6">
-                  <div className="flex items-center mb-4">
+                  {/* <div className="flex items-center mb-4">
                     <input
                       type="checkbox"
                       id="terms"
@@ -602,16 +581,12 @@ const CartPage = () => {
                     <label htmlFor="terms" className="text-sm text-gray-700">
                       I agree with the terms and conditions.
                     </label>
-                  </div>
+                  </div> */}
 
                   <Link
                     href={"/checkout"}
-                    className={`w-full py-3 px-4 rounded font-medium flex items-center justify-center ${
-                      termsAgreed
-                        ? "bg-[#115e59] text-white hover:bg-teal-600"
-                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                    }`}
-                    onClick={(e) => !termsAgreed && e.preventDefault()}
+                    className={`w-full py-3 px-4 rounded font-medium flex items-center justify-center bg-[#115e59] text-white hover:bg-teal-600`}
+                  
                   >
                     Proceed to Checkout
                     <svg
@@ -630,78 +605,20 @@ const CartPage = () => {
                     </svg>
                   </Link>
 
-                  {/* <div className="flex flex-wrap justify-center gap-2 mt-4">
-                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
-                      <span className="text-[8px] text-gray-500">Visa</span>
-                    </div>
-                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
-                      <span className="text-[8px] text-gray-500">Master</span>
-                    </div>
-                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
-                      <span className="text-[8px] text-gray-500">Amex</span>
-                    </div>
-                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
-                      <span className="text-[8px] text-gray-500">PayPal</span>
-                    </div>
-                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
-                      <span className="text-[8px] text-gray-500">bKash</span>
-                    </div>
-                    <div className="w-10 h-6 bg-gray-100 rounded border flex items-center justify-center">
-                      <span className="text-[8px] text-gray-500">Nagad</span>
-                    </div>
-                  </div> */}
                 </div>
               </div>
             </div>
           </>
         ) : (
-          <div className="text-center py-16">
-            <div className="w-32 h-32 mx-auto mb-6">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="1"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                className="w-full h-full text-teal-500"
-              >
-                <circle cx="8" cy="21" r="1"></circle>
-                <circle cx="19" cy="21" r="1"></circle>
-                <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"></path>
-                <circle
-                  cx="12"
-                  cy="10"
-                  r="8"
-                  stroke="gray"
-                  fill="none"
-                ></circle>
-                <line
-                  x1="12"
-                  y1="6"
-                  x2="12"
-                  y2="14"
-                  stroke="gray"
-                  strokeWidth="2"
-                ></line>
-                <line
-                  x1="8"
-                  y1="10"
-                  x2="16"
-                  y2="10"
-                  stroke="gray"
-                  strokeWidth="2"
-                ></line>
-              </svg>
-            </div>
-            <h2 className="text-2xl font-bold mb-2">Your cart is Empty</h2>
+          <div className="text-center py-16 flex flex-col justify-center items-center">
+           <ShoppingCart color="teal" size={50}></ShoppingCart>
+            <h2 className="md:text-3xl text-xl mt-4 font-bold mb-2 text-black">Your cart is Empty</h2>
             <p className="text-gray-600 mb-8">
               Must add items on the cart before you proceed to check out
             </p>
             <Link
               href="/"
-              className="bg-teal-500 text-white px-6 py-3 rounded-md font-medium hover:bg-teal-600"
+              className="bg-teal-500 text-white px-6 py-2 text-sm rounded-md font-medium hover:bg-teal-600"
             >
               Return Home
             </Link>

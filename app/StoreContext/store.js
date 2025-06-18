@@ -15,6 +15,8 @@ const countries = [
   { label: "Australia", value: "AUD", symbol: "A$" },
 ];
 
+
+
 export const storeContext = createContext(null);
 const StoreProvider = ({ children }) => {
   const [refetch, setRefetch] = useState(false);
@@ -155,12 +157,17 @@ const StoreProvider = ({ children }) => {
     localStorage.setItem("wishlist", JSON.stringify(remainingItems));
   };
 
-  const handleBuy = (item, quantity) => {
+  
+   const handleBuy = (item, quantity) => {
     handleCart(item, quantity);
-    if (item.status.toLowerCase() !== "stock out" || item.current_stock > 0) {
-      router.push("/checkout");
+
+    const status = typeof item?.status === 'string' ? item.status.toLowerCase() : null;
+
+    if ((status && status !== "stock out") || item?.current_stock) {
+        router.push('/checkout');
     }
-  };
+};
+
 
   const reload = (boolean) => {
     setRefetch(boolean);

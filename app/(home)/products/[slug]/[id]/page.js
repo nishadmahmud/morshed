@@ -44,8 +44,8 @@ const ProductPage = ({ params }) => {
   const [relatedProducts, setRelatedProducts] = useState([])
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
-    const { handleCart, handleBuy } = useStore();
     const { toggleWishlist, isInWishlist } = useWishlist();
+    const { handleCart, getCartItems, refetch, setRefetch, handleBuy } = useStore()
 
     // size guide modal
 
@@ -144,36 +144,36 @@ const ProductPage = ({ params }) => {
     Olive: "#556b2f",
   }
 
-  const handleAddToCart = () => {
-    if (!product?.data) return
+  // const handleAddToCart = () => {
+  //   if (!product?.data) return
 
-    const newCartItem = {
-      ...product.data,
-      size: selectedSize,
-      color: selectedColor,
-      quantity: quantity,
-    }
+  //   const newCartItem = {
+  //     ...product.data,
+  //     size: selectedSize,
+  //     color: selectedColor,
+  //     quantity: quantity,
+  //   }
 
-    const currentCart = JSON.parse(localStorage.getItem("cart") || "[]")
-    const updatedCart = [...currentCart, newCartItem]
-    localStorage.setItem("cart", JSON.stringify(updatedCart))
+  //   const currentCart = JSON.parse(localStorage.getItem("cart") || "[]")
+  //   const updatedCart = [...currentCart, newCartItem]
+  //   localStorage.setItem("cart", JSON.stringify(updatedCart))
 
-    setIsInCart(true)
-    toast.success("Added to cart")
-  }
+  //   setIsInCart(true)
+  //   toast.success("Added to cart")
+  // }
 
-  const handleBuyNow = () => {
-    if (!product?.data) return
+  // const handleBuyNow = () => {
+  //   if (!product?.data) return
 
-    handleAddToCart()
+  //   handleAddToCart()
 
-    console.log("Buy now:", {
-      product: product.data.id,
-      quantity,
-      color: selectedColor,
-      size: selectedSize,
-    })
-  }
+  //   console.log("Buy now:", {
+  //     product: product.data.id,
+  //     quantity,
+  //     color: selectedColor,
+  //     size: selectedSize,
+  //   })
+  // }
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
   const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
@@ -383,13 +383,16 @@ const ProductPage = ({ params }) => {
 
               <div className="flex gap-3 mt-3">
                 <button
-                  onClick={handleBuyNow}
+                  onClick={() => handleBuy(product?.data, quantity)}
                   className="flex-1 bg-black md:text-base text-sm hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium transition-colors"
                 >
                   Buy Now
                 </button>
                 <button
-                  onClick={handleAddToCart}
+                onClick={(e) => {
+              e.preventDefault();
+              handleCart(product?.data, 1);
+            }}
                   className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
                     isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
                   }`}

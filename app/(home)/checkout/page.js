@@ -1,5 +1,3 @@
-
-
 "use client";
 // import DeliveryForm from "@/app/Components/DeliveryForm";
 import useStore from "@/app/CustomHooks/useStore";
@@ -10,7 +8,7 @@ import dynamic from "next/dynamic";
 import WithAuth from "@/app/Components/WithAuth";
 import toast from "react-hot-toast";
 import axios from "axios";
-const DeliveryForm = dynamic(() => import('../../Components/DeliveryForm'), {
+const DeliveryForm = dynamic(() => import("../../Components/DeliveryForm"), {
   ssr: false,
 });
 const CheckoutPage = () => {
@@ -45,46 +43,50 @@ const CheckoutPage = () => {
   }, 0);
 
   const [shippingFee, setShippingFee] = useState(70);
-   const [couponCode, setCouponCode] = useState('');
-  const [couponAmount, setCouponAmount] = useState('');
+  const [couponCode, setCouponCode] = useState("");
+  const [couponAmount, setCouponAmount] = useState("");
   const [loading, setLoading] = useState(false);
 
   const handleApply = async () => {
-  if (!couponCode.trim()) {
-    toast.error('Please enter a coupon code.');
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/apply-coupon`, {
-      coupon_code: couponCode,
-    });
-
-    const data = response.data;
-
-    if (data?.success && data?.data?.amount) {
-      setCouponAmount(data.data.amount);
-      toast.success(data.message || 'Coupon applied successfully!');
-    } else {
-      setCouponAmount(0); 
-      toast.error(data.message || 'Invalid coupon code.');
+    if (!couponCode.trim()) {
+      toast.error("Please enter a coupon code.");
+      return;
     }
-  } catch (error) {
-    setCouponAmount(0);
-    toast.error(error?.response?.data?.message || 'Something went wrong. Please try again.');
-  } finally {
-    setLoading(false);
-  }
-};
 
+    setLoading(true);
 
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/public/apply-coupon`,
+        {
+          coupon_code: couponCode,
+        }
+      );
 
-    const [selectedDonate, setSelectedDonate] = useState(null);
-  const donations = [10, 20, 30, 50, 100];
+      const data = response.data;
 
-console.log(selectedDonate);
+      if (data?.success && data?.data?.amount) {
+        setCouponAmount(data.data.amount);
+        toast.success(data.message || "Coupon applied successfully!");
+      } else {
+        setCouponAmount(0);
+        toast.error(data.message || "Invalid coupon code.");
+      }
+    } catch (error) {
+      setCouponAmount(0);
+      toast.error(
+        error?.response?.data?.message ||
+          "Something went wrong. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const [selectedDonate, setSelectedDonate] = useState(null);
+  const donations = ["Not now", 10, 20, 30, 50];
+
+  console.log(selectedDonate);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14">
@@ -111,9 +113,9 @@ console.log(selectedDonate);
           {/* Main Content */}
           <div className="lg:col-span-7 order-last lg:order-first">
             <DeliveryForm
-            selectedDonate={selectedDonate}
-            setSelectedDonate={setSelectedDonate}
-            donations={donations}
+              selectedDonate={selectedDonate}
+              setSelectedDonate={setSelectedDonate}
+              donations={donations}
               shippingFee={shippingFee}
               setShippingFee={setShippingFee}
               cartItems={cartItems}
@@ -196,21 +198,24 @@ console.log(selectedDonate);
 
                   {/* Price Breakdown */}
                   <div className="px-6 py-4 border-t border-gray-200 space-y-3">
-
                     <div>
-    
-      <div className="flex items-center gap-2">
-        <input
-          onChange={(e) => setCouponCode(e.target.value)}
-          type="text"
-          placeholder="Enter coupon code"
-          className="flex-1 text-black dark:bg-white px-4 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
-        />
-        <button disabled={loading} onClick={handleApply} type="submit" className="px-4 py-2 bg-teal-600 text-white font-medium rounded-sm hover:bg-teal-700 transition">
-          {loading ? 'Applying...' : 'Apply'}
-        </button>
-      </div>
-    </div>
+                      <div className="flex items-center gap-2">
+                        <input
+                          onChange={(e) => setCouponCode(e.target.value)}
+                          type="text"
+                          placeholder="Enter coupon code"
+                          className="flex-1 text-black dark:bg-white px-4 py-2 border rounded-sm focus:outline-none focus:ring-2 focus:ring-teal-500"
+                        />
+                        <button
+                          disabled={loading}
+                          onClick={handleApply}
+                          type="submit"
+                          className="px-4 py-2 bg-teal-600 text-white font-medium rounded-sm hover:bg-teal-700 transition"
+                        >
+                          {loading ? "Applying..." : "Apply"}
+                        </button>
+                      </div>
+                    </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">
                         Subtotal ({quantity} items)
@@ -229,22 +234,21 @@ console.log(selectedDonate);
                       </div>
                     )}
 
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Coupon Discount</span>
+                      <span className="font-medium text-red-600">
+                        -৳{Number(couponAmount)}
+                      </span>
+                    </div>
 
-                    
+                    {selectedDonate && selectedDonate !== "Not now" && (
                       <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Coupon Discount</span>
-                        <span className="font-medium text-red-600">
-                          -৳{Number(couponAmount)}
+                        <span className="text-gray-600">Donation</span>
+                        <span className="font-medium text-gray-900">
+                          ৳{selectedDonate}
                         </span>
                       </div>
-                   
-
-                    {selectedDonate ? (<div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Donation</span>
-                      <span className="font-medium text-gray-900">
-                        ৳{selectedDonate}
-                      </span>
-                    </div>) : ""}
+                    )}
 
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Shipping</span>
@@ -260,7 +264,14 @@ console.log(selectedDonate);
                         </span>
                         <span className="text-lg font-bold text-[#115e59]">
                           ৳
-                          {(Number.parseInt(Subtotal) + selectedDonate + shippingFee - couponAmount).toFixed(2)}
+                          {(
+                            Number.parseInt(Subtotal) +
+                            (selectedDonate === "Not now"
+                              ? 0
+                              : Number(selectedDonate)) +
+                            shippingFee -
+                            couponAmount
+                          ).toFixed(2)}
                         </span>
                       </div>
                     </div>
