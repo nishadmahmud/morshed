@@ -4,6 +4,9 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import useSWR from "swr";
 import { fetcher, userId } from "../(home)/page";
+import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import auth from "@/firebase/config";
+
 const countries = [
   { label: "United States", value: "USD", symbol: "$" },
   { label: "United Kingdom", value: "GBP", symbol: "£" },
@@ -31,7 +34,12 @@ const StoreProvider = ({ children }) => {
   const [isSelectRegion, setIsSelectRegion] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState(countries[0]);
   const [convertedPrice, setConvertedPrice] = useState(null);
-    const [basePrice,setBasePrice] = useState({});
+  const [basePrice,setBasePrice] = useState({});
+  const googleProvider = new GoogleAuthProvider();
+  const [userInfo,setUserInfo] = useState(null);
+  const [isRegistered, setIsRegistered] = useState(false);
+
+
   useEffect(() => {
     setIsMounted(true);
   }, []);
@@ -50,6 +58,13 @@ const StoreProvider = ({ children }) => {
       // setLoading(false);
     }
   }, []);
+
+  useEffect(() => {
+        const user = JSON.parse(localStorage.getItem("user"));
+        if(user){
+            setUserInfo(user);
+        }
+    },[])
 
   const handleCart = (item, quantity) => {
     if (!isMounted) return;
@@ -189,6 +204,11 @@ const StoreProvider = ({ children }) => {
     setIsSelectRegion(false);
   };
 
+  const googleLogin = () => {
+       return signInWithPopup(auth,googleProvider);
+    }
+
+
   const { data: blogs } = useSWR(
     `${process.env.NEXT_PUBLIC_API}/latest-ecommerce-blog-list/${userId}`,
     fetcher
@@ -203,6 +223,7 @@ const StoreProvider = ({ children }) => {
     getCartItems,
     refetch,
     openCart,
+    googleLogin,
     setOpenCart,
     reload,
     handleIncQuantity,
@@ -222,6 +243,8 @@ const StoreProvider = ({ children }) => {
     setHasToken,
     loading,
     setLoading,
+    setUserInfo,
+    userInfo,
     isOpenPromoBanner,
     handleClosePromo,
     handlePromoBanner,
@@ -233,7 +256,9 @@ const StoreProvider = ({ children }) => {
     convertedPrice,
     setConvertedPrice,
     setBasePrice,
-    basePrice
+    setIsRegistered,
+    basePrice,
+    isRegistered
   };
 
   return (

@@ -10,7 +10,7 @@ import noImg from '/public/no-image.jpg'
 
 export default function Footer() {
   return (
-   <footer className="bg-[#080808] py-12 md:pt-20 px-6">
+   <footer className="bg-[#080808] py-12 md:pt-20 px-6 z-50">
   <div className="max-w-7xl mx-auto">
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
       {/* Logo and Social Section */}
