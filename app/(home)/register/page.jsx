@@ -2,7 +2,7 @@
 import { useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { userId } from "../page"
@@ -21,6 +21,14 @@ export default function RegisterPage() {
   })
 
   const [reload, setReload] = useState(false)
+    const searchParams = useSearchParams()
+  const intendedUrl = searchParams.get("redirect")
+
+   const modal = useState(false)
+
+const onClose = () => {
+  modal[1](false); 
+};
 
 
   const router = useRouter()
@@ -136,6 +144,7 @@ export default function RegisterPage() {
                       router.push('/login')
                     })
                     .catch((err) => {
+                      toast.error("Invalid Registration Credentials!")
                       console.log(err);
                     });
                 }

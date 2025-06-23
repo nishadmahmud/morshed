@@ -3,12 +3,16 @@
 import { useState } from "react"
 import Link from "next/link"
 import { CheckCircle, Copy, ShoppingBag, Truck, Calendar, CreditCard } from "lucide-react"
-import { useParams } from "next/navigation"
+import { useParams, useSearchParams } from "next/navigation"
 
 export default function Page() {
   const [copied, setCopied] = useState(false)
   const [showToast, setShowToast] = useState(false)
-  const { tran_id } = useParams()
+ const { tran_id } = useParams(); 
+const searchParams = useSearchParams();
+const payMode = searchParams.get('pay_mode');
+
+
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(tran_id)
@@ -81,7 +85,7 @@ export default function Page() {
               <div className="bg-purple-50 rounded-lg p-3 text-center">
                 <CreditCard className="h-5 w-5 text-purple-600 mx-auto mb-1" />
                 <p className="text-xs font-medium text-gray-900">Payment</p>
-                <p className="text-xs text-gray-600 mt-1">Card Payment</p>
+                <p className="text-xs text-gray-600 mt-1">{payMode} Payment</p>
               </div>
             </div>
           </div>

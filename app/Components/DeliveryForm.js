@@ -8,6 +8,7 @@ import useSWR from "swr";
 import { fetcher, userId } from "../(home)/page";
 import Image from "next/image";
 import Modal from "./Modal";
+import { RiInformation2Line } from "react-icons/ri";
 import PaymentMethodForm from "./PaymentMethodForm";
 import {
   ShoppingBag,
@@ -24,6 +25,7 @@ import {
   Home,
   Building,
   HandHelping,
+  Pointer,
 } from "lucide-react";
 import PrizeModal from "./PrizeModal";
 import { Dialog } from "@headlessui/react";
@@ -119,7 +121,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
   const shippingFee = location === "inside" ? 70 : 130;
   
   const [couponValue, setCouponValue] = useState(couponAmount)
-
+console.log(selectedDonate);
   useEffect(() => {
   setCouponValue(couponAmount);
 }, [couponAmount]);
@@ -173,6 +175,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
       imei_id: item?.imeis ? item?.imeis[0]?.id : null,
     })),
     delivery_method_id: 1,
+    donation_amount: selectedDonate,
     delivery_info_id: 1,
     delivery_customer_name: formData.firstName + formData.lastName,
     delivery_customer_address: formData.address || formData.address2,
@@ -275,15 +278,17 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
       axios
         .post(
           `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
-          orderSchema
+          {...orderSchema,donation_amount: selectedDonate}
         )
         .then((res) => {
           if (res.status === 200) {
             const _invoiceId = res?.data?.data?.invoice_id;
             console.log(res?.data);
             setInvoiceId(_invoiceId);
-            localStorage.removeItem("cart");
+            // localStorage.removeItem("cart");
             toast.success("Order Placed Successfully!");
+           router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
+
             
             const total = Number(cartTotal) + shippingFee;
   //           if (total >= 100) {
@@ -296,9 +301,10 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
   // }, 2000);
   //           }
 
-      setTimeout(() => {
-    router.push(`/payment-success/${invoiceId}`);
-  }, 2000);
+  //   setTimeout(() => {
+  //  router.push(`/payment-success/${invoiceId}`);
+
+  // }, 3000);
           }
         })
         .catch((err) => {
@@ -1057,20 +1063,27 @@ const handleModalClose = () => {
 
         {/* Donation */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="bg-green-100 p-2 rounded-lg">
+          <div className="flex items-center justify-between space-x-3 mb-6">
+            <div className="flex items-center space-x-3">
+              <div className="bg-green-100 p-2 rounded-lg">
               <HandHelping className="h-6 w-6 text-green-600" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">
+              
+                <h3 className="text-xl font-semibold text-gray-900">
                 Donation
               </h3>
+
+             
+              
               <p className="text-sm text-gray-600">
                Even a small donation can make a big impact.
               </p>
             </div>
+            </div>
 
-            
+             <RiInformation2Line className="cursor-pointer" title="Your donated money will be distributed among the poor and needy." size={20} color="black"></RiInformation2Line>
+
           </div>
 
            <div className="flex flex-row gap-2">

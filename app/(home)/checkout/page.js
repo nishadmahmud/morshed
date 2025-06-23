@@ -86,7 +86,7 @@ const CheckoutPage = () => {
   const [selectedDonate, setSelectedDonate] = useState(null);
   const donations = ["Not now", 10, 20, 30, 50];
 
-  console.log(selectedDonate);
+  // console.log(selectedDonate);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14">

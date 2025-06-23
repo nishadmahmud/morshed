@@ -20,7 +20,7 @@ export default function LoginPage() {
   const modal = useState(false)
 
 const onClose = () => {
-  modal[1](false); // Since modal = useState(false)
+  modal[1](false); 
 };
 
 
@@ -28,6 +28,7 @@ const onClose = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const intendedUrl = searchParams.get("redirect")
+  console.log(intendedUrl);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
