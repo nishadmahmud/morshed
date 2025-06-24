@@ -49,6 +49,7 @@ const CursorImageZoom = ({
           transform: isZoomed ? `scale(${zoomScale})` : 'scale(1)',
           transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
         }}
+         loading="lazy"
         draggable={false}
       />
     </div>

@@ -15,6 +15,7 @@ import OfferPage from "../Components/OfferPage";
 import HalfSelveePolo from "../Components/HalfSelveePolo";
 import BenefitsSection from "../Components/BenefitsSection";
 import SelectRegionModal from "../Components/SelectRegionModal";
+import VideoSection from "../Components/VideoSection";
 
 
 export const userId = 203;
@@ -66,6 +67,7 @@ export default async function Home() {
         <EidCollection></EidCollection>
         <SmallBanner banner={banner}/>
         <SolidTshirt></SolidTshirt>
+        <VideoSection></VideoSection>
         {/* <Fitness></Fitness> */}
         <BannerSection banner={banner}/>
         <HalfSelveePolo></HalfSelveePolo>

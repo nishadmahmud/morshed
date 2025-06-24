@@ -118,7 +118,7 @@ const PersonalInfo = () => {
           </div>
           <input
             type="text"
-            value={mobileNumber}
+            value={mobileNumber || "N/A"}
             onChange={(e) => setMobileNumber(e.target.value)}
             className="w-full p-2 border rounded dark:bg-white text-black"
           />

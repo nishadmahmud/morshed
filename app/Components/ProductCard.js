@@ -54,8 +54,10 @@ const ProductCard = ({ product }) => {
           src={product?.image_path || noImg}
           alt={product?.name}
           fill
-          unoptimized
+          // unoptimized
           className="object-cover transition-opacity duration-300"
+          loading="lazy"
+
         />
 
         {product?.image_path1 && (
@@ -63,7 +65,8 @@ const ProductCard = ({ product }) => {
             src={product.image_path1}
             alt={`${product?.name} hover`}
             fill
-            unoptimized
+            // unoptimized
+             loading="lazy"
             className="object-cover absolute top-0 left-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
           />
         )}
@@ -97,11 +100,11 @@ const ProductCard = ({ product }) => {
       </div>
 
       {/* Content - Product Name */}
-      <div className="relative flex-grow px-3 pb-12 flex">
+      <div className="relative flex-grow px-3 pb-12 flex text-ellipsis line-clamp-1">
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
           onClick={updateRecentViews}
-          className="text-sm md:text-base font-semibold text-black line-clamp-2 z-50 hover:text-[#115e59] text-start"
+          className="text-sm md:text-base font-semibold text-black line-clamp-1 z-50 hover:text-[#115e59] text-start"
         >
           {product?.name || "N/A"}
         </Link>

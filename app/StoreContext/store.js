@@ -47,17 +47,17 @@ const StoreProvider = ({ children }) => {
   const router = useRouter();
 
 
-  useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setLoading(false);
-      setToken(storedToken);
-      setHasToken(true);
-    } else {
-      setToken(null);
-      // setLoading(false);
-    }
-  }, []);
+  // useEffect(() => {
+  //   const storedToken = localStorage.getItem("token");
+  //   if (storedToken) {
+  //     setLoading(false);
+  //     setToken(storedToken);
+  //     setHasToken(true);
+  //   } else {
+  //     setToken(null);
+  //     // setLoading(false);
+  //   }
+  // }, []);
 
   useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -69,7 +69,7 @@ const StoreProvider = ({ children }) => {
   const handleCart = (item, quantity) => {
     if (!isMounted) return;
 
-    setRefetch(true);
+    setRefetch(false);
     const newItem = {
       ...item,
       retails_price: item.price ?? item.retails_price,

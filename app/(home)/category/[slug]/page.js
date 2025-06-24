@@ -241,8 +241,8 @@ export default function ProductListing({ params }) {
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                       />
                       <div className="flex items-center justify-between mt-2">
-                        <span>${priceRange[0]}</span>
-                        <span>${priceRange[1]}</span>
+                        <span>৳{priceRange[0]}</span>
+                        <span>৳{priceRange[1]}</span>
                       </div>
                     </div>
                   </div>
@@ -434,8 +434,8 @@ export default function ProductListing({ params }) {
                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                           />
                           <div className="flex items-center justify-between mt-2">
-                            <span>${priceRange[0]}</span>
-                            <span>${priceRange[1]}</span>
+                            <span>৳{priceRange[0]}</span>
+                            <span>৳{priceRange[1]}</span>
                           </div>
                         </div>
                       </div>

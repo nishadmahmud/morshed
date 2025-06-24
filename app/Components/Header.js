@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react"
 import { FaUsers } from "react-icons/fa6"
 import Image from "next/image"
 import Link from "next/link"
-import { Gift, Globe, Heart, NotebookPen, ShoppingBag, User } from "lucide-react"
+import { Gift, Globe, Heart, House, NotebookPen, ShoppingBag, ShoppingBagIcon, User } from "lucide-react"
 import { IoCloseSharp, IoSearch } from "react-icons/io5"
 import axios from "axios"
 import noImg from "/public/no-image.jpg"
@@ -262,8 +262,16 @@ const toggleSearchSidebar = () => {
 
   {/* Categories */}
   <div className="p-4 overflow-y-auto h-[calc(100vh-120px)]">
+
+    <Link className="flex items-center gap-1 mb-3" href='/'>
+    <ShoppingBagIcon color="gray" size={18}></ShoppingBagIcon>
+    Shop Now
+    </Link>
     <h3 className="text-sm font-semibold text-teal-700 mb-3">Categories</h3>
+
+   
     <ul className="space-y-2">
+       
       {data?.data?.map((item, idx) => (
         <li key={idx}>
           <Link

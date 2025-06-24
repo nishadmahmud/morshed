@@ -279,7 +279,17 @@ const CheckoutPage = () => {
 
                   {/* Security Badge */}
                   <div className="px-6 py-4 bg-gray-50 rounded-b-xl">
-                    <div className="flex items-center justify-center space-x-2 text-xs text-gray-600">
+                    <div className="flex items-center justify-center space-x-2 text-sm text-gray-600">
+                      
+                      <div className="flex items-center gap-2 text-black mt-2">
+                        Our delivery patner: 
+                        <Image className="w-10" src='/pahtao.png' alt="pathao" width={500} height={500}></Image>
+                        <Image className="w-10" src='/fedEx.png' alt="pathao" width={500} height={500}></Image>
+                      </div>
+                      
+
+                    </div>
+                    <div className="flex justify-center items-center gap-1 text-black text-xs">
                       <svg
                         className="h-4 w-4 text-green-500"
                         fill="currentColor"
@@ -314,4 +324,4 @@ const CheckoutPage = () => {
   );
 };
 
-export default WithAuth(CheckoutPage);
+export default CheckoutPage;

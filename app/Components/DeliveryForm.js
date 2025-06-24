@@ -1,7 +1,8 @@
 "use client";
 
 import axios from "axios";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import useSWR from "swr";
@@ -30,6 +31,7 @@ import {
 import PrizeModal from "./PrizeModal";
 import { Dialog } from "@headlessui/react";
 import { Wheel } from "react-custom-roulette";
+import useStore from "../CustomHooks/useStore";
 
 
 const prizeData = [
@@ -106,6 +108,9 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
     `${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`,
     fetcher
   );
+
+  
+  const { setToken, googleLogin, setUserInfo, isRegistered, setIsRegistered } = useStore()
   const date = new Date().toISOString();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [payment, setPayment] = useState("Cash");
@@ -121,12 +126,65 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
   const shippingFee = location === "inside" ? 70 : 130;
   
   const [couponValue, setCouponValue] = useState(couponAmount)
-console.log(selectedDonate);
+// console.log(selectedDonate);
   useEffect(() => {
   setCouponValue(couponAmount);
 }, [couponAmount]);
 
+ const searchParams = useSearchParams()
+  const intendedUrl = searchParams.get("redirect")
+  console.log(intendedUrl);
+const users = JSON.parse(localStorage.getItem("user"));
+const parts = users?.name?.trim().split(/\s+/); 
+const firstName = parts? parts[0] : "";
+const lastName = parts?.length > 1 ? parts[parts.length - 1] : "" || "";
+const modal = useState(false)
+const onClose = () => {
+  modal[1](false); 
+};
+
+
+ const [reload, setReload] = useState(false)
  
+
+ const handleGoogleLogin = async () => {
+    try {
+      const response = await googleLogin();
+      const result = response.user;
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_API}/customer-login`,
+          { email: result.email, password: result.uid,user_id  : String(userId)},
+          {
+            headers: { "Content-Type": "application/json" },
+          }
+        )
+        .then((res) => {
+          setReload(true);
+          if (intendedUrl) {
+            router.push(intendedUrl);
+          } 
+          if (modal) {
+            onClose();
+          }
+
+          console.log(res.data);
+          setToken(res.data.token);
+          toast.success("Login Successful!");
+          setUserInfo(res?.data?.customer);
+          localStorage.setItem("user", JSON.stringify(res?.data?.customer));
+          localStorage.setItem("token", res?.data?.token);
+          
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   
   useEffect(() => {
     setShippingFee(shippingFee);
@@ -263,7 +321,6 @@ console.log(selectedDonate);
   const [result, setResult] = useState("");
   const [prizeName, setPrizeName] = useState("");
   const [invoiceId, setInvoiceId] = useState(null);
-
 
 
 
@@ -428,6 +485,14 @@ const handleModalClose = () => {
             </div>
           </div>
 
+        <div className="text-black mb-5">
+            <button onClick={handleGoogleLogin} >
+            <FcGoogle size={25}></FcGoogle>
+          </button>
+    <br></br>
+         <span>or</span>
+        </div>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Country/Region */}
             {/* <div className="md:col-span-2">
@@ -453,7 +518,8 @@ const handleModalClose = () => {
               <input
                 type="text"
                 name="firstName"
-                value={formData.firstName}
+                defaultValue={firstName || ""}
+                value={formData.firstName || firstName || ""}
                 onChange={handleChange}
                 placeholder="Enter your first name"
                 required
@@ -469,7 +535,8 @@ const handleModalClose = () => {
               <input
                 type="text"
                 name="lastName"
-                value={formData.lastName}
+                defaultValue={lastName || ""} 
+                value={formData.lastName || lastName || ""}
                 onChange={handleChange}
                 placeholder="Enter your last name"
                 required
@@ -486,7 +553,8 @@ const handleModalClose = () => {
               <input
                 type="email"
                 name="email"
-                value={formData.email}
+                defaultValue={users ? users.email : ""}
+                value={formData.email || users? users.email : ""}
                 onChange={handleChange}
                 placeholder="Enter your email"
                 

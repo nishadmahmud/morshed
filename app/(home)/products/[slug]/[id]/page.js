@@ -57,16 +57,18 @@ const ProductPage = ({ params }) => {
     const handleTabChange = (event, newValue) => setTab(newValue);
   
     const inches = [
-      ["1/2 CHEST", "20.75", "21.75", "22.75", "24", "25.5", "27.25", "28.75"],
-      ["BODY LENGTH", "52", "54", "54/56", "56/58", "60", "62", "64"],
+      ["CHEST", "40", "42", "44", "46", "48"],
+      ["LENGTH", "28", "39", "30", "31", "31.5"],
+      ["COLLAR", "15", "15.5", "16", "16.5", "17"],
     ];
   
-    const cm = [
-      ["1/2 CHEST", "52.7", "55.2", "57.8", "61", "64.7", "69.2", "73"],
-      ["BODY LENGTH", "132", "137", "137/142", "142/147", "152", "157", "162"],
-    ];
+    // const cm = [
+    //   ["CHEST", "52.7", "55.2", "57.8", "61", "64.7", "69.2", "73"],
+    //   ["LENGTH", "132", "137", "137/142", "142/147", "152", "157", "162"],
+    //   ["COLLAR", "132", "137", "137/142", "142/147", "152", "157", "162"],
+    // ];
 
-  // Demo data for sizes
+ 
 
   const [selectedSize, setSelectedSize] = useState("M")
 
@@ -212,13 +214,6 @@ const ProductPage = ({ params }) => {
     (item) => item?.id === product?.data.id || undefined
   );
 
-
-  
-
-
-
- 
-  
 
   return (
     <section className=" text-black lg:pt-16 md:pt-16 pt-14">
@@ -602,21 +597,20 @@ const ProductPage = ({ params }) => {
 
           <Tabs value={tab} onChange={handleTabChange} aria-label="Size Guide Tabs">
             <Tab label="IN" />
-            <Tab label="CM" />
           </Tabs>
 
           <Box mt={2}>
             <Table>
               <TableHead>
-                <TableRow>
+                <TableRow className="text-teal-500">
                   <TableCell>Measurement Points</TableCell>
-                  <TableCell>XS</TableCell>
+                 
                   <TableCell>S</TableCell>
                   <TableCell>M</TableCell>
                   <TableCell>L</TableCell>
                   <TableCell>XL</TableCell>
                   <TableCell>2XL</TableCell>
-                  <TableCell>3XL</TableCell>
+                 
                 </TableRow>
               </TableHead>
               <TableBody>
