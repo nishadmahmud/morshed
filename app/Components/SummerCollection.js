@@ -11,7 +11,7 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
-const EidCollection = () => {
+const SummerCollection = () => {
   const eidCategoryId = 6785;
 
   const { data: menCollection, isLoading } = useSWR(
@@ -21,7 +21,7 @@ const EidCollection = () => {
 
   return (
     <div className="mt-12 w-11/12 md:w-10/12 mx-auto">
-      <Heading title={'Eid Collections'} />
+      <Heading title={'Summer Collections'} />
 
       <Swiper
         spaceBetween={20}
@@ -72,4 +72,4 @@ const EidCollection = () => {
   );
 };
 
-export default EidCollection;
+export default SummerCollection;

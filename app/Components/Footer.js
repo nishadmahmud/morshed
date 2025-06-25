@@ -52,7 +52,7 @@ export default function Footer() {
               { icon: FaYoutube, href: "#" },
             ].map(({ icon: Icon, href }) => (
               <Link key={href} href={href} target="_blank">
-                <Icon className="text-white text-3xl border border-white p-1 rounded-full hover:text-[#00ffcc]" />
+                <Icon className="text-white text-3xl border border-white p-1 rounded-full hover:text-[#009dff]" />
               </Link>
             ))}
           </div>

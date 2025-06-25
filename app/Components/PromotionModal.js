@@ -33,9 +33,6 @@ const PromotionModal = () => {
 
     const lastImage = offer?.length ? offer[offer.length - 1].image : null;
 
-    if (isLoading) {
-        return <FadeLoader color='#EB0439' />;
-    }
 
     return (
         <div className={`modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center z-[9999] items-center px-4 ${isOpenPromoBanner  && offer?.length > 0 ? '' : 'hidden'}`}>

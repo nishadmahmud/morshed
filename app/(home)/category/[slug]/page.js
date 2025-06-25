@@ -67,9 +67,7 @@ export default function ProductListing({ params }) {
       filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name))
     } else if (sortBy === "z-a") {
       filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name))
-    } else if (sortBy === "newest") {
-      filtered = [...filtered].sort((a, b) => (a.is_new === b.is_new ? 0 : a.is_new ? -1 : 1))
-    }
+    } 
 
     // Apply filters (in a real app, these would filter the actual data)
     if (selectedSizes.length > 0 || selectedColors.length > 0 || selectedBrands.length > 0) {
@@ -181,8 +179,7 @@ export default function ProductListing({ params }) {
                 onChange={(e) => setSortBy(e.target.value)}
               >
                 <option value="">Sort by</option>
-                <option value="featured">Featured</option>
-                <option value="newest">Newest</option>
+               
                 <option value="low-to-high">Price: Low to High</option>
                 <option value="high-to-low">Price: High to Low</option>
                 <option value="a-z">Name: A to Z</option>

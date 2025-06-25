@@ -3,7 +3,11 @@ import Link from "next/link";
 import React from "react";
 import { FaArrowRight } from "react-icons/fa6";
 
-const BannerSection = ({ banner }) => {
+const BannerSection = ({ banner, categories }) => {
+  const categoryList = categories?.data ?? [];
+
+
+
   return (
     <section className="w-full max-w-7xl px-4 mx-auto flex flex-col lg:flex-row items-center justify-between py-16 lg:py-24 gap-12 lg:gap-20 text-black">
       {/* Left side - Images */}
@@ -47,18 +51,25 @@ const BannerSection = ({ banner }) => {
           New Collections
         </p>
         <h2 className="text-3xl sm:text-5xl font-semibold mt-2 mb-4 leading-tight">
-          Best Solid Pattern T-shirt <br className="hidden md:block" /> For Everyone!
+          Best Solid Shirt <br className="hidden md:block" /> For Everyone!
         </h2>
         <p className="text-gray-600 text-base sm:text-lg mb-6">
-          Experience comfort and style with our premium solid pattern T-shirt,
-          designed to suit all body types and every occasion. Made from soft,
-          breathable fabric, it’s perfect for everyday wear.
+          Experience comfort and style with our premium solid shirt, designed to
+          suit all body types and every occasion. Made from soft, breathable
+          fabric, it’s perfect for everyday wear.
         </p>
-        <Link href="/category/6785?category=New%20Eid%20Collection&total=2">
-          <div className="inline-flex items-center gap-2 border border-black px-5 py-2 font-medium hover:bg-black hover:text-white transition-all">
-            Shop Now <FaArrowRight />
-          </div>
-        </Link>
+
+        {categoryList?.[3] && (
+  <div className="mt-4">
+    <Link
+      className="inline-flex text-black items-center gap-2 border border-black px-5 py-2 font-medium hover:bg-black hover:text-white transition-all"
+      href={`category/6750?category=Solid%20Shirts&total=${encodeURIComponent(categoryList[3]?.product_count)}`}
+    >
+      Shop Now <FaArrowRight />
+    </Link>
+  </div>
+)}
+
       </div>
     </section>
   );

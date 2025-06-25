@@ -7,15 +7,16 @@ import NewArrival from "../Components/NewArrival";
 import PromotionModal from "../Components/PromotionModal";
 import SmallBanner from "../Components/SmallBanner";
 import MensBanner from "../Components/MensBanner";
-import MenCollection from "../Components/EidCollection";
+import MenCollection from "../Components/SummerCollection";
 import WomenCollection from "../Components/SolidTshirt";
 import SolidTshirt from "../Components/SolidTshirt";
-import EidCollection from "../Components/EidCollection";
+import EidCollection from "../Components/SummerCollection";
 import OfferPage from "../Components/OfferPage";
 import HalfSelveePolo from "../Components/HalfSelveePolo";
 import BenefitsSection from "../Components/BenefitsSection";
 import SelectRegionModal from "../Components/SelectRegionModal";
 import VideoSection from "../Components/VideoSection";
+import SummerCollection from "../Components/SummerCollection";
 
 
 export const userId = 203;
@@ -64,14 +65,14 @@ export default async function Home() {
         <NewArrival banner={banner}/> 
         {/* <ReadyForOrder />   */}
         <MensBanner banner={banner}></MensBanner>
-        <EidCollection></EidCollection>
+        <SummerCollection></SummerCollection>
         <SmallBanner banner={banner}/>
         <SolidTshirt></SolidTshirt>
         <VideoSection></VideoSection>
         {/* <Fitness></Fitness> */}
-        <BannerSection banner={banner}/>
+        <BannerSection categories={categories} banner={banner}/>
         <HalfSelveePolo></HalfSelveePolo>
-        <OfferPage></OfferPage>
+        <OfferPage categories={categories}></OfferPage>
         <BenefitsSection></BenefitsSection>
         {/* <FeaturedProducts banner={banner}/> */}
         {/* <Brands brands={brands}/>     */}

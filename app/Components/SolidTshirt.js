@@ -34,7 +34,7 @@ const SolidTshirt = () => {
   }, [bestDeals]);
 
   return (
-    <div className="lg:mt-20 mt-10 md:w-10/12 w-11/12 mx-auto">
+    <div className="lg:my-16 my-10 md:w-10/12 w-11/12 mx-auto">
       <Heading title={'Solid Pattern T-shirt'} />
 
       {isLoading ? (
