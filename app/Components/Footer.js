@@ -63,7 +63,7 @@ export default function Footer() {
       <div className="text-center md:text-left">
         <h3 className="font-bold text-lg text-white mb-4 uppercase">Company</h3>
         <ul className="space-y-2">
-          <li><Link href="/" className="text-white hover:underline">About Us</Link></li>
+          <li><Link href="/about-us" className="text-white hover:underline">About Us</Link></li>
           
           <li><Link href="/order-tracking" className="text-white hover:underline">Order Tracking</Link></li>
           <li><Link href="/blogs" className="text-white hover:underline">Blogs</Link></li>
@@ -87,7 +87,7 @@ export default function Footer() {
         <h3 className="font-bold text-lg text-white mb-4 uppercase">Terms & Conditions</h3>
         <ul className="space-y-2">
           <li><Link href="/" className="text-white hover:underline">Terms & Conditions</Link></li>
-          <li><Link href="/" className="text-white hover:underline">Refund Policy</Link></li>
+          <li><Link href="/refund-policy" className="text-white hover:underline">Refund Policy</Link></li>
           <li><Link href="/" className="text-white hover:underline">Privacy Policy</Link></li>
         
           <li><Link href="/return-exchange-policy" className="text-white hover:underline">Return & Exchange Policy</Link></li>

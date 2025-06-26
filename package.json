@@ -57,7 +57,8 @@
     "string-to-hex-code-color": "^1.0.8",
     "styled-components": "^6.1.16",
     "swiper": "^11.2.8",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "world-countries": "^5.1.0"
   },
   "devDependencies": {
     "daisyui": "^4.12.23",

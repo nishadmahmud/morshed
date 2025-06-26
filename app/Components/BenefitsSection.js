@@ -7,7 +7,7 @@ const BenefitsSection = () => {
         {/* 14-Day Returns */}
         <div>
           <FaUndoAlt size={32} className="mx-auto mb-4 text-black" />
-          <h3 className="text-lg font-semibold mb-1">07-Day Returns</h3>
+          <h3 className="text-lg font-semibold mb-1">03-Day Returns</h3>
           <p className="text-gray-500 text-sm">Risk-free shopping with easy returns.</p>
         </div>
 

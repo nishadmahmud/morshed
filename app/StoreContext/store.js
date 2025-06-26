@@ -32,12 +32,14 @@ const StoreProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [isOpenPromoBanner, setIsOpenPromoBanner] = useState(false);
   const [isSelectRegion, setIsSelectRegion] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState(countries[0]);
+  const [selectedCountry, setSelectedCountry] = useState("Bangladesh");
   const [convertedPrice, setConvertedPrice] = useState(null);
   const [basePrice,setBasePrice] = useState({});
   const googleProvider = new GoogleAuthProvider();
   const [userInfo,setUserInfo] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);
+
+  
 
 
   useEffect(() => {
@@ -45,6 +47,10 @@ const StoreProvider = ({ children }) => {
   }, []);
 
   const router = useRouter();
+  const getPriceByCountry = (basePrice, wholesalePrice) => {
+  return selectedCountry.value === "BDT" ? basePrice : wholesalePrice;
+};
+
 
 
   // useEffect(() => {
@@ -75,6 +81,8 @@ const StoreProvider = ({ children }) => {
       retails_price: item.price ?? item.retails_price,
       currency_retail_price : convertedPrice
     };
+
+
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     const existingProduct = cartItems.find((product) => product.id === item.id);
 

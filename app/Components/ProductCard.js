@@ -7,11 +7,12 @@ import { ShoppingCart } from "lucide-react";
 import useWishlist from "../CustomHooks/useWishlist";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import "../globals.css";
+import { useContext } from "react";
+import { storeContext } from "../StoreContext/store";
 
 const ProductCard = ({ product }) => {
-  const { handleCart } = useStore();
+  const { handleCart, convertedPrice } = useStore();
   const { toggleWishlist, isInWishlist } = useWishlist();
-
   const updateRecentViews = () => {
     if (!product?.id) return;
     let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
@@ -26,7 +27,8 @@ const ProductCard = ({ product }) => {
     if (recentViews.length > 6) recentViews.pop();
     localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
   };
-
+   const { selectedCountry } = useContext(storeContext);
+console.log( selectedCountry);
   const discountedPrice = product?.discount
     ? (product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)
     : null;

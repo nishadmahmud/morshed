@@ -9,6 +9,7 @@ import useStore from "../CustomHooks/useStore";
 import Image from "next/image";
 import loginLogo from "/public/user.png";
 import { IoNewspaperOutline } from "react-icons/io5";
+import GlobeModalButton from "./GlobeModalButton";
 
 const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -117,7 +118,15 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                 <span className="text-black">Login</span>
               </Link>
             )}
+
+            <button className="flex flex-col items-center text-[#115e59]">
+
+             <GlobeModalButton></GlobeModalButton>
+             <span className="text-black">Country</span>
+            </button>
           </div>
+
+
         </div>
         {isOpen && (
           <div className="bg-white flex flex-col space-y-3 text-white p-5 transition ease-in-out">
@@ -139,6 +148,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             })}
           </div>
         )}
+
       </div>
 
       {/*all categories */}

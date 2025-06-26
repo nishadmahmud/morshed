@@ -64,6 +64,7 @@ const CheckoutPage = () => {
       );
 
       const data = response.data;
+      console.log(data);
 
       if (data?.success && data?.data?.amount) {
         setCouponAmount(data.data.amount);
@@ -284,7 +285,8 @@ const CheckoutPage = () => {
                       <div className="flex items-center gap-2 text-black mt-2">
                         Our delivery patner: 
                         <Image className="w-10" src='/pahtao.png' alt="pathao" width={500} height={500}></Image>
-                        <Image className="w-10" src='/fedEx.png' alt="pathao" width={500} height={500}></Image>
+                        <Image className="w-10" src='/fedEx.png' alt="fedx" width={500} height={500}></Image>
+                        <Image className="w-8" src='/dhl.png' alt="dhl" width={500} height={500}></Image>
                       </div>
                       
 

@@ -2,10 +2,10 @@
 import React, { useContext } from 'react';
 import { X } from 'lucide-react';
 import CurrencyConverter from './CurrencyConverter';
-import { storeContext } from '../StoreContext/store'; // ✅ correct import
+import { storeContext } from '../StoreContext/store'; 
 
 const SelectRegionModal = () => {
-  const { isSelectRegion, setIsSelectRegion } = useContext(storeContext); // ✅ useContext, not useStore
+  const { isSelectRegion, setIsSelectRegion } = useContext(storeContext);
 
   const handleClose = () => {
     setIsSelectRegion(false);
@@ -19,6 +19,8 @@ const SelectRegionModal = () => {
         open
         className="relative p-0.5 lg:p-1 rounded-lg flex flex-col justify-center bg-white text-black"
       >
+
+        
         {/* Close Button */}
         <button
           onClick={handleClose}
@@ -29,7 +31,7 @@ const SelectRegionModal = () => {
         </button>
 
         {/* Currency Converter */}
-        <CurrencyConverter baseBDT={500} />
+        <CurrencyConverter baseBDT={500} wholesalePrice={800}  />
       </dialog>
     </div>
   );

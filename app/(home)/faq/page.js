@@ -5,30 +5,26 @@ import { ChevronDown, ChevronUp } from "lucide-react";
 
 const faqs = [
   {
-    question: " What warranty do you provide on mobiles and gadgets?",
+    question: "I'm missing an item from my order, what do I do?",
     answer:
-      "Most of our mobile phones and gadgets come with a manufacturer’s warranty, typically ranging from 6 months to 1 year. Warranty details vary by brand, so please check the product description or contact us for specific warranty information.",
+      "Please crosscheck your delivery bill with the items received in your package. The delivery bill inside the package will tell you the items you can expect to find inside. However, if there still seems to be a problem, please contact our customer care team with your order number and the missing item's name. We will ensure a quick solution.",
   },
   {
-    question: "Do you offer EMI or installment payment options?",
+    question: "Can I cancel my order after I’ve confirmed it?",
     answer:
-      "Yes, we provide EMI options through select banks and financial partners. The availability of EMI depends on your payment method and bank eligibility. Please check with our support team for more details.",
+      "For Standard Delivery, you can cancel your order within a 12 hour window, until it has been dispatched. Please contact our customer care team with your order number. Orders cannot be cancelled after it has been dispatched.",
   },
   {
-    question: "Can I return or exchange a product if I don’t like it?",
+    question: "Can I edit my order after I’ve placed it?",
     answer:
-      "We accept returns or exchanges only for defective or damaged products within a specific period (usually 7 days). The product must be in its original condition with all accessories and packaging intact. Please review our return policy for more details.",
+      "You cannot make any changes to an existing order after you have placed it. However, you can cancel an order and start over within 24 hours of placing an order for Standard Delivery ONLY.",
   },
   {
-    question: "Do you sell original, brand-new products?",
+    question: "Can I get a refund if the price has changed since I ordered it?",
     answer:
-      "Yes, we sell 100% original and brand-new products from authorized distributors. We do not deal in used, refurbished, or fake products.",
+      "As we are an ecommerce company, our prices may change in response to trends, promotions and demand from customers. If you request a refund and your items meet our returns policy requirements, the amount refunded will correspond to the amount you originally paid for the items.",
   },
-  {
-    question: "Do you offer home delivery, and how long does it take?",
-    answer:
-      "Yes, we offer home delivery across the country. Delivery times vary based on your location—typically within 2-5 business days for major cities and slightly longer for remote areas. Express delivery options may be available at an additional cost.",
-  },
+ 
 ];
 
 const FAQItem = ({ item }) => {
@@ -64,7 +60,7 @@ const FAQItem = ({ item }) => {
 
 const Page = () => {
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8 mt5">
+    <div className="max-w-3xl mx-auto px-4 py-8 md:pt-20 pt-14">
       <h2 className="text-3xl font-bold text-gray-900 mb-8 text-center">Frequently Asked Questions</h2>
       <div className="space-y-4">
         {faqs.map((faq, index) => (

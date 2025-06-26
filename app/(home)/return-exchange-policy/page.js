@@ -41,7 +41,7 @@ export default function Page() {
       <section className="mb-8">
         <h2 className="text-xl font-semibold mb-2 text-blue-600">💵 Return Process & Refund:</h2>
         <ul className="list-disc list-inside space-y-1 text-sm">
-          <li>Refund processed within <span className="font-medium">5–7 working days</span> after inspection</li>
+          <li>Refund processed within <span className="font-medium">2–3 working days</span> after inspection</li>
           <li>Refunds via <span className="font-medium">bKash, Nagad</span>, or original payment method</li>
           <li>Delivery charges are <span className="font-medium">non-refundable</span> unless due to our error</li>
         </ul>

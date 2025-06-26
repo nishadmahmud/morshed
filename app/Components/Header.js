@@ -19,6 +19,7 @@ import Navbar from "./Navbar"
 import { userId } from "../(home)/page"
 import CurrencyConverter from "./CurrencyConverter"
 import RegionModal from "./RegionModal"
+import GlobeModalButton from "./GlobeModalButton"
 
 const Header = ({ data }) => {
   const {  
@@ -235,9 +236,10 @@ const toggleSearchSidebar = () => {
               </Link>
             )}
 
-            {/* <button onClick={() => setIsModalOpen(true)}>
-         <Globe></Globe>
-            </button> */}
+           <div className="hidden md:block">
+
+             <GlobeModalButton></GlobeModalButton>
+           </div>
 
 
           </div>
@@ -501,9 +503,7 @@ const toggleSearchSidebar = () => {
       )}
       </div>
 
-       <RegionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <CurrencyConverter baseBDT={1000} /> {/* example value */}
-      </RegionModal>
+       
     </div>
   )
 }

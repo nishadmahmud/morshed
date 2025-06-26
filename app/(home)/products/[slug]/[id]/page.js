@@ -12,7 +12,7 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { useEffect, useState } from "react"
+import { useContext, useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { Heart, Minus, Plus, ShoppingBag } from "lucide-react"
@@ -29,6 +29,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import SizeGuideModal from "@/app/Components/SizeGuideModal"
 import CustomImageZoom from "@/app/Components/CustomImageZoom";
 import CursorImageZoom from "@/app/Components/CustomImageZoom";
+import { storeContext } from "@/app/StoreContext/store";
 // Fetcher function from the original code
 const fetcher = (url) => fetch(url).then((res) => res.json())
 const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : ""
@@ -45,9 +46,11 @@ const ProductPage = ({ params }) => {
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
     const { toggleWishlist, isInWishlist } = useWishlist();
-    const { handleCart, getCartItems, refetch, setRefetch, handleBuy } = useStore()
+    const { handleCart, convertedPrice, selectedCountry , getCartItems, refetch, setRefetch, handleBuy } = useStore()
 
     // size guide modal
+
+    console.log(convertedPrice, selectedCountry );
 
    const [open, setOpen] = useState(false);
     const [tab, setTab] = useState(0);
@@ -55,7 +58,7 @@ const ProductPage = ({ params }) => {
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const handleTabChange = (event, newValue) => setTab(newValue);
-  
+
     const inches = [
       ["CHEST", "40", "42", "44", "46", "48"],
       ["LENGTH", "28", "39", "30", "31", "31.5"],
@@ -236,7 +239,7 @@ const ProductPage = ({ params }) => {
                     >
                       <Image
                         unoptimized
-                        src={image || "/placeholder.svg?height=80&width=80"}
+                        src={image || noImg}
                         alt={`Product view ${idx + 1}`}
                         width={80}
                         height={80}
@@ -267,7 +270,7 @@ const ProductPage = ({ params }) => {
                 ) : product?.data?.image_path ? (
                   <Image
                     unoptimized
-                    src={product.data.image_path || "/placeholder.svg"}
+                    src={product.data.image_path || noImg}
                     alt={product?.data?.name || "Product image"}
                     width={600}
                     height={600}
@@ -518,7 +521,7 @@ const ProductPage = ({ params }) => {
                 src={
                   imageArray && imageArray.length > 0
                     ? imageArray[0]
-                    : product.data.image_path || "/placeholder.svg?height=50&width=50"
+                    : product.data.image_path || noImg
                 }
                 alt={product.data.name}
                 width={50}

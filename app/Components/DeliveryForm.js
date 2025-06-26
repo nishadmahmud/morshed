@@ -770,7 +770,7 @@ const handleModalClose = () => {
           <div className="mt-4 p-4 bg-gray-50 rounded-lg">
             <div className="flex items-center space-x-2 text-sm text-gray-700">
               <CheckCircle className="h-4 w-4 text-green-500" />
-              <span>Free returns within 7 days</span>
+              <span>Exchange within 3 days</span>
             </div>
           </div>
         </div>
@@ -832,7 +832,7 @@ const handleModalClose = () => {
               </div>
             </label>
 
-            <label
+            {/* <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
                 payment === "online"
                   ? "border-blue-500 bg-blue-50"
@@ -869,7 +869,7 @@ const handleModalClose = () => {
                   </p>
                 </div>
               </div>
-            </label>
+            </label> */}
           </div>
 
           {!isCod && (
