@@ -1145,12 +1145,12 @@ const handleModalClose = () => {
              
               
               <p className="text-sm text-gray-600">
-               Even a small donation can make a big impact.
+               Your donated money will be distributed among the poor and needy.
               </p>
             </div>
             </div>
 
-             <RiInformation2Line className="cursor-pointer" title="Your donated money will be distributed among the poor and needy." size={20} color="black"></RiInformation2Line>
+             
 
           </div>
 

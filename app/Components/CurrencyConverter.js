@@ -32,7 +32,7 @@ const CurrencyConverter = ({ baseBDT, wholesalePrice }) => {
 
   return (
     <div className="w-full max-w-md mx-auto bg-white text-black rounded-lg shadow-md overflow-hidden border border-gray-200">
-      <div className="p-5">
+      <div className="p-5 hidden">
         <div className="space-y-2">
           <label htmlFor="currency-select" className="text-sm font-medium">
             Select the country
