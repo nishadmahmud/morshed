@@ -31,10 +31,10 @@ const NewArrival = () => {
           slidesPerGroup={4}
           loop={true}
           speed={1500}
-          autoplay={{
-            delay: 3000,
-            disableOnInteraction: false,
-          }}
+          // autoplay={{
+          //   delay: 3000,
+          //   disableOnInteraction: false,
+          // }}
           modules={[Autoplay]}
           breakpoints={{
             320: {
@@ -54,7 +54,7 @@ const NewArrival = () => {
           {isLoading ? (
             Array.from({ length: 8 }).map((_, idx) => (
               <SwiperSlide key={`loading-${idx}`}>
-                <div className="flex justify-center">
+                <div className="justify-center grid grid-cols-4">
                   <CardSkeleton />
                 </div>
               </SwiperSlide>

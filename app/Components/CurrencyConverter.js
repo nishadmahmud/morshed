@@ -14,7 +14,7 @@ const CurrencyConverter = ({ baseBDT, wholesalePrice }) => {
     if (!selectedCountry) return;
     
     const price =
-      selectedCountry.value === "BDT"
+      selectedCountry.value === "BD"
         ? baseBDT
         : wholesalePrice;
 
@@ -35,7 +35,7 @@ const CurrencyConverter = ({ baseBDT, wholesalePrice }) => {
       <div className="p-5 hidden">
         <div className="space-y-2">
           <label htmlFor="currency-select" className="text-sm font-medium">
-            Select the country
+            Select the countryii
           </label>
           <select
             id="currency-select"

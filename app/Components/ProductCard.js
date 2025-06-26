@@ -1,18 +1,29 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import useStore from "../CustomHooks/useStore";
 import noImg from "/public/no-image.jpg";
 import { ShoppingCart } from "lucide-react";
 import useWishlist from "../CustomHooks/useWishlist";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import "../globals.css";
-import { useContext } from "react";
-import { storeContext } from "../StoreContext/store";
 
 const ProductCard = ({ product }) => {
-  const { handleCart, convertedPrice } = useStore();
+  const { handleCart, selectedCountry, prices, setProductPrice} = useStore();
   const { toggleWishlist, isInWishlist } = useWishlist();
+useEffect(() => {
+  if (product?.id && product?.retails_price) {
+    setProductPrice(
+      product.id,
+      product.retails_price,
+      product?.wholesale_price || 1000
+    );
+  }
+}, [product?.id, product?.retails_price, product?.wholesale_price, setProductPrice]);
+
+  const productPrice = prices[product.id];
+  // Recent views updater
   const updateRecentViews = () => {
     if (!product?.id) return;
     let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
@@ -27,12 +38,21 @@ const ProductCard = ({ product }) => {
     if (recentViews.length > 6) recentViews.pop();
     localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
   };
-   const { selectedCountry } = useContext(storeContext);
-console.log( selectedCountry);
+
+  // Calculate discounted price
   const discountedPrice = product?.discount
     ? (product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)
     : null;
 
+  // Set per-product prices
+  // useEffect(() => {
+  //   if (product?.retails_price) {
+  //     setLocalBasePrice(product.retails_price);
+  //     setLocalWholesalePrice(product?.wholesale_price || 1000); // fallback if wholesale not available
+  //   }
+  // }, [product?.retails_price, product?.wholesale_price]);
+
+  // Sanitize slug for product URL
   const sanitizeSlug = (str) => {
     return str
       ?.toLowerCase()
@@ -45,7 +65,7 @@ console.log( selectedCountry);
 
   return (
     <div className="group bg-white rounded-sm transition-all duration-300 w-full sm:w-48 md:w-72 h-[23rem] md:h-[30rem] relative overflow-hidden flex flex-col shadow-sm">
-      
+
       {/* Image */}
       <Link
         href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
@@ -56,10 +76,8 @@ console.log( selectedCountry);
           src={product?.image_path || noImg}
           alt={product?.name}
           fill
-          // unoptimized
           className="object-cover transition-opacity duration-300"
           loading="lazy"
-
         />
 
         {product?.image_path1 && (
@@ -67,8 +85,7 @@ console.log( selectedCountry);
             src={product.image_path1}
             alt={`${product?.name} hover`}
             fill
-            // unoptimized
-             loading="lazy"
+            loading="lazy"
             className="object-cover absolute top-0 left-0 transition-opacity duration-300 opacity-0 group-hover:opacity-100"
           />
         )}
@@ -101,7 +118,7 @@ console.log( selectedCountry);
         )}
       </div>
 
-      {/* Content - Product Name */}
+      {/* Product Name */}
       <div className="relative flex-grow px-3 pb-12 flex text-ellipsis line-clamp-1">
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
@@ -121,14 +138,15 @@ console.log( selectedCountry);
                 <span className="font-bangla">৳</span> {discountedPrice}
               </span>
               <span className="text-sm text-gray-500 line-through">
-                <span className="font-bangla">৳</span> {product.retails_price}
+                <span className="font-bangla">৳</span> {productPrice?.basePrice || productPrice?.wholesalePrice}
               </span>
             </div>
           ) : (
             <span className="text-lg font-bold text-[#115e59]">
-              <span className="font-bangla">৳</span> {product.retails_price}
+              <span className="font-bangla">৳</span> {productPrice?.basePrice || productPrice?.wholesalePrice}
             </span>
           )}
+
           <Link
             onClick={(e) => {
               e.preventDefault();

@@ -34,36 +34,54 @@ const StoreProvider = ({ children }) => {
   const [isSelectRegion, setIsSelectRegion] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("Bangladesh");
   const [convertedPrice, setConvertedPrice] = useState(null);
-  const [basePrice,setBasePrice] = useState({});
+  const [basePrice,setBasePrice] = useState(0);
+  const [wholesalePrice,setWholesalePrice] = useState(0);
   const googleProvider = new GoogleAuthProvider();
   const [userInfo,setUserInfo] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);
+    const [prices, setPrices] = useState({});
+
+  // Setter to update price for a specific product
+  const setProductPrice = (productId, basePrice, wholesalePrice) => {
+    setPrices((prev) => ({
+      ...prev,
+      [productId]: {
+        basePrice,
+        wholesalePrice,
+      },
+    }));
+  };
 
   
 
 
   useEffect(() => {
     setIsMounted(true);
+  const bangladesh = JSON.parse(localStorage.getItem("selectedCountry"))
+
   }, []);
 
   const router = useRouter();
+
+
+// console.log(bangladesh);
   const getPriceByCountry = (basePrice, wholesalePrice) => {
-  return selectedCountry.value === "BDT" ? basePrice : wholesalePrice;
+  return selectedCountry.valueOf === "BD" ? basePrice : wholesalePrice;
 };
 
 
 
-  // useEffect(() => {
-  //   const storedToken = localStorage.getItem("token");
-  //   if (storedToken) {
-  //     setLoading(false);
-  //     setToken(storedToken);
-  //     setHasToken(true);
-  //   } else {
-  //     setToken(null);
-  //     // setLoading(false);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    if (storedToken) {
+      setLoading(false);
+      setToken(storedToken);
+      setHasToken(true);
+    } else {
+      setToken(null);
+      // setLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
         const user = JSON.parse(localStorage.getItem("user"));
@@ -82,6 +100,8 @@ const StoreProvider = ({ children }) => {
       currency_retail_price : convertedPrice
     };
 
+
+  
 
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     const existingProduct = cartItems.find((product) => product.id === item.id);
@@ -224,6 +244,8 @@ const StoreProvider = ({ children }) => {
 
   const values = {
     handleCart,
+     prices,
+        setProductPrice,
     setIsSelectRegion,
     isSelectRegion,
     handleSelectRegion,
@@ -231,6 +253,7 @@ const StoreProvider = ({ children }) => {
     getCartItems,
     refetch,
     openCart,
+    getPriceByCountry,
     googleLogin,
     setOpenCart,
     reload,
@@ -246,6 +269,8 @@ const StoreProvider = ({ children }) => {
     isLoginModal,
     setIsLoginModal,
     token,
+    setWholesalePrice,
+    wholesalePrice,
     setToken,
     hasToken,
     setHasToken,

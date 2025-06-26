@@ -1,17 +1,48 @@
-// components/GlobeModalButton.js
 "use client";
 
-import React, { useContext, useState } from "react";
-import countries from "world-countries";
+import React, { useContext, useEffect, useState } from "react";
 import { Globe } from "lucide-react";
 import RegionModal from "./RegionModal";
 import { storeContext } from "../StoreContext/store";
+import Select from "react-select";
+import countries from "i18n-iso-countries";
+import enLocale from "i18n-iso-countries/langs/en.json";
+
+countries.registerLocale(enLocale);
 
 const GlobeModalButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { selectedCountry, setSelectedCountry } = useContext(storeContext);
+  const [countryOptions, setCountryOptions] = useState([]);
 
-  console.log(selectedCountry);
+  // Load countries
+  useEffect(() => {
+    const countryNames = countries.getNames("en", { select: "official" });
+    const formattedCountries = Object.entries(countryNames).map(([code, name]) => ({
+      value: code,
+      label: name,
+    }));
+    setCountryOptions(formattedCountries);
+  }, []);
+
+  // Load from localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("selectedCountry");
+    if (stored) {
+      try {
+        setSelectedCountry(JSON.parse(stored));
+      } catch (e) {
+        console.error("Invalid stored country format");
+      }
+    }
+  }, []);
+
+  // Save to localStorage on change
+  useEffect(() => {
+    if (selectedCountry) {
+      localStorage.setItem("selectedCountry", JSON.stringify(selectedCountry));
+    }
+  }, [selectedCountry]);
 
   return (
     <div>
@@ -19,22 +50,18 @@ const GlobeModalButton = () => {
         <Globe />
       </button>
 
-      <RegionModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+      <RegionModal isOpen={isModalOpen}>
         <h2 className="text-xl font-semibold mb-4">Select a Country</h2>
-        <div className="h-[300px] overflow-y-auto space-y-1">
-          {countries.map((country) => (
-            <div
-              key={country.cca2}
-              className="p-2 hover:bg-gray-100 cursor-pointer rounded"
-              onClick={() => {
-                setSelectedCountry(country.name.common);
-                setIsModalOpen(false);
-              }}
-            >
-              {country.flag} {country.name.common}
-            </div>
-          ))}
-        </div>
+
+        <Select
+          options={countryOptions}
+          onChange={(option) => {
+            setSelectedCountry(option);
+            setIsModalOpen(false);
+          }}
+          value={selectedCountry}
+          className="text-black"
+        />
       </RegionModal>
     </div>
   );

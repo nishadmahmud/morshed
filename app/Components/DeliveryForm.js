@@ -1141,7 +1141,6 @@ const handleModalClose = () => {
                 <h3 className="text-xl font-semibold text-gray-900">
                 Donation
               </h3>
-
              
               
               <p className="text-sm text-gray-600">

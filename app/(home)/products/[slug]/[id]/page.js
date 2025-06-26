@@ -47,7 +47,8 @@ const ProductPage = ({ params }) => {
   const [imageArray, setImageArray] = useState([])
     const { toggleWishlist, isInWishlist } = useWishlist();
     const { handleCart, convertedPrice, selectedCountry , getCartItems, refetch, setRefetch, handleBuy } = useStore()
-
+// const { selectedCountry, setSelectedCountry } = useContext(storeContext);
+console.log(selectedCountry);
     // size guide modal
 
     console.log(convertedPrice, selectedCountry );
