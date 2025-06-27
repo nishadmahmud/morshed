@@ -49,31 +49,21 @@ const FeaturedCategories = ({ categories }) => {
         <Swiper
           modules={[Navigation, Autoplay]}
           spaceBetween={16}
-          slidesPerView={1.2}
-          centeredSlides={false}
+          slidesPerView="auto"
           breakpoints={{
             480: {
-              slidesPerView: 1.8,
               spaceBetween: 16,
             },
             640: {
-              slidesPerView: 2.2,
               spaceBetween: 18,
             },
             768: {
-              slidesPerView: 2.8,
               spaceBetween: 20,
             },
             1024: {
-              slidesPerView: 3.5,
               spaceBetween: 22,
             },
             1280: {
-              slidesPerView: 4.2,
-              spaceBetween: 24,
-            },
-            1536: {
-              slidesPerView: 5,
               spaceBetween: 24,
             },
           }}
@@ -95,41 +85,70 @@ const FeaturedCategories = ({ categories }) => {
           className="pb-8 !overflow-visible"
         >
           {categoryList.map((category, index) => (
-            <SwiperSlide key={index} className="h-auto">
+            <SwiperSlide key={index} className="!w-auto">
               <Link
                 href={`category/${encodeURIComponent(category?.category_id)}?category=${encodeURIComponent(
                   category?.name,
                 )}&total=${encodeURIComponent(category?.product_count)}`}
-                className="group block h-full"
+                className="group block"
               >
-                <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 h-full w-full max-w-sm mx-auto">
+                <div
+                  className="relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 
+                  w-[280px] h-[320px] 
+                  sm:w-[300px] sm:h-[340px] 
+                  md:w-[320px] md:h-[360px] 
+                  lg:w-[280px] lg:h-[320px] 
+                  xl:w-[300px] xl:h-[340px]"
+                >
                   {/* Image Container */}
-                  <div className="relative aspect-[4/3] w-full overflow-hidden">
+                  <div
+                    className="relative overflow-hidden
+                    w-full h-[220px] 
+                    sm:h-[240px] 
+                    md:h-[260px] 
+                    lg:h-[220px] 
+                    xl:h-[240px]"
+                  >
                     <Image
                       unoptimized
                       src={category.image_url || noImg}
                       alt={category.name || "category"}
                       fill
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
-                      sizes="(max-width: 480px) 100vw, (max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
+                      sizes="(max-width: 640px) 300px, (max-width: 768px) 320px, (max-width: 1024px) 280px, 300px"
                     />
                     {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
 
                     {/* Product Count Badge */}
                     {category?.product_count && (
-                      <div className="absolute top-2 right-2 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-2 py-1">
+                      <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-3 py-1.5">
                         <span className="text-xs font-medium text-white">{category.product_count} items</span>
                       </div>
                     )}
                   </div>
 
                   {/* Content */}
-                  <div className="p-3 md:p-4">
-                    <h3 className="font-semibold text-sm md:text-base lg:text-base text-white mb-1 group-hover:text-gray-200 transition-colors duration-300 line-clamp-2">
+                  <div
+                    className="absolute bottom-0 left-0 right-0 p-4 
+                    h-[100px] 
+                    sm:h-[100px] 
+                    md:h-[100px] 
+                    lg:h-[100px] 
+                    xl:h-[100px] 
+                    flex flex-col justify-end"
+                  >
+                    <h3
+                      className="font-bold text-white mb-2 group-hover:text-gray-200 transition-colors duration-300 line-clamp-2
+                      text-sm 
+                      sm:text-base 
+                      md:text-lg 
+                      lg:text-base 
+                      xl:text-lg"
+                    >
                       {category.name}
                     </h3>
-                    <div className="w-0 group-hover:w-8 md:group-hover:w-12 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-500 ease-out" />
+                    <div className="w-0 group-hover:w-12 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-500 ease-out" />
                   </div>
 
                   {/* Hover Effect Overlay */}
