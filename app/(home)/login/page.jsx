@@ -94,6 +94,8 @@ const onClose = () => {
             onClose();
           }
           setToken(res.data.token);
+
+          console.log(res);
           toast.success("Login Successful!");
           setUserInfo(res.data.customer);
           localStorage.setItem("user", JSON.stringify(res.data.customer));

@@ -16,8 +16,8 @@ export default function RegisterPage() {
     phone: "",
     email: "",
     password: "",
-    // confirm_password: "",
-    agree_terms: false,
+  
+   
   })
 
   const [reload, setReload] = useState(false)
@@ -42,12 +42,7 @@ const onClose = () => {
     
     e.preventDefault()
 
-   
-
-    if (!formData.agree_terms) {
-      toast.error("Please agree to the terms and conditions")
-      return
-    }
+  
 
     const payload = {
       first_name: formData.first_name,
@@ -141,7 +136,7 @@ const onClose = () => {
                         JSON.stringify(res.data.customer)
                       );
                       localStorage.setItem("token", res.data.token);
-                      router.push('/login')
+                      router.push('/')
                     })
                     .catch((err) => {
                       toast.error("Invalid Registration Credentials!")

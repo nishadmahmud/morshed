@@ -192,7 +192,7 @@ const onClose = () => {
 
   const [formData, setFormData] = useState({
     country: "Bangladesh",
-    email: userEmail || "",
+    email: "",
     firstName: "",
     lastName: "",
     address: "",
@@ -212,6 +212,8 @@ const onClose = () => {
   });
 
   const [selectedMethodId, setSelectedMethodId] = useState(null);
+
+  const deliveryNote = localStorage.getItem("cartAttachment")
 
   const handleClose = () => setShowPaymentModal(false);
 
@@ -234,8 +236,9 @@ const onClose = () => {
     })),
     delivery_method_id: 1,
     donation_amount: selectedDonate,
+    email: formData.email || users.email,
     delivery_info_id: 1,
-    delivery_customer_name: formData.firstName + formData.lastName,
+    delivery_customer_name: formData.firstName + formData.lastName || firstName + lastName,
     delivery_customer_address: formData.address || formData.address2,
     delivery_customer_phone: formData?.phone ? formData?.phone : "N/A",
     delivery_fee: shippingFee,
@@ -342,7 +345,7 @@ const onClose = () => {
             const _invoiceId = res?.data?.data?.invoice_id;
             console.log(res?.data);
             setInvoiceId(_invoiceId);
-            // localStorage.removeItem("cart");
+            localStorage.removeItem("cart");
             toast.success("Order Placed Successfully!");
            router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
 

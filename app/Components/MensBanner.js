@@ -27,7 +27,7 @@ const MensBanner = ({ banner }) => {
     <div className="w-full lg:h-[65vh] h-auto flex flex-col lg:flex-row">
       {/* Left Side - Text */}
       <div
-        className="bg-teal-800/90 backdrop-blur-lg text-white flex flex-col justify-center px-8 lg:w-1/2 w-full py-10"
+        className="bg-teal-800/90 backdrop-blur-lg text-white flex flex-col justify-center px-8 lg:w-1/2 w-full md:py-10 py-5 pt-7 md:pt-10"
         ref={textRef}
       >
         {['Redefining Modern Elegance', 'A Curated Selection for Him', 'Discover timeless silhouettes, sharp tailoring, and elevated essentials — designed for the modern man.'].map(

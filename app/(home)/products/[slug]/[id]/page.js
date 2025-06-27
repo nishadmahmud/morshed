@@ -264,7 +264,7 @@ console.log(selectedCountry);
                   <CursorImageZoom
   src={imageArray[imageIndex]}
   alt={product?.data?.name || noImg}
-  className="w-full md:h-[75vh] h-[55vh] rounded-lg"
+  className="w-full md:h-[75vh] h-[50vh] rounded-lg"
   zoomScale={2.5}
 />
 
