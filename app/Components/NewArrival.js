@@ -31,10 +31,10 @@ const NewArrival = () => {
           slidesPerGroup={4}
           loop={true}
           speed={1500}
-          // autoplay={{
-          //   delay: 3000,
-          //   disableOnInteraction: false,
-          // }}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+          }}
           modules={[Autoplay]}
           breakpoints={{
             320: {
@@ -62,7 +62,7 @@ const NewArrival = () => {
           ) : newArrival?.data?.data?.length > 0 ? (
             newArrival?.data?.data.map((product) => (
               <SwiperSlide key={product.id}>
-                <div className="flex justify-center">
+                <div className="md:flex justify-center">
                   <ProductCard product={product} />
                 </div>
               </SwiperSlide>
