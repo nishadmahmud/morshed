@@ -49,7 +49,7 @@ const FeaturedCategories = ({ categories }) => {
         <Swiper
           modules={[Navigation, Autoplay]}
           spaceBetween={16}
-          slidesPerView="auto"
+          slidesPerView={3}
           breakpoints={{
             480: {
               spaceBetween: 16,
@@ -82,10 +82,10 @@ const FeaturedCategories = ({ categories }) => {
             swiper.navigation.init()
             swiper.navigation.update()
           }}
-          className="pb-8 !overflow-visible"
+          className="pb-8 !overflow-hidden"
         >
           {categoryList.map((category, index) => (
-            <SwiperSlide key={index} className="!w-auto">
+            <SwiperSlide key={index} className="w-96">
               <Link
                 href={`category/${encodeURIComponent(category?.category_id)}?category=${encodeURIComponent(
                   category?.name,
@@ -94,8 +94,8 @@ const FeaturedCategories = ({ categories }) => {
               >
                 <div
                   className="relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 
-                  w-[280px] h-[320px] 
-                  sm:w-[300px] sm:h-[340px] 
+                   
+                  w-32 h-[200px] 
                   md:w-[320px] md:h-[360px] 
                   lg:w-[280px] lg:h-[320px] 
                   xl:w-[300px] xl:h-[340px]"
