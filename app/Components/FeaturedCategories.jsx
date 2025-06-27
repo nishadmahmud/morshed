@@ -38,13 +38,13 @@ const FeaturedCategories = ({ categories }) => {
         <Swiper
   modules={[Navigation]}
   spaceBetween={10}
-  slidesPerView={3} // default for smallest viewports
-  breakpoints={{
-    640: { slidesPerView: 3 },      // small devices
-    768: { slidesPerView: 4 },      // medium devices
-    1024: { slidesPerView: 5 },     // large tablets
-    1280: { slidesPerView: 6 },     // desktops and up
-  }}
+  slidesPerView={4} 
+  // breakpoints={{
+  //   640: { slidesPerView: 3 },
+  //   768: { slidesPerView: 4 },
+  //   1024: { slidesPerView: 5 },
+  //   1280: { slidesPerView: 6 },
+  // }}
   navigation={{
     prevEl: prevRef.current,
     nextEl: nextRef.current,
