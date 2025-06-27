@@ -13,33 +13,33 @@ import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md"
 
 const FeaturedCategories = ({ categories }) => {
   const categoryList = categories?.data ?? []
-  const prevRef = useRef(null)
-  const nextRef = useRef(null)
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
 
   return (
     <div className="bg-gradient-to-br from-slate-900 via-gray-900 to-black">
-      <div className="max-w-7xl mx-auto min-h-[60vh] text-white px-3 sm:px-4 md:px-6 lg:px-8 py-12 md:py-16 relative">
+      <div className="max-w-7xl mx-auto md:min-h-[60vh] min-h-[45vh] text-white px-3 sm:px-4 md:px-6 lg:px-8 py-12 md:py-16 relative">
         {/* Header Section */}
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+        <div className="md:text-center mb-12">
+          <h2 className="text-2xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
             Categories that inspire
           </h2>
-          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+          <p className="text-base md:text-xl text-gray-400 max-w-2xl mx-auto">
             Discover our curated collection of featured categories
           </p>
         </div>
 
         {/* Custom Navigation Buttons */}
-        <div className="absolute top-20 right-6 md:right-10 flex items-center space-x-3 z-20">
+        <div className="absolute md:top-20 top-12 right-6 md:right-10 flex items-center space-x-3 z-20">
           <button
             ref={prevRef}
-            className="group bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 rounded-full p-3 transition-all duration-300 hover:scale-110"
+            className="group bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 rounded-full md:p-3 p-1 transition-all duration-300 hover:scale-110"
           >
             <MdArrowBackIos size={20} className="text-white group-hover:text-gray-200 ml-1" />
           </button>
           <button
             ref={nextRef}
-            className="group bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 rounded-full p-3 transition-all duration-300 hover:scale-110"
+            className="group bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 rounded-full md:p-3 p-1 transition-all duration-300 hover:scale-110"
           >
             <MdArrowForwardIos size={20} className="text-white group-hover:text-gray-200" />
           </button>
@@ -95,7 +95,7 @@ const FeaturedCategories = ({ categories }) => {
                 <div
                   className="relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20 
                    
-                  w-32 h-[200px] 
+                  w-28 h-[200px] 
                   md:w-[320px] md:h-[360px] 
                   lg:w-[280px] lg:h-[320px] 
                   xl:w-[300px] xl:h-[340px]"
