@@ -12,7 +12,7 @@ import 'swiper/css';
 
 const NewArrival = () => {
   const { data: newArrival, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}/public/products/${userId}?page=1`,
+    `${process.env.NEXT_PUBLIC_API}/public/new-arrivals/${userId}`,
     fetcher
   );
 

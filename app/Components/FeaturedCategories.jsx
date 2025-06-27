@@ -1,92 +1,131 @@
-'use client';
+"use client"
+import Image from "next/image"
+import Link from "next/link"
+import noImg from "/public/no-image.jpg"
 
-import Heading from "../CustomHooks/heading";
-import Image from "next/image";
-import Link from "next/link";
-import noImg from "/public/no-image.jpg";
+import { Swiper, SwiperSlide } from "swiper/react"
+import { Navigation, Autoplay } from "swiper/modules"
+import "swiper/css"
+import "swiper/css/navigation"
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-
-import { useRef } from "react";
-import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md";
+import { useRef } from "react"
+import { MdArrowBackIos, MdArrowForwardIos } from "react-icons/md"
 
 const FeaturedCategories = ({ categories }) => {
-  const categoryList = categories?.data ?? [];
-  const prevRef = useRef(null);
-  const nextRef = useRef(null);
+  const categoryList = categories?.data ?? []
+  const prevRef = useRef(null)
+  const nextRef = useRef(null)
 
   return (
-    <div className="bg-black">
-      <div className="md:w-11/12 mx-auto min-h-[50vh] text-white px-4 py-12 pb-14 relative ">
-        <h2 className="md:text-3xl text-xl font-bold mb-1">Categories that inspire</h2>
-        <p className="md:text-xl text-lg text-white/70 mb-6">Featured categories</p>
+    <div className="bg-gradient-to-br from-slate-900 via-gray-900 to-black">
+      <div className="max-w-7xl mx-auto min-h-[60vh] text-white px-4 py-16 relative">
+        {/* Header Section */}
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+            Categories that inspire
+          </h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+            Discover our curated collection of featured categories
+          </p>
+        </div>
 
         {/* Custom Navigation Buttons */}
-        <div className="absolute top-16 right-10 flex items-center space-x-5 z-10">
-          <button ref={prevRef} className="text-white">
-            <MdArrowBackIos size={25}></MdArrowBackIos>
+        <div className="absolute top-20 right-6 md:right-10 flex items-center space-x-3 z-20">
+          <button
+            ref={prevRef}
+            className="group bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 rounded-full p-3 transition-all duration-300 hover:scale-110"
+          >
+            <MdArrowBackIos size={20} className="text-white group-hover:text-gray-200 ml-1" />
           </button>
-          <button ref={nextRef} className="text-white">
-            <MdArrowForwardIos size={25}></MdArrowForwardIos>
+          <button
+            ref={nextRef}
+            className="group bg-white/10 backdrop-blur-sm hover:bg-white/20 border border-white/20 rounded-full p-3 transition-all duration-300 hover:scale-110"
+          >
+            <MdArrowForwardIos size={20} className="text-white group-hover:text-gray-200" />
           </button>
         </div>
 
         {/* Swiper Slider */}
         <Swiper
-  modules={[Navigation]}
-  spaceBetween={10}
-  // slidesPerView={4} 
-  // breakpoints={{
-  //   640: { slidesPerView: 3 },
-  //   768: { slidesPerView: 4 },
-  //   1024: { slidesPerView: 5 },
-  //   1280: { slidesPerView: 6 },
-  // }}
-  navigation={{
-    prevEl: prevRef.current,
-    nextEl: nextRef.current,
-  }}
-  onInit={(swiper) => {
-    swiper.params.navigation.prevEl = prevRef.current;
-    swiper.params.navigation.nextEl = nextRef.current;
-    swiper.navigation.init();
-    swiper.navigation.update();
-  }}
-  className="pb-10"
->
-
+          modules={[Navigation, Autoplay]}
+          spaceBetween={24}
+          slidesPerView={1}
+          breakpoints={{
+            480: { slidesPerView: 2, spaceBetween: 16 },
+            640: { slidesPerView: 2, spaceBetween: 20 },
+            768: { slidesPerView: 3, spaceBetween: 24 },
+            1024: { slidesPerView: 4, spaceBetween: 24 },
+            1280: { slidesPerView: 5, spaceBetween: 24 },
+            1536: { slidesPerView: 6, spaceBetween: 24 },
+          }}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          autoplay={{
+            delay: 4000,
+            disableOnInteraction: false,
+            pauseOnMouseEnter: true,
+          }}
+          onInit={(swiper) => {
+            swiper.params.navigation.prevEl = prevRef.current
+            swiper.params.navigation.nextEl = nextRef.current
+            swiper.navigation.init()
+            swiper.navigation.update()
+          }}
+          className="pb-8"
+        >
           {categoryList.map((category, index) => (
             <SwiperSlide key={index}>
               <Link
-                href={`category/${encodeURIComponent(
-                  category?.category_id
-                )}?category=${encodeURIComponent(
-                  category?.name
+                href={`category/${encodeURIComponent(category?.category_id)}?category=${encodeURIComponent(
+                  category?.name,
                 )}&total=${encodeURIComponent(category?.product_count)}`}
-                className="bg-white rounded-lg overflow-hidden shadow hover:shadow-xl transition-shadow duration-300 relative block lg:w-52 h-60"
+                className="group block"
               >
-                <div className="relative h-56 md:h-60">
-                  <Image
-                    unoptimized
-                    src={category.image_url || noImg}
-                    alt={category.name || "category"}
-                    layout="fill"
-                    objectFit="cover"
-                  />
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/90 to-transparent text-white">
-                  <h3 className="font-bold text-sm">{category.name}</h3>
+                <div className="relative bg-white/5 backdrop-blur-sm rounded-2xl overflow-hidden border border-white/10 hover:border-white/20 transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/20">
+                  {/* Image Container */}
+                  <div className="relative h-48 md:h-56 overflow-hidden">
+                    <Image
+                      unoptimized
+                      src={category.image_url || noImg}
+                      alt={category.name || "category"}
+                      fill
+                      className="object-cover transition-transform duration-700 group-hover:scale-110"
+                    />
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-300" />
+
+                    {/* Product Count Badge */}
+                    {category?.product_count && (
+                      <div className="absolute top-3 right-3 bg-white/20 backdrop-blur-sm border border-white/30 rounded-full px-3 py-1">
+                        <span className="text-xs font-medium text-white">{category.product_count} items</span>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 className="font-bold text-lg text-white mb-1 group-hover:text-gray-200 transition-colors duration-300">
+                      {category.name}
+                    </h3>
+                    <div className="w-0 group-hover:w-12 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400 transition-all duration-500 ease-out" />
+                  </div>
+
+                  {/* Hover Effect Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-purple-600/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                 </div>
               </Link>
             </SwiperSlide>
           ))}
         </Swiper>
+
+        {/* Decorative Elements */}
+        <div className="absolute top-10 left-10 w-20 h-20 bg-purple-500/10 rounded-full blur-xl" />
+        <div className="absolute bottom-10 right-20 w-32 h-32 bg-pink-500/10 rounded-full blur-xl" />
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default FeaturedCategories;
+export default FeaturedCategories
