@@ -4,25 +4,48 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import useStore from "../CustomHooks/useStore";
 import noImg from "/public/no-image.jpg";
-import { ShoppingCart } from "lucide-react";
+import { Bandage, ShoppingCart } from "lucide-react";
 import useWishlist from "../CustomHooks/useWishlist";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import "../globals.css";
 
 const ProductCard = ({ product }) => {
-  const { handleCart, selectedCountry, prices, setProductPrice} = useStore();
+  const { handleCart, prices, country, setProductPrice} = useStore();
   const { toggleWishlist, isInWishlist } = useWishlist();
+
+   
+
 useEffect(() => {
+
   if (product?.id && product?.retails_price) {
     setProductPrice(
       product.id,
-      product.retails_price,
-      product?.wholesale_price || 1000
+      product?.retails_price,
+      product?.whole_sale_price || 1000
     );
   }
-}, [product?.id, product?.retails_price, product?.wholesale_price, setProductPrice]);
+}, []);
 
   const productPrice = prices[product.id];
+
+ 
+
+ 
+  //  console.log("selectedCountry:", country);
+  
+
+  const getPriceByCountry = () => {
+    if (country && country.value === "BD") {
+      return productPrice.basePrice;
+    } else {
+      return productPrice?.wholesalePrice || 1000;
+    }
+  };
+
+  // console.log("Calculated price:", getPriceByCountry());
+
+
+  console.log(productPrice);
   // Recent views updater
   const updateRecentViews = () => {
     if (!product?.id) return;
@@ -138,12 +161,12 @@ useEffect(() => {
                 <span className="font-bangla">৳</span> {discountedPrice}
               </span>
               <span className="text-sm text-gray-500 line-through">
-                <span className="font-bangla">৳</span> {productPrice?.basePrice || productPrice?.wholesalePrice}
+                <span className="font-bangla">৳</span> {getPriceByCountry()}
               </span>
             </div>
           ) : (
             <span className="text-lg font-bold text-[#115e59]">
-              <span className="font-bangla">৳</span> {productPrice?.basePrice || productPrice?.wholesalePrice}
+              <span className="font-bangla">৳</span> {getPriceByCountry()}
             </span>
           )}
 

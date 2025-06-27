@@ -59,8 +59,8 @@ const NewArrival = () => {
                 </div>
               </SwiperSlide>
             ))
-          ) : newArrival?.data?.length > 0 ? (
-            newArrival.data.map((product) => (
+          ) : newArrival?.data?.data?.length > 0 ? (
+            newArrival?.data?.data.map((product) => (
               <SwiperSlide key={product.id}>
                 <div className="flex justify-center">
                   <ProductCard product={product} />

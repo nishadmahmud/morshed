@@ -19,7 +19,7 @@ const FeaturedCategories = ({ categories }) => {
   const nextRef = useRef(null);
 
   return (
-    <div className="lg:mt-16 md:mt-10 mt-0 bg-black">
+    <div className="bg-black">
       <div className="md:w-11/12 mx-auto min-h-[50vh] text-white px-4 py-12 pb-14 relative ">
         <h2 className="md:text-3xl text-xl font-bold mb-1">Categories that inspire</h2>
         <p className="md:text-xl text-lg text-white/70 mb-6">Featured categories</p>
@@ -38,7 +38,7 @@ const FeaturedCategories = ({ categories }) => {
         <Swiper
   modules={[Navigation]}
   spaceBetween={10}
-  slidesPerView={4} 
+  // slidesPerView={4} 
   // breakpoints={{
   //   640: { slidesPerView: 3 },
   //   768: { slidesPerView: 4 },

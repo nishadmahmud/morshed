@@ -33,6 +33,7 @@ const Header = ({ data }) => {
     setReload,
     getCartItems,
     userInfo,
+    country
    
    } = useStore()
   const [keyword, setKeyword] = useState("")
@@ -236,10 +237,16 @@ const toggleSearchSidebar = () => {
               </Link>
             )}
 
-           <div className="hidden md:block">
+           <div className="hidden md:block text-black relative">
+  <GlobeModalButton />
 
-             <GlobeModalButton></GlobeModalButton>
-           </div>
+  {country?.value && (
+    <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[7px] font-medium rounded-full px-1 py-1">
+      {country.value}
+    </span>
+  )}
+</div>
+
 
 
           </div>

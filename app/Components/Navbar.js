@@ -122,7 +122,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             <button className="flex flex-col items-center text-[#115e59]">
 
              <GlobeModalButton></GlobeModalButton>
-             <span className="text-black">Country</span>
+             <span className="text-black">Cn</span>
             </button>
           </div>
 

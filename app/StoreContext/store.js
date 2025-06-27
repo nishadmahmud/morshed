@@ -39,7 +39,8 @@ const StoreProvider = ({ children }) => {
   const googleProvider = new GoogleAuthProvider();
   const [userInfo,setUserInfo] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);
-    const [prices, setPrices] = useState({});
+  const [prices, setPrices] = useState({});
+  const [country, setCountry] = useState({});
 
   // Setter to update price for a specific product
   const setProductPrice = (productId, basePrice, wholesalePrice) => {
@@ -289,6 +290,8 @@ const StoreProvider = ({ children }) => {
     convertedPrice,
     setConvertedPrice,
     setBasePrice,
+    setCountry,
+    country,
     setIsRegistered,
     basePrice,
     isRegistered

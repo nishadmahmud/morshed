@@ -17,6 +17,7 @@ import BenefitsSection from "../Components/BenefitsSection";
 import SelectRegionModal from "../Components/SelectRegionModal";
 import VideoSection from "../Components/VideoSection";
 import SummerCollection from "../Components/SummerCollection";
+import BrandMarquee from "../Components/BrandMarquee";
 
 
 export const userId = 203;
@@ -59,6 +60,7 @@ export default async function Home() {
     {/* <SelectRegionModal></SelectRegionModal> */}
       <PromotionModal promotionBanner={promotion?.data[0]}/>
       <HeroSlider slider={slider} banner={banner} data={categories}/>
+      <BrandMarquee brands={brands}></BrandMarquee>
         {/* <OurFeatures /> */}
       <div>
         <FeaturedCategories categories={categories}/>

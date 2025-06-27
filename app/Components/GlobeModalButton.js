@@ -7,12 +7,15 @@ import { storeContext } from "../StoreContext/store";
 import Select from "react-select";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
+import useStore from "../CustomHooks/useStore";
 
 countries.registerLocale(enLocale);
 
 const GlobeModalButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { selectedCountry, setSelectedCountry } = useContext(storeContext);
+
+  const {country, setCountry} = useStore()
   const [countryOptions, setCountryOptions] = useState([]);
 
   // Load countries
@@ -41,6 +44,7 @@ const GlobeModalButton = () => {
   useEffect(() => {
     if (selectedCountry) {
       localStorage.setItem("selectedCountry", JSON.stringify(selectedCountry));
+      setCountry(selectedCountry)
     }
   }, [selectedCountry]);
 
@@ -50,7 +54,7 @@ const GlobeModalButton = () => {
         <Globe />
       </button>
 
-      <RegionModal isOpen={isModalOpen}>
+      <RegionModal onClose={() => setIsModalOpen(false)} isOpen={isModalOpen}>
         <h2 className="text-xl font-semibold mb-4">Select a Country</h2>
 
         <Select
