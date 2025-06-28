@@ -236,7 +236,7 @@ const onClose = () => {
     })),
     delivery_method_id: 1,
     donation_amount: selectedDonate,
-    email: formData.email || users.email,
+    email: formData.email || users? users?.email : "N/A" || "N/A",
     delivery_info_id: 1,
     delivery_customer_name: formData.firstName + formData.lastName || firstName + lastName,
     delivery_customer_address: formData.address || formData.address2,
