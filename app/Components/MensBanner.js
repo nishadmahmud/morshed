@@ -24,7 +24,7 @@ const MensBanner = ({ banner }) => {
   const isInView = useInView(textRef, { once: true, margin: '-100px' });
 
   return (
-    <div className="w-full lg:h-[65vh] h-auto flex flex-col lg:flex-row">
+    <div className="w-full lg:h-[65vh] h-[35vh] flex flex-col lg:flex-row">
       {/* Left Side - Text */}
       <div
         className="bg-teal-800/90 backdrop-blur-lg text-white flex flex-col justify-center px-8 lg:w-1/2 w-full md:py-10 py-5 pt-7 md:pt-10"
@@ -51,12 +51,12 @@ const MensBanner = ({ banner }) => {
       </div>
 
       {/* Right Side - Image */}
-      <div className="relative lg:w-1/2 w-full h-[35vh] lg:h-full">
+      <div className="relative  w-full h-[35vh] lg:h-[65vh]">
         <Image
           src={imageSrc}
           alt="Mens Banner"
           fill
-          className="object-cover"
+          className="object-cover h-fit"
           priority={true}
         />
       </div>

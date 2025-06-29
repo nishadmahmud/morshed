@@ -31,7 +31,7 @@ const SelectRegionModal = () => {
         </button>
 
         {/* Currency Converter */}
-        <CurrencyConverter baseBDT={500} wholesalePrice={800}  />
+        {/* <CurrencyConverter baseBDT={500} wholesalePrice={800}  /> */}
       </dialog>
     </div>
   );

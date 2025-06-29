@@ -30,9 +30,10 @@ import SizeGuideModal from "@/app/Components/SizeGuideModal"
 import CustomImageZoom from "@/app/Components/CustomImageZoom";
 import CursorImageZoom from "@/app/Components/CustomImageZoom";
 import { storeContext } from "@/app/StoreContext/store";
+import { userId } from "@/app/(home)/page";
 // Fetcher function from the original code
 const fetcher = (url) => fetch(url).then((res) => res.json())
-const userId = typeof window !== "undefined" ? localStorage.getItem("userId") || "" : ""
+
 
 const ProductPage = ({ params }) => {
   const { id } = params
@@ -51,7 +52,7 @@ const ProductPage = ({ params }) => {
 // console.log(selectedCountry);
     // size guide modal
 
-
+console.log(relatedProducts);
 
    const [open, setOpen] = useState(false);
     const [tab, setTab] = useState(0);

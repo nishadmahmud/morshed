@@ -51,8 +51,8 @@ const SummerCollection = () => {
         className="mt-7"
       >
         {isLoading
-          ? Array.from({ length: 12 }).map((_, idx) => (
-              <SwiperSlide key={idx}>
+          ? Array.from({ length: 4 }).map((_, idx) => (
+              <SwiperSlide className='grid grid-cols-1' key={idx}>
                 <CardSkeleton />
               </SwiperSlide>
             ))

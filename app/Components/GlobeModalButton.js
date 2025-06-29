@@ -15,7 +15,7 @@ const GlobeModalButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { selectedCountry, setSelectedCountry } = useContext(storeContext);
 
-  const {country, setCountry} = useStore()
+  const { country, setCountry } = useStore();
   const [countryOptions, setCountryOptions] = useState([]);
 
   // Load countries
@@ -28,7 +28,7 @@ const GlobeModalButton = () => {
     setCountryOptions(formattedCountries);
   }, []);
 
-  // Load from localStorage on mount
+  // Load from localStorage on mount, or default to Bangladesh
   useEffect(() => {
     const stored = localStorage.getItem("selectedCountry");
     if (stored) {
@@ -37,6 +37,11 @@ const GlobeModalButton = () => {
       } catch (e) {
         console.error("Invalid stored country format");
       }
+    } else {
+      // Default to Bangladesh if nothing is stored
+      const defaultCountry = { value: "BD", label: "Bangladesh" };
+      setSelectedCountry(defaultCountry);
+      localStorage.setItem("selectedCountry", JSON.stringify(defaultCountry));
     }
   }, []);
 
@@ -44,9 +49,9 @@ const GlobeModalButton = () => {
   useEffect(() => {
     if (selectedCountry) {
       localStorage.setItem("selectedCountry", JSON.stringify(selectedCountry));
-      setCountry(selectedCountry)
+      setCountry(selectedCountry);
     }
-  }, [selectedCountry]);
+  }, [selectedCountry, setCountry]);
 
   return (
     <div>

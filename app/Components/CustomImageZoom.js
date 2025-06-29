@@ -2,20 +2,27 @@
 
 import Image from 'next/image';
 import { useState, useRef } from 'react';
-import noImage from '/public/no-image.jpg'
+import noImage from '/public/no-image.jpg';
 
-const CursorImageZoom = ({ 
-  src, 
-  alt, 
-  className = "", 
-  zoomScale = 2.5 
+const CursorImageZoom = ({
+  src,
+  alt,
+  className = "",
+  zoomScale = 2.5
 }) => {
   const [isZoomed, setIsZoomed] = useState(false);
   const [mousePosition, setMousePosition] = useState({ x: 50, y: 50 });
   const imageRef = useRef(null);
 
+  const isLargeDevice = () => {
+    if (typeof window === 'undefined') return false;
+    return window.innerWidth >= 1024; // Tailwind's "lg" breakpoint
+  };
+
   const handleMouseEnter = () => {
-    setIsZoomed(true);
+    if (isLargeDevice()) {
+      setIsZoomed(true);
+    }
   };
 
   const handleMouseLeave = () => {
@@ -23,7 +30,7 @@ const CursorImageZoom = ({
   };
 
   const handleMouseMove = (e) => {
-    if (!imageRef.current) return;
+    if (!isLargeDevice() || !imageRef.current) return;
 
     const rect = imageRef.current.getBoundingClientRect();
     const x = ((e.clientX - rect.left) / rect.width) * 100;
@@ -35,13 +42,13 @@ const CursorImageZoom = ({
   return (
     <div
       ref={imageRef}
-      className={`relative overflow-hidden cursor-zoom-in ${className}`}
+      className={`relative overflow-hidden ${isLargeDevice() ? 'cursor-zoom-in' : ''} ${className}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onMouseMove={handleMouseMove}
     >
       <Image
-      fill
+        fill
         src={src || noImage}
         alt={alt}
         className="w-full h-full object-cover transition-transform duration-200 ease-out"
@@ -49,7 +56,7 @@ const CursorImageZoom = ({
           transform: isZoomed ? `scale(${zoomScale})` : 'scale(1)',
           transformOrigin: `${mousePosition.x}% ${mousePosition.y}%`,
         }}
-         loading="lazy"
+        loading="lazy"
         draggable={false}
       />
     </div>
