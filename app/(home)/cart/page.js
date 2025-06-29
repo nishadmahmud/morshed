@@ -41,9 +41,10 @@ const CartPage = () => {
         }
       })
     }
-  }, [cartItems, setProductPrice])
+  }, [ setProductPrice])
 
   // Fixed: Accept item parameter to get price for specific product
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const getPriceByCountry = (item) => {
     const productPrice = prices[item.id]
 
@@ -80,7 +81,7 @@ const CartPage = () => {
 
     setCartTotal(total)
     setTotalDiscount(totalDiscount)
-  }, [cartItems, prices, country])
+  }, [ prices, country, getPriceByCountry])
 
   useEffect(() => {
     const subtotal = cartItems.reduce((acc, item) => {
@@ -90,7 +91,7 @@ const CartPage = () => {
     }, 0)
 
     setTotalSubtotalWithoutDiscount(subtotal)
-  }, [cartItems, prices, country])
+  }, [ prices, country, getPriceByCountry])
 
   useEffect(() => {
     const savedNote = localStorage.getItem("cartAttachment")

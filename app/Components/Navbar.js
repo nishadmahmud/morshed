@@ -29,7 +29,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
 
   const user = typeof window !== "undefined" ? localStorage.getItem("user") : null
 
-  console.log(wishlist);
+
 
   useEffect(() => {
     document.addEventListener("click", handleCategoryClose);
@@ -83,9 +83,9 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             >
               <div>
                 <Heart className="text-2xl" />
-                <p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
+                {wishlist.lenght > 0 ? (<p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
                   {wishlist.length}
-                </p>
+                </p>): ""}
               </div>
               <span className="text-black">Cart</span>
             </Link>
@@ -97,9 +97,9 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             >
               <div>
                 <ShoppingCart className="text-2xl" />
-                <p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
+                {total.length > 0 ? (<p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
                   {total}
-                </p>
+                </p>) : ""}
               </div>
               <span className="text-black">Wishlist</span>
             </Link>

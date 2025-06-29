@@ -111,8 +111,27 @@ export default function Footer() {
       </div>
     </div>
   </div>
-  
-       <div className="w-full pt-8 text-center">
+
+  <div className="relative w-[97%] mx-auto h-[180px] my-2 hidden lg:block">
+        <Image
+          src={"/Payment Banner_Jul24_V1-02.png"}
+          alt="ssl-banner"
+          fill
+          className="object-contain"
+          sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 100vw"
+          priority
+        ></Image>
+      </div>
+   <div className="block lg:hidden mt-4">
+        <Image
+          src={"/Payment Banner_Jul24_V1-04.png"}
+          alt="ssl-banner-mobile"
+          height={400}
+          width={400}
+          className="h-full w-full rounded-md"
+        />
+      </div>
+       <div className="w-full pt-8 mb-14 md:mb-0 text-center">
       <hr className="text-gray-500 w-11/12 mx-auto"></hr>
       <p className="text-gray-100 text-sm pt-8">
         Copyright 2025 © <span className="font-medium">Morshed Mart</span>. All rights reserved. Developed & Desinged by <Link href='https://squadinnovators.com' target="_blank" className="font-medium hover:text-blue-400 transition hover:font-medium">Squad Innovators</Link>.

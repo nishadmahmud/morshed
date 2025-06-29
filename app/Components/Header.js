@@ -215,9 +215,11 @@ const toggleSearchSidebar = () => {
             >
               <div>
                 <Heart className="text-xl" />
-                <p className="bg-[#000000]  z-[900] text-[#ffffff] text-[9px] rounded-full w-4 h-4 text-center absolute top-4">
+                {
+                  wishlist.length > 0 ? (<p className="bg-[#000000]  z-[900] text-[#ffffff] text-[9px] rounded-full w-4 h-4 text-center absolute top-4">
                   {wishlist.length}
-                </p>
+                </p>) : ""
+                }
               </div>
              
             </Link>

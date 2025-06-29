@@ -18,7 +18,7 @@ const CheckoutPage = () => {
   const cartItems = getCartItems()
   const quantity = cartItems.reduce((acc, curr) => acc + curr.quantity, 0)
 
-  // Helper function to get price based on country
+
   const getPriceByCountry = (item) => {
     const productPrice = prices[item.id]
 
@@ -29,7 +29,7 @@ const CheckoutPage = () => {
     }
   }
 
-  // Updated calculations using country-based pricing
+ 
   const Subtotal = cartItems.reduce((prev, curr) => {
     const basePrice = getPriceByCountry(curr)
     const priceAfterDiscount = curr.discount
@@ -70,6 +70,7 @@ const CheckoutPage = () => {
 
     try {
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/apply-coupon`, {
+        coupon_name: couponCode,
         coupon_code: couponCode,
       })
 

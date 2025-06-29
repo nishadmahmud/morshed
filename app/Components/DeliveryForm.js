@@ -103,7 +103,7 @@ const prizeData = [
 
 const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, couponCode, selectedDonate, setSelectedDonate, donations }) => {
 
-  console.log({couponCode, couponAmount});
+
   const { data: paymentMethods, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`,
     fetcher
@@ -124,7 +124,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
   const customer_phone = userData?.mobile_number;
   const [location, setLocation] = useState("inside");
   const shippingFee = location === "inside" ? 70 : 130;
-  
+const deliveryNote = localStorage.getItem("cartAttachment")
   const [couponValue, setCouponValue] = useState(couponAmount)
 // console.log(selectedDonate);
   useEffect(() => {
@@ -133,7 +133,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
 
 const searchParams = useSearchParams()
 const intendedUrl = searchParams.get("redirect")
-console.log(intendedUrl);
+// console.log(intendedUrl);
 const users = JSON.parse(localStorage.getItem("user"));
 const parts = users?.name?.trim().split(/\s+/); 
 const firstName = parts? parts[0] : "";
@@ -235,8 +235,7 @@ const onClose = () => {
 
   const [selectedMethodId, setSelectedMethodId] = useState(null);
 
-  const deliveryNote = localStorage.getItem("cartAttachment")
-
+  
   const handleClose = () => setShowPaymentModal(false);
 
   const [orderSchema, setOrderSchema] = useState({
@@ -257,7 +256,8 @@ const onClose = () => {
       imei_id: item?.imeis ? item?.imeis[0]?.id : null,
     })),
     delivery_method_id: 1,
-    donation_amount: selectedDonate,
+    delivery_note: deliveryNote,
+    donation_amount: (selectedDonate === "Not now" ? 0 : Number(selectedDonate)),
     email: formData.email || users? users?.email : "N/A" || "N/A",
     delivery_info_id: 1,
     delivery_customer_name: formData.firstName + formData.lastName || firstName + lastName,
@@ -287,7 +287,7 @@ const onClose = () => {
     status: 3,
   });
 
-
+// console.log(selectedDonate);
   const handleChange = (e) => {
     const { name, value } = e.target;
     const updatedFormData = { ...formData, [name]: value };
@@ -355,12 +355,11 @@ const onClose = () => {
   
 
     if (cartItems.length > 0) {
-      console.log(orderSchema);
-      
+    
       axios
         .post(
           `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
-          {...orderSchema,donation_amount: selectedDonate}
+          {...orderSchema,donation_amount: (selectedDonate === "Not now" ? 0 : Number(selectedDonate))}
         )
         .then((res) => {
           if (res.status === 200) {
@@ -368,6 +367,7 @@ const onClose = () => {
             console.log(res?.data);
             setInvoiceId(_invoiceId);
             localStorage.removeItem("cart");
+            localStorage.removeItem("cartAttachment");
             toast.success("Order Placed Successfully!");
            router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
 
