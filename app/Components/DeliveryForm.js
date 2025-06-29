@@ -110,7 +110,7 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
   );
 
   
-  const { setToken, googleLogin, setUserInfo, isRegistered, setIsRegistered } = useStore()
+  const { setToken, googleLogin, setUserInfo, isRegistered, setIsRegistered, prices, country, setProductPrice } = useStore()
   const date = new Date().toISOString();
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [payment, setPayment] = useState("Cash");
@@ -131,9 +131,9 @@ const DeliveryForm = ({ cartItems, cartTotal, setShippingFee, couponAmount, coup
   setCouponValue(couponAmount);
 }, [couponAmount]);
 
- const searchParams = useSearchParams()
-  const intendedUrl = searchParams.get("redirect")
-  console.log(intendedUrl);
+const searchParams = useSearchParams()
+const intendedUrl = searchParams.get("redirect")
+console.log(intendedUrl);
 const users = JSON.parse(localStorage.getItem("user"));
 const parts = users?.name?.trim().split(/\s+/); 
 const firstName = parts? parts[0] : "";
@@ -183,6 +183,28 @@ const onClose = () => {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    if (cartItems && cartItems.length > 0) {
+      cartItems.forEach((item) => {
+        if (item?.id && item?.retails_price) {
+          setProductPrice(item.id, item?.retails_price, item?.wholesale_price || null)
+        }
+      })
+    }
+  }, [cartItems, setProductPrice])
+
+  
+  const getPriceByCountry = (item) => {
+    const productPrice = prices[item.id]
+
+    if (country && country.value === "BD") {
+      return productPrice?.basePrice || item?.retails_price || 0
+    } else {
+      return productPrice?.wholesalePrice || item?.wholesale_price || 1000
+    }
+  }
+
 
 
   

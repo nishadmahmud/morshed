@@ -418,6 +418,9 @@ const toggleSearchSidebar = () => {
                 <div className="flex-1">
                   <h3 className="font-medium text-gray-900 text-sm line-clamp-2">{item.name}</h3>
                   <div className="flex items-center gap-2 mt-1">
+                    {item?.data?.discount > 0 && (
+                <span className="text-gray-500 line-through text-sm">৳{item?.data?.retails_price}</span>
+              )}
                     <p className="text-teal-700 font-semibold">
                       ${(item.retails_price - (item.retails_price * (item.discount || 0)) / 100).toFixed(2)}
                     </p>

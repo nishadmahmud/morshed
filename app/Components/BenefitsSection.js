@@ -3,7 +3,7 @@ import { FaUndoAlt, FaTruck, FaHeadset, FaTag } from "react-icons/fa";
 const BenefitsSection = () => {
   return (
     <section className="w-full bg-white border-t border-b py-10 text-black">
-      <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 md:gap-8 gap-12 text-center my-5">
+      <div className="max-w-11/12 mx-auto px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 md:gap-8 gap-12 text-center my-5">
         {/* 14-Day Returns */}
         <div>
           <FaUndoAlt size={32} className="mx-auto mb-4 text-black" />

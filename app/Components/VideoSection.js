@@ -47,7 +47,6 @@ const VideoSection = () => {
       <video
         ref={videoRef}
         src="/video.mp4"
-
         loop
         muted
         playsInline

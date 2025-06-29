@@ -40,7 +40,9 @@ const StoreProvider = ({ children }) => {
   const [userInfo,setUserInfo] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);
   const [prices, setPrices] = useState({});
-  const [country, setCountry] = useState({});
+  const [country, setCountry] = useState("BD");
+  const [wishlist, setWishlist] = useState([]);
+
 
   // Setter to update price for a specific product
   const setProductPrice = (productId, basePrice, wholesalePrice) => {
@@ -302,6 +304,8 @@ const StoreProvider = ({ children }) => {
     handleWishlistDelete,
     isLoginModal,
     setIsLoginModal,
+    setWishlist,
+    wishlist,
     token,
     setWholesalePrice,
     wholesalePrice,

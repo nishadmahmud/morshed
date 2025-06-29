@@ -1,52 +1,57 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import useStore from "../CustomHooks/useStore";
 import noImg from "/public/no-image.jpg";
-import { Bandage, ShoppingCart } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import useWishlist from "../CustomHooks/useWishlist";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import "../globals.css";
 
 const ProductCard = ({ product }) => {
-  const { handleCart, prices, country, setProductPrice} = useStore();
+  const { handleCart, prices, country, setProductPrice } = useStore();
   const { toggleWishlist, isInWishlist } = useWishlist();
 
-   
-
-useEffect(() => {
-
-  if (product?.id && product?.retails_price) {
-    setProductPrice(
-      product.id,
-      product?.retails_price,
-      product?.whole_sale_price || 1000
-    );
-  }
-}, []);
+  useEffect(() => {
+    if (product?.id && product?.retails_price) {
+      setProductPrice(
+        product.id,
+        product?.retails_price,
+        product?.wholesale_price || null
+      );
+    }
+  }, []);
 
   const productPrice = prices[product.id];
 
- 
-
- 
-  //  console.log("selectedCountry:", country);
-  
-
   const getPriceByCountry = () => {
     if (country && country.value === "BD") {
-      return productPrice.basePrice;
+      return productPrice?.basePrice || product?.retails_price || 0;
     } else {
-      return productPrice?.wholesalePrice || 1000;
+      return productPrice?.wholesalePrice || product?.wholesale_price || 1000;
     }
   };
 
-  // console.log("Calculated price:", getPriceByCountry());
+  // Calculate discounted price
+  const discountedPrice = product?.discount
+    ? product?.discount_type === "Percentage"
+      ? (
+          product.retails_price -
+          (product.retails_price * product.discount) / 100
+        ).toFixed(0)
+      : (product.retails_price - product.discount).toFixed(0)
+    : null;
 
+    console.log(product);
 
-  console.log(productPrice);
-  // Recent views updater
+  const discountSuffix =
+    product?.discount_type === "Percentage"
+      ? "%"
+      : product?.discount_type === "Fixed"
+      ? "Tk"
+      : "";
+
   const updateRecentViews = () => {
     if (!product?.id) return;
     let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
@@ -62,20 +67,6 @@ useEffect(() => {
     localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
   };
 
-  // Calculate discounted price
-  const discountedPrice = product?.discount
-    ? (product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)
-    : null;
-
-  // Set per-product prices
-  // useEffect(() => {
-  //   if (product?.retails_price) {
-  //     setLocalBasePrice(product.retails_price);
-  //     setLocalWholesalePrice(product?.wholesale_price || 1000); // fallback if wholesale not available
-  //   }
-  // }, [product?.retails_price, product?.wholesale_price]);
-
-  // Sanitize slug for product URL
   const sanitizeSlug = (str) => {
     return str
       ?.toLowerCase()
@@ -88,7 +79,6 @@ useEffect(() => {
 
   return (
     <div className="group bg-white rounded-sm transition-all duration-300 w-full sm:w-48 md:w-72 h-[23rem] md:h-[30rem] relative overflow-hidden flex flex-col shadow-sm">
-
       {/* Image */}
       <Link
         href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
@@ -115,11 +105,12 @@ useEffect(() => {
       </Link>
 
       {/* Discount Tag */}
-      {product?.discount && (
-        <span className="absolute top-3 left-2 bg-gray-200 text-red-500 text-xs font-semibold py-1 px-2 rounded z-10">
-          -{product.discount}%
+      {product?.discount ? (
+        <span className="absolute top-3 left-4 bg-gray-800 text-gray-100 text-xs font-semibold py-1 px-2 rounded z-50">
+          Save {product.discount? product.discount : ""}
+          {discountSuffix}
         </span>
-      )}
+      ) : ""}
 
       {/* Wishlist Icon */}
       <div
@@ -142,20 +133,21 @@ useEffect(() => {
       </div>
 
       {/* Product Name */}
-      <div className="relative flex-grow px-3 pb-12 flex text-ellipsis line-clamp-1">
+      <div className="relative flex-grow  flex">
+
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
           onClick={updateRecentViews}
-          className="text-sm md:text-base font-semibold text-black line-clamp-1 z-50 hover:text-[#115e59] text-start"
+          className="text-sm truncate line-clamp-1 text-ellipsis overflow-hidden mt-2 md:text-base font-semibold text-black  hover:text-[#115e59] text-start"
         >
           {product?.name || "N/A"}
         </Link>
       </div>
 
       {/* Bottom Bar - Price and Cart */}
-      <div className="absolute bottom-0 left-0 w-full px-3 py-3 bg-white">
+      <div className="absolute bottom-0 left-0 w-full pb-3 bg-white">
         <div className="flex items-center justify-between">
-          {product?.discount ? (
+          {discountedPrice ? (
             <div className="flex items-center gap-1">
               <span className="text-lg font-bold text-[#115e59]">
                 <span className="font-bangla">৳</span> {discountedPrice}

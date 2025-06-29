@@ -13,7 +13,7 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 
 const HalfSelveePolo = () => {
-  const halfSelveePoloCategoryId = 6688;
+  const halfSelveePoloCategoryId = 6797;
 
   const {
     data: halfSelvePolo,

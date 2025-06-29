@@ -12,10 +12,10 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
 const SummerCollection = () => {
-  const eidCategoryId = 6785;
+  const summerCollections = 6785;
 
   const { data: menCollection, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${eidCategoryId}&limit=12`,
+    `${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${summerCollections}&limit=12`,
     fetcher
   );
 

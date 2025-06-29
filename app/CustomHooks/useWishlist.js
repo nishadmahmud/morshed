@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import useStore from "./useStore";
 
 const useWishlist = () => {
-  const [wishlist, setWishlist] = useState([]);
 
+  const { setWishlist, wishlist } = useStore();
+  
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("wishlist") || "[]");
     setWishlist(stored);

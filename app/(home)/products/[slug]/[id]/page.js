@@ -46,12 +46,12 @@ const ProductPage = ({ params }) => {
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
     const { toggleWishlist, isInWishlist } = useWishlist();
-    const { handleCart, convertedPrice, selectedCountry , getCartItems, refetch, setRefetch, handleBuy } = useStore()
+    const { handleCart, convertedPrice, selectedCountry , getCartItems, refetch, setRefetch, prices, country, setProductPrice, handleBuy } = useStore()
 // const { selectedCountry, setSelectedCountry } = useContext(storeContext);
-console.log(selectedCountry);
+// console.log(selectedCountry);
     // size guide modal
 
-    console.log(convertedPrice, selectedCountry );
+
 
    const [open, setOpen] = useState(false);
     const [tab, setTab] = useState(0);
@@ -80,6 +80,40 @@ console.log(selectedCountry);
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
     fetcher,
   )
+
+    useEffect(() => {
+    if (product?.data.id && product?.data.retails_price) {
+      setProductPrice(
+        product.data.id,
+        product?.data.retails_price,
+        product?.data.wholesale_price || null
+      );
+    }
+  }, []);
+console.log(product);
+  const productPrice = prices[product?.data.id];
+
+  const getPriceByCountry = () => {
+    if (country && country.value === "BD") {
+      return productPrice?.basePrice || product?.data.retails_price || 0;
+    } else {
+      return productPrice?.wholesalePrice || product?.data.wholesale_price || 1000;
+    }
+  };
+
+
+     const discountedPrice =
+    product?.data.discount_type === "Percentage"
+      ? product?.data?.discount
+        ? ( product?.data?.retails_price -
+              ( product?.data?.retails_price * product?.data.discount) / 100
+          ).toFixed(0)
+        : null
+      : product?.data.retails_price - product?.data.discount
+console.log(discountedPrice);
+
+  const fixedDiscount = product?.data.discount_type === "Fixed" ? "Tk" : null
+  const percentageDiscount = product?.data.discount_type === "Percentage" ? "%" : null
 
   useEffect(() => {
     const getCartItems = () => {
@@ -257,7 +291,7 @@ console.log(selectedCountry);
               <div className="relative flex-1">
                 {product?.data?.discount > 0 && (
                   <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                    SAVE {product.data.discount}%
+                    SAVE {product?.data?.discount} {fixedDiscount || percentageDiscount}
                   </div>
                 )}
                 {imageArray && imageArray.length > 0 ? (
@@ -290,17 +324,15 @@ console.log(selectedCountry);
 
             <div className="flex items-center gap-3 mb-4">
               {product?.data?.discount > 0 && (
-                <span className="text-gray-500 line-through text-sm">৳{product?.data?.retails_price}</span>
+                <span className="text-gray-500 line-through text-sm">৳{getPriceByCountry()}</span>
               )}
               <span className="text-2xl font-bold">
                 ৳
-                {product?.data?.discount > 0
-                  ? (product.data.retails_price - (product.data.retails_price * product.data.discount) / 100).toFixed(0)
-                  : product?.data?.retails_price}
+                {getPriceByCountry() ||discountedPrice}
               </span>
               {product?.data?.discount > 0 && (
                 <span className="text-xs font-medium text-green-600 border border-green-600 px-2 py-0.5 rounded-full">
-                  {product.data.discount}% OFF
+                  {product?.data?.discount} {fixedDiscount || percentageDiscount} OFF
                 </span>
               )}
             </div>

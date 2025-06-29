@@ -7,7 +7,7 @@ import ProductCard from './ProductCard';
 
 // Swiper imports
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay } from 'swiper/modules';
+// import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
 const NewArrival = () => {
@@ -29,13 +29,13 @@ const NewArrival = () => {
           spaceBetween={10}
           slidesPerView={4}
           slidesPerGroup={4}
-          loop={true}
-          speed={1500}
-          autoplay={{
-            delay: 4000,
-            disableOnInteraction: false,
-          }}
-          modules={[Autoplay]}
+          // loop={true}
+          // speed={1500}
+          // autoplay={{
+          //   delay: 4000,
+          //   disableOnInteraction: false,
+          // }}
+          // modules={[Autoplay]}
           breakpoints={{
             320: {
               slidesPerView: 2,

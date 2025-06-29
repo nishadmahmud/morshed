@@ -9,7 +9,7 @@ const BannerSection = ({ banner, categories }) => {
 
 
   return (
-    <section className="w-full max-w-7xl px-4 mx-auto flex flex-col lg:flex-row items-center justify-between py-16 lg:py-24 gap-12 lg:gap-20 text-black">
+    <section className="w-11/12 px-4 mx-auto flex flex-col lg:flex-row items-center justify-between py-16 lg:py-24 gap-12 lg:gap-20 text-black">
       {/* Left side - Images */}
       <div className="relative flex-1 flex justify-center items-center">
         {/* Foreground Image */}

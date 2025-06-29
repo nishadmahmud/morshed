@@ -50,7 +50,7 @@ const GlobeModalButton = () => {
 
   return (
     <div>
-      <button onClick={() => setIsModalOpen(true)} className="py-2">
+      <button onClick={() => setIsModalOpen(true)} className="py-2 md:text-black text-teal-700">
         <Globe />
       </button>
 
