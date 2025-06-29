@@ -579,7 +579,7 @@ const handleModalClose = () => {
                 type="email"
                 name="email"
                 defaultValue={users ? users.email : ""}
-                value={formData.email || users? users.email : ""}
+                value={formData?.email || users? users?.email : " "}
                 onChange={handleChange}
                 placeholder="Enter your email"
                 

@@ -30,7 +30,6 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
   const user = typeof window !== "undefined" ? localStorage.getItem("user") : null
 
 
-
   useEffect(() => {
     document.addEventListener("click", handleCategoryClose);
     return () => document.removeEventListener("click", handleCategoryClose);
