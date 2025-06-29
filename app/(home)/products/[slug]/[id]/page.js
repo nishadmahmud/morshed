@@ -299,7 +299,7 @@ console.log(discountedPrice);
                   <CursorImageZoom
   src={imageArray[imageIndex]}
   alt={product?.data?.name || noImg}
-  className="w-full md:h-[75vh] h-[50vh] rounded-lg"
+  className="w-full md:h-[70vh] h-[45vh] rounded-lg"
   zoomScale={2.5}
 />
 

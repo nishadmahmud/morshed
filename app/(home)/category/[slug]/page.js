@@ -755,13 +755,17 @@ const sanitizeSlug = (str) => {
   return (
     <div className="group relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
       <div className="aspect-[3/4] overflow-hidden rounded-md bg-gray-100 relative">
-        <Image
+       <Link href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
+        onClick={updateRecentViews}>
+
+         <Image
         width={500}
         height={500}
-          src={product.image_path || "/placeholder.svg?height=300&width=250"}
+          src={product.image_path || noImg}
           alt={product.name}
           className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
         />
+       </Link>
 
         {/* Quick actions */}
          <div

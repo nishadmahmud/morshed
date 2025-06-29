@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import Image from 'next/image';
 import React, { useRef } from 'react';
@@ -24,40 +24,44 @@ const MensBanner = ({ banner }) => {
   const isInView = useInView(textRef, { once: true, margin: '-100px' });
 
   return (
-    <div className="w-full lg:h-[65vh] h-[35vh] flex flex-col lg:flex-row">
+    <div className="w-full flex flex-col lg:flex-row mt-10">
       {/* Left Side - Text */}
       <div
-        className="bg-teal-800/90 backdrop-blur-lg text-white flex flex-col justify-center px-8 lg:w-1/2 w-full md:py-10 py-5 pt-7 md:pt-10"
+        className="bg-teal-800/90 backdrop-blur-lg text-white flex flex-col justify-center w-full md:w-3/4  mx-auto py-5 md:py-5 pl-2"
         ref={textRef}
       >
-        {['Redefining Modern Elegance', 'A Curated Selection for Him', 'Discover timeless silhouettes, sharp tailoring, and elevated essentials — designed for the modern man.'].map(
-          (text, i) => (
-            <motion.div
-              key={i}
-              custom={i}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              variants={textVariants}
-              className={i === 0
-                ? 'text-3xl lg:text-6xl font-semibold mb-4 text-center md:text-start'
+        {[
+          'Redefining Modern Elegance',
+          'A Curated Selection for Him',
+          'Discover timeless silhouettes, sharp tailoring, and elevated essentials — designed for the modern man.',
+        ].map((text, i) => (
+          <motion.div
+            key={i}
+            custom={i}
+            initial="hidden"
+            animate={isInView ? 'visible' : 'hidden'}
+            variants={textVariants}
+            className={
+              i === 0
+                ? 'text-2xl md:text-4xl lg:text-5xl font-semibold mb-3 text-center lg:text-left'
                 : i === 1
-                ? 'text-2xl lg:text-5xl font-semibold mb-6 text-center md:text-start'
-                : 'text-sm lg:text-base mb-6 text-center md:text-start'}
-            >
-              {text}
-            </motion.div>
-          )
-        )}
+                ? 'text-xl md:text-3xl lg:text-4xl font-semibold mb-5 text-center lg:text-left'
+                : 'text-sm md:text-base lg:text-lg mb-5 text-center lg:text-left'
+            }
+          >
+            {text}
+          </motion.div>
+        ))}
       </div>
 
       {/* Right Side - Image */}
-      <div className="relative  w-full h-[35vh] lg:h-[65vh]">
+      <div className="relative w-full lg:w-1/2 aspect-[2/1] md:aspect-[3/1] lg:aspect-[4/3] overflow-hidden">
         <Image
           src={imageSrc}
           alt="Mens Banner"
           fill
-          className="object-cover h-fit"
-          priority={true}
+          className="object-cover"
+          priority
         />
       </div>
     </div>

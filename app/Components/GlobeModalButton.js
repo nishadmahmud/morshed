@@ -29,29 +29,41 @@ const GlobeModalButton = () => {
   }, []);
 
   // Load from localStorage on mount, or default to Bangladesh
-  useEffect(() => {
-    const stored = localStorage.getItem("selectedCountry");
-    if (stored) {
-      try {
-        setSelectedCountry(JSON.parse(stored));
-      } catch (e) {
-        console.error("Invalid stored country format");
-      }
-    } else {
-      // Default to Bangladesh if nothing is stored
-      const defaultCountry = { value: "BD", label: "Bangladesh" };
-      setSelectedCountry(defaultCountry);
-      localStorage.setItem("selectedCountry", JSON.stringify(defaultCountry));
-    }
-  }, []);
+useEffect(() => {
+  if (typeof window === "undefined") return;
 
-  // Save to localStorage on change
-  useEffect(() => {
-    if (selectedCountry) {
-      localStorage.setItem("selectedCountry", JSON.stringify(selectedCountry));
-      setCountry(selectedCountry);
+  const stored = localStorage.getItem("selectedCountry");
+  let initialCountry;
+
+  if (stored) {
+    try {
+      const parsed = JSON.parse(stored);
+      if (parsed.value && parsed.label) {
+        initialCountry = parsed;
+      } else {
+        console.error("Stored country missing value/label, defaulting to Bangladesh");
+      }
+    } catch (e) {
+      console.error("Invalid stored country format, defaulting to Bangladesh");
     }
-  }, [selectedCountry, setCountry]);
+  }
+
+  if (!initialCountry) {
+    initialCountry = { value: "BD", label: "Bangladesh" };
+    localStorage.setItem("selectedCountry", JSON.stringify(initialCountry));
+  }
+
+  setSelectedCountry(initialCountry);
+  setCountry(initialCountry);
+}, [setCountry, setSelectedCountry]);
+
+
+useEffect(() => {
+  if (selectedCountry?.value && selectedCountry?.label) {
+    localStorage.setItem("selectedCountry", JSON.stringify(selectedCountry));
+    setCountry(selectedCountry);
+  }
+}, [selectedCountry, setCountry]);
 
   return (
     <div>

@@ -26,7 +26,7 @@ const NewArrival = () => {
       <div className="mt-7">
         <Swiper
           className='w-full'
-          spaceBetween={10}
+          spaceBetween={12}
           slidesPerView={4}
           slidesPerGroup={4}
           // loop={true}
@@ -52,9 +52,9 @@ const NewArrival = () => {
           }}
         >
           {isLoading ? (
-            Array.from({ length: 8 }).map((_, idx) => (
+            Array.from({ length: 12 }).map((_, idx) => (
               <SwiperSlide key={`loading-${idx}`}>
-                <div className="justify-center grid grid-cols-4">
+                <div className="justify-center grid md:grid-cols-4 grid-cols-2">
                   <CardSkeleton />
                 </div>
               </SwiperSlide>

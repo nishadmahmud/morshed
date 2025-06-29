@@ -86,7 +86,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                   {wishlist.length}
                 </p>): ""}
               </div>
-              <span className="text-black">Cart</span>
+              <span className="text-black">Wishlist</span>
             </Link>
 
             <Link
@@ -100,7 +100,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                   {total}
                 </p>) : ""}
               </div>
-              <span className="text-black">Wishlist</span>
+              <span className="text-black">Cart</span>
             </Link>
             {user ? (
               <Link
