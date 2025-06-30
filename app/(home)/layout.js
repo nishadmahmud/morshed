@@ -52,7 +52,7 @@ export default async function RootLayout({ children }) {
       >
         <Toaster></Toaster>
       <StoreProvider>
-          <Suspense>
+          <Suspense fallback={null}>
           <div>
            <Header data={data}/>
           </div>

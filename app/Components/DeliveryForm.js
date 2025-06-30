@@ -214,49 +214,7 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
   })
 
   // Initialize cart items once and calculate totals
-  useEffect(() => {
-   
-
-    try {
-      const items = getCartItems()
-      setCartItems(items)
-      setLoading(false)
-
-      // Calculate totals immediately
-      if (items && items.length > 0) {
-        const total = items.reduce((sum, item) => {
-          const unitPrice = country?.value === "BD" ? (item?.retails_price ?? 0) : (item?.wholesale_price ?? 0)
-          return sum + unitPrice * item.quantity
-        }, 0)
-
-        const discount = items.reduce((sum, item) => {
-          let discountAmount = 0
-          if (item.discount_type === "Fixed") {
-            discountAmount = (item.discount || 0) * item.quantity
-          } else if (item.discount_type === "Percentage") {
-            discountAmount = ((item.retails_price * (item.discount || 0)) / 100) * item.quantity
-          }
-          return sum + discountAmount
-        }, 0)
-
-        const subtotal = items.reduce((sum, item) => {
-          const price = Number(item?.retails_price) || 0
-          return sum + price * item.quantity
-        }, 0)
-
-        setCartTotal(total)
-        setTotalDiscount(discount)
-        setTotalSubtotalWithoutDiscount(subtotal)
-      } else {
-        setCartTotal(0)
-        setTotalDiscount(0)
-        setTotalSubtotalWithoutDiscount(0)
-      }
-    } catch (error) {
-      console.error("Error initializing cart:", error)
-      setLoading(false)
-    }
-  }, [ country?.value,getCartItems]) // Only depend on country value change
+ // Only depend on country value change
 
   // Create order schema - memoized to prevent constant recreation
   const orderSchema = useMemo(() => {
