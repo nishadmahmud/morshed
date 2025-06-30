@@ -1,15 +1,15 @@
-"use client"
+"use client";
 
-import axios from "axios"
-import { useRouter, useSearchParams } from "next/navigation"
-import { FcGoogle } from "react-icons/fc"
-import { useEffect, useState, useCallback, useMemo, useRef } from "react"
-import toast from "react-hot-toast"
-import useSWR from "swr"
-import { fetcher, userId } from "../(home)/page"
-import Image from "next/image"
-import Modal from "./Modal"
-import PaymentMethodForm from "./PaymentMethodForm"
+import axios from "axios";
+import { useRouter, useSearchParams } from "next/navigation";
+import { FcGoogle } from "react-icons/fc";
+import { useEffect, useState, useCallback, useMemo, useRef } from "react";
+import toast from "react-hot-toast";
+import useSWR from "swr";
+import { fetcher, userId } from "../(home)/page";
+import Image from "next/image";
+import Modal from "./Modal";
+import PaymentMethodForm from "./PaymentMethodForm";
 import {
   ShoppingBag,
   MapPin,
@@ -24,11 +24,11 @@ import {
   Home,
   Building,
   HandHelping,
-} from "lucide-react"
-import PrizeModal from "./PrizeModal"
-import { Dialog } from "@headlessui/react"
-import { Wheel } from "react-custom-roulette"
-import useStore from "../CustomHooks/useStore"
+} from "lucide-react";
+import PrizeModal from "./PrizeModal";
+import { Dialog } from "@headlessui/react";
+import { Wheel } from "react-custom-roulette";
+import useStore from "../CustomHooks/useStore";
 
 const prizeData = [
   {
@@ -91,10 +91,21 @@ const prizeData = [
       landscape: false,
     },
   },
-]
+];
 
-const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate, setSelectedDonate, donations }) => {
-  const { data: paymentMethods, error } = useSWR(`${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`, fetcher)
+const DeliveryForm = ({
+  country,
+  setShippingFee,
+  couponAmount,
+  couponCode,
+  selectedDonate,
+  setSelectedDonate,
+  donations,
+}) => {
+  const { data: paymentMethods, error } = useSWR(
+    `${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`,
+    fetcher
+  );
 
   const {
     setToken,
@@ -104,45 +115,47 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
     isRegistered,
     setIsRegistered,
     prices,
-    country,
     setProductPrice,
-  } = useStore()
+  } = useStore();
+
+  console.log(country);
 
   // State declarations
-  const [showPaymentModal, setShowPaymentModal] = useState(false)
-  const [payment, setPayment] = useState("Cash")
-  const [isCod, setIsCod] = useState(true)
-  const [billingSameAsShipping, setBillingSameAsShipping] = useState(true)
-  const [user, setUser] = useState(null)
-  const [userEmail, setUserEmail] = useState(null)
-  const [location, setLocation] = useState("inside")
-  const [couponValue, setCouponValue] = useState(couponAmount)
-  const [loading, setLoading] = useState(true)
-  const [totalDiscount, setTotalDiscount] = useState(0)
-  const [totalSubtotalWithoutDiscount, setTotalSubtotalWithoutDiscount] = useState(0)
-  const [reload, setReload] = useState(false)
-  const [cartTotal, setCartTotal] = useState(0)
-  const [cartItems, setCartItems] = useState([])
-  const [selectedMethodId, setSelectedMethodId] = useState(null)
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [payment, setPayment] = useState("Cash");
+  const [isCod, setIsCod] = useState(true);
+  const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
+  const [user, setUser] = useState(null);
+  const [userEmail, setUserEmail] = useState(null);
+  const [location, setLocation] = useState("inside");
+  const [couponValue, setCouponValue] = useState(couponAmount);
+  const [loading, setLoading] = useState(true);
+  const [totalDiscount, setTotalDiscount] = useState(0);
+  const [totalSubtotalWithoutDiscount, setTotalSubtotalWithoutDiscount] =
+    useState(0);
+  const [reload, setReload] = useState(false);
+  const [cartTotal, setCartTotal] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+  const [selectedMethodId, setSelectedMethodId] = useState(null);
 
   // Spinning wheel state
-  const [isModalOpen, setIsModalOpen] = useState(false)
-  const [wonPrize, setWonPrize] = useState("")
-  const [showWheelModal, setShowWheelModal] = useState(false)
-  const [mustSpin, setMustSpin] = useState(false)
-  const [prizeNumber, setPrizeNumber] = useState(0)
-  const [result, setResult] = useState("")
-  const [prizeName, setPrizeName] = useState("")
-  const [invoiceId, setInvoiceId] = useState(null)
-  const [spinCount, setSpinCount] = useState(0)
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [wonPrize, setWonPrize] = useState("");
+  const [showWheelModal, setShowWheelModal] = useState(false);
+  const [mustSpin, setMustSpin] = useState(false);
+  const [prizeNumber, setPrizeNumber] = useState(0);
+  const [result, setResult] = useState("");
+  const [prizeName, setPrizeName] = useState("");
+  const [invoiceId, setInvoiceId] = useState(null);
+  const [spinCount, setSpinCount] = useState(0);
 
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const intendedUrl = searchParams.get("redirect")
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const intendedUrl = searchParams.get("redirect");
 
   // Use refs to prevent recreating objects
-  const userDataRef = useRef(null)
-  const isInitializedRef = useRef(false)
+  const userDataRef = useRef(null);
+  const isInitializedRef = useRef(false);
 
   // Initialize userData once
   // useEffect(() => {
@@ -163,34 +176,40 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
   // }, [])
 
   // Memoize stable values
-  const userData = userDataRef.current
-  const customer_id = userData?.id
-  const customer_phone = userData?.mobile_number
-  const date = useMemo(() => new Date().toISOString(), [])
-  const deliveryNote = useMemo(() => localStorage.getItem("cartAttachment"), [])
+  const userData = userDataRef.current;
+  const customer_id = userData?.id;
+  const customer_phone = userData?.mobile_number;
+  const date = useMemo(() => new Date().toISOString(), []);
+  const deliveryNote = useMemo(
+    () => localStorage.getItem("cartAttachment"),
+    []
+  );
 
   // Memoize user name parsing
   const { firstName, lastName } = useMemo(() => {
-    if (!userData?.name) return { firstName: "", lastName: "" }
-    const parts = userData.name.trim().split(/\s+/)
+    if (!userData?.name) return { firstName: "", lastName: "" };
+    const parts = userData.name.trim().split(/\s+/);
     return {
       firstName: parts[0] || "",
       lastName: parts.length > 1 ? parts[parts.length - 1] : "",
-    }
-  }, [userData?.name])
+    };
+  }, [userData?.name]);
 
   // Memoize shipping fee calculation
-  const shippingFee = useMemo(() => (location === "inside" ? 70 : 130), [location])
+  const shippingFee = useMemo(
+    () => (location === "inside" ? 70 : 130),
+    [location]
+  );
 
   // Update shipping fee when it changes
   useEffect(() => {
-    setShippingFee(shippingFee)
-  }, [shippingFee, setShippingFee])
+    setShippingFee(shippingFee);
+  }, [shippingFee, setShippingFee]);
 
   // Update coupon value when couponAmount changes
   useEffect(() => {
-    setCouponValue(couponAmount)
-  }, [couponAmount])
+    setCouponValue(couponAmount);
+  }, [couponAmount]);
 
   const [formData, setFormData] = useState({
     country: "Bangladesh",
@@ -211,52 +230,68 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
     billCity: "",
     billPostalCode: "",
     billPhone: "",
-  })
+  });
+
+  useEffect(() => {
+    const items = getCartItems();
+    if(items.length){
+      setCartItems(items);
+      setLoading(false);
+      const total = items.reduce((prev,curr) => country.value === "BD" ? prev + curr.retails_price : prev + curr.wholesale_price ,0);
+      console.log(total);
+      setCartTotal(total);
+      setOrderSchema((prev) => ({
+        ...prev,
+        sub_total : cartTotal
+      }))
+    }
+  }, [getCartItems]);
+
+  
 
   // Initialize cart items once and calculate totals
-  useEffect(() => {
-   
+  // useEffect(() => {
+  //   try {
+  //     // Calculate totals immediately
+  //     if (cartItems && cartItems.length > 0) {
+  //       const total = cartItems.reduce((sum, item) => {
+  //         const unitPrice =
+  //           country?.value === "BD"
+  //             ? item?.retails_price ?? 0
+  //             : item?.wholesale_price ?? 0;
+  //         return sum + unitPrice * item.quantity;
+  //       }, 0);
 
-    try {
-      const items = getCartItems()
-      setCartItems(items)
-      setLoading(false)
+  //       const discount = cartItems.reduce((sum, item) => {
+  //         let discountAmount = 0;
+  //         if (item.discount_type === "Fixed") {
+  //           discountAmount = (item.discount || 0) * item.quantity;
+  //         } else if (item.discount_type === "Percentage") {
+  //           discountAmount =
+  //             ((item.retails_price * (item.discount || 0)) / 100) *
+  //             item.quantity;
+  //         }
+  //         return sum + discountAmount;
+  //       }, 0);
 
-      // Calculate totals immediately
-      if (items && items.length > 0) {
-        const total = items.reduce((sum, item) => {
-          const unitPrice = country?.value === "BD" ? (item?.retails_price ?? 0) : (item?.wholesale_price ?? 0)
-          return sum + unitPrice * item.quantity
-        }, 0)
+  //       const subtotal = cartItems.reduce((sum, item) => {
+  //         const price = Number(item?.retails_price) || 0;
+  //         return sum + price * item.quantity;
+  //       }, 0);
 
-        const discount = items.reduce((sum, item) => {
-          let discountAmount = 0
-          if (item.discount_type === "Fixed") {
-            discountAmount = (item.discount || 0) * item.quantity
-          } else if (item.discount_type === "Percentage") {
-            discountAmount = ((item.retails_price * (item.discount || 0)) / 100) * item.quantity
-          }
-          return sum + discountAmount
-        }, 0)
-
-        const subtotal = items.reduce((sum, item) => {
-          const price = Number(item?.retails_price) || 0
-          return sum + price * item.quantity
-        }, 0)
-
-        setCartTotal(total)
-        setTotalDiscount(discount)
-        setTotalSubtotalWithoutDiscount(subtotal)
-      } else {
-        setCartTotal(0)
-        setTotalDiscount(0)
-        setTotalSubtotalWithoutDiscount(0)
-      }
-    } catch (error) {
-      console.error("Error initializing cart:", error)
-      setLoading(false)
-    }
-  }, [country.value]) // Only depend on country value change
+  //       setCartTotal(total);
+  //       setTotalDiscount(discount);
+  //       setTotalSubtotalWithoutDiscount(subtotal);
+  //     } else {
+  //       setCartTotal(0);
+  //       setTotalDiscount(0);
+  //       setTotalSubtotalWithoutDiscount(0);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error initializing cart:", error);
+  //     setLoading(false);
+  //   }
+  // }, [country.value]); // Only depend on country value change
 
   // Create order schema - memoized to prevent constant recreation
   const orderSchema = useMemo(() => {
@@ -279,10 +314,14 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
       })),
       delivery_method_id: 1,
       delivery_note: deliveryNote,
-      donation_amount: selectedDonate === "Not now" ? 0 : Number(selectedDonate),
+      donation_amount:
+        selectedDonate === "Not now" ? 0 : Number(selectedDonate),
       email: formData.email || userData?.email || "N/A",
       delivery_info_id: 1,
-      delivery_customer_name: (formData.firstName || firstName) + " " + (formData.lastName || lastName),
+      delivery_customer_name:
+        (formData.firstName || firstName) +
+        " " +
+        (formData.lastName || lastName),
       delivery_customer_address: formData.address || formData.address2,
       delivery_customer_phone: formData?.phone || "N/A",
       delivery_fee: shippingFee,
@@ -295,19 +334,21 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
       variants: [],
       imeis: cartItems.map((item) => {
         if (item?.imeis && item?.imeis.length > 0) {
-          return Number.parseInt(item?.imeis[0].imei)
+          return Number.parseInt(item?.imeis[0].imei);
         }
-        return null
+        return null;
       }),
       created_at: date,
       customer_id: customer_id || null,
-      customer_name: `${formData.firstName || firstName}+${formData.lastName || lastName}`,
+      customer_name: `${formData.firstName || firstName}+${
+        formData.lastName || lastName
+      }`,
       customer_phone: customer_phone,
       sales_id: userId,
       user_id: userId,
       wholeseller_id: 1,
       status: 3,
-    }
+    };
   }, [
     payment,
     cartTotal,
@@ -330,202 +371,218 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
     date,
     customer_id,
     customer_phone,
-  ])
+  ]);
 
-  const [orderSchemaState, setOrderSchema] = useState(orderSchema)
+  const [orderSchemaState, setOrderSchema] = useState(orderSchema);
 
   // Update order schema state only when the memoized version changes
   useEffect(() => {
-    setOrderSchema(orderSchema)
-  }, [orderSchema])
+    setOrderSchema(orderSchema);
+  }, [orderSchema]);
 
   // Event handlers - all memoized
   const handleGoogleLogin = useCallback(async () => {
     try {
-      const response = await googleLogin()
-      const result = response.user
+      const response = await googleLogin();
+      const result = response.user;
       const loginResponse = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/customer-login`,
         { email: result.email, password: result.uid, user_id: String(userId) },
-        { headers: { "Content-Type": "application/json" } },
-      )
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-      setReload(true)
+      setReload(true);
       if (intendedUrl) {
-        router.push(intendedUrl)
+        router.push(intendedUrl);
       }
 
-      setToken(loginResponse.data.token)
-      toast.success("Login Successful!")
-      setUserInfo(loginResponse?.data?.customer)
-      localStorage.setItem("user", JSON.stringify(loginResponse?.data?.customer))
-      localStorage.setItem("token", loginResponse?.data?.token)
+      setToken(loginResponse.data.token);
+      toast.success("Login Successful!");
+      setUserInfo(loginResponse?.data?.customer);
+      localStorage.setItem(
+        "user",
+        JSON.stringify(loginResponse?.data?.customer)
+      );
+      localStorage.setItem("token", loginResponse?.data?.token);
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-  }, [googleLogin, intendedUrl, router, setToken, setUserInfo])
+  }, [googleLogin, intendedUrl, router, setToken, setUserInfo]);
 
   const handleChange = useCallback((e) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-  }, [])
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  }, []);
 
   const handlePayment = useCallback((e) => {
-    setPayment(e.target.value)
-  }, [])
+    setPayment(e.target.value);
+  }, []);
 
   const handleBillingChange = useCallback((e) => {
-    setBillingSameAsShipping(e.target.value === "same")
-  }, [])
+    setBillingSameAsShipping(e.target.value === "same");
+  }, []);
 
-  const handleClose = useCallback(() => setShowPaymentModal(false), [])
+  const handleClose = useCallback(() => setShowPaymentModal(false), []);
 
   const handleOrderComplete = useCallback(
     (e) => {
-      e.preventDefault()
+      e.preventDefault();
 
       if (cartItems.length > 0) {
         const finalOrderSchema = {
           ...orderSchemaState,
-          donation_amount: selectedDonate === "Not now" ? 0 : Number(selectedDonate),
-        }
+          donation_amount:
+            selectedDonate === "Not now" ? 0 : Number(selectedDonate),
+        };
 
         axios
-          .post(`${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`, finalOrderSchema)
+          .post(
+            `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
+            finalOrderSchema
+          )
           .then((res) => {
             if (res.status === 200) {
-              const _invoiceId = res?.data?.data?.invoice_id
-              setInvoiceId(_invoiceId)
-              localStorage.removeItem("cart")
-              localStorage.removeItem("cartAttachment")
-              toast.success("Order Placed Successfully!")
-              router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`)
+              const _invoiceId = res?.data?.data?.invoice_id;
+              setInvoiceId(_invoiceId);
+              localStorage.removeItem("cart");
+              localStorage.removeItem("cartAttachment");
+              toast.success("Order Placed Successfully!");
+              router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
             }
           })
           .catch((err) => {
-            toast.error("Error occurred. Try again.")
-            console.log(err)
-          })
+            toast.error("Error occurred. Try again.");
+            console.log(err);
+          });
       } else {
-        alert("Add some products to the cart first.")
-        router.push("/")
+        alert("Add some products to the cart first.");
+        router.push("/");
       }
     },
-    [cartItems, orderSchemaState, selectedDonate, router, payment],
-  )
+    [cartItems, orderSchemaState, selectedDonate, router, payment]
+  );
 
   const handleSpinClick = useCallback(() => {
-    const nextTimeIndex = prizeData.findIndex((item) => item.option === "Try Again")
-    const cashPrizeIndex = prizeData.findIndex((item) => item.option === "10% off")
-    const newSpinCount = spinCount + 1
-    setSpinCount(newSpinCount)
+    const nextTimeIndex = prizeData.findIndex(
+      (item) => item.option === "Try Again"
+    );
+    const cashPrizeIndex = prizeData.findIndex(
+      (item) => item.option === "10% off"
+    );
+    const newSpinCount = spinCount + 1;
+    setSpinCount(newSpinCount);
 
     if (newSpinCount === 2) {
-      setPrizeNumber(cashPrizeIndex)
+      setPrizeNumber(cashPrizeIndex);
     } else {
-      setPrizeNumber(nextTimeIndex)
+      setPrizeNumber(nextTimeIndex);
     }
-    setMustSpin(true)
-    setResult("")
-  }, [spinCount])
+    setMustSpin(true);
+    setResult("");
+  }, [spinCount]);
 
   const handleSpinEnd = useCallback(() => {
-    const selectedPrize = prizeData[prizeNumber]?.image?.uri || "Unknown"
-    const selectedPrizeName = prizeData[prizeNumber]?.option || "Unknown"
-    setPrizeName(selectedPrizeName)
-    setResult(selectedPrize)
-    setMustSpin(false)
-    setShowWheelModal(false)
-    setIsModalOpen(true)
-  }, [prizeNumber])
+    const selectedPrize = prizeData[prizeNumber]?.image?.uri || "Unknown";
+    const selectedPrizeName = prizeData[prizeNumber]?.option || "Unknown";
+    setPrizeName(selectedPrizeName);
+    setResult(selectedPrize);
+    setMustSpin(false);
+    setShowWheelModal(false);
+    setIsModalOpen(true);
+  }, [prizeNumber]);
 
   const handleModalClose = useCallback(() => {
-    setIsModalOpen(false)
+    setIsModalOpen(false);
     setTimeout(() => {
-      router.push(`/payment-success/${invoiceId}`)
-    }, 500)
-  }, [router, invoiceId])
+      router.push(`/payment-success/${invoiceId}`);
+    }, 500);
+  }, [router, invoiceId]);
 
   const handlePaymentMethod = useCallback((item) => {
-    setShowPaymentModal(true)
+    setShowPaymentModal(true);
     if (item.payment_type_category && item.payment_type_category.length > 0) {
-      setPayment(item.payment_type_category[0].payment_category_name)
-      setSelectedMethodId(item.payment_type_category[0].id)
+      setPayment(item.payment_type_category[0].payment_category_name);
+      setSelectedMethodId(item.payment_type_category[0].id);
     } else {
-      setPayment(item.value)
-      setSelectedMethodId(item.category_id)
+      setPayment(item.value);
+      setSelectedMethodId(item.category_id);
     }
 
     setOrderSchema((prevSchema) => ({
       ...prevSchema,
       payment_method: [
         {
-          payment_type_category_id: item.payment_type_category?.[0]?.id || item.category_id,
-          payment_type_id: item.payment_type_category?.[0]?.payment_type_id || item.id,
-          account_number: item.payment_type_category?.[0]?.account_number || item.account_number,
+          payment_type_category_id:
+            item.payment_type_category?.[0]?.id || item.category_id,
+          payment_type_id:
+            item.payment_type_category?.[0]?.payment_type_id || item.id,
+          account_number:
+            item.payment_type_category?.[0]?.account_number ||
+            item.account_number,
         },
       ],
-    }))
-  }, [])
+    }));
+  }, []);
 
   const handleAmount = useCallback(
     (e) => {
-      const amount = e.target.value
+      const amount = e.target.value;
       setOrderSchema((prev) => {
-        const updatedMethod = [...prev.payment_method]
+        const updatedMethod = [...prev.payment_method];
         const existingMethodIndex = updatedMethod.findIndex(
-          (item) => item.payment_type_category_id === selectedMethodId,
-        )
+          (item) => item.payment_type_category_id === selectedMethodId
+        );
         if (existingMethodIndex !== -1) {
-          updatedMethod[existingMethodIndex].payment_amount = Number.parseInt(amount)
+          updatedMethod[existingMethodIndex].payment_amount =
+            Number.parseInt(amount);
         }
-        return { ...prev, payment_method: updatedMethod }
-      })
+        return { ...prev, payment_method: updatedMethod };
+      });
     },
-    [selectedMethodId],
-  )
+    [selectedMethodId]
+  );
 
   const handleRefId = useCallback(
     (e) => {
-      const refId = e.target.value
+      const refId = e.target.value;
       setOrderSchema((prev) => {
-        const updatedMethod = [...prev.payment_method]
+        const updatedMethod = [...prev.payment_method];
         const existingMethodIndex = updatedMethod.findIndex(
-          (item) => item.payment_type_category_id === selectedMethodId,
-        )
+          (item) => item.payment_type_category_id === selectedMethodId
+        );
         if (existingMethodIndex !== -1) {
-          updatedMethod[existingMethodIndex].ref_id = refId
+          updatedMethod[existingMethodIndex].ref_id = refId;
         }
-        return { ...prev, payment_method: updatedMethod }
-      })
+        return { ...prev, payment_method: updatedMethod };
+      });
     },
-    [selectedMethodId],
-  )
+    [selectedMethodId]
+  );
 
   const handleDonationClick = useCallback(
     (donation) => {
       if (typeof donation === "number") {
-        setSelectedDonate(donation)
+        setSelectedDonate(donation);
       } else if (donation === "Other") {
-        setSelectedDonate("")
+        setSelectedDonate("");
       } else {
-        setSelectedDonate(donation)
+        setSelectedDonate(donation);
       }
     },
-    [setSelectedDonate],
-  )
+    [setSelectedDonate]
+  );
 
   const handleDonationInput = useCallback(
     (e) => {
-      setSelectedDonate(e.target.value)
+      setSelectedDonate(e.target.value);
     },
-    [setSelectedDonate],
-  )
+    [setSelectedDonate]
+  );
 
-  const modal = useState(false)
+  const modal = useState(false);
   const onClose = useCallback(() => {
-    modal[1](false)
-  }, [modal])
+    modal[1](false);
+  }, [modal]);
 
   return (
     <div className="space-y-4">
@@ -537,8 +594,12 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
               <MapPin className="h-6 w-6 text-blue-600" />
             </div>
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">Delivery Information</h2>
-              <p className="text-sm text-gray-600">Where should we deliver your order?</p>
+              <h2 className="text-xl font-semibold text-gray-900">
+                Delivery Information
+              </h2>
+              <p className="text-sm text-gray-600">
+                Where should we deliver your order?
+              </p>
             </div>
           </div>
 
@@ -678,14 +739,20 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
               <Truck className="h-6 w-6 text-green-600" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">Shipping Method</h3>
-              <p className="text-sm text-gray-600">Choose your preferred delivery option</p>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Shipping Method
+              </h3>
+              <p className="text-sm text-gray-600">
+                Choose your preferred delivery option
+              </p>
             </div>
           </div>
           <div className="space-y-3">
             <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                location === "inside" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                location === "inside"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               <input
@@ -699,24 +766,34 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
               <div className="flex items-center space-x-4 flex-1">
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    location === "inside" ? "border-blue-500" : "border-gray-300"
+                    location === "inside"
+                      ? "border-blue-500"
+                      : "border-gray-300"
                   }`}
                 >
-                  {location === "inside" && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
+                  {location === "inside" && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900">Inside Dhaka</span>
+                    <span className="font-medium text-gray-900">
+                      Inside Dhaka
+                    </span>
                     <span className="font-semibold text-gray-900">৳70</span>
                   </div>
-                  <p className="text-sm text-gray-600">Delivery within 1-2 business days</p>
+                  <p className="text-sm text-gray-600">
+                    Delivery within 1-2 business days
+                  </p>
                 </div>
               </div>
             </label>
 
             <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                location === "outside" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                location === "outside"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               <input
@@ -730,17 +807,25 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
               <div className="flex items-center space-x-4 flex-1">
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    location === "outside" ? "border-blue-500" : "border-gray-300"
+                    location === "outside"
+                      ? "border-blue-500"
+                      : "border-gray-300"
                   }`}
                 >
-                  {location === "outside" && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
+                  {location === "outside" && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900">Outside Dhaka</span>
+                    <span className="font-medium text-gray-900">
+                      Outside Dhaka
+                    </span>
                     <span className="font-semibold text-gray-900">৳130</span>
                   </div>
-                  <p className="text-sm text-gray-600">Delivery within 3-5 business days</p>
+                  <p className="text-sm text-gray-600">
+                    Delivery within 3-5 business days
+                  </p>
                 </div>
               </div>
             </label>
@@ -760,7 +845,9 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
               <CreditCard className="h-6 w-6 text-purple-600" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">Payment Method</h3>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Payment Method
+              </h3>
               <p className="text-sm text-gray-600 flex items-center">
                 <Shield className="h-4 w-4 mr-1" />
                 All transactions are secure and encrypted
@@ -770,7 +857,9 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
           <div className="space-y-3">
             <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                payment === "Cash" ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                payment === "Cash"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               <input
@@ -779,8 +868,8 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                 value="Cash"
                 checked={payment === "Cash"}
                 onChange={(e) => {
-                  handlePayment(e)
-                  setIsCod(true)
+                  handlePayment(e);
+                  setIsCod(true);
                 }}
                 className="sr-only"
               />
@@ -790,11 +879,17 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                     payment === "Cash" ? "border-blue-500" : "border-gray-300"
                   }`}
                 >
-                  {payment === "Cash" && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
+                  {payment === "Cash" && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
                 </div>
                 <div className="flex-1">
-                  <span className="font-medium text-gray-900">Cash on Delivery</span>
-                  <p className="text-sm text-gray-600">Pay when you receive your order</p>
+                  <span className="font-medium text-gray-900">
+                    Cash on Delivery
+                  </span>
+                  <p className="text-sm text-gray-600">
+                    Pay when you receive your order
+                  </p>
                 </div>
               </div>
             </label>
@@ -802,9 +897,12 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
 
           {!isCod && (
             <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-              {paymentMethods?.data?.data && paymentMethods?.data?.data?.length > 0 ? (
+              {paymentMethods?.data?.data &&
+              paymentMethods?.data?.data?.length > 0 ? (
                 (() => {
-                  const otherMethods = paymentMethods?.data?.data?.filter((item) => item?.type_name !== "Cash")
+                  const otherMethods = paymentMethods?.data?.data?.filter(
+                    (item) => item?.type_name !== "Cash"
+                  );
                   return otherMethods.length > 0 ? (
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                       {otherMethods.map((item) => (
@@ -812,7 +910,8 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                           onClick={() => handlePaymentMethod(item)}
                           key={item.id}
                           className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${
-                            item?.payment_type_category[0]?.payment_category_name === payment
+                            item?.payment_type_category[0]
+                              ?.payment_category_name === payment
                               ? "border-blue-500 bg-blue-50"
                               : "border-gray-200 hover:border-gray-300"
                           }`}
@@ -820,13 +919,19 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                           <Image
                             unoptimized
                             src={item?.icon_image || "/placeholder.svg"}
-                            alt={item?.payment_type_category[0]?.payment_category_name}
+                            alt={
+                              item?.payment_type_category[0]
+                                ?.payment_category_name
+                            }
                             height={40}
                             width={40}
                             className="rounded-md h-12 w-12 mb-2"
                           />
                           <span className="text-xs font-medium text-center">
-                            {item?.payment_type_category[0]?.payment_category_name}
+                            {
+                              item?.payment_type_category[0]
+                                ?.payment_category_name
+                            }
                           </span>
                         </div>
                       ))}
@@ -836,14 +941,16 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                       <AlertCircle className="h-4 w-4" />
                       <span>Only Cash On Delivery is available right now</span>
                     </div>
-                  )
+                  );
                 })()
               ) : (
                 <div className="text-sm text-gray-700">
                   <p>
-                    You won&apos;t be redirected to a Payment Link immediately due to stock limitation at real time.
-                    After your order is placed, our team will call you with stock confirmation in real time and will
-                    provide an SSL Wireless Gadget Bodda Secure Payment Link. You can proceed with the payment then.
+                    You won&apos;t be redirected to a Payment Link immediately
+                    due to stock limitation at real time. After your order is
+                    placed, our team will call you with stock confirmation in
+                    real time and will provide an SSL Wireless Gadget Bodda
+                    Secure Payment Link. You can proceed with the payment then.
                   </p>
                 </div>
               )}
@@ -858,14 +965,20 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
               <Mail className="h-6 w-6 text-indigo-600" />
             </div>
             <div>
-              <h3 className="text-xl font-semibold text-gray-900">Billing Address</h3>
-              <p className="text-sm text-gray-600">Select the billing address that matches your payment method</p>
+              <h3 className="text-xl font-semibold text-gray-900">
+                Billing Address
+              </h3>
+              <p className="text-sm text-gray-600">
+                Select the billing address that matches your payment method
+              </p>
             </div>
           </div>
           <div className="space-y-3">
             <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                billingSameAsShipping ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                billingSameAsShipping
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               <input
@@ -879,18 +992,26 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
               <div className="flex items-center space-x-4">
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    billingSameAsShipping ? "border-blue-500" : "border-gray-300"
+                    billingSameAsShipping
+                      ? "border-blue-500"
+                      : "border-gray-300"
                   }`}
                 >
-                  {billingSameAsShipping && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
+                  {billingSameAsShipping && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
                 </div>
-                <span className="font-medium text-gray-900">Same as shipping address</span>
+                <span className="font-medium text-gray-900">
+                  Same as shipping address
+                </span>
               </div>
             </label>
 
             <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                !billingSameAsShipping ? "border-blue-500 bg-blue-50" : "border-gray-200 hover:border-gray-300"
+                !billingSameAsShipping
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
               }`}
             >
               <input
@@ -904,12 +1025,18 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
               <div className="flex items-center space-x-4">
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    !billingSameAsShipping ? "border-blue-500" : "border-gray-300"
+                    !billingSameAsShipping
+                      ? "border-blue-500"
+                      : "border-gray-300"
                   }`}
                 >
-                  {!billingSameAsShipping && <div className="w-2 h-2 bg-blue-500 rounded-full"></div>}
+                  {!billingSameAsShipping && (
+                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  )}
                 </div>
-                <span className="font-medium text-gray-900">Use a different billing address</span>
+                <span className="font-medium text-gray-900">
+                  Use a different billing address
+                </span>
               </div>
             </label>
           </div>
@@ -918,7 +1045,9 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
             <div className="mt-6 p-6 bg-gray-50 rounded-lg space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    First Name
+                  </label>
                   <input
                     placeholder="Enter Your First Name"
                     className="w-full px-4 py-3 dark:bg-white border border-gray-300 rounded-lg focus:ring-2 transition-colors"
@@ -931,7 +1060,9 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Last Name
+                  </label>
                   <input
                     placeholder="Enter Your Last Name"
                     className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
@@ -944,7 +1075,9 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                 </div>
 
                 <div className="md:col-span-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Address
+                  </label>
                   <input
                     placeholder="Enter Your Full Address"
                     className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
@@ -957,7 +1090,9 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">City</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    City
+                  </label>
                   <input
                     placeholder="Enter Your City"
                     className="w-full px-4 py-3 dark:bg-white border border-gray-300 rounded-lg focus:ring-2 transition-colors"
@@ -970,7 +1105,9 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                 </div>
 
                 <div className="block text-sm font-medium text-gray-700 mb-2">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">Phone (optional)</label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Phone (optional)
+                  </label>
                   <input
                     placeholder="Enter Your Phone Number"
                     className="w-full dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
@@ -993,9 +1130,12 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                 <HandHelping className="h-6 w-6 text-green-600" />
               </div>
               <div>
-                <h3 className="text-xl font-semibold text-gray-900">Donation</h3>
+                <h3 className="text-xl font-semibold text-gray-900">
+                  Donation
+                </h3>
                 <p className="text-sm text-gray-600">
-                  Your donated money will be distributed among the poor and needy.
+                  Your donated money will be distributed among the poor and
+                  needy.
                 </p>
               </div>
             </div>
@@ -1005,8 +1145,11 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
             <div className="flex flex-row flex-wrap gap-2">
               {donations?.map((donation) => {
                 const isSelected =
-                  selectedDonate === donation || (typeof donation === "number" && Number(selectedDonate) === donation)
-                const displayText = typeof donation === "number" ? `Tk ${donation}` : donation
+                  selectedDonate === donation ||
+                  (typeof donation === "number" &&
+                    Number(selectedDonate) === donation);
+                const displayText =
+                  typeof donation === "number" ? `Tk ${donation}` : donation;
 
                 return (
                   <button
@@ -1021,7 +1164,7 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
                   >
                     {displayText}
                   </button>
-                )
+                );
               })}
             </div>
             {/* Manual input */}
@@ -1048,7 +1191,9 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
           </button>
           <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-gray-500">
             <Shield className="h-4 w-4" />
-            <span>Your payment information is protected by 256-bit SSL encryption</span>
+            <span>
+              Your payment information is protected by 256-bit SSL encryption
+            </span>
           </div>
         </div>
       </form>
@@ -1075,7 +1220,11 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
         />
       )}
 
-      <Dialog open={showWheelModal} onClose={() => {}} className="relative z-50">
+      <Dialog
+        open={showWheelModal}
+        onClose={() => {}}
+        className="relative z-50"
+      >
         <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
         <div className="fixed inset-0 flex items-center justify-center p-4">
           <Dialog.Panel className="bg-transparent flex flex-col items-center">
@@ -1115,7 +1264,7 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
         prize={result}
       />
     </div>
-  )
-}
+  );
+};
 
-export default DeliveryForm
+export default DeliveryForm;

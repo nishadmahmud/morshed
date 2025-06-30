@@ -51,11 +51,12 @@ useEffect(() => {
   if (!initialCountry) {
     initialCountry = { value: "BD", label: "Bangladesh" };
     localStorage.setItem("selectedCountry", JSON.stringify(initialCountry));
+    return;
   }
 
   setSelectedCountry(initialCountry);
   setCountry(initialCountry);
-}, [setCountry, setSelectedCountry]);
+}, []);
 
 
 useEffect(() => {

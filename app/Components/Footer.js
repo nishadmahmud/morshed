@@ -10,8 +10,9 @@ import noImg from '/public/no-image.jpg'
 
 export default function Footer() {
   return (
-   <footer className="bg-[#080808] py-12 md:pt-20 px-6 z-50">
-  <div className="max-w-7xl mx-auto">
+   <footer className="bg-[#080808] py-12 md:pt-20 z-50">
+  <div className="w-11/12 mx-auto">
+    <div>
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
       {/* Logo and Social Section */}
       <div className="space-y-6 flex flex-col items-center md:items-start">
@@ -112,7 +113,7 @@ export default function Footer() {
     </div>
   </div>
 
-  <div className="relative w-[97%] mx-auto h-[180px] my-2 hidden lg:block">
+  <div className="relative mx-auto h-[180px] my-2 hidden lg:block">
         <Image
           src={"/Payment Banner_Jul24_V1-02.png"}
           alt="ssl-banner"
@@ -122,6 +123,8 @@ export default function Footer() {
           priority
         ></Image>
       </div>
+
+      
    <div className="block lg:hidden mt-4">
         <Image
           src={"/Payment Banner_Jul24_V1-04.png"}
@@ -137,6 +140,7 @@ export default function Footer() {
         Copyright 2025 © <span className="font-medium">Morshed Mart</span>. All rights reserved. Developed & Desinged by <Link href='https://squadinnovators.com' target="_blank" className="font-medium hover:text-blue-400 transition hover:font-medium">Squad Innovators</Link>.
       </p>
     </div>
+  </div>
 </footer>
 
   )

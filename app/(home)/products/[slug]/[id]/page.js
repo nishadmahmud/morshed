@@ -47,7 +47,7 @@ const ProductPage = ({ params }) => {
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
     const { toggleWishlist, isInWishlist } = useWishlist();
-    const { handleCart, convertedPrice, selectedCountry , getCartItems, refetch, setRefetch, prices, country, setProductPrice, handleBuy } = useStore()
+    const { handleCart, convertedPrice, selectedCountry, getCartItems, refetch, setRefetch, prices, country, setProductPrice, handleBuy } = useStore()
 // const { selectedCountry, setSelectedCountry } = useContext(storeContext);
 // console.log(selectedCountry);
     // size guide modal
@@ -216,6 +216,9 @@ console.log(discountedPrice);
   //   })
   // }
 
+  
+const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
+
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
   const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
 
@@ -299,7 +302,7 @@ console.log(discountedPrice);
                   <CursorImageZoom
   src={imageArray[imageIndex]}
   alt={product?.data?.name || noImg}
-  className="w-full md:h-[70vh] h-[45vh] rounded-lg"
+  className="w-full xl:h-[65vh] md:h-[60vh] h-[42vh] rounded-lg"
   zoomScale={2.5}
 />
 
@@ -324,18 +327,25 @@ console.log(discountedPrice);
             <h1 className="text-2xl md:text-3xl font-bold mb-2">{product?.data?.name}</h1>
 
             <div className="flex items-center gap-3 mb-4">
+              {!countrySign ? (<>
               {product?.data?.discount > 0 && (
                 <span className="text-gray-500 line-through text-sm">৳{getPriceByCountry()}</span>
               )}
+              </>): ""}
               <span className="text-2xl font-bold">
-                ৳
+                {countrySign}
                 {getPriceByCountry() ||discountedPrice}
               </span>
-              {product?.data?.discount > 0 && (
+              {
+
+                !countrySign ? <>
+                {product?.data?.discount > 0 && (
                 <span className="text-xs font-medium text-green-600 border border-green-600 px-2 py-0.5 rounded-full">
                   {product?.data?.discount} {fixedDiscount || percentageDiscount} OFF
                 </span>
               )}
+                </> : ""
+              }
             </div>
 
             <p className="text-sm text-gray-600 mb-6">
@@ -575,7 +585,7 @@ console.log(discountedPrice);
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col md:flex-row items-center gap-3">
               <div className="flex items-center border border-gray-300 rounded-md">
                 <button onClick={decrementQuantity} className="px-2 py-1 text-gray-600">
                   <Minus className="h-3 w-3" />
@@ -587,17 +597,10 @@ console.log(discountedPrice);
               </div>
 
               <button
-                 onClick={() =>
-                      handleCart(
-                        {
-                          ...product?.data,
-                          storage: selectedStorage,
-                          color: selectedColor,
-                          price: selectedSalePrice,
-                        },
-                        quantity
-                      )
-                    }
+                  onClick={(e) => {
+              e.preventDefault()
+              handleCart(product.data, 1)
+            }}
                 className={`py-2 px-4 rounded-md font-medium ${
                   isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
                 }`}
@@ -607,62 +610,72 @@ console.log(discountedPrice);
               </button>
 
               <button
-                onClick={() => handleBuy(product?.data, quantity)}
+               onClick={() => handleBuy(product.data, 1)}
                 className="hidden md:block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium"
               >
                 Buy Now
               </button>
+
             </div>
           </div>
         </div>
       )}
 
       <Modal open={open} onClose={handleClose}>
-        <Box
-          sx={{
-            width: 700,
-            bgcolor: "background.paper",
-            margin: "100px auto",
-            padding: 4,
-            outline: "none",
-            borderRadius: 2,
-          }}
-        >
-          <Typography color="black" variant="h6" mb={2}>
-            MEN&apos;S THOBE - REGULAR FIT
-          </Typography>
+  <Box
+    sx={{
+      width: {
+        xs: "90%", // 90% width on extra-small devices (mobile)
+        sm: 500,   // 500px on small devices (tablets)
+        md: 700,   // 700px on medium+ devices (desktops)
+      },
+      bgcolor: "background.paper",
+      margin: "100px auto",
+      padding: {
+        xs: 2,
+        sm: 3,
+        md: 4,
+      },
+      outline: "none",
+      borderRadius: 2,
+      maxHeight: "90vh",
+      overflowY: "auto", // allow scroll if content overflows
+    }}
+  >
+    <Typography color="black" variant="h6" mb={2}>
+      MEN&apos;S THOBE - REGULAR FIT
+    </Typography>
 
-          <Tabs value={tab} onChange={handleTabChange} aria-label="Size Guide Tabs">
-            <Tab label="IN" />
-          </Tabs>
+    <Tabs value={tab} onChange={handleTabChange} aria-label="Size Guide Tabs">
+      <Tab label="IN" />
+    </Tabs>
 
-          <Box mt={2}>
-            <Table>
-              <TableHead>
-                <TableRow className="text-teal-500">
-                  <TableCell>Measurement Points</TableCell>
-                 
-                  <TableCell>S</TableCell>
-                  <TableCell>M</TableCell>
-                  <TableCell>L</TableCell>
-                  <TableCell>XL</TableCell>
-                  <TableCell>2XL</TableCell>
-                 
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {(tab === 0 ? inches : cm).map((row, i) => (
-                  <TableRow key={i}>
-                    {row.map((cell, j) => (
-                      <TableCell key={j}>{cell}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Box>
-        </Box>
-      </Modal>
+    <Box mt={2}>
+      <Table>
+        <TableHead>
+          <TableRow className="text-teal-500">
+            <TableCell>Measurement Points</TableCell>
+            <TableCell>S</TableCell>
+            <TableCell>M</TableCell>
+            <TableCell>L</TableCell>
+            <TableCell>XL</TableCell>
+            <TableCell>2XL</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {(tab === 0 ? inches : cm).map((row, i) => (
+            <TableRow key={i}>
+              {row.map((cell, j) => (
+                <TableCell key={j}>{cell}</TableCell>
+              ))}
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </Box>
+  </Box>
+</Modal>
+
     </section>
   )
 }

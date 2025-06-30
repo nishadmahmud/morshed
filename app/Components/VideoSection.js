@@ -24,7 +24,7 @@ const VideoSection = () => {
   return (
     <div
       ref={inViewRef}
-      className="relative w-full h-[30vh] md:h-[80vh] lg:h-screen overflow-hidden"
+      className="relative w-full h-[35vh] md:h-[80vh] lg:h-screen overflow-hidden"
     >
       {/* Animated Overlay Text */}
       {inView && (

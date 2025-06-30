@@ -113,7 +113,9 @@ const ProductCard = ({ product }) => {
         </Link>
 
         {/* Discount Badge */}
-        {product?.discount && (
+      {
+        !countrySign ? <>
+          {product?.discount && (
           <div className="absolute top-2 left-2 z-10 sm:top-3 sm:left-3">
             <span
               className="
@@ -127,6 +129,8 @@ const ProductCard = ({ product }) => {
             </span>
           </div>
         )}
+        </> : ""
+      }
 
         {/* Wishlist Button */}
         <button
@@ -199,7 +203,7 @@ const ProductCard = ({ product }) => {
             className="
             font-medium xl:w-56 w-40 text-gray-900 hover:text-gray-600
             transition-colors duration-200 
-            text-sm leading-tight line-clamp-2
+            text-sm leading-tight truncate line-clamp-1
             sm:text-base sm:max-w-xs md:max-w-sm lg:max-w-xs xl:max-w-sm sm:line-clamp-2
             md:text-sm lg:text-base text-start
           "

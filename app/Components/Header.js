@@ -34,8 +34,8 @@ const Header = ({ data }) => {
     getCartItems,
     userInfo,
     country,
-    wishlist
-   
+    wishlist,
+   prices
    } = useStore()
   const [keyword, setKeyword] = useState("")
   const [searchedItem, setSearchedItem] = useState([]);
@@ -140,6 +140,29 @@ const toggleSearchSidebar = () => {
   }, [pathname, setIsLoginModal]);
 
   const handleModalClose = () => setIsLoginModal(false);
+
+const selectedCountry = JSON.parse(localStorage.getItem("selectedCountry"))
+
+const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
+
+const productPrice = prices[searchedItem.id]
+
+// utils/pricing.js (or right above your component)
+const getPriceByCountry = (item, prices, country) => {
+  const productPrice = prices?.[item?.id];
+
+  if (country?.value === "BD") {
+    // Base → retail → 0
+    return productPrice?.basePrice
+      ?? item?.retails_price
+      ?? 0;
+  }
+
+  // Wholesale → item wholesale → 1 000 (fallback)
+  return productPrice?.wholesalePrice
+    ?? item?.wholesale_price
+    ?? 1_000;
+};
 
 
   return (
@@ -437,14 +460,20 @@ const toggleSearchSidebar = () => {
                   <h3 className="font-medium text-gray-900 text-sm line-clamp-2">{item.name}</h3>
                   <div className="flex items-center gap-2 mt-1">
                     {item?.data?.discount > 0 && (
-                <span className="text-gray-500 line-through text-sm">৳{item?.data?.retails_price}</span>
+                <span className="text-gray-500 line-through text-sm">{countrySign}{getPriceByCountry(item, prices, country).toLocaleString("en-US")}</span>
               )}
                     <p className="text-teal-700 font-semibold">
-                      ${(item.retails_price - (item.retails_price * (item.discount || 0)) / 100).toFixed(2)}
+                      
+                      {countrySign}
+                      {getPriceByCountry(item, prices, country).toLocaleString("en-US")}
                     </p>
+                   {
+                    !countrySign ? ( <>
                     {item.discount > 0 && (
-                      <p className="text-xs text-gray-500 line-through">${item.retails_price.toFixed(2)}</p>
+                      <p className="text-xs text-gray-500 line-through">{(item.retails_price - (item.retails_price * (item.discount || 0)) / 100).toFixed(2)}</p>
                     )}
+                    </>) : ""
+                   }
                   </div>
                 </div>
               </Link>

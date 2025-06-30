@@ -95,15 +95,15 @@ const CheckoutPage = () => {
   const [selectedDonate, setSelectedDonate] = useState(null)
   const donations = ["Not now", 10, 20, 30, 50]
 
-  useEffect(() => {
-    if (cartItems && cartItems.length > 0) {
-      cartItems.forEach((item) => {
-        if (item?.id && item?.retails_price) {
-          setProductPrice(item.id, item?.retails_price, item?.wholesale_price || null)
-        }
-      })
-    }
-  }, [cartItems, setProductPrice])
+  // useEffect(() => {
+  //   if (cartItems && cartItems.length > 0) {
+  //     cartItems.forEach((item) => {
+  //       if (item?.id && item?.retails_price) {
+  //         setProductPrice(item.id, item?.retails_price, item?.wholesale_price || null)
+  //       }
+  //     })
+  //   }
+  // }, [cartItems, setProductPrice])
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14">
@@ -128,6 +128,7 @@ const CheckoutPage = () => {
           {/* Main Content */}
           <div className="lg:col-span-7 order-last lg:order-first">
             <DeliveryForm
+            country={country}
               selectedDonate={selectedDonate}
               setSelectedDonate={setSelectedDonate}
               donations={donations}
