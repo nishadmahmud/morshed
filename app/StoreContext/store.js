@@ -60,7 +60,7 @@ const StoreProvider = ({ children }) => {
 
   useEffect(() => {
     setIsMounted(true);
-  const bangladesh = JSON.parse(localStorage.getItem("selectedCountry"))
+  // const bangladesh = JSON.parse(localStorage.getItem("selectedCountry"))
 
   }, []);
 
