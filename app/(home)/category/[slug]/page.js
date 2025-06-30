@@ -7,6 +7,7 @@ import Image from "next/image"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import useWishlist from "@/app/CustomHooks/useWishlist"
 import Link from "next/link"
+import useStore from "@/app/CustomHooks/useStore"
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
@@ -14,11 +15,9 @@ export default function ProductListing({ params }) {
   const searchParams = useSearchParams()
   const searchedCategory = searchParams.get("category") || "All Products"
   const searchedTotal = searchParams.get("total") || "100"
-
   const limit = 20;
   const totalPage = Math.ceil(Number.parseInt(searchedTotal) / limit)
   const { slug: id } = params
-
   const [filteredItems, setFilteredItems] = useState([])
   const [sortBy, setSortBy] = useState("")
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -32,7 +31,7 @@ export default function ProductListing({ params }) {
     color: true,
     brand: true,
   })
-
+  
   const filterRef = useRef(null)
 
   const [currentPage, setCurrentPage] = useState(() => {
@@ -48,6 +47,7 @@ export default function ProductListing({ params }) {
   )
 
 
+  
 
 
   useEffect(() => {
@@ -69,9 +69,9 @@ export default function ProductListing({ params }) {
       filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name))
     } 
 
-    // Apply filters (in a real app, these would filter the actual data)
+   
     if (selectedSizes.length > 0 || selectedColors.length > 0 || selectedBrands.length > 0) {
-      // This is just a placeholder for actual filtering logic
+      
       console.log("Filtering by:", { selectedSizes, selectedColors, selectedBrands, priceRange })
     }
 
@@ -238,8 +238,8 @@ export default function ProductListing({ params }) {
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                       />
                       <div className="flex items-center justify-between mt-2">
-                        <span>৳{priceRange[0]}</span>
-                        <span>৳{priceRange[1]}</span>
+                        <span>${priceRange[0]}</span>
+                        <span>${priceRange[1]}</span>
                       </div>
                     </div>
                   </div>
@@ -431,8 +431,8 @@ export default function ProductListing({ params }) {
                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                           />
                           <div className="flex items-center justify-between mt-2">
-                            <span>৳{priceRange[0]}</span>
-                            <span>৳{priceRange[1]}</span>
+                            <span>${priceRange[0]}</span>
+                            <span>${priceRange[1]}</span>
                           </div>
                         </div>
                       </div>
@@ -723,8 +723,23 @@ export default function ProductListing({ params }) {
 // Product Card Component
 function ProductCard({ product }) {
   const [isHovered, setIsHovered] = useState(false)
-
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const {  prices, country, setProductPrice } = useStore()
+
+
+  // price showing based on country
+const selectedCountry = JSON.parse(localStorage.getItem("selectedCountry"))
+const countrySign = selectedCountry?.value === "BD" ? "৳" : "$"
+console.log(product);
+const productPrice = prices[product.id]
+
+  const getPriceByCountry = () => {
+    if (country && country.value === "BD") {
+      return productPrice?.basePrice || product?.retails_price || 0
+    } else {
+      return productPrice?.wholesalePrice || product?.wholesale_price || 1000
+    }
+  }
 
 const sanitizeSlug = (str) => {
     return str
@@ -813,11 +828,13 @@ const sanitizeSlug = (str) => {
           <div className="flex items-center">
             {product.discount_price ? (
               <div className="flex flex-col items-end">
-                <span className="text-sm font-medium text-gray-900">৳{product.discount_price}</span>
-                <span className="text-xs text-gray-500 line-through">৳{product.retails_price}</span>
+                {!countrySign ? <>
+                <span className="text-sm font-medium text-gray-900">{countrySign}{product.discount_price}</span>
+                </>: ""}
+                <span className="text-xs text-gray-500 line-through">{countrySign}{getPriceByCountry()}</span>
               </div>
             ) : (
-              <span className="text-sm font-medium text-gray-900">৳{product.retails_price}</span>
+              <span className="text-sm font-medium text-gray-900">{countrySign}{getPriceByCountry()}</span>
             )}
           </div>
         </div>

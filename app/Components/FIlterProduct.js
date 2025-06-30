@@ -89,42 +89,6 @@ const FilterProduct = ({products,setFilteredItems}) => {
           }, [isStorageExpanded])
 
 
-        // useEffect(() => {
-        //   if (cpu) {
-        //     const cpuBasedProducts = items.filter((item) => item.cpu === cpu);
-        //     setFilteredItems(cpuBasedProducts);
-        //   } else {
-        //     setFilteredItems(items);
-        //   }
-        // }, [cpu,items]);
-    
-        // useEffect(() => {
-        //   if (ram) {
-        //     const ramBasedProducts = items.filter((item) => item.ram == ram);
-        //     setFilteredItems(ramBasedProducts);
-        //   } else {
-        //     setFilteredItems(items);
-        //   }
-        // }, [ram,items]);
-    
-        // useEffect(() => {
-        //   if (rom) {
-        //     const romBasedProducts = items.filter((item) => item.rom == rom);
-        //     setFilteredItems(romBasedProducts);
-        //   } else {
-        //     setFilteredItems(items);
-        //   }
-        // }, [rom,items]);
-    
-        // useEffect(() => {
-        //   if (selectedColor && isChecked) {
-        //     const colorBasedProducts = items.filter((item) => item.color === selectedColor);
-        //     setFilteredItems(colorBasedProducts);
-        //   } else {
-        //     setFilteredItems(items);
-        //   }
-        // }, [selectedColor,isChecked,items]);
-
 
     return (
         <div className="col-span-1 border border-gray-300 rounded-xl text-black space-y-5">
@@ -188,7 +152,7 @@ const FilterProduct = ({products,setFilteredItems}) => {
           </div>
 
           {/* storage checkbbox */}
-          <div className="p-3 bg-white rounded-lg border mx-2">
+          {/* <div className="p-3 bg-white rounded-lg border mx-2">
               <button
                 onClick={() => setIsStorageExpanded(!isStorageExpanded)}
                 className="flex w-full items-center justify-between text-left"
@@ -228,11 +192,11 @@ const FilterProduct = ({products,setFilteredItems}) => {
                   } 
                   </div>
               </div>
-          </div>
+          </div> */}
 
 
           {/* ram checkbbox */}
-          <div className="p-3 bg-white rounded-lg border mx-2">
+          {/* <div className="p-3 bg-white rounded-lg border mx-2">
               <button
                 onClick={() => setIsRamExpanded(!isRamExpanded)}
                 className="flex w-full items-center justify-between text-left"
@@ -265,7 +229,7 @@ const FilterProduct = ({products,setFilteredItems}) => {
                   } 
                   </div>
               </div>
-          </div>
+          </div> */}
 
           {/* type checkbbox */}
           {/* <div className="p-3 bg-white rounded-lg border mx-2">
@@ -376,7 +340,7 @@ const FilterProduct = ({products,setFilteredItems}) => {
           </div> */}
 
           {/* Official Checkbox */}
-          <div className="p-3 bg-white rounded-lg border mx-2">
+          {/* <div className="p-3 bg-white rounded-lg border mx-2">
               <button
                 onClick={() => setIsWarrantyExpanded(!isWarrantyExpanded)}
                 className="flex w-full items-center justify-between text-left"
@@ -402,7 +366,7 @@ const FilterProduct = ({products,setFilteredItems}) => {
                   </div>
                     
               </div>
-          </div>
+          </div> */}
 
           {/* sim checkbox */}
           {/* <div className="p-3 bg-white rounded-lg border mx-2">

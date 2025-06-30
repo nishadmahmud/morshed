@@ -29,6 +29,7 @@ import PrizeModal from "./PrizeModal";
 import { Dialog } from "@headlessui/react";
 import { Wheel } from "react-custom-roulette";
 import useStore from "../CustomHooks/useStore";
+import { GiWorld } from "react-icons/gi";
 
 const prizeData = [
   {
@@ -696,6 +697,30 @@ const DeliveryForm = ({
                 className="w-full text-black dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
               />
             </div>
+
+
+            {/* Select country */}
+
+           <div className="md:col-span-1">
+
+             <label className="block text-sm font-medium text-gray-700 mb-2">
+                <GiWorld className="inline h-4 w-4 mr-1" />
+                Select Country <span className="text-red-600">*</span>
+              </label>
+
+            <select className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors">
+              <option className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors">
+                Bangladesh
+              </option>
+              <option>
+                USA
+              </option>
+              <option>
+                UK
+              </option>
+            </select>
+
+           </div>
 
             {/* Address */}
             <div className="md:col-span-2">
