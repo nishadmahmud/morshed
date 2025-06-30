@@ -61,8 +61,8 @@ const NewArrival = () => {
             ))
           ) : newArrival?.data?.data?.length > 0 ? (
             newArrival?.data?.data.map((product) => (
-              <SwiperSlide key={product.id}>
-                <div className="md:flex justify-center">
+              <SwiperSlide className='w-full' key={product.id}>
+                <div>
                   <ProductCard product={product} />
                 </div>
               </SwiperSlide>

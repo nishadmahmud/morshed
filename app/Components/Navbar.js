@@ -82,7 +82,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             >
               <div>
                 <Heart className="text-2xl" />
-                {wishlist.lenght > 0 ? (<p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
+                {wishlist ? (<p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
                   {wishlist.length}
                 </p>): ""}
               </div>
@@ -96,7 +96,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
             >
               <div>
                 <ShoppingCart className="text-2xl" />
-                {total.length > 0 ? (<p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
+                {total ? (<p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
                   {total}
                 </p>) : ""}
               </div>

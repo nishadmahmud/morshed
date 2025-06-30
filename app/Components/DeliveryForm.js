@@ -215,7 +215,7 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
 
   // Initialize cart items once and calculate totals
   useEffect(() => {
-    if (!isInitializedRef.current) return
+   
 
     try {
       const items = getCartItems()
@@ -256,7 +256,7 @@ const DeliveryForm = ({ setShippingFee, couponAmount, couponCode, selectedDonate
       console.error("Error initializing cart:", error)
       setLoading(false)
     }
-  }, [isInitializedRef.current, country?.value]) // Only depend on country value change
+  }, [ country?.value,getCartItems]) // Only depend on country value change
 
   // Create order schema - memoized to prevent constant recreation
   const orderSchema = useMemo(() => {

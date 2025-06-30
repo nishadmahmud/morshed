@@ -58,11 +58,11 @@ const StoreProvider = ({ children }) => {
   
 
 
-  useEffect(() => {
-    setIsMounted(true);
-  const bangladesh = JSON.parse(localStorage.getItem("selectedCountry"))
+  // useEffect(() => {
+  //   setIsMounted(true);
+  // const bangladesh = JSON.parse(localStorage.getItem("selectedCountry"))
 
-  }, []);
+  // }, []);
 
   const router = useRouter();
 
@@ -132,8 +132,7 @@ const StoreProvider = ({ children }) => {
 
 
   const handleCart = (item, quantity) => {
-    if (!isMounted) return;
-
+   
     setRefetch(true);
     const newItem = {
       ...item,
@@ -163,8 +162,10 @@ const StoreProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
     toast.success("Item added to cart successfully");
   };
+
+
   const getCartItems = () => {
-    if (!isMounted) return [];
+    
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     return cartItems;
   };

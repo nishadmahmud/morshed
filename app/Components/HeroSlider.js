@@ -49,7 +49,7 @@ const HeroSlider = ({ slider, banner, data }) => {
         <div className="grid">
 
           {/* Slider Section */}
-          <div className="md:w-[100%] mx-auto w-full flex flex-col h-auto justify-center overflow-hidden relative  lg:mb-4">
+          <div className="md:w-[100%] mx-auto w-full flex flex-col justify-center overflow-hidden relative xl:h-[91vh] lg:h-[80vh] h-[35vh] lg:mb-4">
             
             <Swiper
               pagination={true}
