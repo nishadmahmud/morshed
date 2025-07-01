@@ -153,30 +153,7 @@ const ProductCard = ({ product }) => {
           )}
         </button>
 
-        {/* Quick Add to Cart - Shows on Hover (Desktop) or Always Visible (Mobile) */}
-        <div
-          className="
-          absolute bottom-2 left-2 right-2 
-          opacity-100 sm:opacity-0 sm:group-hover:opacity-100 
-          transition-all duration-300 transform 
-          translate-y-0 sm:translate-y-2 sm:group-hover:translate-y-0
-          sm:bottom-3 sm:left-3 sm:right-3
-        "
-        >
-          <button
-            onClick={() => handleBuy(product, 1)}
-            className="
-              w-full bg-teal-600 text-white py-2 px-2 rounded-md 
-              font-medium hover:bg-teal-700 transition-colors duration-200 
-              flex items-center justify-center gap-2
-              text-sm sm:text-base
-            "
-          >
-            <ShoppingCart className="w-3 h-3 sm:w-4 sm:h-4" />
-            <span className="hidden xs:inline sm:inline">Buy Now</span>
-            <span className="xs:hidden sm:hidden">Buy</span>
-          </button>
-        </div>
+       
       </div>
 
       {/* Product Info */}
