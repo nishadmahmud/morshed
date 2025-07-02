@@ -37,7 +37,7 @@ const BannerSection = ({ banner, categories }) => {
               alt="Main Model"
               fill
               className="object-cover"
-              unoptimized
+              
             />
           ) : (
             <div className="bg-gray-300 w-full h-full" />

@@ -108,7 +108,7 @@ const Navbar = ({ data, openCart, setOpenCart, setIsLoginModal }) => {
                 className="flex flex-col items-center text-sm text-[#115e59]"
               >
                 <Image
-                  unoptimized
+                  
                   className="border-2 p-0.5 border-[#115e59] rounded-full"
                   src={loginLogo}
                   alt="navLogo"

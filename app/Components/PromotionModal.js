@@ -52,7 +52,7 @@ const PromotionModal = () => {
                 {/* Image Container */}
                 <div className="relative aspect-[16/8] w-full h-full flex justify-center items-center">
                     {lastImage ? (
-                        <Image unoptimized className='rounded-md' src={lastImage} priority={true} alt='promo' fill style={{ objectFit: 'cover' }} />
+                        <Image  className='rounded-md' src={lastImage} priority={true} alt='promo' fill style={{ objectFit: 'cover' }} />
                     ) : (
                         <div>
                             <FadeLoader color='#115e59' />

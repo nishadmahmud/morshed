@@ -28,7 +28,7 @@ const CartPage = () => {
     if (country?.value === "BD") {
       return item?.retails_price ?? 0;
     } else {
-      return item?.wholesale_price ?? 0;
+      return item?.intl_retails_price ?? 0;
     }
   };
 
@@ -40,16 +40,24 @@ const CartPage = () => {
 
     const discount = cartItems.reduce((prev, item) => {
       let discountAmount = 0;
-      if (item.discount_type === "Fixed") {
-        discountAmount = (item.discount || 0) * item.quantity;
-      } else if (item.discount_type === "Percentage") {
-        discountAmount = ((item.retails_price * (item.discount || 0)) / 100) * item.quantity;
+      if(country.value == "BD"){
+        if (item.discount_type === "Fixed") {
+          discountAmount = (item.discount || 0) * item.quantity;
+        } else if (item.discount_type === "Percentage") {
+          discountAmount = ((item.retails_price * (item.discount || 0)) / 100) * item.quantity;
+        }
+      }else{
+        if (item.discount_type === "Fixed") {
+          discountAmount = (item.intl_discount || 0) * item.quantity;
+        } else if (item.discount_type === "Percentage") {
+          discountAmount = ((item.intl_retails_price * (item.intl_discount || 0)) / 100) * item.quantity;
+        }
       }
       return prev + discountAmount;
     }, 0);
 
     const subtotal = cartItems.reduce((acc, item) => {
-      const price = Number(item?.retails_price) || 0;
+      const price = country.value == "BD" ?  Number(item?.retails_price) : Number(item?.intl_retails_price) || 0;
       return acc + price * item.quantity;
     }, 0);
 

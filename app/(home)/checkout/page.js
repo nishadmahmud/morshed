@@ -25,17 +25,22 @@ const CheckoutPage = () => {
     if (country && country.value === "BD") {
       return productPrice?.basePrice || item?.retails_price || 0
     } else {
-      return productPrice?.wholesalePrice || item?.wholesale_price || 1000
+      return productPrice?.intl_retails_price || item?.intl_retails_price || 1000
     }
   }
 
  
   const Subtotal = cartItems.reduce((prev, curr) => {
     const basePrice = getPriceByCountry(curr)
-    const priceAfterDiscount = curr.discount
+    const priceAfterDiscount = country?.value === "BD" ? curr.discount
       ? curr.discount_type === "Fixed"
         ? basePrice - curr.discount
         : basePrice - (basePrice * curr.discount) / 100
+      : basePrice 
+      : curr.discount
+      ? curr.discount_type === "Fixed"
+        ? basePrice - curr.intl_discount
+        : basePrice - (basePrice * curr.intl_discount) / 100
       : basePrice
 
     return prev + priceAfterDiscount * curr.quantity
@@ -75,7 +80,6 @@ const CheckoutPage = () => {
       })
 
       const data = response.data
-      console.log(data)
 
       if (data?.success && data?.data?.amount) {
         setCouponAmount(data.data.amount)

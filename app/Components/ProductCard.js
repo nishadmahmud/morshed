@@ -18,9 +18,9 @@ const ProductCard = ({ product }) => {
 
   useEffect(() => {
     if (product?.id && product?.retails_price) {
-      setProductPrice(product.id, product?.retails_price, product?.wholesale_price || null)
+      setProductPrice(product.id, product?.retails_price, product?.intl_retails_price || null)
     }
-  }, [product.id, product.retails_price, product.wholesale_price])
+  }, [product.id, product.retails_price, product.intl_retails_price])
 
   const productPrice = prices[product.id]
 
@@ -28,16 +28,21 @@ const ProductCard = ({ product }) => {
     if (country && country.value === "BD") {
       return productPrice?.basePrice || product?.retails_price || 0
     } else {
-      return productPrice?.wholesalePrice || product?.wholesale_price || 1000
+      return productPrice?.intl_retails_price  || 1000
     }
   }
 
-  const discountedPrice = product?.discount
+  const discountedPrice = country?.value === "BD"?
+    product?.discount
     ? product?.discount_type === "Percentage"
       ? (product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)
       : (product.retails_price - product.discount).toFixed(0)
     : null
-
+  :  product?.intl_discount
+    ? product?.discount_type === "Percentage"
+      ? (product.intl_retails_price - (product.intl_retails_price * product.intl_discount) / 100).toFixed(0)
+      : (product.intl_retails_price - product.intl_discount).toFixed(0)
+    : null
   const discountSuffix = product?.discount_type === "Percentage" ? "%" : product?.discount_type === "Fixed" ? "Tk" : ""
 
   const updateRecentViews = () => {
@@ -66,6 +71,8 @@ const ProductCard = ({ product }) => {
       .replace(/\s+/g, "-")
       .replace(/[^a-z0-9-]/g, "")
   }
+
+  
 
   return (
     <div

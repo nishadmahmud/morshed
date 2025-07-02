@@ -34,7 +34,7 @@ const Brands = ({ brands }) => {
                         brands.data.slice(0, brandCount).map((item) => (
                             <Link key={item.id} href={`/brands/${item.id}?brand=${item.name}`} className='bg-white rounded-sm xl:px-20 md:px-10 px-5 py-1'>
                                 <Image
-                                    unoptimized
+                                    
                                     alt={item.name}
                                     src={item.image_path}
                                     height={105}

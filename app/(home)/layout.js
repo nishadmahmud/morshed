@@ -6,9 +6,6 @@ import StoreProvider from "../StoreContext/store";
 import AvatarChat from "../Components/AvatarChat";
 import { userId } from "./page";
 import { Suspense } from "react";
-import Loader from "../Components/Loader";
-import Compare from "../Components/Compare";
-import TawkTo from "../Components/TawkTo";
 import { Toaster } from "react-hot-toast";
 
 const geistSans = localFont({
@@ -30,7 +27,7 @@ export const metadata = {
 
 
 export default async function RootLayout({ children }) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`,{cache : 'no-cache'});
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`,{next: {revalidate : 360}});
   const data = await res.json();
   return (
     <html lang="en">

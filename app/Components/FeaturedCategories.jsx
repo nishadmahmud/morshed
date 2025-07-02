@@ -110,7 +110,7 @@ const FeaturedCategories = ({ categories }) => {
                     xl:h-[240px]"
                   >
                     <Image
-                      unoptimized
+                      
                       src={category.image_url || noImg}
                       alt={category.name || "category"}
                       fill

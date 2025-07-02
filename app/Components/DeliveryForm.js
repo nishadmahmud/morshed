@@ -113,13 +113,8 @@ const DeliveryForm = ({
     googleLogin,
     setUserInfo,
     getCartItems,
-    isRegistered,
-    setIsRegistered,
-    prices,
-    setProductPrice,
   } = useStore();
 
-  console.log(country);
 
   // State declarations
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -127,13 +122,9 @@ const DeliveryForm = ({
   const [isCod, setIsCod] = useState(true);
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
   const [user, setUser] = useState(null);
-  const [userEmail, setUserEmail] = useState(null);
   const [location, setLocation] = useState("inside");
   const [couponValue, setCouponValue] = useState(couponAmount);
   const [loading, setLoading] = useState(true);
-  const [totalDiscount, setTotalDiscount] = useState(0);
-  const [totalSubtotalWithoutDiscount, setTotalSubtotalWithoutDiscount] =
-    useState(0);
   const [reload, setReload] = useState(false);
   const [cartTotal, setCartTotal] = useState(0);
   const [cartItems, setCartItems] = useState([]);
@@ -156,25 +147,7 @@ const DeliveryForm = ({
 
   // Use refs to prevent recreating objects
   const userDataRef = useRef(null);
-  const isInitializedRef = useRef(false);
 
-  // Initialize userData once
-  // useEffect(() => {
-  //   if (!isInitializedRef.current) {
-  //     try {
-  //       const storedUser = localStorage.getItem("user")
-  //       if (storedUser) {
-  //         const parsedUser = JSON.parse(storedUser)
-  //         userDataRef.current = parsedUser
-  //         setUser(parsedUser)
-  //         setUserEmail(parsedUser?.email || null)
-  //       }
-  //     } catch (err) {
-  //       console.error("Failed to parse user from localStorage", err)
-  //     }
-  //     isInitializedRef.current = true
-  //   }
-  // }, [])
 
   // Memoize stable values
   const userData = userDataRef.current;
@@ -235,22 +208,19 @@ const DeliveryForm = ({
 
   useEffect(() => {
     const items = getCartItems();
-    if(items.length){
+    if (items.length) {
       setCartItems(items);
       setLoading(false);
-      const total = items.reduce((prev,curr) => country.value === "BD" ? prev + curr.retails_price : prev + curr.wholesale_price ,0);
-      console.log(total);
+      const total = items.reduce((prev, curr) => country.value === "BD" ? prev + curr.retails_price : prev + curr?.intl_retails_price, 0);
       setCartTotal(total);
       setOrderSchema((prev) => ({
         ...prev,
-        sub_total : cartTotal
+        sub_total: cartTotal
       }))
     }
   }, [getCartItems]);
 
-  
 
-  // Initialize cart items once and calculate totals
   // useEffect(() => {
   //   try {
   //     // Calculate totals immediately
@@ -341,9 +311,8 @@ const DeliveryForm = ({
       }),
       created_at: date,
       customer_id: customer_id || null,
-      customer_name: `${formData.firstName || firstName}+${
-        formData.lastName || lastName
-      }`,
+      customer_name: `${formData.firstName || firstName}+${formData.lastName || lastName
+        }`,
       customer_phone: customer_phone,
       sales_id: userId,
       user_id: userId,
@@ -386,6 +355,17 @@ const DeliveryForm = ({
     try {
       const response = await googleLogin();
       const result = response.user;
+      console.log(result)
+      try {
+        await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/customer-registration`,
+          { name: result.displayName, phone: result.phoneNumber, email: result.email, password: result.uid, user_id: String(userId) },
+          { headers: { "Content-Type": "application/json" } }
+        );
+      } catch (error) {
+        console.warn(error.message);
+      }
+
       const loginResponse = await axios.post(
         `${process.env.NEXT_PUBLIC_API}/customer-login`,
         { email: result.email, password: result.uid, user_id: String(userId) },
@@ -400,6 +380,19 @@ const DeliveryForm = ({
       setToken(loginResponse.data.token);
       toast.success("Login Successful!");
       setUserInfo(loginResponse?.data?.customer);
+      setOrderSchema({
+        ...orderSchemaState,
+        customer_name: result.displayName,
+        customer_phone: result.phoneNumber,
+        customer_email: result.email
+      })
+      setFormData({
+        ...formData,
+        firstName: result.displayName,
+        phone: result.phoneNumber,
+        email: result.email
+      })
+      console.log(loginResponse?.data)
       localStorage.setItem(
         "user",
         JSON.stringify(loginResponse?.data?.customer)
@@ -585,6 +578,18 @@ const DeliveryForm = ({
     modal[1](false);
   }, [modal]);
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user")) || null;
+    if(user){
+      setFormData({
+        ...formData,
+        firstName : user.name,
+        email : user.email,
+        phone : user.phone || null
+      })
+    }
+  },[])
+
   return (
     <div className="space-y-4">
       <form onSubmit={handleOrderComplete} className="space-y-8">
@@ -605,11 +610,15 @@ const DeliveryForm = ({
           </div>
 
           <div className="text-black mb-5">
-            <button type="button" onClick={handleGoogleLogin}>
-              <FcGoogle size={25} />
-            </button>
-            <br />
-            <span>or</span>
+            {
+              orderSchema.customer_name && orderSchema.email && <>
+                <button type="button" onClick={handleGoogleLogin}>
+                  <FcGoogle size={25} />
+                </button>
+                <br />
+                <span>or</span>
+              </>
+            }
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -622,8 +631,7 @@ const DeliveryForm = ({
               <input
                 type="text"
                 name="firstName"
-                defaultValue={firstName || ""}
-                value={formData.firstName || firstName || ""}
+                value={formData.firstName}
                 onChange={handleChange}
                 placeholder="Enter your first name"
                 required
@@ -634,16 +642,14 @@ const DeliveryForm = ({
             {/* Last Name */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Last Name <span className="text-red-600">*</span>
+                Last Name
               </label>
               <input
                 type="text"
                 name="lastName"
-                defaultValue={lastName || ""}
-                value={formData.lastName || lastName || ""}
+                value={formData.lastName}
                 onChange={handleChange}
                 placeholder="Enter your last name"
-                required
                 className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
               />
             </div>
@@ -657,8 +663,7 @@ const DeliveryForm = ({
               <input
                 type="email"
                 name="email"
-                defaultValue={userData?.email || ""}
-                value={formData?.email || userData?.email || ""}
+                value={formData?.email}
                 onChange={handleChange}
                 placeholder="Enter your email"
                 className="w-full dark:bg-white text-black px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
@@ -701,26 +706,26 @@ const DeliveryForm = ({
 
             {/* Select country */}
 
-           <div className="md:col-span-1">
+            <div className="md:col-span-1">
 
-             <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
                 <GiWorld className="inline h-4 w-4 mr-1" />
                 Select Country <span className="text-red-600">*</span>
               </label>
 
-            <select className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors">
-              <option className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors">
-                Bangladesh
-              </option>
-              <option>
-                USA
-              </option>
-              <option>
-                UK
-              </option>
-            </select>
+              <select className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors">
+                <option className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors">
+                  Bangladesh
+                </option>
+                <option>
+                  USA
+                </option>
+                <option>
+                  UK
+                </option>
+              </select>
 
-           </div>
+            </div>
 
             {/* Address */}
             <div className="md:col-span-2">
@@ -774,11 +779,10 @@ const DeliveryForm = ({
           </div>
           <div className="space-y-3">
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                location === "inside"
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "inside"
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <input
                 type="radio"
@@ -790,11 +794,10 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    location === "inside"
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "inside"
                       ? "border-blue-500"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   {location === "inside" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -815,11 +818,10 @@ const DeliveryForm = ({
             </label>
 
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                location === "outside"
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "outside"
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <input
                 type="radio"
@@ -831,11 +833,10 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    location === "outside"
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "outside"
                       ? "border-blue-500"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   {location === "outside" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -881,11 +882,10 @@ const DeliveryForm = ({
           </div>
           <div className="space-y-3">
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                payment === "Cash"
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${payment === "Cash"
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <input
                 type="radio"
@@ -900,9 +900,8 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    payment === "Cash" ? "border-blue-500" : "border-gray-300"
-                  }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${payment === "Cash" ? "border-blue-500" : "border-gray-300"
+                    }`}
                 >
                   {payment === "Cash" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -923,7 +922,7 @@ const DeliveryForm = ({
           {!isCod && (
             <div className="mt-4 p-4 bg-gray-50 rounded-lg">
               {paymentMethods?.data?.data &&
-              paymentMethods?.data?.data?.length > 0 ? (
+                paymentMethods?.data?.data?.length > 0 ? (
                 (() => {
                   const otherMethods = paymentMethods?.data?.data?.filter(
                     (item) => item?.type_name !== "Cash"
@@ -934,15 +933,14 @@ const DeliveryForm = ({
                         <div
                           onClick={() => handlePaymentMethod(item)}
                           key={item.id}
-                          className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${
-                            item?.payment_type_category[0]
+                          className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${item?.payment_type_category[0]
                               ?.payment_category_name === payment
                               ? "border-blue-500 bg-blue-50"
                               : "border-gray-200 hover:border-gray-300"
-                          }`}
+                            }`}
                         >
                           <Image
-                            unoptimized
+
                             src={item?.icon_image || "/placeholder.svg"}
                             alt={
                               item?.payment_type_category[0]
@@ -1000,11 +998,10 @@ const DeliveryForm = ({
           </div>
           <div className="space-y-3">
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                billingSameAsShipping
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${billingSameAsShipping
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <input
                 type="radio"
@@ -1016,11 +1013,10 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    billingSameAsShipping
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${billingSameAsShipping
                       ? "border-blue-500"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   {billingSameAsShipping && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -1033,11 +1029,10 @@ const DeliveryForm = ({
             </label>
 
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                !billingSameAsShipping
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${!billingSameAsShipping
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <input
                 type="radio"
@@ -1049,11 +1044,10 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    !billingSameAsShipping
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${!billingSameAsShipping
                       ? "border-blue-500"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   {!billingSameAsShipping && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -1174,20 +1168,19 @@ const DeliveryForm = ({
                   (typeof donation === "number" &&
                     Number(selectedDonate) === donation);
                 const displayText =
-                  typeof donation === "number" ? `Tk ${donation}` : donation;
+                  typeof donation === "number" ? `${donation}` : donation;
 
                 return (
                   <button
                     type="button"
                     key={donation}
                     onClick={() => handleDonationClick(donation)}
-                    className={`px-4 py-2 rounded-full border text-sm ${
-                      isSelected
+                    className={`px-4 py-2 rounded-full border text-sm ${isSelected
                         ? "bg-gray-800 text-white border-gray-800"
                         : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
-                    }`}
+                      }`}
                   >
-                    {displayText}
+                    {country?.value === "BD" ? `Tk ${displayText}` : `$ ${displayText}`}
                   </button>
                 );
               })}
@@ -1247,7 +1240,7 @@ const DeliveryForm = ({
 
       <Dialog
         open={showWheelModal}
-        onClose={() => {}}
+        onClose={() => { }}
         className="relative z-50"
       >
         <div className="fixed inset-0 bg-black/40" aria-hidden="true" />

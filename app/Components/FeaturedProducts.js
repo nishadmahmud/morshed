@@ -58,7 +58,7 @@ const FeaturedProducts = ({ banner }) => {
         <div className="flex mt-5 lg:col-span-3">
           <div className="w-full md:h-[65vh] h-[40vh] object-cover">
             <Image
-            unoptimized
+            
               width={400}
               height={600}
               src={banner.data[2].image_path || noImg}
@@ -77,7 +77,7 @@ const FeaturedProducts = ({ banner }) => {
                 <div key={index} className="bg-white p-3 rounded-xl mt-5 flex justify-between items-center gap-3">
                  <div className="flex items-center gap-2">
                  <div>
-                    <Image unoptimized className="w-9 md:w-20" alt={product.name} width={80} height={80} src={product.image_path || noImg}></Image>
+                    <Image  className="w-9 md:w-20" alt={product.name} width={80} height={80} src={product.image_path || noImg}></Image>
                   </div>
 
                   <div> 

@@ -62,7 +62,7 @@ const WishlistPage = () => {
                   width={300}
                   height={200}
                   className="object-cover w-full h-40 rounded"
-                  unoptimized
+                  
                 />
               </Link>
               <div className="mt-2">

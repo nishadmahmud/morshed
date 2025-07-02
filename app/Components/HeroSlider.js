@@ -74,7 +74,7 @@ const HeroSlider = ({ slider, banner, data }) => {
                     <SwiperSlide key={idx} className="relative w-full">
                       <Link href={productLink}>
                         <Image
-                          unoptimized
+                          
                           src={img}
                           priority={idx === 0}
                           alt={product?.name || "slider-image"}

@@ -18,7 +18,7 @@ export default function Footer() {
       <div className="space-y-6 flex flex-col items-center md:items-start">
         <Link href="/">
           <Image
-            unoptimized
+            
             src={companyLogo || noImg}
             alt="Morshed Mart Logo"
             width={150}

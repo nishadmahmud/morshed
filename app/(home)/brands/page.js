@@ -83,7 +83,7 @@ const Page = () => {
                     className={`flex items-center gap-3 font-semibold text-black text-sm rounded-full px-2 py-1 hover:text-gray-500 transition-transform duration-300 hover:filter hover:grayscale-[70%]`}
                   >
                     <Image
-                      unoptimized
+                      
                       alt={brand.name}
                       src={brand.image_path}
                       width={70}

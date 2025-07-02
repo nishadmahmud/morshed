@@ -8,11 +8,14 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import useWishlist from "@/app/CustomHooks/useWishlist"
 import Link from "next/link"
 import useStore from "@/app/CustomHooks/useStore"
+import ProductCard from "@/app/Components/ProductCard"
+import Pagination from "@/app/Components/pagination"
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
 export default function ProductListing({ params }) {
-  const searchParams = useSearchParams()
+  const searchParams = useSearchParams();
+  const { country } = useStore();
   const searchedCategory = searchParams.get("category") || "All Products"
   const searchedTotal = searchParams.get("total") || "100"
   const limit = 20;
@@ -24,14 +27,18 @@ export default function ProductListing({ params }) {
   const [priceRange, setPriceRange] = useState([0, 1000])
   const [selectedSizes, setSelectedSizes] = useState([])
   const [selectedColors, setSelectedColors] = useState([])
-  const [selectedBrands, setSelectedBrands] = useState([])
   const [isAccordionOpen, setIsAccordionOpen] = useState({
     price: true,
     size: true,
     color: true,
     brand: true,
-  })
-  
+  });
+  const [brands, setBrands] = useState([]);
+  const [selectedBrand, setSelectedBrand] = useState("")
+
+
+  const [minimum, setMinimum] = useState(0);
+
   const filterRef = useRef(null)
 
   const [currentPage, setCurrentPage] = useState(() => {
@@ -47,12 +54,12 @@ export default function ProductListing({ params }) {
   )
 
 
-  
-
 
   useEffect(() => {
-    if (products) {
-      setFilteredItems(products.data)
+    if (products?.data && products?.data?.length) {
+      setFilteredItems(products.data);
+      const brands = [...new Set(products.data.map(item => item.brand_name))];
+      setBrands(brands);
     }
   }, [products])
 
@@ -67,16 +74,11 @@ export default function ProductListing({ params }) {
       filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name))
     } else if (sortBy === "z-a") {
       filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name))
-    } 
-
-   
-    if (selectedSizes.length > 0 || selectedColors.length > 0 || selectedBrands.length > 0) {
-      
-      console.log("Filtering by:", { selectedSizes, selectedColors, selectedBrands, priceRange })
     }
 
+
     setFilteredItems(filtered)
-  }, [sortBy, products, selectedSizes, selectedColors, selectedBrands, priceRange])
+  }, [sortBy, products, selectedSizes, selectedColors, priceRange])
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -98,6 +100,18 @@ export default function ProductListing({ params }) {
     }
   }, [isFilterOpen])
 
+
+  useEffect(() => {
+    if (products?.data && products?.data?.length) {
+      const prices = country?.value === "BD" ? products.data.map(item => item.retails_price) : products.data.map(item => item.intl_retails_price ? item.intl_retails_price : 0);
+      const maximum = Math.max(...prices);
+      const minimum = Math.min(...prices);
+      setPriceRange([minimum, maximum]);
+      setMinimum(minimum);
+
+    }
+  }, [country?.value, products?.data])
+
   // Available filter options (would come from API in real app)
   const availableSizes = ["XS", "S", "M", "L", "XL", "XXL"]
   const availableColors = ["Black", "White", "Blue", "Red", "Green", "Grey", "Beige"]
@@ -111,14 +125,10 @@ export default function ProductListing({ params }) {
     setSelectedColors((prev) => (prev.includes(color) ? prev.filter((c) => c !== color) : [...prev, color]))
   }
 
-  const handleBrandToggle = (brand) => {
-    setSelectedBrands((prev) => (prev.includes(brand) ? prev.filter((b) => b !== brand) : [...prev, brand]))
-  }
 
   const clearAllFilters = () => {
     setSelectedSizes([])
     setSelectedColors([])
-    setSelectedBrands([])
     setPriceRange([0, 1000])
   }
 
@@ -128,6 +138,14 @@ export default function ProductListing({ params }) {
       [section]: !prev[section],
     }))
   }
+
+  useEffect(() => {
+    if (products?.data) {
+      const rangedProducts = [...products.data.filter(item => country?.value === "BD" ? item.retails_price >= priceRange[0] && item.retails_price <= priceRange[1] : item.intl_retails_price >= priceRange[0] && item.intl_retails_price <= priceRange[1])];
+      setFilteredItems(rangedProducts);
+    }
+  }, [priceRange[0], country?.value])
+
 
 
   return (
@@ -179,7 +197,7 @@ export default function ProductListing({ params }) {
                 onChange={(e) => setSortBy(e.target.value)}
               >
                 <option value="">Sort by</option>
-               
+
                 <option value="low-to-high">Price: Low to High</option>
                 <option value="high-to-low">Price: High to Low</option>
                 <option value="a-z">Name: A to Z</option>
@@ -201,7 +219,7 @@ export default function ProductListing({ params }) {
           <div className="sticky top-24">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-lg font-medium">Filters</h2>
-              {(selectedSizes.length > 0 || selectedColors.length > 0 || selectedBrands.length > 0) && (
+              {(selectedSizes.length > 0 || selectedColors.length > 0) && (
                 <button className="text-sm text-gray-500 hover:text-gray-700" onClick={clearAllFilters}>
                   Clear all
                 </button>
@@ -231,15 +249,15 @@ export default function ProductListing({ params }) {
                     <div className="relative pt-5 pb-6">
                       <input
                         type="range"
-                        min="0"
-                        max="1000"
-                        value={priceRange[1]}
-                        onChange={(e) => setPriceRange([priceRange[0], Number.parseInt(e.target.value)])}
+                        min={minimum}
+                        max={priceRange[1]}
+                        value={priceRange[0]}
+                        onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                       />
                       <div className="flex items-center justify-between mt-2">
-                        <span>${priceRange[0]}</span>
-                        <span>${priceRange[1]}</span>
+                        <span>{country?.value === "BD" ? "৳" : "$"} {priceRange[0]}</span>
+                        <span>{country?.value === "BD" ? "৳" : "$"} {priceRange[1]}</span>
                       </div>
                     </div>
                   </div>
@@ -247,7 +265,7 @@ export default function ProductListing({ params }) {
               </div>
 
               {/* Size */}
-              <div className="border-b border-gray-200 pb-4">
+              {/* <div className="border-b border-gray-200 pb-4">
                 <button
                   className="flex w-full items-center justify-between py-3 text-base font-medium"
                   onClick={() => toggleAccordion("size")}
@@ -268,11 +286,10 @@ export default function ProductListing({ params }) {
                     {availableSizes.map((size) => (
                       <button
                         key={size}
-                        className={`h-9 text-sm font-medium border rounded-md ${
-                          selectedSizes.includes(size)
+                        className={`h-9 text-sm font-medium border rounded-md ${selectedSizes.includes(size)
                             ? "bg-gray-900 text-white border-gray-900"
                             : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                        }`}
+                          }`}
                         onClick={() => handleSizeToggle(size)}
                       >
                         {size}
@@ -280,6 +297,35 @@ export default function ProductListing({ params }) {
                     ))}
                   </div>
                 )}
+              </div> */}
+
+
+              {/* Brands */}
+
+              <div>
+                <h2>Brands</h2>
+                {
+                  brands.length ?
+                    brands.map(item => (
+                      (
+                        <div key={item} className="flex items-center gap-3 text-base">
+                          <input checked={item === selectedBrand} type="checkbox" onChange={() => {
+                            setSelectedBrand(item)
+                            if (item === selectedBrand) {
+                              setSelectedBrand("");
+                              setFilteredItems(products.data);
+                            } else {
+                              const filtered = products.data.filter(pdt => pdt.brand_name === item);
+                              setFilteredItems(filtered);
+                              setSelectedBrand(item);
+                            }
+                          }} />
+                          <label>{item}</label>
+                        </div>
+                      )
+                    )) :
+                    ""
+                }
               </div>
 
               {/* Color */}
@@ -461,11 +507,10 @@ export default function ProductListing({ params }) {
                         {availableSizes.map((size) => (
                           <button
                             key={size}
-                            className={`h-9 text-sm font-medium border rounded-md ${
-                              selectedSizes.includes(size)
-                                ? "bg-gray-900 text-white border-gray-900"
-                                : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                            }`}
+                            className={`h-9 text-sm font-medium border rounded-md ${selectedSizes.includes(size)
+                              ? "bg-gray-900 text-white border-gray-900"
+                              : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
+                              }`}
                             onClick={() => handleSizeToggle(size)}
                           >
                             {size}
@@ -576,7 +621,7 @@ export default function ProductListing({ params }) {
         {/* Product Grid */}
         <div className="flex-1">
           {/* Active Filters */}
-          {(selectedSizes.length > 0 || selectedColors.length > 0 || selectedBrands.length > 0) && (
+          {(selectedSizes.length > 0 || selectedColors.length > 0) && (
             <div className="flex flex-wrap gap-2 mb-6">
               {selectedSizes.map((size) => (
                 <span
@@ -604,7 +649,7 @@ export default function ProductListing({ params }) {
               ))}
 
               {/* =======color======= */}
-              
+
               {/* {selectedColors.map((color) => (
                 <span
                   key={`badge-color-${color}`}
@@ -629,7 +674,7 @@ export default function ProductListing({ params }) {
                   </button>
                 </span>
               ))} */}
-              
+
               {/* {selectedBrands.map((brand) => (
                 <span
                   key={`badge-brand-${brand}`}
@@ -720,148 +765,7 @@ export default function ProductListing({ params }) {
   )
 }
 
-// Product Card Component
-function ProductCard({ product }) {
-  const [isHovered, setIsHovered] = useState(false)
-  const { toggleWishlist, isInWishlist } = useWishlist();
-  const {  prices, country, setProductPrice } = useStore()
 
-
-  // price showing based on country
-const selectedCountry = JSON.parse(localStorage.getItem("selectedCountry"))
-const countrySign = selectedCountry?.value === "BD" ? "৳" : "$"
-console.log(product);
-const productPrice = prices[product.id]
-
-  const getPriceByCountry = () => {
-    if (country && country.value === "BD") {
-      return productPrice?.basePrice || product?.retails_price || 0
-    } else {
-      return productPrice?.wholesalePrice || product?.wholesale_price || 1000
-    }
-  }
-
-const sanitizeSlug = (str) => {
-    return str
-      ?.toLowerCase()
-      .split(" ")
-      .slice(0, 2)
-      .join(" ")
-      .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "");
-  };
-
-  const updateRecentViews = () => {
-      if (!product?.id) return;
-      let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-      recentViews = recentViews.filter((p) => p.id !== product.id);
-      recentViews.unshift({
-        id: product.id,
-        name: product.name,
-        image: product.image_path || product.images?.[0] || noImg.src,
-        price: product.retails_price,
-        discount: product.discount || 0,
-      });
-      if (recentViews.length > 6) recentViews.pop();
-      localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
-    };
-  
-
-  return (
-    <div className="group relative" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
-      <div className="aspect-[3/4] overflow-hidden rounded-md bg-gray-100 relative">
-       <Link href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-        onClick={updateRecentViews}>
-
-         <Image
-        width={500}
-        height={500}
-          src={product.image_path || noImg}
-          alt={product.name}
-          className="h-full w-full object-cover object-center transition-transform duration-300 group-hover:scale-105"
-        />
-       </Link>
-
-        {/* Quick actions */}
-         <div
-                className="absolute top-5 right-3 p-1.5 bg-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 cursor-pointer z-10"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  toggleWishlist(product);
-                }}
-                title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
-              >
-                {isInWishlist(product.id) ? (
-                  <FaHeart
-                    color="teal"
-                    size={18}
-                    className="transition-all duration-300 animate-heart-bounce"
-                  />
-                ) : (
-                  <FaRegHeart color="black" size={18} className="transition-all duration-300" />
-                )}
-              </div>
-
-        {/* New badge */}
-        {product.is_new && (
-          <div className="absolute top-2 left-2">
-            <span className="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-black text-white">
-              New
-            </span>
-          </div>
-        )}
-
-        {/* Quick shop button */}
-        <z
-          className={`absolute bottom-0 inset-x-0 flex justify-center p-4 transition-all duration-200 ${isHovered ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"}`}
-        >
-          <Link  href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-        onClick={updateRecentViews} className="w-full mx-auto text-center py-2 px-4 bg-gray-900 text-white rounded-md hover:bg-gray-800 transition-colors">
-            Quick Shop
-          </Link>
-        </z>
-      </div>
-
-      <div className="mt-3">
-        <div className="flex justify-between">
-          <h3 className="text-sm font-medium text-gray-900 truncate">{product.name}</h3>
-          <div className="flex items-center">
-            {product.discount_price ? (
-              <div className="flex flex-col items-end">
-                {!countrySign ? <>
-                <span className="text-sm font-medium text-gray-900">{countrySign}{product.discount_price}</span>
-                </>: ""}
-                <span className="text-xs text-gray-500 line-through">{countrySign}{getPriceByCountry()}</span>
-              </div>
-            ) : (
-              <span className="text-sm font-medium text-gray-900">{countrySign}{getPriceByCountry()}</span>
-            )}
-          </div>
-        </div>
-        <p className="mt-1 text-sm text-gray-500">{product.brand}</p>
-
-        {/* Color options */}
-        <div className="mt-2 flex gap-1">
-          {product.colors &&
-            product.colors.slice(0, 3).map((color, index) => (
-              <div
-                key={index}
-                className="h-3 w-3 rounded-full border"
-                style={{
-                  backgroundColor: color.toLowerCase(),
-                  borderColor: color.toLowerCase() === "white" ? "#e5e7eb" : color.toLowerCase(),
-                }}
-                title={color}
-              ></div>
-            ))}
-          {product.colors && product.colors.length > 3 && (
-            <span className="text-xs text-gray-500">+{product.colors.length - 3}</span>
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
 
 // Product Card Skeleton
 function ProductCardSkeleton() {
@@ -876,97 +780,3 @@ function ProductCardSkeleton() {
   )
 }
 
-// Pagination Component
-function Pagination({ currentPage, totalPages, onPageChange }) {
-  const pages = []
-
-  // Create array of page numbers to display
-  if (totalPages <= 5) {
-    for (let i = 1; i <= totalPages; i++) {
-      pages.push(i)
-    }
-  } else {
-    if (currentPage <= 3) {
-      pages.push(1, 2, 3, 4, "...", totalPages)
-    } else if (currentPage >= totalPages - 2) {
-      pages.push(1, "...", totalPages - 3, totalPages - 2, totalPages - 1, totalPages)
-    } else {
-      pages.push(1, "...", currentPage - 1, currentPage, currentPage + 1, "...", totalPages)
-    }
-  }
-
-  return (
-    <div className="flex items-center gap-1">
-      <button
-        className={`flex items-center justify-center w-8 h-8 rounded-md border ${
-          currentPage === 1
-            ? "border-gray-200 text-gray-400 cursor-not-allowed"
-            : "border-gray-300 text-gray-700 hover:bg-gray-50"
-        }`}
-        onClick={() => onPageChange(Math.max(1, currentPage - 1))}
-        disabled={currentPage === 1}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="rotate-90"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-        <span className="sr-only">Previous page</span>
-      </button>
-
-      {pages.map((page, index) => (
-        <React.Fragment key={index}>
-          {page === "..." ? (
-            <span className="px-3 py-2 text-gray-500">...</span>
-          ) : (
-            <button
-              className={`min-w-[2.5rem] h-8 px-3 rounded-md text-sm font-medium ${
-                currentPage === page
-                  ? "bg-gray-900 text-white"
-                  : "bg-white text-gray-700 border border-gray-300 hover:bg-gray-50"
-              }`}
-              onClick={() => onPageChange(page)}
-            >
-              {page}
-            </button>
-          )}
-        </React.Fragment>
-      ))}
-
-      <button
-        className={`flex items-center justify-center w-8 h-8 rounded-md border ${
-          currentPage === totalPages
-            ? "border-gray-200 text-gray-400 cursor-not-allowed"
-            : "border-gray-300 text-gray-700 hover:bg-gray-50"
-        }`}
-        onClick={() => onPageChange(Math.min(totalPages, currentPage + 1))}
-        disabled={currentPage === totalPages}
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          className="-rotate-90"
-        >
-          <polyline points="6 9 12 15 18 9"></polyline>
-        </svg>
-        <span className="sr-only">Next page</span>
-      </button>
-    </div>
-  )
-}

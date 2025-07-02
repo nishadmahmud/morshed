@@ -2,7 +2,7 @@
 import {
   Modal,
   Box,
- 
+
   Tab,
   Tabs,
   Typography,
@@ -46,34 +46,33 @@ const ProductPage = ({ params }) => {
   const [relatedProducts, setRelatedProducts] = useState([])
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
-    const { toggleWishlist, isInWishlist } = useWishlist();
-    const { handleCart, convertedPrice, selectedCountry, getCartItems, refetch, setRefetch, prices, country, setProductPrice, handleBuy } = useStore()
-// const { selectedCountry, setSelectedCountry } = useContext(storeContext);
-// console.log(selectedCountry);
-    // size guide modal
+  const { toggleWishlist, isInWishlist } = useWishlist();
+  const { handleCart, convertedPrice, selectedCountry, getCartItems, refetch, setRefetch, prices, country, setProductPrice, handleBuy } = useStore()
+  // const { selectedCountry, setSelectedCountry } = useContext(storeContext);
+  // console.log(selectedCountry);
+  // size guide modal
 
-console.log(relatedProducts);
 
-   const [open, setOpen] = useState(false);
-    const [tab, setTab] = useState(0);
-  
-    const handleOpen = () => setOpen(true);
-    const handleClose = () => setOpen(false);
-    const handleTabChange = (event, newValue) => setTab(newValue);
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState(0);
 
-    const inches = [
-      ["CHEST", "40", "42", "44", "46", "48"],
-      ["LENGTH", "28", "39", "30", "31", "31.5"],
-      ["COLLAR", "15", "15.5", "16", "16.5", "17"],
-    ];
-  
-    // const cm = [
-    //   ["CHEST", "52.7", "55.2", "57.8", "61", "64.7", "69.2", "73"],
-    //   ["LENGTH", "132", "137", "137/142", "142/147", "152", "157", "162"],
-    //   ["COLLAR", "132", "137", "137/142", "142/147", "152", "157", "162"],
-    // ];
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleTabChange = (event, newValue) => setTab(newValue);
 
- 
+  const inches = [
+    ["CHEST", "40", "42", "44", "46", "48"],
+    ["LENGTH", "28", "39", "30", "31", "31.5"],
+    ["COLLAR", "15", "15.5", "16", "16.5", "17"],
+  ];
+
+  // const cm = [
+  //   ["CHEST", "52.7", "55.2", "57.8", "61", "64.7", "69.2", "73"],
+  //   ["LENGTH", "132", "137", "137/142", "142/147", "152", "157", "162"],
+  //   ["COLLAR", "132", "137", "137/142", "142/147", "152", "157", "162"],
+  // ];
+
+
 
   const [selectedSize, setSelectedSize] = useState("M")
 
@@ -82,7 +81,7 @@ console.log(relatedProducts);
     fetcher,
   )
 
-    useEffect(() => {
+  useEffect(() => {
     if (product?.data.id && product?.data.retails_price) {
       setProductPrice(
         product.data.id,
@@ -91,29 +90,37 @@ console.log(relatedProducts);
       );
     }
   }, []);
-console.log(product);
+
   const productPrice = prices[product?.data.id];
 
   const getPriceByCountry = () => {
     if (country && country.value === "BD") {
       return productPrice?.basePrice || product?.data.retails_price || 0;
     } else {
-      return productPrice?.wholesalePrice || product?.data.wholesale_price || 1000;
+      return productPrice?.intl_retails_price  || 1000;
     }
   };
 
 
-     const discountedPrice =
+  const discountedPrice = country?.value === "BD"?
     product?.data.discount_type === "Percentage"
       ? product?.data?.discount
-        ? ( product?.data?.retails_price -
-              ( product?.data?.retails_price * product?.data.discount) / 100
-          ).toFixed(0)
+        ? (product?.data?.retails_price -
+          (product?.data?.retails_price * product?.data.discount) / 100
+        ).toFixed(0)
         : null
-      : product?.data.retails_price - product?.data.discount
-console.log(discountedPrice);
+      : product?.data.retails_price - product?.data.discount 
+      :
+        product?.data.discount_type === "Percentage"
+      ? product?.data?.intl_discount
+        ? (product?.data?.intl_retails_price -
+          (product?.data?.intl_retails_price * product?.data.intl_discount) / 100
+        ).toFixed(0)
+        : null
+      : product?.data.intl_retails_price - product?.data.intl_discount
 
-  const fixedDiscount = product?.data.discount_type === "Fixed" ? "Tk" : null
+
+  const fixedDiscount = country?.value === "BD" ? product?.data.discount_type === "Fixed" ? "Tk" : null : product?.data.discount_type === "Fixed" ? "$" : null;
   const percentageDiscount = product?.data.discount_type === "Percentage" ? "%" : null
 
   useEffect(() => {
@@ -216,8 +223,8 @@ console.log(discountedPrice);
   //   })
   // }
 
-  
-const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
+
+  const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
 
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
   const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
@@ -247,14 +254,16 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
 
   const descriptionText = product?.data?.description
     ? htmlToText(product.data.description, {
-        wordwrap: false,
-        selectors: [{ selector: "a", options: { ignoreHref: true } }],
-      })
+      wordwrap: false,
+      selectors: [{ selector: "a", options: { ignoreHref: true } }],
+    })
     : null;
 
-      const isCartItem = cartItems.find(
+  const isCartItem = cartItems.find(
     (item) => item?.id === product?.data.id || undefined
   );
+
+
 
 
   return (
@@ -272,12 +281,11 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
                     <button
                       key={idx}
                       onClick={() => setImageIndex(idx)}
-                      className={`relative border rounded-md overflow-hidden ${
-                        imageIndex === idx ? "ring-2 ring-black" : ""
-                      }`}
+                      className={`relative border rounded-md overflow-hidden ${imageIndex === idx ? "ring-2 ring-black" : ""
+                        }`}
                     >
                       <Image
-                        unoptimized
+                        
                         src={image || noImg}
                         alt={`Product view ${idx + 1}`}
                         width={80}
@@ -293,22 +301,25 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
 
               {/* Main Image */}
               <div className="relative flex-1">
-                {product?.data?.discount > 0 && (
+                {country?.value === "BD" ? product?.data?.discount > 0 && (
                   <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
                     SAVE {product?.data?.discount} {fixedDiscount || percentageDiscount}
                   </div>
-                )}
+                ) : product?.data?.intl_discount > 0 && (
+                  <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
+                    SAVE {product?.data?.intl_discount} {fixedDiscount || percentageDiscount}
+                  </div>)}
                 {imageArray && imageArray.length > 0 ? (
                   <CursorImageZoom
-  src={imageArray[imageIndex]}
-  alt={product?.data?.name || noImg}
-  className="w-full xl:h-[65vh] md:h-[60vh] h-[42vh] rounded-lg"
-  zoomScale={2.5}
-/>
+                    src={imageArray[imageIndex]}
+                    alt={product?.data?.name || noImg}
+                    className="w-full xl:h-[65vh] md:h-[60vh] h-[42vh] rounded-lg"
+                    zoomScale={2.5}
+                  />
 
                 ) : product?.data?.image_path ? (
                   <Image
-                    unoptimized
+                    
                     src={product.data.image_path || noImg}
                     alt={product?.data?.name || "Product image"}
                     width={600}
@@ -328,22 +339,22 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
 
             <div className="flex items-center gap-3 mb-4">
               {!countrySign ? (<>
-              {product?.data?.discount > 0 && (
-                <span className="text-gray-500 line-through text-sm">৳{getPriceByCountry()}</span>
-              )}
-              </>): ""}
+                {product?.data?.discount > 0 && (
+                  <span className="text-gray-500 line-through text-sm">৳{getPriceByCountry()}</span>
+                )}
+              </>) : ""}
               <span className="text-2xl font-bold">
                 {countrySign}
-                {getPriceByCountry() ||discountedPrice}
+                {getPriceByCountry() || discountedPrice}
               </span>
               {
 
                 !countrySign ? <>
-                {product?.data?.discount > 0 && (
-                <span className="text-xs font-medium text-green-600 border border-green-600 px-2 py-0.5 rounded-full">
-                  {product?.data?.discount} {fixedDiscount || percentageDiscount} OFF
-                </span>
-              )}
+                  {product?.data?.discount > 0 && (
+                    <span className="text-xs font-medium text-green-600 border border-green-600 px-2 py-0.5 rounded-full">
+                      {product?.data?.discount} {fixedDiscount || percentageDiscount} OFF
+                    </span>
+                  )}
                 </> : ""
               }
             </div>
@@ -384,18 +395,17 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
               <div className="flex gap-3">
                 {product?.data?.product_variants && product.data.product_variants.length > 0
                   ? product.data.product_variants.map((variant) => (
-                      <button
-                        key={variant.name}
-                        onClick={() => setSelectedSize(variant?.name)}
-                        className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${
-                          selectedSize === variant.name
-                            ? "border-black bg-black text-white"
-                            : "border-gray-300 hover:border-gray-400"
+                    <button
+                      key={variant.name}
+                      onClick={() => setSelectedSize(variant?.name)}
+                      className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${selectedSize === variant.name
+                        ? "border-black bg-black text-white"
+                        : "border-gray-300 hover:border-gray-400"
                         }`}
-                      >
-                        {variant?.name}
-                      </button>
-                    ))
+                    >
+                      {variant?.name}
+                    </button>
+                  ))
                   : "No size availavle"}
               </div>
             </div>
@@ -431,35 +441,34 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
                   Buy Now
                 </button>
                 <button
-                onClick={(e) => {
-              e.preventDefault();
-              handleCart(product?.data, 1);
-            }}
-                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
-                    isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
-                  }`}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCart(product?.data, 1);
+                  }}
+                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
+                    }`}
                   disabled={isInCart}
                 >
                   <ShoppingBag className="h-4 w-4" />
                   {isInCart ? "Added to Cart" : "Add to Cart"}
                 </button>
                 <button
-                onClick={(e) => {
-          e.stopPropagation();
-          toggleWishlist(product);
-        }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleWishlist(product);
+                  }}
                   className="p-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
                   aria-label="Add to wishlist"
                 >
                   {isInWishlist(product.id) ? (
-                            <FaHeart
-                              color="teal"
-                              size={18}
-                              className="transition-all duration-300 animate-heart-bounce"
-                            />
-                          ) : (
-                            <FaRegHeart color="black" size={18} className="transition-all duration-300" />
-                          )}
+                    <FaHeart
+                      color="teal"
+                      size={18}
+                      className="transition-all duration-300 animate-heart-bounce"
+                    />
+                  ) : (
+                    <FaRegHeart color="black" size={18} className="transition-all duration-300" />
+                  )}
                 </button>
               </div>
             </div>
@@ -471,9 +480,8 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
           <div className="border-b">
             <button
               onClick={() => setActiveTab("description")}
-              className={`py-2 px-4 text-base font-medium ${
-                activeTab === "description" ? "border-b-2 border-black text-black" : "text-gray-500 hover:text-gray-700"
-              }`}
+              className={`py-2 px-4 text-base font-medium ${activeTab === "description" ? "border-b-2 border-black text-black" : "text-gray-500 hover:text-gray-700"
+                }`}
             >
               Description
             </button>
@@ -505,7 +513,7 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
                 >
                   <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
                     <Image
-                      unoptimized
+                      
                       src={item.image_path || noImg}
                       alt={item.name}
                       width={300}
@@ -514,7 +522,7 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
                     />
                   </div>
                   <h3 className="font-medium text-sm mb-1 line-clamp-1">{item.name}</h3>
-                  <p className="text-sm">৳{item.retails_price}</p>
+                  <p className="text-sm">{country?.value === "BD" ? `৳ ${item.retails_price}` : `$ ${item?.intl_retails_price || 0}`}</p>
                 </Link>
               ))
             ) : (
@@ -535,8 +543,7 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
                   className="group"
                 >
                   <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
-                    <Image
-                      unoptimized
+                    <Image                     
                       src={item.image || noImg}
                       alt={item.name}
                       width={300}
@@ -545,7 +552,7 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
                     />
                   </div>
                   <h3 className="font-medium text-sm mb-1 line-clamp-1">{item.name}</h3>
-                  <p className="text-sm">৳{item.price}</p>
+                  <p className="text-sm">{country?.value ==="BD" ?`৳` : "$"} {item.price}</p>
                 </Link>
               ))
             ) : (
@@ -561,7 +568,6 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Image
-                unoptimized
                 src={
                   imageArray && imageArray.length > 0
                     ? imageArray[0]
@@ -576,11 +582,21 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
                 <h3 className="font-medium text-sm line-clamp-1">{product.data.name}</h3>
                 <p className="text-sm font-bold">
                   ৳
-                  {product.data.discount > 0
-                    ? (product.data.retails_price - (product.data.retails_price * product.data.discount) / 100).toFixed(
-                        0,
-                      )
-                    : product.data.retails_price}
+                  {
+                    country?.value === "BD" ?
+                      product.data.discount > 0
+                        ? (product.data.retails_price - (product.data.retails_price * product.data.discount) / 100).toFixed(
+                          0,
+                        )
+                        : product.data.retails_price
+                      : product.data.intl_discount > 0
+                        ? (product.data.intl_retails_price
+                          - (product.data.intl_retails_price
+                            * product.data.intl_discount) / 100).toFixed(
+                              0,
+                            )
+                        : product.data.intl_retails_price
+                  }
                 </p>
               </div>
             </div>
@@ -597,20 +613,19 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
               </div>
 
               <button
-                  onClick={(e) => {
-              e.preventDefault()
-              handleCart(product.data, 1)
-            }}
-                className={`py-2 px-4 rounded-md font-medium ${
-                  isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
-                }`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  handleCart(product.data, 1)
+                }}
+                className={`py-2 px-4 rounded-md font-medium ${isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
+                  }`}
                 disabled={isCartItem}
               >
                 {isCartItem !== undefined ? "Added" : "Add to Cart"}
               </button>
 
               <button
-               onClick={() => handleBuy(product.data, 1)}
+                onClick={() => handleBuy(product.data, 1)}
                 className="hidden md:block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium"
               >
                 Buy Now
@@ -622,59 +637,59 @@ const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
       )}
 
       <Modal open={open} onClose={handleClose}>
-  <Box
-    sx={{
-      width: {
-        xs: "90%", // 90% width on extra-small devices (mobile)
-        sm: 500,   // 500px on small devices (tablets)
-        md: 700,   // 700px on medium+ devices (desktops)
-      },
-      bgcolor: "background.paper",
-      margin: "100px auto",
-      padding: {
-        xs: 2,
-        sm: 3,
-        md: 4,
-      },
-      outline: "none",
-      borderRadius: 2,
-      maxHeight: "90vh",
-      overflowY: "auto", // allow scroll if content overflows
-    }}
-  >
-    <Typography color="black" variant="h6" mb={2}>
-      MEN&apos;S THOBE - REGULAR FIT
-    </Typography>
+        <Box
+          sx={{
+            width: {
+              xs: "90%", // 90% width on extra-small devices (mobile)
+              sm: 500,   // 500px on small devices (tablets)
+              md: 700,   // 700px on medium+ devices (desktops)
+            },
+            bgcolor: "background.paper",
+            margin: "100px auto",
+            padding: {
+              xs: 2,
+              sm: 3,
+              md: 4,
+            },
+            outline: "none",
+            borderRadius: 2,
+            maxHeight: "90vh",
+            overflowY: "auto", // allow scroll if content overflows
+          }}
+        >
+          <Typography color="black" variant="h6" mb={2}>
+            MEN&apos;S THOBE - REGULAR FIT
+          </Typography>
 
-    <Tabs value={tab} onChange={handleTabChange} aria-label="Size Guide Tabs">
-      <Tab label="IN" />
-    </Tabs>
+          <Tabs value={tab} onChange={handleTabChange} aria-label="Size Guide Tabs">
+            <Tab label="IN" />
+          </Tabs>
 
-    <Box mt={2}>
-      <Table>
-        <TableHead>
-          <TableRow className="text-teal-500">
-            <TableCell>Measurement Points</TableCell>
-            <TableCell>S</TableCell>
-            <TableCell>M</TableCell>
-            <TableCell>L</TableCell>
-            <TableCell>XL</TableCell>
-            <TableCell>2XL</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {(tab === 0 ? inches : cm).map((row, i) => (
-            <TableRow key={i}>
-              {row.map((cell, j) => (
-                <TableCell key={j}>{cell}</TableCell>
-              ))}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Box>
-  </Box>
-</Modal>
+          <Box mt={2}>
+            <Table>
+              <TableHead>
+                <TableRow className="text-teal-500">
+                  <TableCell>Measurement Points</TableCell>
+                  <TableCell>S</TableCell>
+                  <TableCell>M</TableCell>
+                  <TableCell>L</TableCell>
+                  <TableCell>XL</TableCell>
+                  <TableCell>2XL</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {(tab === 0 ? inches : cm).map((row, i) => (
+                  <TableRow key={i}>
+                    {row.map((cell, j) => (
+                      <TableCell key={j}>{cell}</TableCell>
+                    ))}
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        </Box>
+      </Modal>
 
     </section>
   )
