@@ -121,7 +121,6 @@ const DeliveryForm = ({
   const [payment, setPayment] = useState("Cash");
   const [isCod, setIsCod] = useState(true);
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
-  const [user, setUser] = useState(null);
   const [location, setLocation] = useState("inside");
   const [couponValue, setCouponValue] = useState(couponAmount);
   const [loading, setLoading] = useState(true);
@@ -140,7 +139,7 @@ const DeliveryForm = ({
   const [prizeName, setPrizeName] = useState("");
   const [invoiceId, setInvoiceId] = useState(null);
   const [spinCount, setSpinCount] = useState(0);
-
+  const [customerId,setCustomerId] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const intendedUrl = searchParams.get("redirect");
@@ -150,8 +149,7 @@ const DeliveryForm = ({
 
 
   // Memoize stable values
-  const userData = userDataRef.current;
-  const customer_id = userData?.id;
+  const userData = userDataRef.current
   const customer_phone = userData?.mobile_number;
   const date = useMemo(() => new Date().toISOString(), []);
   const deliveryNote = useMemo(
@@ -270,10 +268,10 @@ const DeliveryForm = ({
         return null;
       }),
       created_at: date,
-      customer_id: "",
+      customer_id: customerId,
       customer_name: `${formData.firstName || firstName} ${formData.lastName || lastName
         }`,
-      customer_phone: customer_phone,
+      customer_phone: formData?.phone,
       sales_id: userId,
       user_id: userId,
       wholeseller_id: 1,
@@ -299,7 +297,7 @@ const DeliveryForm = ({
     lastName,
     paymentMethods?.data?.data,
     date,
-    customer_phone,
+    customerId
   ]);
 
   const [orderSchemaState, setOrderSchema] = useState(orderSchema);
@@ -331,6 +329,7 @@ const DeliveryForm = ({
       );
 
 
+      setCustomerId(loginResponse?.data?.customer?.id);
       setReload(true);
       if (intendedUrl) {
         router.push(intendedUrl);
@@ -344,7 +343,6 @@ const DeliveryForm = ({
         customer_name: result.displayName,
         customer_phone: result.phoneNumber,
         customer_email: result.email,
-        customer_id: loginResponse?.data?.customer?.id,
       }));
 
       setFormData({
@@ -366,10 +364,7 @@ const DeliveryForm = ({
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    setOrderSchema({
-    ...orderSchemaState,
-    customer_name : value
-    })
+    
   }, []);
 
   const handlePayment = useCallback((e) => {
@@ -392,7 +387,6 @@ const DeliveryForm = ({
           donation_amount:
             selectedDonate === "Not now" ? 0 : Number(selectedDonate),
         };
-
         axios
           .post(
             `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
