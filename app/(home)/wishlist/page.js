@@ -29,7 +29,7 @@ const WishlistPage = () => {
     if (country && country.value === "BD") {
       return productPrice?.basePrice || item?.retails_price || 0;
     } else {
-      return productPrice?.wholesalePrice || item?.wholesale_price || 1000;
+      return productPrice?.intl_retails_price || item?.intl_retails_price || 0;
     }
   };
 

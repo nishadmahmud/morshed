@@ -28,7 +28,7 @@ const ProductCard = ({ product }) => {
     if (country && country.value === "BD") {
       return productPrice?.basePrice || product?.retails_price || 0
     } else {
-      return productPrice?.intl_retails_price  || 1000
+      return productPrice?.intl_retails_price  || product?.intl_retails_price || 0
     }
   }
 

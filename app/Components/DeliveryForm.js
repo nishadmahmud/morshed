@@ -159,6 +159,8 @@ const DeliveryForm = ({
     []
   );
 
+
+
   // Memoize user name parsing
   const { firstName, lastName } = useMemo(() => {
     if (!userData?.name) return { firstName: "", lastName: "" };
@@ -269,7 +271,7 @@ const DeliveryForm = ({
       }),
       created_at: date,
       customer_id: "",
-      customer_name: `${formData.firstName || firstName}+${formData.lastName || lastName
+      customer_name: `${formData.firstName || firstName} ${formData.lastName || lastName
         }`,
       customer_phone: customer_phone,
       sales_id: userId,
@@ -302,6 +304,9 @@ const DeliveryForm = ({
 
   const [orderSchemaState, setOrderSchema] = useState(orderSchema);
 
+    useEffect(() => {
+    setOrderSchema(orderSchema);
+  }, [orderSchema]);
 
 
   // Event handlers - all memoized
@@ -361,6 +366,10 @@ const DeliveryForm = ({
   const handleChange = useCallback((e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    setOrderSchema({
+    ...orderSchemaState,
+    customer_name : value
+    })
   }, []);
 
   const handlePayment = useCallback((e) => {

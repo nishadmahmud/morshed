@@ -25,7 +25,7 @@ const CheckoutPage = () => {
     if (country && country.value === "BD") {
       return productPrice?.basePrice || item?.retails_price || 0
     } else {
-      return productPrice?.intl_retails_price || item?.intl_retails_price || 1000
+      return productPrice?.intl_retails_price || item?.intl_retails_price || 0;
     }
   }
 

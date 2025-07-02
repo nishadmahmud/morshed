@@ -24,7 +24,7 @@ export default function ProductListing({ params }) {
   const [filteredItems, setFilteredItems] = useState([])
   const [sortBy, setSortBy] = useState("")
   const [isFilterOpen, setIsFilterOpen] = useState(false)
-  const [priceRange, setPriceRange] = useState([0, 1000])
+  const [priceRange, setPriceRange] = useState([0, 0])
   const [selectedSizes, setSelectedSizes] = useState([])
   const [selectedColors, setSelectedColors] = useState([])
   const [isAccordionOpen, setIsAccordionOpen] = useState({
@@ -129,7 +129,7 @@ export default function ProductListing({ params }) {
   const clearAllFilters = () => {
     setSelectedSizes([])
     setSelectedColors([])
-    setPriceRange([0, 1000])
+    setPriceRange([0, 0])
   }
 
   const toggleAccordion = (section) => {

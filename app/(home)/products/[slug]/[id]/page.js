@@ -86,7 +86,7 @@ const ProductPage = ({ params }) => {
       setProductPrice(
         product.data.id,
         product?.data.retails_price,
-        product?.data.wholesale_price || null
+        product?.data.intl_retails_price || null
       );
     }
   }, []);
@@ -97,7 +97,7 @@ const ProductPage = ({ params }) => {
     if (country && country.value === "BD") {
       return productPrice?.basePrice || product?.data.retails_price || 0;
     } else {
-      return productPrice?.intl_retails_price  || 1000;
+      return productPrice?.intl_retails_price  || product?.data.intl_retails_price || 0;
     }
   };
 
