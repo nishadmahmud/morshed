@@ -221,48 +221,6 @@ const DeliveryForm = ({
   }, [getCartItems]);
 
 
-  // useEffect(() => {
-  //   try {
-  //     // Calculate totals immediately
-  //     if (cartItems && cartItems.length > 0) {
-  //       const total = cartItems.reduce((sum, item) => {
-  //         const unitPrice =
-  //           country?.value === "BD"
-  //             ? item?.retails_price ?? 0
-  //             : item?.wholesale_price ?? 0;
-  //         return sum + unitPrice * item.quantity;
-  //       }, 0);
-
-  //       const discount = cartItems.reduce((sum, item) => {
-  //         let discountAmount = 0;
-  //         if (item.discount_type === "Fixed") {
-  //           discountAmount = (item.discount || 0) * item.quantity;
-  //         } else if (item.discount_type === "Percentage") {
-  //           discountAmount =
-  //             ((item.retails_price * (item.discount || 0)) / 100) *
-  //             item.quantity;
-  //         }
-  //         return sum + discountAmount;
-  //       }, 0);
-
-  //       const subtotal = cartItems.reduce((sum, item) => {
-  //         const price = Number(item?.retails_price) || 0;
-  //         return sum + price * item.quantity;
-  //       }, 0);
-
-  //       setCartTotal(total);
-  //       setTotalDiscount(discount);
-  //       setTotalSubtotalWithoutDiscount(subtotal);
-  //     } else {
-  //       setCartTotal(0);
-  //       setTotalDiscount(0);
-  //       setTotalSubtotalWithoutDiscount(0);
-  //     }
-  //   } catch (error) {
-  //     console.error("Error initializing cart:", error);
-  //     setLoading(false);
-  //   }
-  // }, [country.value]); // Only depend on country value change
 
   // Create order schema - memoized to prevent constant recreation
   const orderSchema = useMemo(() => {
@@ -390,7 +348,6 @@ const DeliveryForm = ({
         phone: result.phoneNumber,
         email: result.email
       })
-      console.log(loginResponse?.data.customer?.id)
       localStorage.setItem(
         "user",
         JSON.stringify(loginResponse?.data?.customer)
@@ -591,8 +548,6 @@ const DeliveryForm = ({
       })
     }
   }, [])
-
-  console.log(orderSchemaState);
 
   return (
     <div className="space-y-4">
