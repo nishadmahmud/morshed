@@ -42,14 +42,14 @@ const HeroSlider = ({ slider, banner, data }) => {
   }, []);
 
   return (
-    <div className="lg:max-w-[100vw] pt-[3.5rem] max-w-[100vw] w-full mx-auto flex lg:flex-row items-center">
+    <div className=" pt-[3.5rem]  w-full mx-auto flex lg:flex-row items-center">
       
       {/* Grid Layout */}
       <div className="flex gap-4">
         <div className="grid">
 
           {/* Slider Section */}
-          <div className="md:w-[100vw] mx-auto w-full flex flex-col justify-center overflow-hidden relative md:h-screen lg:mb-4">
+          <div className="md:w-full mx-auto w-full flex flex-col justify-center overflow-hidden relative md:h-screen lg:mb-4">
             
             <Swiper
               pagination={true}
@@ -71,17 +71,15 @@ const HeroSlider = ({ slider, banner, data }) => {
                   const productLink = `/products/${slug}/${productId}`;
 
                   return (
-                    <SwiperSlide key={idx} className="relative w-full">
+                    <SwiperSlide key={idx} className="relative w-full aspect-[16/9] ">
                       <Link href={productLink}>
                         <Image
-                          
                           src={img}
                           priority={idx === 0}
                           alt={product?.name || "slider-image"}
-                          width={1000}
-                          height={200}
+                          fill
                           quality={100}
-                          className="cursor-pointer w-[100vw] transition-transform duration-300"
+                          className="cursor-pointer object-cover transition-transform duration-300"
                         />
                       </Link>
                     </SwiperSlide>

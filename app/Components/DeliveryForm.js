@@ -355,7 +355,6 @@ const DeliveryForm = ({
     try {
       const response = await googleLogin();
       const result = response.user;
-      console.log(result)
       try {
         await axios.post(
           `${process.env.NEXT_PUBLIC_API}/customer-registration`,

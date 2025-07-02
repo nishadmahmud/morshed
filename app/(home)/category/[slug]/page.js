@@ -441,7 +441,7 @@ export default function ProductListing({ params }) {
               </div>
 
               <div className="p-4">
-                {(selectedSizes.length > 0 || selectedColors.length > 0 || selectedBrands.length > 0) && (
+                {(selectedSizes.length > 0 || selectedColors.length > 0) && (
                   <button className="text-sm text-gray-500 hover:text-gray-700 mb-4" onClick={clearAllFilters}>
                     Clear all filters
                   </button>
@@ -470,10 +470,10 @@ export default function ProductListing({ params }) {
                         <div className="relative pt-5 pb-6">
                           <input
                             type="range"
-                            min="0"
-                            max="1000"
-                            value={priceRange[1]}
-                            onChange={(e) => setPriceRange([priceRange[0], Number.parseInt(e.target.value)])}
+                            min={minimum}
+                            max={priceRange[1]}
+                            value={priceRange[0]}
+                            onChange={(e) => setPriceRange([Number.parseInt(e.target.value),priceRange[1]])}
                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                           />
                           <div className="flex items-center justify-between mt-2">
@@ -485,39 +485,32 @@ export default function ProductListing({ params }) {
                     )}
                   </div>
 
-                  {/* Size */}
-                  <div className="border-b border-gray-200 pb-4">
-                    <button
-                      className="flex w-full items-center justify-between py-3 text-base font-medium"
-                      onClick={() => toggleAccordion("size")}
-                    >
-                      Size
-                      <svg
-                        className={`h-5 w-5 transition-transform ${isAccordionOpen.size ? "rotate-180" : ""}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
+                  {/* Brands */}
 
-                    {isAccordionOpen.size && (
-                      <div className="grid grid-cols-4 gap-2 pt-2">
-                        {availableSizes.map((size) => (
-                          <button
-                            key={size}
-                            className={`h-9 text-sm font-medium border rounded-md ${selectedSizes.includes(size)
-                              ? "bg-gray-900 text-white border-gray-900"
-                              : "bg-white text-gray-900 border-gray-300 hover:bg-gray-50"
-                              }`}
-                            onClick={() => handleSizeToggle(size)}
-                          >
-                            {size}
-                          </button>
-                        ))}
-                      </div>
-                    )}
+                  <div>
+                    <h2>Brands</h2>
+                    {
+                      brands.length ?
+                        brands.map(item => (
+                          (
+                            <div key={item} className="flex items-center gap-3 text-base">
+                              <input checked={item === selectedBrand} type="checkbox" onChange={() => {
+                                setSelectedBrand(item)
+                                if (item === selectedBrand) {
+                                  setSelectedBrand("");
+                                  setFilteredItems(products.data);
+                                } else {
+                                  const filtered = products.data.filter(pdt => pdt.brand_name === item);
+                                  setFilteredItems(filtered);
+                                  setSelectedBrand(item);
+                                }
+                              }} />
+                              <label>{item}</label>
+                            </div>
+                          )
+                        )) :
+                        ""
+                    }
                   </div>
 
                   {/* Color */}

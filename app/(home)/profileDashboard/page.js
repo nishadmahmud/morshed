@@ -56,7 +56,7 @@ const PersonalInfo = () => {
       }
     );
 
-    console.log(response);
+
 
     if (response.data) {
       toast.success("Customer info updated successfully!");

@@ -28,7 +28,7 @@ const onClose = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const intendedUrl = searchParams.get("redirect")
-  console.log(intendedUrl);
+
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value })

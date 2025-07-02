@@ -5,7 +5,6 @@ import noImg from '/public/no-image.jpg'
 
 
 const BrandMarquee = ({ brands }) => {
-  console.log(brands);
 
   return (
     <div className="w-full py-4">
