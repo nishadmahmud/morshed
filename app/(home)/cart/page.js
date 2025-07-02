@@ -214,15 +214,15 @@ const CartPage = () => {
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700 font-medium">Sub-Total:</span>
-                    <span className="font-bold">BDT {totalSubtotalWithoutDiscount.toLocaleString()}</span>
+                    <span className="font-bold">{country?.value === "BD" ? "BDT" : "USD"} {totalSubtotalWithoutDiscount.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700 font-medium">Total Discount:</span>
-                    <span>BDT {totalDiscount.toLocaleString()}</span>
+                    <span>{country?.value === "BD" ? "BDT" : "USD"} {totalDiscount.toLocaleString()}</span>
                   </div>
                   <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                     <span className="text-gray-900 font-bold">Total:</span>
-                    <span className="text-teal-800 font-bold">BDT {cartTotal.toLocaleString()}</span>
+                    <span className="text-teal-800 font-bold">{country?.value === "BD" ? "BDT" : "USD"} {cartTotal.toLocaleString()}</span>
                   </div>
                 </div>
 
