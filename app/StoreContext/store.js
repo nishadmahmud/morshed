@@ -131,14 +131,14 @@ const StoreProvider = ({ children }) => {
   // };
 
 
-  const handleCart = (item, quantity) => {
+  const handleCart = (item, quantity,variant_id) => {
     if (!isMounted) return;
-
     setRefetch(true);
     const newItem = {
       ...item,
       retails_price: item.price ?? item.retails_price,
-      currency_retail_price : convertedPrice
+      currency_retail_price : convertedPrice,
+      variant_id
     };
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     const existingProduct = cartItems.find((product) => product.id === item.id);

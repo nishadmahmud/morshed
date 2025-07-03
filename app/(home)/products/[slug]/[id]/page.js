@@ -74,7 +74,12 @@ const ProductPage = ({ params }) => {
 
 
 
-  const [selectedSize, setSelectedSize] = useState("M")
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedId,setSelectedId] = useState(null);
+
+
+  console.log(selectedId);
+
 
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
@@ -100,6 +105,14 @@ const ProductPage = ({ params }) => {
       return productPrice?.intl_retails_price  || product?.data.intl_retails_price || 0;
     }
   };
+
+  useEffect(() => {
+    if(product?.data && product?.data?.product_variants.length){
+      setSelectedSize(product?.data?.product_variants[0].name)
+      setSelectedId(product?.data?.product_variants[0].id)
+    }
+  },[product?.data])
+
 
 
   const discountedPrice = country?.value === "BD"?
@@ -394,10 +407,10 @@ const ProductPage = ({ params }) => {
               </div>
               <div className="flex gap-3">
                 {product?.data?.product_variants && product.data.product_variants.length > 0
-                  ? product.data.product_variants.map((variant) => (
-                    <button
+                  ? product.data.product_variants.map((variant) => {
+                    return <button
                       key={variant.name}
-                      onClick={() => setSelectedSize(variant?.name)}
+                      onClick={() => {setSelectedSize(variant?.name),setSelectedId(variant?.id)}}
                       className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${selectedSize === variant.name
                         ? "border-black bg-black text-white"
                         : "border-gray-300 hover:border-gray-400"
@@ -405,8 +418,9 @@ const ProductPage = ({ params }) => {
                     >
                       {variant?.name}
                     </button>
-                  ))
-                  : "No size availavle"}
+                  })
+                  : "No size availavle"
+                }
               </div>
             </div>
 
@@ -443,7 +457,7 @@ const ProductPage = ({ params }) => {
                 <button
                   onClick={(e) => {
                     e.preventDefault();
-                    handleCart(product?.data, 1);
+                    handleCart(product?.data, 1,selectedId);
                   }}
                   className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
                     }`}
