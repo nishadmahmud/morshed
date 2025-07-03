@@ -140,6 +140,7 @@ const DeliveryForm = ({
   const [invoiceId, setInvoiceId] = useState(null);
   const [spinCount, setSpinCount] = useState(0);
   const [customerId,setCustomerId] = useState(null);
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const intendedUrl = searchParams.get("redirect");
@@ -150,7 +151,6 @@ const DeliveryForm = ({
 
   // Memoize stable values
   const userData = userDataRef.current
-  const customer_phone = userData?.mobile_number;
   const date = useMemo(() => new Date().toISOString(), []);
   const deliveryNote = useMemo(
     () => localStorage.getItem("cartAttachment"),
@@ -387,6 +387,9 @@ const DeliveryForm = ({
           donation_amount:
             selectedDonate === "Not now" ? 0 : Number(selectedDonate),
         };
+
+        console.log(finalOrderSchema)
+        // return;
         axios
           .post(
             `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
@@ -545,10 +548,7 @@ const DeliveryForm = ({
         email: user.email,
         phone: user.phone || null
       })
-      setOrderSchema({
-        ...orderSchemaState,
-        customer_id: user.id
-      })
+      setCustomerId(user.id)
     }
   }, [])
 

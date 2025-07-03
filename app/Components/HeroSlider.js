@@ -4,12 +4,10 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa6";
 import "../globals.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useEffect, useRef, useState } from "react";
-import Marquee from "react-fast-marquee";
 import "swiper/css";
 import { Autoplay, Pagination } from "swiper/modules";
 import 'swiper/css/pagination';
 import Link from "next/link";
-import Compare from "./Compare";
 
 const sanitizeSlug = (str) => {
   return str
@@ -42,14 +40,7 @@ const HeroSlider = ({ slider, banner, data }) => {
   }, []);
 
   return (
-    <div className=" pt-[3.5rem]  w-full mx-auto flex lg:flex-row items-center">
-      
-      {/* Grid Layout */}
-      <div className="flex gap-4">
-        <div className="grid">
-
-          {/* Slider Section */}
-          <div className="md:w-full mx-auto w-full flex flex-col justify-center overflow-hidden relative h-auto md:h-screen lg:mb-4">
+    <div className=" pt-[3.5rem]  w-full aspect-video h-[30vh] md:h-auto  relative">
             
             <Swiper
               pagination={true}
@@ -59,6 +50,7 @@ const HeroSlider = ({ slider, banner, data }) => {
               loop={true}
               speed={500}
               modules={[Autoplay]}
+              className="relative"
             >
               {slider.status === 200 &&
                 slider?.data.length > 0 &&
@@ -71,7 +63,7 @@ const HeroSlider = ({ slider, banner, data }) => {
                   const productLink = `/products/${slug}/${productId}`;
 
                   return (
-                    <SwiperSlide key={idx} className="relative w-full aspect-[16/9] ">
+                    <SwiperSlide key={idx} className="relative w-full aspect-video">
                       <Link href={productLink}>
                         <Image
                           src={img}
@@ -101,19 +93,7 @@ const HeroSlider = ({ slider, banner, data }) => {
             >
               <FaChevronLeft className="text-black lg:text-xl text-sm" />
             </div>
-          </div>
-
-         
-        </div>
       </div>
-
-      {/* Compare Section */}
-      
-      {/* <div className="mt-8">
-        <Compare />
-      </div> */}
-      
-    </div>
   );
 };
 
