@@ -139,26 +139,6 @@ const ProductCard = ({ product }) => {
         </> : ""
       }
 
-        {/* Wishlist Button */}
-        <button
-          className="
-            absolute top-2 right-2 p-1.5 bg-white/90 backdrop-blur-sm 
-            rounded-full shadow-md hover:bg-white hover:scale-110 
-            transition-all duration-200 z-10
-            sm:top-3 sm:right-3 sm:p-2
-          "
-          onClick={(e) => {
-            e.stopPropagation()
-            toggleWishlist(product)
-          }}
-          title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
-        >
-          {isInWishlist(product.id) ? (
-            <FaHeart className="w-3 h-3 text-teal-600 sm:w-4 sm:h-4" />
-          ) : (
-            <FaRegHeart className="w-3 h-3 text-gray-600 hover:text-red-500 transition-colors sm:w-4 sm:h-4" />
-          )}
-        </button>
 
        
       </div>
@@ -233,21 +213,27 @@ const ProductCard = ({ product }) => {
             )}
           </div>
 
-          {/* Desktop Cart Button */}
-          <button
-            onClick={(e) => {
-              e.preventDefault()
-              handleCart(product, 1)
-            }}
-            className="
-              flex p-1.5 rounded-full hover:bg-gray-100 
+
+          
+        {/* Wishlist Button */}
+        <button
+          className="
+            flex p-1.5 rounded-full hover:bg-gray-100 
               text-gray-600 hover:text-gray-900 transition-all duration-200
               sm:p-2
-            "
-            title="Add to cart"
-          >
-            <ShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-          </button>
+          "
+          onClick={(e) => {
+            e.stopPropagation()
+            toggleWishlist(product)
+          }}
+          title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          {isInWishlist(product.id) ? (
+            <FaHeart className="w-4 h-4 text-teal-600 sm:w-5 sm:h-5" />
+          ) : (
+            <FaRegHeart className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors sm:w-5 sm:h-5" />
+          )}
+        </button>
         </div>
       </div>
     </div>
