@@ -1,4 +1,7 @@
-import { Html, Head, Main, NextScript } from 'next/document';
+
+// eslint-disable-next-line @next/next/no-document-import-in-page
+import { Html, Main, NextScript } from 'next/document';
+import Head from 'next/head';
 import Image from 'next/image';
 
 export default function Document() {
