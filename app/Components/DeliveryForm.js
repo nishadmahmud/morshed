@@ -691,8 +691,8 @@ const DeliveryForm = ({
         onChange={handleChange}
         className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
       >
-        <option value="" disabled>
-          -- Select a country --
+        <option value="Bangladesh" disabled>
+         Bangladesh
         </option>
         {countries.map((country) => (
           <option key={country} value={country}>
