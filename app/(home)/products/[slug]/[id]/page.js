@@ -157,18 +157,18 @@ const ProductPage = ({ params }) => {
     setIsInCart(true)
   }
 
-  const handleBuyNow = (productData, qty = 1) => {
-    if (!productData || !selectedSize) {
-      toast.error("Please select a size")
-      return
-    }
+  // const handleBuyNow = (productData, qty = 1) => {
+  //   if (!productData || !selectedSize) {
+  //     toast.error("Please select a size")
+  //     return
+  //   }
 
-    // Add to cart first
-    handleCart(productData, qty)
+  //   // Add to cart first
+  //   handleCart(productData, qty)
 
-    // Then proceed with buy now logic
-    handleBuy(productData, qty, selectedSize, selectedId)
-  }
+  //   // Then proceed with buy now logic
+  //   handleBuy(productData, qty, selectedSize, selectedId)
+  // }
 
   useEffect(() => {
     const getCartItems = () => {
@@ -422,7 +422,7 @@ const ProductPage = ({ params }) => {
               </div>
               <div className="flex gap-3 mt-3">
                 <button
-                  onClick={() => handleBuyNow(product?.data, quantity)}
+                  onClick={() => handleBuy(product?.data, quantity)}
                   className="flex-1 bg-black md:text-base text-sm hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium transition-colors"
                 >
                   Buy Now
