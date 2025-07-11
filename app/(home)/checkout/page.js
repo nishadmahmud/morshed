@@ -13,12 +13,12 @@ const DeliveryForm = dynamic(() => import("../../Components/DeliveryForm"), {
 })
 
 const CheckoutPage = () => {
-  const { getCartItems, prices, country, setProductPrice } = useStore()
+  const { getCartItems, prices, country, setProductPrice, selectedSize } = useStore()
 
   const cartItems = getCartItems()
   const quantity = cartItems.reduce((acc, curr) => acc + curr.quantity, 0)
 
-
+console.log(cartItems);
   const getPriceByCountry = (item) => {
     const productPrice = prices[item.id]
 
@@ -108,6 +108,8 @@ const CheckoutPage = () => {
   //     })
   //   }
   // }, [cartItems, setProductPrice])
+
+  console.log(cartItems);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14">
@@ -204,6 +206,7 @@ const CheckoutPage = () => {
                               <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">{item.name}</h3>
                               <div className="flex items-center justify-between">
                                 <div className="text-sm text-gray-600">Qty: {item.quantity}</div>
+                                <div className="text-sm text-gray-600">Size: {item.selectedSize || "N/A"}</div>
                                 <div className="text-sm font-semibold text-gray-900">
                                   {country && country.value === "BD" ? "৳" : "$"}
                                   {itemPrice}

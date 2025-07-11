@@ -1,39 +1,23 @@
 "use client"
-import {
-  Modal,
-  Box,
-
-  Tab,
-  Tabs,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { useContext, useEffect, useState } from "react"
+import { Modal, Box, Tab, Tabs, Typography, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
+import { useEffect, useState } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Heart, Minus, Plus, ShoppingBag } from "lucide-react"
+import { Minus, Plus, ShoppingBag } from "lucide-react"
 import useSWR from "swr"
 import axios from "axios"
 import toast from "react-hot-toast"
 import noImg from "/public/no-image.jpg"
 import { htmlToText } from "html-to-text"
-import InnerImageZoom from "react-inner-image-zoom"
 import "react-inner-image-zoom/lib/styles.min.css"
 import useStore from "@/app/CustomHooks/useStore"
 import useWishlist from "@/app/CustomHooks/useWishlist"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
-import SizeGuideModal from "@/app/Components/SizeGuideModal"
-import CustomImageZoom from "@/app/Components/CustomImageZoom";
-import CursorImageZoom from "@/app/Components/CustomImageZoom";
-import { storeContext } from "@/app/StoreContext/store";
-import { userId } from "@/app/(home)/page";
+import CursorImageZoom from "@/app/Components/CustomImageZoom"
+import { userId } from "@/app/(home)/page"
+
 // Fetcher function from the original code
 const fetcher = (url) => fetch(url).then((res) => res.json())
-
 
 const ProductPage = ({ params }) => {
   const { id } = params
@@ -46,40 +30,37 @@ const ProductPage = ({ params }) => {
   const [relatedProducts, setRelatedProducts] = useState([])
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
-  const { toggleWishlist, isInWishlist } = useWishlist();
-  const { handleCart, convertedPrice, selectedCountry, getCartItems, refetch, setRefetch, prices, country, setProductPrice, handleBuy } = useStore()
-  // const { selectedCountry, setSelectedCountry } = useContext(storeContext);
-  // console.log(selectedCountry);
+  const { toggleWishlist, isInWishlist } = useWishlist()
+  const {
+    handleCart,
+    convertedPrice,
+    selectedCountry,
+    getCartItems,
+    refetch,
+    setRefetch,
+    prices,
+    country,
+    setProductPrice,
+    handleBuy,
+    setSelectedSize,
+    selectedSize
+  } = useStore()
+
   // size guide modal
-
-
-  const [open, setOpen] = useState(false);
-  const [tab, setTab] = useState(0);
-
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
-  const handleTabChange = (event, newValue) => setTab(newValue);
+  const [open, setOpen] = useState(false)
+  const [tab, setTab] = useState(0)
+  const handleOpen = () => setOpen(true)
+  const handleClose = () => setOpen(false)
+  const handleTabChange = (event, newValue) => setTab(newValue)
 
   const inches = [
     ["CHEST", "40", "42", "44", "46", "48"],
     ["LENGTH", "28", "39", "30", "31", "31.5"],
     ["COLLAR", "15", "15.5", "16", "16.5", "17"],
-  ];
+  ]
 
-  // const cm = [
-  //   ["CHEST", "52.7", "55.2", "57.8", "61", "64.7", "69.2", "73"],
-  //   ["LENGTH", "132", "137", "137/142", "142/147", "152", "157", "162"],
-  //   ["COLLAR", "132", "137", "137/142", "142/147", "152", "157", "162"],
-  // ];
-
-
-
-  const [selectedSize, setSelectedSize] = useState("");
-  const [selectedId,setSelectedId] = useState(null);
-
-
-  console.log(selectedId);
-
+  const [selectedId, setSelectedId] = useState(null)
+  console.log(selectedId)
 
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
@@ -88,72 +69,123 @@ const ProductPage = ({ params }) => {
 
   useEffect(() => {
     if (product?.data.id && product?.data.retails_price) {
-      setProductPrice(
-        product.data.id,
-        product?.data.retails_price,
-        product?.data.intl_retails_price || null
-      );
+      setProductPrice(product.data.id, product?.data.retails_price, product?.data.intl_retails_price || null)
     }
-  }, []);
+  }, [])
 
-  const productPrice = prices[product?.data.id];
+  const productPrice = prices[product?.data.id]
 
   const getPriceByCountry = () => {
     if (country && country.value === "BD") {
-      return productPrice?.basePrice || product?.data.retails_price || 0;
+      return productPrice?.basePrice || product?.data.retails_price || 0
     } else {
-      return productPrice?.intl_retails_price  || product?.data.intl_retails_price || 0;
+      return productPrice?.intl_retails_price || product?.data.intl_retails_price || 0
     }
-  };
+  }
 
   useEffect(() => {
-    if(product?.data && product?.data?.product_variants.length){
+    if (product?.data && product?.data?.product_variants.length) {
       setSelectedSize(product?.data?.product_variants[0].name)
       setSelectedId(product?.data?.product_variants[0].id)
     }
-  },[product?.data])
+  }, [product?.data])
 
+  const discountedPrice =
+    country?.value === "BD"
+      ? product?.data.discount_type === "Percentage"
+        ? product?.data?.discount
+          ? (product?.data?.retails_price - (product?.data?.retails_price * product?.data.discount) / 100).toFixed(0)
+          : null
+        : product?.data.retails_price - product?.data.discount
+      : product?.data.discount_type === "Percentage"
+        ? product?.data?.intl_discount
+          ? (
+              product?.data?.intl_retails_price -
+              (product?.data?.intl_retails_price * product?.data.intl_discount) / 100
+            ).toFixed(0)
+          : null
+        : product?.data.intl_retails_price - product?.data.intl_discount
 
-
-  const discountedPrice = country?.value === "BD"?
-    product?.data.discount_type === "Percentage"
-      ? product?.data?.discount
-        ? (product?.data?.retails_price -
-          (product?.data?.retails_price * product?.data.discount) / 100
-        ).toFixed(0)
+  const fixedDiscount =
+    country?.value === "BD"
+      ? product?.data.discount_type === "Fixed"
+        ? "Tk"
         : null
-      : product?.data.retails_price - product?.data.discount 
-      :
-        product?.data.discount_type === "Percentage"
-      ? product?.data?.intl_discount
-        ? (product?.data?.intl_retails_price -
-          (product?.data?.intl_retails_price * product?.data.intl_discount) / 100
-        ).toFixed(0)
+      : product?.data.discount_type === "Fixed"
+        ? "$"
         : null
-      : product?.data.intl_retails_price - product?.data.intl_discount
-
-
-  const fixedDiscount = country?.value === "BD" ? product?.data.discount_type === "Fixed" ? "Tk" : null : product?.data.discount_type === "Fixed" ? "$" : null;
   const percentageDiscount = product?.data.discount_type === "Percentage" ? "%" : null
+
+  // Modified cart handling functions
+  const handleAddToCart = (productData, qty = 1) => {
+    if (!productData || !selectedSize) {
+      toast.error("Please select a size")
+      return
+    }
+
+    const cartItem = {
+      ...productData,
+      selectedSize: selectedSize,
+      selectedSizeId: selectedId,
+      quantity: qty,
+      cartItemId: `${productData.id}_${selectedId}`, // Unique identifier for cart item
+    }
+
+    // Get existing cart from localStorage
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]")
+
+    // Check if item with same product and size already exists
+    const existingItemIndex = existingCart.findIndex(
+      (item) => item.id === productData.id && item.selectedSizeId === selectedId,
+    )
+
+    if (existingItemIndex > -1) {
+      // Update quantity if item already exists
+      existingCart[existingItemIndex].quantity += qty
+      toast.success("Cart updated")
+    } else {
+      // Add new item to cart
+      existingCart.push(cartItem)
+      toast.success("Added to cart")
+    }
+
+    // Save updated cart to localStorage
+    localStorage.setItem("cart", JSON.stringify(existingCart))
+    setCartItems(existingCart)
+    setIsInCart(true)
+  }
+
+  const handleBuyNow = (productData, qty = 1) => {
+    if (!productData || !selectedSize) {
+      toast.error("Please select a size")
+      return
+    }
+
+    // Add to cart first
+    handleAddToCart(productData, qty)
+
+    // Then proceed with buy now logic
+    handleBuy(productData, qty, selectedSize, selectedId)
+  }
 
   useEffect(() => {
     const getCartItems = () => {
       const storedCart = localStorage.getItem("cart")
       return storedCart ? JSON.parse(storedCart) : []
     }
-
     setCartItems(getCartItems())
-
     if (product?.data) {
-      const isProductInCart = getCartItems().find((item) => item?.id === product?.data.id)
+      // Check if product with selected size is in cart
+      const isProductInCart = getCartItems().find(
+        (item) => item?.id === product?.data.id && item?.selectedSizeId === selectedId,
+      )
       setIsInCart(!!isProductInCart)
     }
-  }, [product?.data])
+  }, [product?.data, selectedId])
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
       if (!id) return
-
       try {
         const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/get-related-products`, {
           product_id: id,
@@ -164,7 +196,6 @@ const ProductPage = ({ params }) => {
         console.log(error)
       }
     }
-
     fetchRelatedProducts()
   }, [id])
 
@@ -194,51 +225,7 @@ const ProductPage = ({ params }) => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Demo color data
-  const demoColors = ["Black", "White", "Navy", "Olive"]
-  const [selectedColor, setSelectedColor] = useState(demoColors[0])
-
-  const colorMap = {
-    Black: "#222222",
-    White: "#f8f8f8",
-    Navy: "#0a2463",
-    Olive: "#556b2f",
-  }
-
-  // const handleAddToCart = () => {
-  //   if (!product?.data) return
-
-  //   const newCartItem = {
-  //     ...product.data,
-  //     size: selectedSize,
-  //     color: selectedColor,
-  //     quantity: quantity,
-  //   }
-
-  //   const currentCart = JSON.parse(localStorage.getItem("cart") || "[]")
-  //   const updatedCart = [...currentCart, newCartItem]
-  //   localStorage.setItem("cart", JSON.stringify(updatedCart))
-
-  //   setIsInCart(true)
-  //   toast.success("Added to cart")
-  // }
-
-  // const handleBuyNow = () => {
-  //   if (!product?.data) return
-
-  //   handleAddToCart()
-
-  //   console.log("Buy now:", {
-  //     product: product.data.id,
-  //     quantity,
-  //     color: selectedColor,
-  //     size: selectedSize,
-  //   })
-  // }
-
-
-  const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
-
+  const countrySign = selectedCountry?.value === "BD" ? "৳" : "$"
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
   const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
 
@@ -267,23 +254,17 @@ const ProductPage = ({ params }) => {
 
   const descriptionText = product?.data?.description
     ? htmlToText(product.data.description, {
-      wordwrap: false,
-      selectors: [{ selector: "a", options: { ignoreHref: true } }],
-    })
-    : null;
+        wordwrap: false,
+        selectors: [{ selector: "a", options: { ignoreHref: true } }],
+      })
+    : null
 
-  const isCartItem = cartItems.find(
-    (item) => item?.id === product?.data.id || undefined
-  );
-
-
-
+  const isCartItem = cartItems.find((item) => item?.id === product?.data.id && item?.selectedSizeId === selectedId)
 
   return (
     <section className=" text-black lg:pt-16 md:pt-16 pt-14">
       <div className="px-4 lg:px-8 pt-6 lg:pt-12 mx-auto max-w-7xl">
         <div className="flex flex-col md:flex-row gap-8 mb-12">
-
           {/* Product Images */}
           <div className="md:w-1/2">
             <div className="flex flex-col-reverse md:flex-row gap-4">
@@ -294,11 +275,11 @@ const ProductPage = ({ params }) => {
                     <button
                       key={idx}
                       onClick={() => setImageIndex(idx)}
-                      className={`relative border rounded-md overflow-hidden ${imageIndex === idx ? "ring-2 ring-black" : ""
-                        }`}
+                      className={`relative border rounded-md overflow-hidden ${
+                        imageIndex === idx ? "ring-2 ring-black" : ""
+                      }`}
                     >
                       <Image
-                        
                         src={image || noImg}
                         alt={`Product view ${idx + 1}`}
                         width={80}
@@ -311,17 +292,19 @@ const ProductPage = ({ params }) => {
                   <div className="w-20 h-20 bg-gray-200 rounded-md"></div>
                 )}
               </div>
-
               {/* Main Image */}
               <div className="relative flex-1">
-                {country?.value === "BD" ? product?.data?.discount > 0 && (
-                  <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                    SAVE {product?.data?.discount} {fixedDiscount || percentageDiscount}
-                  </div>
-                ) : product?.data?.intl_discount > 0 && (
-                  <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                    SAVE {product?.data?.intl_discount} {fixedDiscount || percentageDiscount}
-                  </div>)}
+                {country?.value === "BD"
+                  ? product?.data?.discount > 0 && (
+                      <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
+                        SAVE {product?.data?.discount} {fixedDiscount || percentageDiscount}
+                      </div>
+                    )
+                  : product?.data?.intl_discount > 0 && (
+                      <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
+                        SAVE {product?.data?.intl_discount} {fixedDiscount || percentageDiscount}
+                      </div>
+                    )}
                 {imageArray && imageArray.length > 0 ? (
                   <CursorImageZoom
                     src={imageArray[imageIndex]}
@@ -329,10 +312,8 @@ const ProductPage = ({ params }) => {
                     className="w-full xl:h-[65vh] md:h-[60vh] h-[42vh] rounded-lg"
                     zoomScale={2.5}
                   />
-
                 ) : product?.data?.image_path ? (
                   <Image
-                    
                     src={product.data.image_path || noImg}
                     alt={product?.data?.name || "Product image"}
                     width={600}
@@ -345,33 +326,35 @@ const ProductPage = ({ params }) => {
               </div>
             </div>
           </div>
-
           {/* Product Details */}
           <div className="md:w-1/2">
             <h1 className="text-2xl md:text-3xl font-bold mb-2">{product?.data?.name}</h1>
-
             <div className="flex items-center gap-3 mb-4">
-              {!countrySign ? (<>
-                {product?.data?.discount > 0 && (
-                  <span className="text-gray-500 line-through text-sm">৳{getPriceByCountry()}</span>
-                )}
-              </>) : ""}
+              {!countrySign ? (
+                <>
+                  {product?.data?.discount > 0 && (
+                    <span className="text-gray-500 line-through text-sm">৳{getPriceByCountry()}</span>
+                  )}
+                </>
+              ) : (
+                ""
+              )}
               <span className="text-2xl font-bold">
                 {countrySign}
                 {getPriceByCountry() || discountedPrice}
               </span>
-              {
-
-                !countrySign ? <>
+              {!countrySign ? (
+                <>
                   {product?.data?.discount > 0 && (
                     <span className="text-xs font-medium text-green-600 border border-green-600 px-2 py-0.5 rounded-full">
                       {product?.data?.discount} {fixedDiscount || percentageDiscount} OFF
                     </span>
                   )}
-                </> : ""
-              }
+                </>
+              ) : (
+                ""
+              )}
             </div>
-
             <p className="text-sm text-gray-600 mb-6">
               {descriptionText ? (
                 <p className="text-gray-600 whitespace-pre-line mb-4">{descriptionText.substring(0, 33)}</p>
@@ -380,50 +363,37 @@ const ProductPage = ({ params }) => {
               )}
             </p>
 
-            {/* Color Selection (Demo) */}
-            {/* <div className="mb-6">
-              <h3 className="font-medium text-sm mb-3">Color: {selectedColor}</h3>
-              <div className="flex gap-3">
-                {demoColors.map((color) => (
-                  <button
-                    key={color}
-                    onClick={() => setSelectedColor(color)}
-                    className={`w-10 h-10 rounded-full border-2 flex items-center justify-center ${
-                      selectedColor === color ? "border-black" : "border-gray-200"
-                    }`}
-                    aria-label={`Select ${color} color`}
-                  >
-                    <span className="w-8 h-8 rounded-full" style={{ backgroundColor: colorMap[color] }} />
-                  </button>
-                ))}
-              </div>
-            </div> */}
-
-            {/* Size Selection (Demo) */}
+            {/* Size Selection */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
-                <h3 className="font-medium text-sm">Size: {selectedSize}</h3>
-                <button onClick={handleOpen} className="text-sm text-gray-600 underline">Size Guide</button>
+                <h3 className="font-medium text-sm">Size: {product?.data?.product_variants && product.data.product_variants.length > 0 ? selectedSize : "N/A"}</h3>
+                <button onClick={handleOpen} className="text-sm text-gray-600 underline">
+                  Size Guide
+                </button>
               </div>
               <div className="flex gap-3">
                 {product?.data?.product_variants && product.data.product_variants.length > 0
                   ? product.data.product_variants.map((variant) => {
-                    return <button
-                      key={variant.name}
-                      onClick={() => {setSelectedSize(variant?.name),setSelectedId(variant?.id)}}
-                      className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${selectedSize === variant.name
-                        ? "border-black bg-black text-white"
-                        : "border-gray-300 hover:border-gray-400"
-                        }`}
-                    >
-                      {variant?.name}
-                    </button>
-                  })
-                  : "No size availavle"
-                }
+                      return (
+                        <button
+                          key={variant.name}
+                          onClick={() => {
+                            setSelectedSize(variant?.name), setSelectedId(variant?.id)
+                          }}
+                          
+                          className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${
+                            selectedSize === variant.name
+                              ? "border-black bg-black text-white"
+                              : "border-gray-300 hover:border-gray-400"
+                          }`}
+                        >
+                          {variant?.name}
+                        </button>
+                      )
+                    })
+                  : "No size available"}
               </div>
             </div>
-
             {/* Quantity and Actions */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-4">
@@ -446,21 +416,21 @@ const ProductPage = ({ params }) => {
                 </div>
                 <span className="text-sm text-gray-600">{product?.data?.status || "In Stock"}</span>
               </div>
-
               <div className="flex gap-3 mt-3">
                 <button
-                  onClick={() => handleBuy(product?.data, quantity)}
+                  onClick={() => handleBuyNow(product?.data, quantity)}
                   className="flex-1 bg-black md:text-base text-sm hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium transition-colors"
                 >
                   Buy Now
                 </button>
                 <button
                   onClick={(e) => {
-                    e.preventDefault();
-                    handleCart(product?.data, 1,selectedId);
+                    e.preventDefault()
+                    handleAddToCart(product?.data, quantity)
                   }}
-                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
-                    }`}
+                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
+                    isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
+                  }`}
                   disabled={isInCart}
                 >
                   <ShoppingBag className="h-4 w-4" />
@@ -468,18 +438,14 @@ const ProductPage = ({ params }) => {
                 </button>
                 <button
                   onClick={(e) => {
-                    e.stopPropagation();
-                    toggleWishlist(product);
+                    e.stopPropagation()
+                    toggleWishlist(product)
                   }}
                   className="p-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
                   aria-label="Add to wishlist"
                 >
                   {isInWishlist(product.id) ? (
-                    <FaHeart
-                      color="teal"
-                      size={18}
-                      className="transition-all duration-300 animate-heart-bounce"
-                    />
+                    <FaHeart color="teal" size={18} className="transition-all duration-300 animate-heart-bounce" />
                   ) : (
                     <FaRegHeart color="black" size={18} className="transition-all duration-300" />
                   )}
@@ -488,19 +454,18 @@ const ProductPage = ({ params }) => {
             </div>
           </div>
         </div>
-
         {/* Product Information Tabs */}
         <div className="mb-12 lg:mt-20">
           <div className="border-b">
             <button
               onClick={() => setActiveTab("description")}
-              className={`py-2 px-4 text-base font-medium ${activeTab === "description" ? "border-b-2 border-black text-black" : "text-gray-500 hover:text-gray-700"
-                }`}
+              className={`py-2 px-4 text-base font-medium ${
+                activeTab === "description" ? "border-b-2 border-black text-black" : "text-gray-500 hover:text-gray-700"
+              }`}
             >
               Description
             </button>
           </div>
-
           <div className={`pt-6 ${activeTab === "description" ? "block" : "hidden"}`}>
             <div id="Description" className="mt-5 p-3 text-sm border rounded-lg">
               <h2 className="text-xl font-bold text-gray-900">Description</h2>
@@ -513,7 +478,6 @@ const ProductPage = ({ params }) => {
             </div>
           </div>
         </div>
-
         {/* Related Products */}
         <div className="mb-12">
           <h2 className="text-xl font-bold mb-6">You May Also Like</h2>
@@ -527,7 +491,6 @@ const ProductPage = ({ params }) => {
                 >
                   <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
                     <Image
-                      
                       src={item.image_path || noImg}
                       alt={item.name}
                       width={300}
@@ -536,7 +499,9 @@ const ProductPage = ({ params }) => {
                     />
                   </div>
                   <h3 className="font-medium text-sm mb-1 line-clamp-1">{item.name}</h3>
-                  <p className="text-sm">{country?.value === "BD" ? `৳ ${item.retails_price}` : `$ ${item?.intl_retails_price || 0}`}</p>
+                  <p className="text-sm">
+                    {country?.value === "BD" ? `৳ ${item.retails_price}` : `$ ${item?.intl_retails_price || 0}`}
+                  </p>
                 </Link>
               ))
             ) : (
@@ -544,7 +509,6 @@ const ProductPage = ({ params }) => {
             )}
           </div>
         </div>
-
         {/* Recently Viewed */}
         <div className="mb-12">
           <h2 className="text-xl font-bold mb-6">Recently Viewed</h2>
@@ -557,7 +521,7 @@ const ProductPage = ({ params }) => {
                   className="group"
                 >
                   <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
-                    <Image                     
+                    <Image
                       src={item.image || noImg}
                       alt={item.name}
                       width={300}
@@ -566,7 +530,9 @@ const ProductPage = ({ params }) => {
                     />
                   </div>
                   <h3 className="font-medium text-sm mb-1 line-clamp-1">{item.name}</h3>
-                  <p className="text-sm">{country?.value ==="BD" ?`৳` : "$"} {item.price}</p>
+                  <p className="text-sm">
+                    {country?.value === "BD" ? `৳` : "$"} {item.price}
+                  </p>
                 </Link>
               ))
             ) : (
@@ -575,18 +541,13 @@ const ProductPage = ({ params }) => {
           </div>
         </div>
       </div>
-
       {/* Sticky Add to Cart Bar */}
       {scroll > 500 && product?.data && (
         <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg py-3 px-4 z-50">
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Image
-                src={
-                  imageArray && imageArray.length > 0
-                    ? imageArray[0]
-                    : product.data.image_path || noImg
-                }
+                src={imageArray && imageArray.length > 0 ? imageArray[0] : product.data.image_path || noImg}
                 alt={product.data.name}
                 width={50}
                 height={50}
@@ -596,25 +557,23 @@ const ProductPage = ({ params }) => {
                 <h3 className="font-medium text-sm line-clamp-1">{product.data.name}</h3>
                 <p className="text-sm font-bold">
                   ৳
-                  {
-                    country?.value === "BD" ?
-                      product.data.discount > 0
-                        ? (product.data.retails_price - (product.data.retails_price * product.data.discount) / 100).toFixed(
-                          0,
-                        )
-                        : product.data.retails_price
-                      : product.data.intl_discount > 0
-                        ? (product.data.intl_retails_price
-                          - (product.data.intl_retails_price
-                            * product.data.intl_discount) / 100).toFixed(
-                              0,
-                            )
-                        : product.data.intl_retails_price
-                  }
+                  {country?.value === "BD"
+                    ? product.data.discount > 0
+                      ? (
+                          product.data.retails_price -
+                          (product.data.retails_price * product.data.discount) / 100
+                        ).toFixed(0)
+                      : product.data.retails_price
+                    : product.data.intl_discount > 0
+                      ? (
+                          product.data.intl_retails_price -
+                          (product.data.intl_retails_price * product.data.intl_discount) / 100
+                        ).toFixed(0)
+                      : product.data.intl_retails_price}
                 </p>
+                <p className="text-xs text-gray-500">Size: {selectedSize}</p>
               </div>
             </div>
-
             <div className="flex flex-col md:flex-row items-center gap-3">
               <div className="flex items-center border border-gray-300 rounded-md">
                 <button onClick={decrementQuantity} className="px-2 py-1 text-gray-600">
@@ -625,38 +584,35 @@ const ProductPage = ({ params }) => {
                   <Plus className="h-3 w-3" />
                 </button>
               </div>
-
               <button
                 onClick={(e) => {
                   e.preventDefault()
-                  handleCart(product.data, 1)
+                  handleAddToCart(product.data, quantity)
                 }}
-                className={`py-2 px-4 rounded-md font-medium ${isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
-                  }`}
+                className={`py-2 px-4 rounded-md font-medium ${
+                  isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
+                }`}
                 disabled={isCartItem}
               >
-                {isCartItem !== undefined ? "Added" : "Add to Cart"}
+                {isCartItem ? "Added" : "Add to Cart"}
               </button>
-
               <button
-                onClick={() => handleBuy(product.data, 1)}
+                onClick={() => handleBuyNow(product.data, quantity)}
                 className="hidden md:block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium"
               >
                 Buy Now
               </button>
-
             </div>
           </div>
         </div>
       )}
-
       <Modal open={open} onClose={handleClose}>
         <Box
           sx={{
             width: {
               xs: "90%", // 90% width on extra-small devices (mobile)
-              sm: 500,   // 500px on small devices (tablets)
-              md: 700,   // 700px on medium+ devices (desktops)
+              sm: 500, // 500px on small devices (tablets)
+              md: 700, // 700px on medium+ devices (desktops)
             },
             bgcolor: "background.paper",
             margin: "100px auto",
@@ -674,11 +630,9 @@ const ProductPage = ({ params }) => {
           <Typography color="black" variant="h6" mb={2}>
             MEN&apos;S THOBE - REGULAR FIT
           </Typography>
-
           <Tabs value={tab} onChange={handleTabChange} aria-label="Size Guide Tabs">
             <Tab label="IN" />
           </Tabs>
-
           <Box mt={2}>
             <Table>
               <TableHead>
@@ -692,7 +646,7 @@ const ProductPage = ({ params }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {(tab === 0 ? inches : cm).map((row, i) => (
+                {(tab === 0 ? inches : []).map((row, i) => (
                   <TableRow key={i}>
                     {row.map((cell, j) => (
                       <TableCell key={j}>{cell}</TableCell>
@@ -704,7 +658,6 @@ const ProductPage = ({ params }) => {
           </Box>
         </Box>
       </Modal>
-
     </section>
   )
 }

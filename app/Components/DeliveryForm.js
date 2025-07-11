@@ -30,6 +30,7 @@ import { Dialog } from "@headlessui/react";
 import { Wheel } from "react-custom-roulette";
 import useStore from "../CustomHooks/useStore";
 import { GiWorld } from "react-icons/gi";
+import { getNames } from "country-list";
 
 const prizeData = [
   {
@@ -220,6 +221,15 @@ const DeliveryForm = ({
     }
   }, [getCartItems]);
 
+    const [countries, setCountries] = useState([]);
+  const [selectedCountry, setSelectedCountry] = useState("");
+
+  useEffect(() => {
+    const countryNames = getNames(); // returns all country names
+    setCountries(countryNames);
+  }, []);
+
+ 
 
 
   // Create order schema - memoized to prevent constant recreation
@@ -363,6 +373,7 @@ const DeliveryForm = ({
   }, [googleLogin, intendedUrl, router, setToken, setUserInfo]);
 
   const handleChange = useCallback((e) => {
+    setSelectedCountry(e.target.value);
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
     
@@ -589,21 +600,21 @@ const DeliveryForm = ({
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <User className="inline h-4 w-4 mr-1" />
-                First Name <span className="text-red-600">*</span>
+                Full Name <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
-                placeholder="Enter your first name"
+                placeholder="Enter your full name"
                 required
                 className="w-full px-4 py-3 border border-gray-300 text-black dark:bg-white rounded-lg focus:ring-2 transition-colors"
               />
             </div>
 
             {/* Last Name */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Last Name
               </label>
@@ -615,7 +626,7 @@ const DeliveryForm = ({
                 placeholder="Enter your last name"
                 className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
               />
-            </div>
+            </div> */}
 
             {/* Email */}
             <div>
@@ -669,26 +680,27 @@ const DeliveryForm = ({
 
             {/* Select country */}
 
-            <div className="md:col-span-1">
+             <div className="md:col-span-1">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        <GiWorld className="inline h-4 w-4 mr-1" />
+        Select Country <span className="text-red-600">*</span>
+      </label>
 
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <GiWorld className="inline h-4 w-4 mr-1" />
-                Select Country <span className="text-red-600">*</span>
-              </label>
-
-              <select className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors">
-                <option className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors">
-                  Bangladesh
-                </option>
-                <option>
-                  USA
-                </option>
-                <option>
-                  UK
-                </option>
-              </select>
-
-            </div>
+      <select
+        value={selectedCountry}
+        onChange={handleChange}
+        className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
+      >
+        <option value="" disabled>
+          -- Select a country --
+        </option>
+        {countries.map((country) => (
+          <option key={country} value={country}>
+            {country}
+          </option>
+        ))}
+      </select>
+    </div>
 
             {/* Address */}
             <div className="md:col-span-2">
@@ -708,7 +720,7 @@ const DeliveryForm = ({
             </div>
 
             {/* Address2 */}
-            <div className="md:col-span-2">
+            {/* <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Home className="inline h-4 w-4 mr-1" />
                 Address 2 (Optional)
@@ -721,7 +733,7 @@ const DeliveryForm = ({
                 placeholder="House number and street name"
                 className="w-full text-black dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
               />
-            </div>
+            </div> */}
           </div>
         </div>
 
