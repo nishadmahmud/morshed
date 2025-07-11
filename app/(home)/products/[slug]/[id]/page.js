@@ -24,7 +24,7 @@ const ProductPage = ({ params }) => {
   const [quantity, setQuantity] = useState(1)
   const [imageIndex, setImageIndex] = useState(0)
   const [scroll, setScroll] = useState(0)
-  const [isInCart, setIsInCart] = useState(false)
+
   const [activeTab, setActiveTab] = useState("description")
   const [cartItems, setCartItems] = useState([])
   const [relatedProducts, setRelatedProducts] = useState([])
@@ -39,11 +39,15 @@ const ProductPage = ({ params }) => {
     refetch,
     setRefetch,
     prices,
+    setIsInCart,
+    isInCart,
     country,
     setProductPrice,
     handleBuy,
     setSelectedSize,
-    selectedSize
+    selectedSize,
+    setSelectedId,
+    selectedId
   } = useStore()
 
   // size guide modal
@@ -59,8 +63,6 @@ const ProductPage = ({ params }) => {
     ["COLLAR", "15", "15.5", "16", "16.5", "17"],
   ]
 
-  const [selectedId, setSelectedId] = useState(null)
-  console.log(selectedId)
 
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
@@ -162,7 +164,7 @@ const ProductPage = ({ params }) => {
     }
 
     // Add to cart first
-    handleAddToCart(productData, qty)
+    handleCart(productData, qty)
 
     // Then proceed with buy now logic
     handleBuy(productData, qty, selectedSize, selectedId)
@@ -224,6 +226,8 @@ const ProductPage = ({ params }) => {
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
+
+  
 
   const countrySign = selectedCountry?.value === "BD" ? "৳" : "$"
   const incrementQuantity = () => setQuantity((prev) => prev + 1)
@@ -426,7 +430,7 @@ const ProductPage = ({ params }) => {
                 <button
                   onClick={(e) => {
                     e.preventDefault()
-                    handleAddToCart(product?.data, quantity)
+                    handleCart(product?.data,1, quantity, selectedId)
                   }}
                   className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
                     isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
@@ -587,7 +591,7 @@ const ProductPage = ({ params }) => {
               <button
                 onClick={(e) => {
                   e.preventDefault()
-                  handleAddToCart(product.data, quantity)
+                  handleCart(product.data, quantity)
                 }}
                 className={`py-2 px-4 rounded-md font-medium ${
                   isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"

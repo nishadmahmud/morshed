@@ -42,8 +42,11 @@ const StoreProvider = ({ children }) => {
   const [prices, setPrices] = useState({});
   const [country, setCountry] = useState("BD");
   const [wishlist, setWishlist] = useState([]);
-  const [selectedSize, setSelectedSize] = useState("")
+  const [selectedSize, setSelectedSize] = useState("S")
+    const [isInCart, setIsInCart] = useState(false)
 
+  const [selectedId, setSelectedId] = useState(null)
+  console.log(selectedId)
 
   // Setter to update price for a specific product
   const setProductPrice = (productId, basePrice, wholesalePrice) => {
@@ -94,18 +97,7 @@ const StoreProvider = ({ children }) => {
         }
     },[])
 
-  // const handleCart = (item, quantity) => {
-  //   if (!isMounted) return;
-
-  //   setRefetch(false);
-  //   const newItem = {
-  //     ...item,
-  //     retails_price: item.price ?? item.retails_price,
-  //     currency_retail_price : convertedPrice
-  //   };
-
-
-  
+ 
 
   //   const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
   //   const existingProduct = cartItems.find((product) => product.id === item.id);
@@ -139,11 +131,18 @@ const StoreProvider = ({ children }) => {
       ...item,
       retails_price: item.price ?? item.retails_price,
       currency_retail_price : convertedPrice,
-      variant_id
+        selectedSize: selectedSize,
+      product_variant_id: selectedId,
+      variant_id,
+      cartItemId: `${item.id}_${selectedId}`,
     };
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
     const existingProduct = cartItems.find((product) => product.id === item.id);
-
+ // Get existing cart from localStorage
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]")
+ const existingItemIndex = existingCart.findIndex(
+      (item) => item.id === item.id && item.selectedSizeId === selectedId,
+    )
     // Check stock
     const isInStock =
       (newItem.status && newItem.status.toLowerCase() !== "stock out") ||
@@ -154,15 +153,25 @@ const StoreProvider = ({ children }) => {
     }
 
     // Prevent duplicates
-    if (existingProduct) {
-      toast.error("Item already in cart");
-      return;
+     if (existingItemIndex > -1) {
+      // Update quantity if item already exists
+      existingCart[existingItemIndex].quantity += qty
+      toast.success("Cart updated")
+    } else {
+      // Add new item to cart
+      existingCart.push(newItem)
+      toast.success("Item added to cart successfully")
     }
+
+    // Save updated cart to localStorage
+    localStorage.setItem("cart", JSON.stringify(existingCart))
+    setCartItems(existingCart)
+    setIsInCart(true)
 
     const itemWithQty = { ...newItem, quantity };
     cartItems.push(itemWithQty);
     localStorage.setItem("cart", JSON.stringify(cartItems));
-    toast.success("Item added to cart successfully");
+    // toast.success("Item added to cart successfully");
   };
   const getCartItems = () => {
     if (!isMounted) return [];
@@ -300,6 +309,8 @@ const StoreProvider = ({ children }) => {
     setRefetch,
     handleCartItemDelete,
     handleWishlist,
+    selectedId,
+    setSelectedId,
     getWishList,
     handleBuy,
     handleWishlistDelete,
@@ -314,6 +325,8 @@ const StoreProvider = ({ children }) => {
     wholesalePrice,
     setToken,
     hasToken,
+    setIsInCart,
+    isInCart,
     setHasToken,
     loading,
     setLoading,

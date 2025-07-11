@@ -250,7 +250,7 @@ const DeliveryForm = ({
         size: 1,
         sales_id: 3,
         imei_id: item?.imeis ? item?.imeis[0]?.id : null,
-        product_variant_id : item.variant_id
+        product_variant_id : item.product_variant_id
       })),
       delivery_method_id: 1,
       delivery_note: deliveryNote,

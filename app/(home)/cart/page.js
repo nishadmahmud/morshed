@@ -129,6 +129,7 @@ const CartPage = () => {
                     <th className="py-4 px-4 text-left font-semibold">Image</th>
                     <th className="py-4 px-4 text-left font-semibold">Product Name</th>
                     <th className="py-4 px-4 text-left font-semibold">Quantity</th>
+                    <th className="py-4 px-4 text-left font-semibold">Size</th>
                     <th className="py-4 px-4 text-right font-semibold">Unit Price</th>
                     <th className="py-4 px-4 text-right font-semibold">Total</th>
                     <th className="py-4 px-4 text-center font-semibold"></th>
@@ -170,6 +171,9 @@ const CartPage = () => {
                             +
                           </button>
                         </div>
+                      </td>
+                      <td className="py-4 px-4 font-medium">
+                        {item.selectedSize || "N/A"}
                       </td>
                       <td className="py-4 px-4 text-right">
                         {getPriceByCountry(item).toLocaleString()}
