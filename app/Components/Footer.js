@@ -101,11 +101,11 @@ export default function Footer() {
           <Phone className="text-white w-5 h-5" />
           <Link href="tel:+8801970085954" className="text-white text-sm hover:underline">+8801970085954</Link>
         </div>
-        <Link target="_blank" href="https://maps.app.goo.gl/yLk4iW6GenCbn8BG8">
+        <Link target="_blank" href="https://maps.app.goo.gl/r2PZTybTwgb8SLd5A">
           <div className="flex items-start gap-2 border border-white p-3 rounded-md">
             <MapPin className="text-white w-5 h-5" />
             <p className="text-white text-xs">
-              Dhaka, Bangladesh
+              Rampura, Dhaka, Bangladesh
             </p>
           </div>
         </Link>

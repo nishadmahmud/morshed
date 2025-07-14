@@ -42,11 +42,19 @@ const StoreProvider = ({ children }) => {
   const [prices, setPrices] = useState({});
   const [country, setCountry] = useState("BD");
   const [wishlist, setWishlist] = useState([]);
-  const [selectedSize, setSelectedSize] = useState("S")
+  const [selectedSize, setSelectedSize] = useState(null)
+  const [sizeQuantity, setSizeQuantity] = useState(0)
+
+const selectedSizeQuantity = (productId) => {
+  // logic to get size quantity (e.g., from product variants)
+  const quantity = getQuantityFromProductId(productId)
+  setSizeQuantity(quantity)
+}
+
     const [isInCart, setIsInCart] = useState(false)
 
   const [selectedId, setSelectedId] = useState(null)
-  console.log(selectedId)
+  // console.log(selectedId)
 
   // Setter to update price for a specific product
   const setProductPrice = (productId, basePrice, wholesalePrice) => {
@@ -124,14 +132,14 @@ const StoreProvider = ({ children }) => {
   // };
 
 
-  const handleCart = (item, quantity,variant_id) => {
+  const handleCart = (item, quantity, variant_id) => {
     if (!isMounted) return;
     setRefetch(true);
     const newItem = {
       ...item,
       retails_price: item.price ?? item.retails_price,
       currency_retail_price : convertedPrice,
-        selectedSize: selectedSize,
+      selectedSize: selectedSize,
       product_variant_id: selectedId,
       variant_id,
       cartItemId: `${item.id}_${selectedId}`,
@@ -341,6 +349,8 @@ const StoreProvider = ({ children }) => {
     selectedCountry,
     countries,
     convertedPrice,
+    sizeQuantity,
+    setSizeQuantity,
     setConvertedPrice,
     setBasePrice,
     setCountry,

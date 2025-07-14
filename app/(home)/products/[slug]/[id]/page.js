@@ -47,7 +47,10 @@ const ProductPage = ({ params }) => {
     setSelectedSize,
     selectedSize,
     setSelectedId,
-    selectedId
+    selectedId,
+    selectedSizeQuantity,
+    setSizeQuantity,
+    sizeQuantity
   } = useStore()
 
   // size guide modal
@@ -63,6 +66,7 @@ const ProductPage = ({ params }) => {
     ["COLLAR", "15", "15.5", "16", "16.5", "17"],
   ]
 
+    // console.log(sizeQuantity);
 
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
@@ -88,6 +92,7 @@ const ProductPage = ({ params }) => {
   useEffect(() => {
     if (product?.data && product?.data?.product_variants.length) {
       setSelectedSize(product?.data?.product_variants[0].name)
+      // setSelectedSizeQuantity(product?.data?.product_variants.quantity)
       setSelectedId(product?.data?.product_variants[0].id)
     }
   }, [product?.data])
@@ -125,10 +130,12 @@ const ProductPage = ({ params }) => {
       return
     }
 
+
     const cartItem = {
       ...productData,
       selectedSize: selectedSize,
       selectedSizeId: selectedId,
+      // selectedSizeQuantity: selectedSizeQuantity,
       quantity: qty,
       cartItemId: `${productData.id}_${selectedId}`, // Unique identifier for cart item
     }
@@ -370,33 +377,43 @@ const ProductPage = ({ params }) => {
             {/* Size Selection */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
-                <h3 className="font-medium text-sm">Size: {product?.data?.product_variants && product.data.product_variants.length > 0 ? selectedSize : "N/A"}</h3>
+                <h3 className="font-medium text-sm">Size: {product?.data?.product_variants && product.data.product_variants.length > 0 ? selectedSize : "N/A"} <span className="text-xs font-normal">({sizeQuantity || 0} available) </span> </h3>
                 <button onClick={handleOpen} className="text-sm text-gray-600 underline">
                   Size Guide
                 </button>
               </div>
               <div className="flex gap-3">
-                {product?.data?.product_variants && product.data.product_variants.length > 0
-                  ? product.data.product_variants.map((variant) => {
-                      return (
-                        <button
-                          key={variant.name}
-                          onClick={() => {
-                            setSelectedSize(variant?.name), setSelectedId(variant?.id)
-                          }}
-                          
-                          className={`flex items-center justify-center w-12 h-12 border rounded-md cursor-pointer ${
-                            selectedSize === variant.name
-                              ? "border-black bg-black text-white"
-                              : "border-gray-300 hover:border-gray-400"
-                          }`}
-                        >
-                          {variant?.name}
-                        </button>
-                      )
-                    })
-                  : "No size available"}
-              </div>
+  <div className="flex gap-3">
+  {product?.data?.product_variants && product.data.product_variants.length > 0
+    ? product.data.product_variants.map((variant) => {
+        const isSelected = selectedSize === variant.name;
+        const isDisabled = variant.quantity < 1;
+
+        return (
+          <button
+            key={variant.name}
+            onClick={() => {
+              if (!isDisabled) {
+                setSelectedSize(variant.name);
+                setSizeQuantity(variant.quantity);
+                setSelectedId(variant.id);
+              }
+            }}
+            disabled={isDisabled}
+            className={`flex items-center justify-center w-12 h-12 border rounded-md  transition
+              ${isSelected ? "border-black bg-black text-white" : "border-gray-300 hover:border-gray-400"}
+              ${isDisabled ? "opacity-20 cursor-not-allowed hover:border-gray-300" : "cursor-pointer"}`}
+          >
+            {variant.name}
+          </button>
+        );
+      })
+    : "No size available"}
+</div>
+
+
+</div>
+
             </div>
             {/* Quantity and Actions */}
             <div className="flex flex-col gap-4">
