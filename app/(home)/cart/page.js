@@ -10,7 +10,8 @@ import CartSkeleton from "@/app/Components/CartSkeleton";
 import noImg from "/public/no-image.jpg";
 
 const CartPage = () => {
-  const { getCartItems, handleCartItemDelete: storeHandleDelete, country } = useStore();
+  const { getCartItems, handleCartItemDelete: storeHandleDelete, country,  handleIncQuantity,
+    handleDncQuantity } = useStore();
 
   const [cartItems, setCartItems] = useState([]);
   const [note, setNote] = useState("");
@@ -153,19 +154,25 @@ const CartPage = () => {
                       <td className="py-4 px-4">
                         <div className="flex items-center justify-center">
                           <button
-                            onClick={() => decQuantity(item.id, item.quantity)}
+                           onClick={() =>
+                              item.quantity > 0 &&
+                              handleDncQuantity(item?.id, item.quantity)
+                            }
                             className="w-8 h-8 flex items-center justify-center border border-gray-300 bg-gray-50 dark:bg-white dark:text-black"
                           >
                             -
                           </button>
                           <input
-                            type="text"
+                            type="number"
                             value={item.quantity}
+                            min={1}
                             readOnly
                             className="w-10 h-8 text-center border-t border-b border-gray-300 dark:bg-white dark:text-black"
                           />
                           <button
-                            onClick={() => incQuantity(item.id, item.quantity)}
+                            onClick={() =>
+                              handleIncQuantity(item?.id, item.quantity)
+                            }
                             className="w-8 h-8 flex items-center justify-center border border-gray-300 bg-gray-50 dark:bg-white dark:text-black"
                           >
                             +

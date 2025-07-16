@@ -195,9 +195,10 @@ const CartItems = () => {
             }}
 
             className="py-2 w-full bg-[#115e59] text-white mt-3 mb-6 rounded-md"
-
           >
+
             Check Out
+            
           </button>
           <Image
             src={

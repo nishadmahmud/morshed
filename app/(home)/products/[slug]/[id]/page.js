@@ -447,7 +447,7 @@ const ProductPage = ({ params }) => {
                 <button
                   onClick={(e) => {
                     e.preventDefault()
-                    handleCart(product?.data,1, quantity, selectedId)
+                    handleCart(product?.data, quantity, selectedId)
                   }}
                   className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
                     isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
@@ -618,7 +618,7 @@ const ProductPage = ({ params }) => {
                 {isCartItem ? "Added" : "Add to Cart"}
               </button>
               <button
-                onClick={() => handleBuyNow(product.data, quantity)}
+                onClick={() => handleBuy(product.data, quantity)}
                 className="hidden md:block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium"
               >
                 Buy Now
