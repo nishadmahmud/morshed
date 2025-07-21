@@ -17,25 +17,27 @@ const PromotionModal = () => {
 
     const offer = offers?.data;
 
-    useEffect(() => {
-        const hasSeenModal = sessionStorage.getItem('hasSeenPromoBanner');
+ useEffect(() => {
+    const hasSeenModal = sessionStorage.getItem("hasSeenPromoBanner");
 
-        if (hasSeenModal && offer?.length > 0) {  // Only show the modal if offer exist
-            setIsFirstVisit(false);
-            setIsOpenPromoBanner(true);
-            sessionStorage.setItem('hasSeenPromoBanner', 'true');
-        }
-    }, [offer, setIsOpenPromoBanner]);
+    if (!hasSeenModal && offer?.length > 0) {
+      // Only show the modal if offers exist
+      setIsFirstVisit(true);
+      setIsOpenPromoBanner(true);
+      sessionStorage.setItem("hasSeenPromoBanner", "true");
+    }
+  }, [offer, setIsOpenPromoBanner]);
 
     const handleClose = () => {
         setIsOpenPromoBanner(false);
     };
 
     const lastImage = offer?.length ? offer[offer.length - 1].image : null;
+// console.log("Promo Image URL:", lastImage);
 
 
     return (
-        <div className={`modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center z-[9999] items-center px-4 ${isOpenPromoBanner  && offer?.length > 0 ? '' : 'hidden'}`}>
+        <div className={`modal-overlay fixed inset-0 bg-black bg-opacity-50 flex justify-center z-[9999] items-center px-4 ${isOpenPromoBanner && isFirstVisit && offer?.length > 0 ? '' : 'hidden'}`}>
             <dialog
                 open
                 className="relative p-1.5 lg:p-2 rounded-lg flex flex-col justify-center bg-white text-black lg:w-[40%] w-[85%] h-[30vh] md:h-[60vh]"
@@ -52,7 +54,9 @@ const PromotionModal = () => {
                 {/* Image Container */}
                 <div className="relative w-full h-full flex justify-center items-center">
                     {lastImage ? (
-                        <Image  className='rounded-md' src={lastImage}
+                        <Image
+                        className='rounded-md' 
+                        src={lastImage}
                         quality={100}
                         fill
                         alt='promo' 
