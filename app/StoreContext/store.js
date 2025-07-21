@@ -42,17 +42,10 @@ const StoreProvider = ({ children }) => {
   const [prices, setPrices] = useState({});
   const [country, setCountry] = useState("BD");
   const [wishlist, setWishlist] = useState([]);
-  const [selectedSize, setSelectedSize] = useState(null)
-  const [sizeQuantity, setSizeQuantity] = useState(0)
+    const [selectedSizeCart, setSelectedSizeCart] = useState()
 
-const selectedSizeQuantity = (productId) => {
-  // logic to get size quantity (e.g., from product variants)
-  const quantity = getQuantityFromProductId(productId)
-  setSizeQuantity(quantity)
-}
 
-    const [isInCart, setIsInCart] = useState(false)
-
+  const [isInCart, setIsInCart] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
   // console.log(selectedId)
 
@@ -139,7 +132,7 @@ const selectedSizeQuantity = (productId) => {
       ...item,
       retails_price: item.price ?? item.retails_price,
       currency_retail_price : convertedPrice,
-      selectedSize: selectedSize,
+      selectedSize: selectedSizeCart,
       product_variant_id: selectedId,
       variant_id,
       cartItemId: `${item.id}_${selectedId}`,
@@ -326,8 +319,7 @@ const selectedSizeQuantity = (productId) => {
     setIsLoginModal,
     setWishlist,
     wishlist,
-    selectedSize,
-    setSelectedSize,
+   
     token,
     setWholesalePrice,
     wholesalePrice,
@@ -349,8 +341,9 @@ const selectedSizeQuantity = (productId) => {
     selectedCountry,
     countries,
     convertedPrice,
-    sizeQuantity,
-    setSizeQuantity,
+    setSelectedSizeCart,
+    selectedSizeCart,
+    
     setConvertedPrice,
     setBasePrice,
     setCountry,

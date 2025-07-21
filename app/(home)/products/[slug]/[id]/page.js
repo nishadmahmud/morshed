@@ -24,12 +24,13 @@ const ProductPage = ({ params }) => {
   const [quantity, setQuantity] = useState(1)
   const [imageIndex, setImageIndex] = useState(0)
   const [scroll, setScroll] = useState(0)
-
+ const [sizeQuantity, setSizeQuantity] = useState()
   const [activeTab, setActiveTab] = useState("description")
   const [cartItems, setCartItems] = useState([])
   const [relatedProducts, setRelatedProducts] = useState([])
   const [recentProducts, setRecentProducts] = useState([])
   const [imageArray, setImageArray] = useState([])
+    const [selectedSize, setSelectedSize] = useState()
   const { toggleWishlist, isInWishlist } = useWishlist()
   const {
     handleCart,
@@ -44,13 +45,12 @@ const ProductPage = ({ params }) => {
     country,
     setProductPrice,
     handleBuy,
-    setSelectedSize,
-    selectedSize,
+     setSelectedSizeCart,
+    selectedSizeCart,
     setSelectedId,
     selectedId,
     selectedSizeQuantity,
-    setSizeQuantity,
-    sizeQuantity
+   
   } = useStore()
 
   // size guide modal
@@ -59,7 +59,7 @@ const ProductPage = ({ params }) => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleTabChange = (event, newValue) => setTab(newValue)
-
+ 
   const inches = [
     ["CHEST", "40", "42", "44", "46", "48"],
     ["LENGTH", "28", "29", "30", "31", "31.5"],
@@ -91,7 +91,8 @@ const ProductPage = ({ params }) => {
 
   useEffect(() => {
     if (product?.data && product?.data?.product_variants.length) {
-      setSelectedSize(product?.data?.product_variants[0].name)
+      // setSelectedSize(product?.data?.product_variants[0].name)
+      setSelectedSizeCart(product?.data?.product_variants[0].name)
       // setSelectedSizeQuantity(product?.data?.product_variants.quantity)
       setSelectedId(product?.data?.product_variants[0].id)
     }
@@ -237,8 +238,19 @@ const ProductPage = ({ params }) => {
   
 
   const countrySign = selectedCountry?.value === "BD" ? "৳" : "$"
-  const incrementQuantity = () => setQuantity((prev) => prev + 1)
-  const decrementQuantity = () => setQuantity((prev) => (prev > 1 ? prev - 1 : 1))
+  const incrementQuantity = () => {
+  if (quantity < sizeQuantity) {
+    setQuantity(prev => prev + 1);
+  } else {
+    toast.error(`Only ${sizeQuantity} items available in stock`);
+  }
+};
+
+  const decrementQuantity = () => {
+  if (quantity > 1) {
+    setQuantity(prev => prev - 1);
+  }
+};
 
   const sanitizeSlug = (str) => {
     return str
@@ -377,10 +389,13 @@ const ProductPage = ({ params }) => {
             {/* Size Selection */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
-                <h3 className="font-medium text-sm">Size: {product?.data?.product_variants && product.data.product_variants.length > 0 ? selectedSize : "N/A"} <span className="text-xs font-normal">({sizeQuantity || 0} available) </span> </h3>
+
+                {selectedSize && <h3 className="font-medium text-sm">Size: {product?.data?.product_variants && product.data.product_variants.length > 0 ? selectedSize : "N/A"} <span className="text-xs font-normal">({sizeQuantity || 0} available) </span> </h3>}
+
                 <button onClick={handleOpen} className="text-sm text-gray-600 underline">
                   Size Guide
                 </button>
+
               </div>
               <div className="flex gap-3">
   <div className="flex gap-3">
@@ -395,7 +410,8 @@ const ProductPage = ({ params }) => {
             onClick={() => {
               if (!isDisabled) {
                 setSelectedSize(variant.name);
-                setSizeQuantity(variant.quantity);
+                setSelectedSizeCart(variant.name);
+                setSizeQuantity(variant?.quantity);
                 setSelectedId(variant.id);
               }
             }}
@@ -404,13 +420,12 @@ const ProductPage = ({ params }) => {
               ${isSelected ? "border-black bg-black text-white" : "border-gray-300 hover:border-gray-400"}
               ${isDisabled ? "opacity-20 cursor-not-allowed hover:border-gray-300" : "cursor-pointer"}`}
           >
-            {variant.name}
+          {variant.name}
           </button>
         );
       })
     : "No size available"}
 </div>
-
 
 </div>
 
@@ -418,25 +433,25 @@ const ProductPage = ({ params }) => {
             {/* Quantity and Actions */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-4">
-                <div className="flex items-center border border-gray-300 rounded-md">
-                  <button
-                    onClick={decrementQuantity}
-                    className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-                    aria-label="Decrease quantity"
-                  >
-                    <Minus className="h-4 w-4" />
-                  </button>
-                  <span className="px-4 py-2 border-x border-gray-300">{quantity}</span>
-                  <button
-                    onClick={incrementQuantity}
-                    className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-                    aria-label="Increase quantity"
-                  >
-                    <Plus className="h-4 w-4" />
-                  </button>
-                </div>
-                <span className="text-sm text-gray-600">{product?.data?.status || "In Stock"}</span>
-              </div>
+  <div className="flex items-center border border-gray-300 rounded-md">
+    <button
+      onClick={decrementQuantity}
+      className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+      aria-label="Decrease quantity"
+    >
+      <Minus className="h-4 w-4" />
+    </button>
+    <span className="px-4 py-2 border-x border-gray-300">{quantity}</span>
+    <button
+      onClick={incrementQuantity}
+      className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+      aria-label="Increase quantity"
+    >
+      <Plus className="h-4 w-4" />
+    </button>
+  </div>
+</div>
+
               <div className="flex gap-3 mt-3">
                 <button
                   onClick={() => handleBuy(product?.data, quantity)}
@@ -477,7 +492,7 @@ const ProductPage = ({ params }) => {
         </div>
         {/* Product Information Tabs */}
         <div className="mb-12 lg:mt-20">
-          <div className="border-b">
+          {/* <div className="border-b">
             <button
               onClick={() => setActiveTab("description")}
               className={`py-2 px-4 text-base font-medium ${
@@ -486,7 +501,7 @@ const ProductPage = ({ params }) => {
             >
               Description
             </button>
-          </div>
+          </div> */}
           <div className={`pt-6 ${activeTab === "description" ? "block" : "hidden"}`}>
             <div id="Description" className="mt-5 p-3 text-sm border rounded-lg">
               <h2 className="text-xl font-bold text-gray-900">Description</h2>
