@@ -467,7 +467,7 @@ const ProductPage = ({ params }) => {
                   className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
                     isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
                   }`}
-                  disabled={isInCart}
+                  disabled={isInCart || !selectedSize}
                 >
                   <ShoppingBag className="h-4 w-4" />
                   {isInCart ? "Added to Cart" : "Add to Cart"}
@@ -628,7 +628,7 @@ const ProductPage = ({ params }) => {
                 className={`py-2 px-4 rounded-md font-medium ${
                   isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
                 }`}
-                disabled={isCartItem}
+                disabled={isCartItem && selectedSize}
               >
                 {isCartItem ? "Added" : "Add to Cart"}
               </button>

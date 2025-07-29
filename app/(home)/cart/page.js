@@ -105,7 +105,7 @@ const CartPage = () => {
   };
 
   const handleCartItemDelete = (id) => {
-    storeHandleDelete(id); // call store logic if needed
+    storeHandleDelete(id); 
     const items = getCartItems().filter((item) => item.id !== id);
     localStorage.setItem("cart", JSON.stringify(items));
     setCartItems(items);

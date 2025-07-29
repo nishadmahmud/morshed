@@ -199,18 +199,33 @@ const StoreProvider = ({ children }) => {
     handleCartUpdate();
   };
 
-  const handleDncQuantity = (id, qty) => {
-    const items = getCartItems();
-    const updatedItems = items.map((item) => {
+const handleDncQuantity = (id, qty) => {
+  const items = getCartItems();
+
+  let removedItemName = null;
+
+  const updatedItems = items
+    .map((item) => {
       if (item.id === id) {
-        return { ...item, quantity: qty - 1 };
+        const newQty = qty - 1;
+        if (newQty <= 0) {
+          removedItemName = item.name;
+          return null; 
+        }
+        return { ...item, quantity: newQty };
       }
       return item;
-    });
-    localStorage.removeItem("cart");
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
-    handleCartUpdate();
-  };
+    })
+    .filter(Boolean); 
+
+  localStorage.setItem("cart", JSON.stringify(updatedItems));
+  handleCartUpdate();
+
+  if (removedItemName) {
+    toast.success(`${removedItemName} removed from cart`);
+  }
+};
+
 
   const handleCartItemDelete = (id) => {
     setRefetch(true);

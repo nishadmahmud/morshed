@@ -1,4 +1,4 @@
-import { Headset } from "lucide-react";
+import { Headset, MessageCircleMore } from "lucide-react";
 import React, { useState } from "react";
 import { ChildButton, FloatingMenu, MainButton } from "react-floating-button-menu";
 import { FaPhoneAlt } from "react-icons/fa";
@@ -21,7 +21,7 @@ const FloatingActionMenu = () => {
       >
         <MainButton
         className="bg-white"
-          iconResting={<Headset style={{ fontSize: 25, color: "#115e59" }} />}
+          iconResting={<MessageCircleMore style={{ fontSize: 25, color: "#115e59" }} />}
           iconActive={<MdClose style={{ fontSize: 20, color: "#115e59" }} />}
           backgroundColor="white"
           onClick={() => setIsOpen(!isOpen)}
