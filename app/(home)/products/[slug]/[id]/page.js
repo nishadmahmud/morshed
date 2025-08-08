@@ -59,7 +59,7 @@ const ProductPage = ({ params }) => {
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
   const handleTabChange = (event, newValue) => setTab(newValue)
- 
+
   const inches = [
     ["CHEST", "40", "42", "44", "46", "48"],
     ["LENGTH", "28", "29", "30", "31", "31.5"],
@@ -125,45 +125,45 @@ const ProductPage = ({ params }) => {
   const percentageDiscount = product?.data.discount_type === "Percentage" ? "%" : null
 
   // Modified cart handling functions
-  const handleAddToCart = (productData, qty = 1) => {
-    if (!productData || !selectedSize) {
-      toast.error("Please select a size")
-      return
-    }
+  // const handleAddToCart = (productData, qty = 1) => {
+  //   if (!productData || !selectedSize) {
+  //     toast.error("Please select a size")
+  //     return
+  //   }
 
 
-    const cartItem = {
-      ...productData,
-      selectedSize: selectedSize,
-      selectedSizeId: selectedId,
-      // selectedSizeQuantity: selectedSizeQuantity,
-      quantity: qty,
-      cartItemId: `${productData.id}_${selectedId}`, // Unique identifier for cart item
-    }
+  //   const cartItem = {
+  //     ...productData,
+  //     selectedSize: selectedSize,
+  //     selectedSizeId: selectedId,
+  //     // selectedSizeQuantity: selectedSizeQuantity,
+  //     quantity: qty,
+  //     cartItemId: `${productData.id}_${selectedId}`, 
+  //   }
 
-    // Get existing cart from localStorage
-    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]")
+  //   // Get existing cart from localStorage
+  //   const existingCart = JSON.parse(localStorage.getItem("cart") || "[]")
 
-    // Check if item with same product and size already exists
-    const existingItemIndex = existingCart.findIndex(
-      (item) => item.id === productData.id && item.selectedSizeId === selectedId,
-    )
+  //   // Check if item with same product and size already exists
+  //   const existingItemIndex = existingCart.findIndex(
+  //     (item) => item.id === productData.id && item.selectedSizeId === selectedId,
+  //   )
 
-    if (existingItemIndex > -1) {
-      // Update quantity if item already exists
-      existingCart[existingItemIndex].quantity += qty
-      toast.success("Cart updated")
-    } else {
-      // Add new item to cart
-      existingCart.push(cartItem)
-      toast.success("Added to cart")
-    }
+  //   if (existingItemIndex > -1) {
+  //     // Update quantity if item already exists
+  //     existingCart[existingItemIndex].quantity += qty
+  //     toast.success("Cart updated")
+  //   } else {
+  //     // Add new item to cart
+  //     existingCart.push(cartItem)
+  //     toast.success("Added to cart")
+  //   }
 
-    // Save updated cart to localStorage
-    localStorage.setItem("cart", JSON.stringify(existingCart))
-    setCartItems(existingCart)
-    setIsInCart(true)
-  }
+  //   // Save updated cart to localStorage
+  //   localStorage.setItem("cart", JSON.stringify(existingCart))
+  //   setCartItems(existingCart)
+  //   setIsInCart(true)
+  // }
 
   // const handleBuyNow = (productData, qty = 1) => {
   //   if (!productData || !selectedSize) {
@@ -235,9 +235,10 @@ const ProductPage = ({ params }) => {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  
 
-  const countrySign = selectedCountry?.value === "BD" ? "৳" : "$"
+  const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
+
+
   const incrementQuantity = () => {
   if (quantity < sizeQuantity) {
     setQuantity(prev => prev + 1);
@@ -246,7 +247,8 @@ const ProductPage = ({ params }) => {
   }
 };
 
-  const decrementQuantity = () => {
+
+const decrementQuantity = () => {
   if (quantity > 1) {
     setQuantity(prev => prev - 1);
   }
@@ -398,6 +400,7 @@ const ProductPage = ({ params }) => {
 
               </div>
               <div className="flex gap-3">
+
   <div className="flex gap-3">
   {product?.data?.product_variants && product.data.product_variants.length > 0
     ? product.data.product_variants.map((variant) => {
@@ -405,27 +408,30 @@ const ProductPage = ({ params }) => {
         const isDisabled = variant.quantity < 1;
 
         return (
-          <button
-            key={variant.name}
-            onClick={() => {
-              if (!isDisabled) {
-                setSelectedSize(variant.name);
-                setSelectedSizeCart(variant.name);
-                setSizeQuantity(variant?.quantity);
-                setSelectedId(variant.id);
-              }
-            }}
-            disabled={isDisabled}
-            className={`flex items-center justify-center w-12 h-12 border rounded-md  transition
-              ${isSelected ? "border-black bg-black text-white" : "border-gray-300 hover:border-gray-400"}
-              ${isDisabled ? "opacity-20 cursor-not-allowed hover:border-gray-300" : "cursor-pointer"}`}
-          >
-          {variant.name}
-          </button>
+         <button
+  key={variant.name}
+  onClick={() => {
+    if (!isDisabled) {
+      setSelectedSize(variant.name);
+      setSelectedSizeCart(variant.name);
+      setSizeQuantity(variant?.quantity);
+      setSelectedId(variant.id);
+      setQuantity(1); // 👈 reset here
+    }
+  }}
+  disabled={isDisabled}
+  className={`flex items-center justify-center w-12 h-12 border rounded-md transition
+    ${isSelected ? "border-black bg-black text-white" : "border-gray-300 hover:border-gray-400"}
+    ${isDisabled ? "opacity-20 cursor-not-allowed hover:border-gray-300" : "cursor-pointer"}`}
+>
+  {variant.name}
+</button>
+
         );
       })
     : "No size available"}
 </div>
+
 
 </div>
 

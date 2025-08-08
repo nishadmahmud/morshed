@@ -156,7 +156,7 @@ const CartPage = () => {
                           <button
                            onClick={() =>
                               item.quantity > 0 &&
-                              handleDncQuantity(item?.id, item.quantity)
+                              handleDncQuantity(item?.id, item.quantity, item.selectedSize)
                             }
                             className="w-8 h-8 flex items-center justify-center border border-gray-300 bg-gray-50 dark:bg-white dark:text-black"
                           >
@@ -171,7 +171,7 @@ const CartPage = () => {
                           />
                           <button
                             onClick={() =>
-                              handleIncQuantity(item?.id, item.quantity)
+                              handleIncQuantity(item?.id, item.quantity, item.selectedSize)
                             }
                             className="w-8 h-8 flex items-center justify-center border border-gray-300 bg-gray-50 dark:bg-white dark:text-black"
                           >

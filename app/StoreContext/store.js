@@ -42,7 +42,7 @@ const StoreProvider = ({ children }) => {
   const [prices, setPrices] = useState({});
   const [country, setCountry] = useState("BD");
   const [wishlist, setWishlist] = useState([]);
-    const [selectedSizeCart, setSelectedSizeCart] = useState()
+  const [selectedSizeCart, setSelectedSizeCart] = useState()
 
 
   const [isInCart, setIsInCart] = useState(false)
@@ -174,6 +174,7 @@ const StoreProvider = ({ children }) => {
     localStorage.setItem("cart", JSON.stringify(cartItems));
     // toast.success("Item added to cart successfully");
   };
+
   const getCartItems = () => {
     if (!isMounted) return [];
     const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
@@ -186,37 +187,51 @@ const StoreProvider = ({ children }) => {
     setCartItems(updatedItems);
   };
 
-  const handleIncQuantity = (id, qty) => {
-    const items = getCartItems();
-    const updatedItems = items.map((item) => {
-      if (item.id === id) {
-        return { ...item, quantity: qty + 1 };
-      }
-      return item;
-    });
-    localStorage.removeItem("cart");
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
-    handleCartUpdate();
-  };
-
-const handleDncQuantity = (id, qty) => {
+ const handleIncQuantity = (id, qty, selectedSize) => {
   const items = getCartItems();
 
+  const updatedItems = items.map((item) => {
+    if (item.id === id && item.selectedSize === selectedSize) {
+      // Find the matching variant inside product_variants array
+      const matchedVariant = item.product_variants?.find(
+        (variant) => variant.name === selectedSize
+      );
+
+      // If stock limit reached, show toast and return original item
+      if (matchedVariant && qty + 1 > matchedVariant.quantity) {
+        toast.error(`Only ${matchedVariant.quantity} items in stock`);
+        return item;
+      }
+
+      // Otherwise, increment quantity
+      return { ...item, quantity: qty + 1 };
+    }
+
+    return item;
+  });
+
+  localStorage.setItem("cart", JSON.stringify(updatedItems));
+  handleCartUpdate();
+};
+
+
+const handleDncQuantity = (id, qty, selectedSize) => {
+  const items = getCartItems();
   let removedItemName = null;
 
   const updatedItems = items
     .map((item) => {
-      if (item.id === id) {
+      if (item.id === id && item.selectedSize === selectedSize) {
         const newQty = qty - 1;
         if (newQty <= 0) {
           removedItemName = item.name;
-          return null; 
+          return null;
         }
         return { ...item, quantity: newQty };
       }
       return item;
     })
-    .filter(Boolean); 
+    .filter(Boolean); // Remove nulls
 
   localStorage.setItem("cart", JSON.stringify(updatedItems));
   handleCartUpdate();
@@ -225,6 +240,7 @@ const handleDncQuantity = (id, qty) => {
     toast.success(`${removedItemName} removed from cart`);
   }
 };
+
 
 
   const handleCartItemDelete = (id) => {
