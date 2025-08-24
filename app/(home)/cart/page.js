@@ -10,14 +10,20 @@ import CartSkeleton from "@/app/Components/CartSkeleton";
 import noImg from "/public/no-image.jpg";
 
 const CartPage = () => {
-  const { getCartItems, handleCartItemDelete: storeHandleDelete, country,  handleIncQuantity,
-    handleDncQuantity } = useStore();
+  const {
+    getCartItems,
+    handleCartItemDelete: storeHandleDelete,
+    country,
+    handleIncQuantity,
+    handleDncQuantity,
+  } = useStore();
 
   const [cartItems, setCartItems] = useState([]);
   const [note, setNote] = useState("");
   const [cartTotal, setCartTotal] = useState(0);
   const [totalDiscount, setTotalDiscount] = useState(0);
-  const [totalSubtotalWithoutDiscount, setTotalSubtotalWithoutDiscount] = useState(0);
+  const [totalSubtotalWithoutDiscount, setTotalSubtotalWithoutDiscount] =
+    useState(0);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -41,24 +47,30 @@ const CartPage = () => {
 
     const discount = cartItems.reduce((prev, item) => {
       let discountAmount = 0;
-      if(country.value == "BD"){
+      if (country.value == "BD") {
         if (item.discount_type === "Fixed") {
           discountAmount = (item.discount || 0) * item.quantity;
         } else if (item.discount_type === "Percentage") {
-          discountAmount = ((item.retails_price * (item.discount || 0)) / 100) * item.quantity;
+          discountAmount =
+            ((item.retails_price * (item.discount || 0)) / 100) * item.quantity;
         }
-      }else{
+      } else {
         if (item.discount_type === "Fixed") {
           discountAmount = (item.intl_discount || 0) * item.quantity;
         } else if (item.discount_type === "Percentage") {
-          discountAmount = ((item.intl_retails_price * (item.intl_discount || 0)) / 100) * item.quantity;
+          discountAmount =
+            ((item.intl_retails_price * (item.intl_discount || 0)) / 100) *
+            item.quantity;
         }
       }
       return prev + discountAmount;
     }, 0);
 
     const subtotal = cartItems.reduce((acc, item) => {
-      const price = country.value == "BD" ?  Number(item?.retails_price) : Number(item?.intl_retails_price) || 0;
+      const price =
+        country.value == "BD"
+          ? Number(item?.retails_price)
+          : Number(item?.intl_retails_price) || 0;
       return acc + price * item.quantity;
     }, 0);
 
@@ -77,40 +89,26 @@ const CartPage = () => {
     else localStorage.removeItem("cartAttachment");
   }, [note]);
 
-  const incQuantity = (id, qty) => {
-    const items = getCartItems();
-    const item = items.find((i) => i.id === id);
-    if (item && item.current_stock !== undefined && qty + 1 > item.current_stock) {
-      toast.error("Cannot add more items. Stock limit reached!");
-      return;
-    }
-    const updatedItems = items.map((i) =>
-      i.id === id ? { ...i, quantity: qty + 1 } : i
-    );
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
-    setCartItems(updatedItems);
-  };
+  // const handleCartItemDelete = (id) => {
+  //   storeHandleDelete(id);
+  //   const items = getCartItems().filter((item) => item.id !== id);
+  //   localStorage.setItem("cart", JSON.stringify(items));
+  //   setCartItems(items);
+  //   toast.success("Item removed from cart");
+  // };
 
-  const decQuantity = (id, qty) => {
-    if (qty <= 1) {
-      handleCartItemDelete(id);
-      return;
-    }
-    const items = getCartItems();
-    const updatedItems = items.map((i) =>
-      i.id === id ? { ...i, quantity: qty - 1 } : i
-    );
-    localStorage.setItem("cart", JSON.stringify(updatedItems));
-    setCartItems(updatedItems);
-  };
+ const handleCartItemDelete = (cartItemId) => {
+  const updatedCart = getCartItems().filter(
+    (item) => item.cartItemId !== cartItemId
+  );
 
-  const handleCartItemDelete = (id) => {
-    storeHandleDelete(id); 
-    const items = getCartItems().filter((item) => item.id !== id);
-    localStorage.setItem("cart", JSON.stringify(items));
-    setCartItems(items);
-    toast.success("Item removed from cart");
-  };
+  localStorage.setItem("cart", JSON.stringify(updatedCart));
+  setCartItems(updatedCart);
+
+  toast.success("Item removed from cart");
+};
+
+
 
   if (loading) return <CartSkeleton />;
 
@@ -128,11 +126,19 @@ const CartPage = () => {
                 <thead>
                   <tr className="bg-gray-50 border dark:text-black">
                     <th className="py-4 px-4 text-left font-semibold">Image</th>
-                    <th className="py-4 px-4 text-left font-semibold">Product Name</th>
-                    <th className="py-4 px-4 text-left font-semibold">Quantity</th>
+                    <th className="py-4 px-4 text-left font-semibold">
+                      Product Name
+                    </th>
+                    <th className="py-4 px-4 text-left font-semibold">
+                      Quantity
+                    </th>
                     <th className="py-4 px-4 text-left font-semibold">Size</th>
-                    <th className="py-4 px-4 text-right font-semibold">Unit Price</th>
-                    <th className="py-4 px-4 text-right font-semibold">Total</th>
+                    <th className="py-4 px-4 text-right font-semibold">
+                      Unit Price
+                    </th>
+                    <th className="py-4 px-4 text-right font-semibold">
+                      Total
+                    </th>
                     <th className="py-4 px-4 text-center font-semibold"></th>
                   </tr>
                 </thead>
@@ -142,11 +148,26 @@ const CartPage = () => {
                       <td className="py-4 px-4">
                         <div className="w-20 h-20 relative">
                           {item?.images?.[0] ? (
-                            <Image src={item.images[0]} alt={item.name} fill className="object-contain" />
+                            <Image
+                              src={item.images[0]}
+                              alt={item.name}
+                              fill
+                              className="object-contain"
+                            />
                           ) : item?.image_path ? (
-                            <Image src={item.image_path} alt={item.name} fill className="object-contain" />
+                            <Image
+                              src={item.image_path}
+                              alt={item.name}
+                              fill
+                              className="object-contain"
+                            />
                           ) : (
-                            <Image src={noImg} alt={item.name} fill className="object-contain" />
+                            <Image
+                              src={noImg}
+                              alt={item.name}
+                              fill
+                              className="object-contain"
+                            />
                           )}
                         </div>
                       </td>
@@ -154,9 +175,13 @@ const CartPage = () => {
                       <td className="py-4 px-4">
                         <div className="flex items-center justify-center">
                           <button
-                           onClick={() =>
+                            onClick={() =>
                               item.quantity > 0 &&
-                              handleDncQuantity(item?.id, item.quantity, item.selectedSize)
+                              handleDncQuantity(
+                                item?.id,
+                                item.quantity,
+                                item.selectedSize
+                              )
                             }
                             className="w-8 h-8 flex items-center justify-center border border-gray-300 bg-gray-50 dark:bg-white dark:text-black"
                           >
@@ -171,7 +196,11 @@ const CartPage = () => {
                           />
                           <button
                             onClick={() =>
-                              handleIncQuantity(item?.id, item.quantity, item.selectedSize)
+                              handleIncQuantity(
+                                item?.id,
+                                item.quantity,
+                                item.selectedSize
+                              )
                             }
                             className="w-8 h-8 flex items-center justify-center border border-gray-300 bg-gray-50 dark:bg-white dark:text-black"
                           >
@@ -186,15 +215,19 @@ const CartPage = () => {
                         {getPriceByCountry(item).toLocaleString()}
                       </td>
                       <td className="py-4 px-4 text-right font-medium">
-                        {(getPriceByCountry(item) * item.quantity).toLocaleString()}
+                        {(
+                          getPriceByCountry(item) * item.quantity
+                        ).toLocaleString()}
                       </td>
-                      <td className="py-4 px-4 text-center">
-                        <button
-                          onClick={() => handleCartItemDelete(item.id)}
-                          className="text-gray-500 hover:text-red-500"
-                        >
-                          <Trash2 size={20} />
-                        </button>
+                      <td className="py-4 px-4 text-center text-gray-500 hover:text-red-500">
+                     <button
+  onClick={() => handleCartItemDelete(item.cartItemId)}
+  className="text-gray-500 hover:text-red-500"
+>
+  <Trash2 size={20} />
+</button>
+
+
                       </td>
                     </tr>
                   ))}
@@ -209,7 +242,8 @@ const CartPage = () => {
                   htmlFor="order-note"
                   className="md:text-base text-sm font-medium text-gray-700 mb-2 flex items-center gap-1"
                 >
-                  <NotebookPen size={19} /> Special instructions or delivery notes
+                  <NotebookPen size={19} /> Special instructions or delivery
+                  notes
                 </label>
                 <textarea
                   id="order-note"
@@ -224,16 +258,29 @@ const CartPage = () => {
               <div className="bg-white rounded-lg dark:text-black w-full max-w-2xl mx-auto">
                 <div className="space-y-3">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 font-medium">Sub-Total:</span>
-                    <span className="font-bold">{country?.value === "BD" ? "BDT" : "USD"} {totalSubtotalWithoutDiscount.toLocaleString()}</span>
+                    <span className="text-gray-700 font-medium">
+                      Sub-Total:
+                    </span>
+                    <span className="font-bold">
+                      {country?.value === "BD" ? "BDT" : "USD"}{" "}
+                      {totalSubtotalWithoutDiscount.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-700 font-medium">Total Discount:</span>
-                    <span>{country?.value === "BD" ? "BDT" : "USD"} {totalDiscount.toLocaleString()}</span>
+                    <span className="text-gray-700 font-medium">
+                      Total Discount:
+                    </span>
+                    <span>
+                      {country?.value === "BD" ? "BDT" : "USD"}{" "}
+                      {totalDiscount.toLocaleString()}
+                    </span>
                   </div>
                   <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                     <span className="text-gray-900 font-bold">Total:</span>
-                    <span className="text-teal-800 font-bold">{country?.value === "BD" ? "BDT" : "USD"} {cartTotal.toLocaleString()}</span>
+                    <span className="text-teal-800 font-bold">
+                      {country?.value === "BD" ? "BDT" : "USD"}{" "}
+                      {cartTotal.toLocaleString()}
+                    </span>
                   </div>
                 </div>
 
@@ -250,7 +297,12 @@ const CartPage = () => {
                       viewBox="0 0 24 24"
                       stroke="currentColor"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M14 5l7 7m0 0l-7 7m7-7H3"
+                      />
                     </svg>
                   </Link>
                 </div>
@@ -260,8 +312,12 @@ const CartPage = () => {
         ) : (
           <div className="text-center py-16 flex flex-col justify-center items-center">
             <ShoppingCart color="teal" size={50} />
-            <h2 className="md:text-3xl text-xl mt-4 font-bold mb-2 text-black">Your cart is Empty</h2>
-            <p className="text-gray-600 mb-8">Must add items on the cart before you proceed to check out</p>
+            <h2 className="md:text-3xl text-xl mt-4 font-bold mb-2 text-black">
+              Your cart is Empty
+            </h2>
+            <p className="text-gray-600 mb-8">
+              Must add items on the cart before you proceed to check out
+            </p>
             <Link
               href="/"
               className="bg-teal-500 text-white px-6 py-2 text-sm rounded-md font-medium hover:bg-teal-600"

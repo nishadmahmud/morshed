@@ -312,6 +312,7 @@ const DeliveryForm = ({
   ]);
 
   const [orderSchemaState, setOrderSchema] = useState(orderSchema);
+  
 
     useEffect(() => {
     setOrderSchema(orderSchema);
@@ -393,38 +394,44 @@ const DeliveryForm = ({
     (e) => {
       e.preventDefault();
 
-      if (cartItems.length > 0) {
-        const finalOrderSchema = {
-          ...orderSchemaState,
-          donation_amount:
-            selectedDonate === "Not now" ? 0 : Number(selectedDonate),
-        };
-
-        // console.log(finalOrderSchema)
-        // return;
-        axios
-          .post(
-            `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
-            finalOrderSchema
-          )
-          .then((res) => {
-            if (res.status === 200) {
-              const _invoiceId = res?.data?.data?.invoice_id;
-              setInvoiceId(_invoiceId);
-              localStorage.removeItem("cart");
-              localStorage.removeItem("cartAttachment");
-              toast.success("Order Placed Successfully!");
-              router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
-            }
-          })
-          .catch((err) => {
-            toast.error("Error occurred. Try again.");
-            console.log(err);
-          });
-      } else {
+      if (cartItems.length === 0) {
         alert("Add some products to the cart first.");
         router.push("/");
+        return;
       }
+
+      setLoading(true); // start loading
+
+      const finalOrderSchema = {
+        ...orderSchemaState,
+        donation_amount:
+          selectedDonate === "Not now" ? 0 : Number(selectedDonate),
+      };
+
+      // console.log(finalOrderSchema);
+// return;
+      axios
+        .post(
+          `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
+          finalOrderSchema
+        )
+        .then((res) => {
+          if (res.status === 200) {
+            const _invoiceId = res?.data?.data?.invoice_id;
+            setInvoiceId(_invoiceId);
+            localStorage.removeItem("cart");
+            localStorage.removeItem("cartAttachment");
+            toast.success("Order Placed Successfully!");
+            router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
+          }
+        })
+        .catch((err) => {
+          toast.error("Error occurred. Try again.");
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false); // stop loading
+        });
     },
     [cartItems, orderSchemaState, selectedDonate, router, payment]
   );
@@ -1174,12 +1181,14 @@ const DeliveryForm = ({
         {/* Complete Order Button */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <button
+           onClick={handleOrderComplete}
+      disabled={loading}
             type="submit"
-            className="w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+            className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2`}
           >
             <div className="flex items-center justify-center space-x-2">
               <ShoppingBag className="h-5 w-5" />
-              <span>Complete Order</span>
+             <span>{loading ? "Order Placing..." : "Complete Order"}</span>
             </div>
           </button>
           <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-gray-500">
