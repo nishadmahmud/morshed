@@ -2,6 +2,7 @@
 import { Modal, Box, Tab, Tabs, Typography, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
 import { useEffect, useState } from "react"
 import Image from "next/image"
+import { IoIosDoneAll } from "react-icons/io";
 import Link from "next/link"
 import { Minus, Plus, ShoppingBag } from "lucide-react"
 import useSWR from "swr"
@@ -177,6 +178,21 @@ const ProductPage = ({ params }) => {
   //   // Then proceed with buy now logic
   //   handleBuy(productData, qty, selectedSize, selectedId)
   // }
+  useEffect(() => {
+    const getCartItems = () => {
+      const storedCart = localStorage.getItem("cart")
+      return storedCart ? JSON.parse(storedCart) : []
+    }
+    setCartItems(getCartItems())
+    if (product?.data) {
+      // Check if product with selected size is in cart
+      const isProductInCart = getCartItems().find(
+        (item) => item?.id === product?.data.id && item?.selectedSizeId === selectedId,
+      )
+      setIsInCart(!!isProductInCart)
+    }
+  }, [product?.data, selectedId])
+
 
   useEffect(() => {
     const getCartItems = () => {
@@ -192,6 +208,7 @@ const ProductPage = ({ params }) => {
       setIsInCart(!!isProductInCart)
     }
   }, [product?.data, selectedId])
+
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
@@ -407,30 +424,35 @@ const decrementQuantity = () => {
         const isSelected = selectedSize === variant.name;
         const isDisabled = variant.quantity < 1;
 
-        return (
-         <button
-  key={variant.name}
-  onClick={() => {
-    if (!isDisabled) {
-      setSelectedSize(variant.name);
-      setSelectedSizeCart(variant.name);
-      setSizeQuantity(variant?.quantity);
-      setSelectedId(variant.id);
-      setQuantity(1); // 👈 reset here
-    }
-  }}
-  disabled={isDisabled}
-  className={`flex items-center justify-center w-12 h-12 border rounded-md transition
-    ${isSelected ? "border-black bg-black text-white" : "border-gray-300 hover:border-gray-400"}
-    ${isDisabled ? "opacity-20 cursor-not-allowed hover:border-gray-300" : "cursor-pointer"}`}
->
-  {variant.name}
-</button>
+        // Check if this size is already in the cart
+        const isInCartSize = cartItems.find(
+          (item) => item.id === product.data.id && item.selectedSizeId === variant.id
+        );
 
+        return (
+          <button
+            key={variant.name}
+            onClick={() => {
+              if (!isDisabled && !isInCartSize) {
+                setSelectedSize(variant.name);
+                setSelectedSizeCart(variant.name);
+                setSizeQuantity(variant?.quantity);
+                setSelectedId(variant.id);
+                setQuantity(1);
+              }
+            }}
+            disabled={isDisabled || isInCartSize}
+            className={`flex items-center justify-center w-12 h-12 border rounded-md transition
+              ${isSelected ? "border-black bg-black text-white" : "border-gray-300 hover:border-gray-400"}
+              ${isDisabled || isInCartSize ? "opacity-20 cursor-not-allowed hover:border-gray-300" : "cursor-pointer"}`}
+          >
+            {variant.name}
+          </button>
         );
       })
     : "No size available"}
 </div>
+
 
 
 </div>
@@ -475,8 +497,9 @@ const decrementQuantity = () => {
                   }`}
                   disabled={isInCart || !selectedSize}
                 >
-                  <ShoppingBag className="h-4 w-4" />
-                  {isInCart ? "Added to Cart" : "Add to Cart"}
+                  
+                  {!isInCart ? <ShoppingBag className="h-4 w-4" /> : <IoIosDoneAll className="h-5 w-5" />}
+                  {isInCart ? "Added in Cart" : "Add to Cart"}
                 </button>
                 <button
                   onClick={(e) => {

@@ -125,55 +125,56 @@ const StoreProvider = ({ children }) => {
   // };
 
 
-  const handleCart = (item, quantity, variant_id) => {
-    if (!isMounted) return;
-    setRefetch(true);
-    const newItem = {
-      ...item,
-      retails_price: item.price ?? item.retails_price,
-      currency_retail_price : convertedPrice,
-      selectedSize: selectedSizeCart,
-      product_variant_id: selectedId,
-      variant_id,
-      cartItemId: `${item.id}_${selectedId}`,
-    };
-    const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-    const existingProduct = cartItems.find((product) => product.id === item.id);
- // Get existing cart from localStorage
-    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]")
- const existingItemIndex = existingCart.findIndex(
-      (item) => item.id === item.id && item.selectedSizeId === selectedId,
-    )
-    // Check stock
-    const isInStock =
-      (newItem.status && newItem.status.toLowerCase() !== "stock out") ||
-      newItem.current_stock > 0;
-    if (!isInStock) {
-      toast.error("Out of stock!");
-      return;
-    }
+ const handleCart = (item, quantity, variant_id) => {
+  if (!isMounted) return;
 
-    // Prevent duplicates
-     if (existingItemIndex > -1) {
-      // Update quantity if item already exists
-      existingCart[existingItemIndex].quantity += qty
-      toast.success("Cart updated")
-    } else {
-      // Add new item to cart
-      existingCart.push(newItem)
-      toast.success("Item added to cart successfully")
-    }
+  setRefetch(true);
 
-    // Save updated cart to localStorage
-    localStorage.setItem("cart", JSON.stringify(existingCart))
-    setCartItems(existingCart)
-    setIsInCart(true)
-
-    const itemWithQty = { ...newItem, quantity };
-    cartItems.push(itemWithQty);
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-    // toast.success("Item added to cart successfully");
+  const newItem = {
+    ...item,
+    retails_price: item.price ?? item.retails_price,
+    currency_retail_price: convertedPrice,
+    selectedSize: selectedSizeCart,
+    selectedSizeId: selectedId, // make sure we have this for comparison
+    product_variant_id: selectedId,
+    variant_id,
+    cartItemId: `${item.id}_${selectedId}`,
+    quantity,
   };
+
+  const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+  // Check if the exact product with selected size already exists
+  const existingItemIndex = existingCart.findIndex(
+    (cartItem) =>
+      cartItem.id === item.id && cartItem.selectedSizeId === selectedId
+  );
+
+  // Check stock
+  const isInStock =
+    (newItem.status && newItem.status.toLowerCase() !== "stock out") ||
+    newItem.current_stock > 0;
+
+  if (!isInStock) {
+    toast.error("Out of stock!");
+    return;
+  }
+
+  // If item exists, show error
+  if (existingItemIndex > -1) {
+    toast.error("This product with the selected size is already in your cart!");
+    return;
+  }
+
+  // Add new item to cart
+  existingCart.push(newItem);
+  localStorage.setItem("cart", JSON.stringify(existingCart));
+  setCartItems(existingCart);
+  setIsInCart(true);
+
+  toast.success("Item added to cart successfully");
+};
+
 
   const getCartItems = () => {
     if (!isMounted) return [];

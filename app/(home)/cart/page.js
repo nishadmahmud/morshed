@@ -14,6 +14,7 @@ const CartPage = () => {
     getCartItems,
     handleCartItemDelete: storeHandleDelete,
     country,
+    setRefetch,
     handleIncQuantity,
     handleDncQuantity,
   } = useStore();
@@ -97,13 +98,18 @@ const CartPage = () => {
   //   toast.success("Item removed from cart");
   // };
 
+   const handleCartUpdate = () => {
+    setRefetch(true);
+    const updatedItems = getCartItems();
+    setCartItems(updatedItems);
+  };
  const handleCartItemDelete = (cartItemId) => {
   const updatedCart = getCartItems().filter(
     (item) => item.cartItemId !== cartItemId
   );
 
   localStorage.setItem("cart", JSON.stringify(updatedCart));
-  setCartItems(updatedCart);
+  handleCartUpdate()
 
   toast.success("Item removed from cart");
 };

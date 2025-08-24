@@ -408,7 +408,7 @@ const DeliveryForm = ({
           selectedDonate === "Not now" ? 0 : Number(selectedDonate),
       };
 
-      // console.log(finalOrderSchema);
+// console.log(finalOrderSchema);
 // return;
       axios
         .post(
