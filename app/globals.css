@@ -357,7 +357,7 @@ body {
 
 /* Custom active bullet */
 .swiper-pagination-bullet-active {
-  background-color: #0FF0FC !important;
+  background-color: #393939 !important;
   transform: scale(1.2);
 }
 
