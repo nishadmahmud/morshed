@@ -42,8 +42,8 @@ const StoreProvider = ({ children }) => {
   const [prices, setPrices] = useState({});
   const [country, setCountry] = useState("BD");
   const [wishlist, setWishlist] = useState([]);
-  const [selectedSizeCart, setSelectedSizeCart] = useState()
-
+  const [selectedSizeCart, setSelectedSizeCart] = useState("")
+console.log(selectedSizeCart);
 
   const [isInCart, setIsInCart] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
@@ -126,7 +126,12 @@ const StoreProvider = ({ children }) => {
 
 
  const handleCart = (item, quantity, variant_id) => {
+   if (!selectedSizeCart) {
+     toast.error("Please select a size first");
+     return; 
+   }
   if (!isMounted) return;
+
 
   setRefetch(true);
 
@@ -281,6 +286,11 @@ const handleDncQuantity = (id, qty, selectedSize) => {
 
   
    const handleBuy = (item, quantity) => {
+    if (!selectedSizeCart) {
+    toast.error("Please select a size first");
+    return; 
+  }
+
     handleCart(item, quantity);
 
     const status = typeof item?.status === 'string' ? item.status.toLowerCase() : null;

@@ -1,38 +1,49 @@
-"use client"
-import { Modal, Box, Tab, Tabs, Typography, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material"
-import { useEffect, useState } from "react"
-import Image from "next/image"
+"use client";
+import {
+  Modal,
+  Box,
+  Tab,
+  Tabs,
+  Typography,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 import { IoIosDoneAll } from "react-icons/io";
-import Link from "next/link"
-import { Minus, Plus, ShoppingBag } from "lucide-react"
-import useSWR from "swr"
-import axios from "axios"
-import toast from "react-hot-toast"
-import noImg from "/public/no-image.jpg"
-import { htmlToText } from "html-to-text"
-import "react-inner-image-zoom/lib/styles.min.css"
-import useStore from "@/app/CustomHooks/useStore"
-import useWishlist from "@/app/CustomHooks/useWishlist"
-import { FaHeart, FaRegHeart } from "react-icons/fa6"
-import CursorImageZoom from "@/app/Components/CustomImageZoom"
-import { userId } from "@/app/(home)/page"
+import Link from "next/link";
+import { Minus, Plus, ShoppingBag } from "lucide-react";
+import useSWR from "swr";
+import axios from "axios";
+import toast from "react-hot-toast";
+import noImg from "/public/no-image.jpg";
+import { htmlToText } from "html-to-text";
+import "react-inner-image-zoom/lib/styles.min.css";
+import useStore from "@/app/CustomHooks/useStore";
+import useWishlist from "@/app/CustomHooks/useWishlist";
+import { FaHeart, FaRegHeart } from "react-icons/fa6";
+import CursorImageZoom from "@/app/Components/CustomImageZoom";
+import { userId } from "@/app/(home)/page";
 
 // Fetcher function from the original code
-const fetcher = (url) => fetch(url).then((res) => res.json())
+const fetcher = (url) => fetch(url).then((res) => res.json());
 
 const ProductPage = ({ params }) => {
-  const { id } = params
-  const [quantity, setQuantity] = useState(1)
-  const [imageIndex, setImageIndex] = useState(0)
-  const [scroll, setScroll] = useState(0)
- const [sizeQuantity, setSizeQuantity] = useState()
-  const [activeTab, setActiveTab] = useState("description")
-  const [cartItems, setCartItems] = useState([])
-  const [relatedProducts, setRelatedProducts] = useState([])
-  const [recentProducts, setRecentProducts] = useState([])
-  const [imageArray, setImageArray] = useState([])
-    const [selectedSize, setSelectedSize] = useState()
-  const { toggleWishlist, isInWishlist } = useWishlist()
+  const { id } = params;
+  const [quantity, setQuantity] = useState(1);
+  const [imageIndex, setImageIndex] = useState(0);
+  const [scroll, setScroll] = useState(0);
+  const [sizeQuantity, setSizeQuantity] = useState();
+  const [activeTab, setActiveTab] = useState("description");
+  const [cartItems, setCartItems] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
+  const [recentProducts, setRecentProducts] = useState([]);
+  const [imageArray, setImageArray] = useState([]);
+  const [selectedSize, setSelectedSize] = useState("");
+  const { toggleWishlist, isInWishlist } = useWishlist();
   const {
     handleCart,
     convertedPrice,
@@ -46,74 +57,87 @@ const ProductPage = ({ params }) => {
     country,
     setProductPrice,
     handleBuy,
-     setSelectedSizeCart,
+    setSelectedSizeCart,
     selectedSizeCart,
     setSelectedId,
     selectedId,
     selectedSizeQuantity,
-   
-  } = useStore()
+  } = useStore();
 
   // size guide modal
-  const [open, setOpen] = useState(false)
-  const [tab, setTab] = useState(0)
-  const handleOpen = () => setOpen(true)
-  const handleClose = () => setOpen(false)
-  const handleTabChange = (event, newValue) => setTab(newValue)
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState(0);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+  const handleTabChange = (event, newValue) => setTab(newValue);
 
   const inches = [
     ["CHEST", "40", "42", "44", "46", "48"],
     ["LENGTH", "28", "29", "30", "31", "31.5"],
     ["COLLAR", "15", "15.5", "16", "16.5", "17"],
-  ]
+  ];
 
-    // console.log(sizeQuantity);
+  // console.log(sizeQuantity);
 
   const { data: product, error } = useSWR(
     id ? `${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}` : null,
-    fetcher,
-  )
+    fetcher
+  );
 
   useEffect(() => {
     if (product?.data.id && product?.data.retails_price) {
-      setProductPrice(product.data.id, product?.data.retails_price, product?.data.intl_retails_price || null)
+      setProductPrice(
+        product.data.id,
+        product?.data.retails_price,
+        product?.data.intl_retails_price || null
+      );
     }
-  }, [])
+  }, []);
 
-  const productPrice = prices[product?.data.id]
+  const productPrice = prices[product?.data.id];
 
   const getPriceByCountry = () => {
     if (country && country.value === "BD") {
-      return productPrice?.basePrice || product?.data.retails_price || 0
+      return productPrice?.basePrice || product?.data.retails_price || 0;
     } else {
-      return productPrice?.intl_retails_price || product?.data.intl_retails_price || 0
+      return (
+        productPrice?.intl_retails_price ||
+        product?.data.intl_retails_price ||
+        0
+      );
     }
-  }
+  };
+
+  // --------------TODO: uncomment this----------------
 
   useEffect(() => {
     if (product?.data && product?.data?.product_variants.length) {
       // setSelectedSize(product?.data?.product_variants[0].name)
-      setSelectedSizeCart(product?.data?.product_variants[0].name)
+      setSelectedSizeCart(product?.data?.product_variants.name);
       // setSelectedSizeQuantity(product?.data?.product_variants.quantity)
-      setSelectedId(product?.data?.product_variants[0].id)
+      setSelectedId(product?.data?.product_variants.id);
     }
-  }, [product?.data])
+  }, [product?.data]);
 
   const discountedPrice =
     country?.value === "BD"
       ? product?.data.discount_type === "Percentage"
         ? product?.data?.discount
-          ? (product?.data?.retails_price - (product?.data?.retails_price * product?.data.discount) / 100).toFixed(0)
+          ? (
+              product?.data?.retails_price -
+              (product?.data?.retails_price * product?.data.discount) / 100
+            ).toFixed(0)
           : null
         : product?.data.retails_price - product?.data.discount
       : product?.data.discount_type === "Percentage"
-        ? product?.data?.intl_discount
-          ? (
-              product?.data?.intl_retails_price -
-              (product?.data?.intl_retails_price * product?.data.intl_discount) / 100
-            ).toFixed(0)
-          : null
-        : product?.data.intl_retails_price - product?.data.intl_discount
+      ? product?.data?.intl_discount
+        ? (
+            product?.data?.intl_retails_price -
+            (product?.data?.intl_retails_price * product?.data.intl_discount) /
+              100
+          ).toFixed(0)
+        : null
+      : product?.data.intl_retails_price - product?.data.intl_discount;
 
   const fixedDiscount =
     country?.value === "BD"
@@ -121,9 +145,10 @@ const ProductPage = ({ params }) => {
         ? "Tk"
         : null
       : product?.data.discount_type === "Fixed"
-        ? "$"
-        : null
-  const percentageDiscount = product?.data.discount_type === "Percentage" ? "%" : null
+      ? "$"
+      : null;
+  const percentageDiscount =
+    product?.data.discount_type === "Percentage" ? "%" : null;
 
   // Modified cart handling functions
   // const handleAddToCart = (productData, qty = 1) => {
@@ -132,14 +157,13 @@ const ProductPage = ({ params }) => {
   //     return
   //   }
 
-
   //   const cartItem = {
   //     ...productData,
   //     selectedSize: selectedSize,
   //     selectedSizeId: selectedId,
   //     // selectedSizeQuantity: selectedSizeQuantity,
   //     quantity: qty,
-  //     cartItemId: `${productData.id}_${selectedId}`, 
+  //     cartItemId: `${productData.id}_${selectedId}`,
   //   }
 
   //   // Get existing cart from localStorage
@@ -180,110 +204,115 @@ const ProductPage = ({ params }) => {
   // }
   useEffect(() => {
     const getCartItems = () => {
-      const storedCart = localStorage.getItem("cart")
-      return storedCart ? JSON.parse(storedCart) : []
-    }
-    setCartItems(getCartItems())
+      const storedCart = localStorage.getItem("cart");
+      return storedCart ? JSON.parse(storedCart) : [];
+    };
+    setCartItems(getCartItems());
     if (product?.data) {
       // Check if product with selected size is in cart
       const isProductInCart = getCartItems().find(
-        (item) => item?.id === product?.data.id && item?.selectedSizeId === selectedId,
-      )
-      setIsInCart(!!isProductInCart)
+        (item) =>
+          item?.id === product?.data.id && item?.selectedSizeId === selectedId
+      );
+      setIsInCart(!!isProductInCart);
     }
-  }, [product?.data, selectedId])
-
+  }, [product?.data, selectedId]);
 
   useEffect(() => {
     const getCartItems = () => {
-      const storedCart = localStorage.getItem("cart")
-      return storedCart ? JSON.parse(storedCart) : []
-    }
-    setCartItems(getCartItems())
+      const storedCart = localStorage.getItem("cart");
+      return storedCart ? JSON.parse(storedCart) : [];
+    };
+    setCartItems(getCartItems());
     if (product?.data) {
       // Check if product with selected size is in cart
       const isProductInCart = getCartItems().find(
-        (item) => item?.id === product?.data.id && item?.selectedSizeId === selectedId,
-      )
-      setIsInCart(!!isProductInCart)
+        (item) =>
+          item?.id === product?.data.id && item?.selectedSizeId === selectedId
+      );
+      setIsInCart(!!isProductInCart);
     }
-  }, [product?.data, selectedId])
-
+  }, [product?.data, selectedId]);
 
   useEffect(() => {
     const fetchRelatedProducts = async () => {
-      if (!id) return
+      if (!id) return;
       try {
-        const response = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/get-related-products`, {
-          product_id: id,
-          user_id: userId,
-        })
-        setRelatedProducts(response.data)
+        const response = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/public/get-related-products`,
+          {
+            product_id: id,
+            user_id: userId,
+          }
+        );
+        setRelatedProducts(response.data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
-    fetchRelatedProducts()
-  }, [id])
+    };
+    fetchRelatedProducts();
+  }, [id]);
 
   useEffect(() => {
-    const storedProducts = JSON.parse(localStorage.getItem("recentlyViewed")) || []
+    const storedProducts =
+      JSON.parse(localStorage.getItem("recentlyViewed")) || [];
     if (storedProducts.length) {
-      const withoutThisProduct = storedProducts.filter((item) => item.id != id)
-      setRecentProducts(withoutThisProduct)
+      const withoutThisProduct = storedProducts.filter((item) => item.id != id);
+      setRecentProducts(withoutThisProduct);
     }
-  }, [id])
+  }, [id]);
 
   useEffect(() => {
     if (product?.data) {
-      if (product.data?.have_variant === "1" && product.data?.imei_image && product?.data?.imei_image?.length > 0) {
-        setImageArray(product?.data?.imei_image)
+      if (
+        product.data?.have_variant === "1" &&
+        product.data?.imei_image &&
+        product?.data?.imei_image?.length > 0
+      ) {
+        setImageArray(product?.data?.imei_image);
       } else {
-        setImageArray(product?.data?.images)
+        setImageArray(product?.data?.images);
       }
     }
-  }, [product?.data])
+  }, [product?.data]);
 
   useEffect(() => {
     const handleScroll = () => {
-      setScroll(window.scrollY)
-    }
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
+      setScroll(window.scrollY);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
 
-
   const incrementQuantity = () => {
-  if (quantity < sizeQuantity) {
-    setQuantity(prev => prev + 1);
-  } else {
-    toast.error(`Only ${sizeQuantity} items available in stock`);
-  }
-};
+    if (quantity < sizeQuantity) {
+      setQuantity((prev) => prev + 1);
+    } else {
+      toast.error(`Only ${sizeQuantity} items available in stock`);
+    }
+  };
 
-
-const decrementQuantity = () => {
-  if (quantity > 1) {
-    setQuantity(prev => prev - 1);
-  }
-};
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity((prev) => prev - 1);
+    }
+  };
 
   const sanitizeSlug = (str) => {
     return str
       ?.toLowerCase()
       .replace(/\s+/g, "-")
-      .replace(/[^a-z0-9-]/g, "")
-  }
+      .replace(/[^a-z0-9-]/g, "");
+  };
 
   if (!product && !error) {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
       </div>
-    )
+    );
   }
 
   if (error) {
@@ -291,7 +320,7 @@ const decrementQuantity = () => {
       <div className="flex justify-center items-center min-h-screen">
         <div className="text-red-500">Failed to load product data</div>
       </div>
-    )
+    );
   }
 
   const descriptionText = product?.data?.description
@@ -299,9 +328,12 @@ const decrementQuantity = () => {
         wordwrap: false,
         selectors: [{ selector: "a", options: { ignoreHref: true } }],
       })
-    : null
+    : null;
 
-  const isCartItem = cartItems.find((item) => item?.id === product?.data.id && item?.selectedSizeId === selectedId)
+  const isCartItem = cartItems.find(
+    (item) =>
+      item?.id === product?.data.id && item?.selectedSizeId === selectedId
+  );
 
   return (
     <section className=" text-black lg:pt-16 md:pt-16 pt-14">
@@ -339,12 +371,14 @@ const decrementQuantity = () => {
                 {country?.value === "BD"
                   ? product?.data?.discount > 0 && (
                       <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                        SAVE {product?.data?.discount} {fixedDiscount || percentageDiscount}
+                        SAVE {product?.data?.discount}{" "}
+                        {fixedDiscount || percentageDiscount}
                       </div>
                     )
                   : product?.data?.intl_discount > 0 && (
                       <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                        SAVE {product?.data?.intl_discount} {fixedDiscount || percentageDiscount}
+                        SAVE {product?.data?.intl_discount}{" "}
+                        {fixedDiscount || percentageDiscount}
                       </div>
                     )}
                 {imageArray && imageArray.length > 0 ? (
@@ -370,12 +404,16 @@ const decrementQuantity = () => {
           </div>
           {/* Product Details */}
           <div className="md:w-1/2">
-            <h1 className="text-2xl md:text-3xl font-bold mb-2">{product?.data?.name}</h1>
+            <h1 className="text-2xl md:text-3xl font-bold mb-2">
+              {product?.data?.name}
+            </h1>
             <div className="flex items-center gap-3 mb-4">
               {!countrySign ? (
                 <>
                   {product?.data?.discount > 0 && (
-                    <span className="text-gray-500 line-through text-sm">৳{getPriceByCountry()}</span>
+                    <span className="text-gray-500 line-through text-sm">
+                      ৳{getPriceByCountry()}
+                    </span>
                   )}
                 </>
               ) : (
@@ -389,7 +427,8 @@ const decrementQuantity = () => {
                 <>
                   {product?.data?.discount > 0 && (
                     <span className="text-xs font-medium text-green-600 border border-green-600 px-2 py-0.5 rounded-full">
-                      {product?.data?.discount} {fixedDiscount || percentageDiscount} OFF
+                      {product?.data?.discount}{" "}
+                      {fixedDiscount || percentageDiscount} OFF
                     </span>
                   )}
                 </>
@@ -399,7 +438,9 @@ const decrementQuantity = () => {
             </div>
             <p className="text-sm text-gray-600 mb-6">
               {descriptionText ? (
-                <p className="text-gray-600 whitespace-pre-line mb-4">{descriptionText.substring(0, 33)}</p>
+                <p className="text-gray-600 whitespace-pre-line mb-4">
+                  {descriptionText.substring(0, 33)}
+                </p>
               ) : (
                 <p>Description is not available</p>
               )}
@@ -408,77 +449,97 @@ const decrementQuantity = () => {
             {/* Size Selection */}
             <div className="mb-6">
               <div className="flex justify-between items-center mb-3">
+                {selectedSize && (
+                  <h3 className="font-medium text-sm">
+                    Size:{" "}
+                    {product?.data?.product_variants &&
+                    product.data.product_variants.length > 0
+                      ? selectedSize
+                      : "N/A"}{" "}
+                    <span className="text-xs font-normal">
+                      ({sizeQuantity || 0} available){" "}
+                    </span>{" "}
+                  </h3>
+                )}
 
-                {selectedSize && <h3 className="font-medium text-sm">Size: {product?.data?.product_variants && product.data.product_variants.length > 0 ? selectedSize : "N/A"} <span className="text-xs font-normal">({sizeQuantity || 0} available) </span> </h3>}
-
-                <button onClick={handleOpen} className="text-sm text-gray-600 underline">
+                <button
+                  onClick={handleOpen}
+                  className="text-sm text-gray-600 underline"
+                >
                   Size Guide
                 </button>
-
               </div>
               <div className="flex gap-3">
+                <div className="flex gap-3">
+                  {product?.data?.product_variants &&
+                  product.data.product_variants.length > 0
+                    ? product.data.product_variants.map((variant) => {
+                        const isSelected = selectedSize === variant.name;
+                        const isDisabled = variant.quantity < 1;
 
-  <div className="flex gap-3">
-  {product?.data?.product_variants && product.data.product_variants.length > 0
-    ? product.data.product_variants.map((variant) => {
-        const isSelected = selectedSize === variant.name;
-        const isDisabled = variant.quantity < 1;
+                        // Check if this size is already in the cart
+                        const isInCartSize = cartItems.find(
+                          (item) =>
+                            item.id === product.data.id &&
+                            item.selectedSizeId === variant.id
+                        );
 
-        // Check if this size is already in the cart
-        const isInCartSize = cartItems.find(
-          (item) => item.id === product.data.id && item.selectedSizeId === variant.id
-        );
-
-        return (
-          <button
-            key={variant.name}
-            onClick={() => {
-              if (!isDisabled && !isInCartSize) {
-                setSelectedSize(variant.name);
-                setSelectedSizeCart(variant.name);
-                setSizeQuantity(variant?.quantity);
-                setSelectedId(variant.id);
-                setQuantity(1);
+                        return (
+                          <button
+                            key={variant.name}
+                            onClick={() => {
+                              if (!isDisabled && !isInCartSize) {
+                                setSelectedSize(variant?.name);
+                                setSelectedSizeCart(variant?.name);
+                                setSizeQuantity(variant?.quantity);
+                                setSelectedId(variant.id);
+                                setQuantity(1);
+                              }
+                            }}
+                            disabled={isDisabled || isInCartSize}
+                            className={`flex items-center justify-center w-12 h-12 border rounded-md transition
+              ${
+                isSelected
+                  ? "border-black bg-black text-white"
+                  : "border-gray-300 hover:border-gray-400"
               }
-            }}
-            disabled={isDisabled || isInCartSize}
-            className={`flex items-center justify-center w-12 h-12 border rounded-md transition
-              ${isSelected ? "border-black bg-black text-white" : "border-gray-300 hover:border-gray-400"}
-              ${isDisabled || isInCartSize ? "opacity-20 cursor-not-allowed hover:border-gray-300" : "cursor-pointer"}`}
-          >
-            {variant.name}
-          </button>
-        );
-      })
-    : "No size available"}
-</div>
-
-
-
-</div>
-
+              ${
+                isDisabled || isInCartSize
+                  ? "opacity-20 cursor-not-allowed hover:border-gray-300"
+                  : "cursor-pointer"
+              }`}
+                          >
+                            {variant.name}
+                          </button>
+                        );
+                      })
+                    : "No size available"}
+                </div>
+              </div>
             </div>
             {/* Quantity and Actions */}
             <div className="flex flex-col gap-4">
               <div className="flex items-center gap-4">
-  <div className="flex items-center border border-gray-300 rounded-md">
-    <button
-      onClick={decrementQuantity}
-      className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-      aria-label="Decrease quantity"
-    >
-      <Minus className="h-4 w-4" />
-    </button>
-    <span className="px-4 py-2 border-x border-gray-300">{quantity}</span>
-    <button
-      onClick={incrementQuantity}
-      className="px-3 py-2 text-gray-600 hover:bg-gray-100"
-      aria-label="Increase quantity"
-    >
-      <Plus className="h-4 w-4" />
-    </button>
-  </div>
-</div>
+                <div className="flex items-center border border-gray-300 rounded-md">
+                  <button
+                    onClick={decrementQuantity}
+                    className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+                    aria-label="Decrease quantity"
+                  >
+                    <Minus className="h-4 w-4" />
+                  </button>
+                  <span className="px-4 py-2 border-x border-gray-300">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={incrementQuantity}
+                    className="px-3 py-2 text-gray-600 hover:bg-gray-100"
+                    aria-label="Increase quantity"
+                  >
+                    <Plus className="h-4 w-4" />
+                  </button>
+                </div>
+              </div>
 
               <div className="flex gap-3 mt-3">
                 <button
@@ -489,30 +550,43 @@ const decrementQuantity = () => {
                 </button>
                 <button
                   onClick={(e) => {
-                    e.preventDefault()
-                    handleCart(product?.data, quantity, selectedId)
+                    e.preventDefault();
+                    handleCart(product?.data, quantity, selectedId);
                   }}
-                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium transition-colors ${
-                    isInCart ? "bg-white text-black border border-gray-300" : "bg-gray-200 hover:bg-gray-300 text-black"
+                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium cursor-pointer transition-colors ${
+                    isInCart
+                      ? "bg-white text-black border border-gray-300"
+                      : "bg-gray-200 hover:bg-gray-300 text-black"
                   }`}
-                  disabled={isInCart || !selectedSize}
+                  disabled={isInCart}
                 >
-                  
-                  {!isInCart ? <ShoppingBag className="h-4 w-4" /> : <IoIosDoneAll className="h-5 w-5" />}
+                  {!isInCart ? (
+                    <ShoppingBag className="h-4 w-4" />
+                  ) : (
+                    <IoIosDoneAll className="h-5 w-5" />
+                  )}
                   {isInCart ? "Added in Cart" : "Add to Cart"}
                 </button>
                 <button
                   onClick={(e) => {
-                    e.stopPropagation()
-                    toggleWishlist(product)
+                    e.stopPropagation();
+                    toggleWishlist(product);
                   }}
                   className="p-2 border border-gray-300 rounded-md hover:bg-gray-100 transition-colors"
                   aria-label="Add to wishlist"
                 >
                   {isInWishlist(product.id) ? (
-                    <FaHeart color="teal" size={18} className="transition-all duration-300 animate-heart-bounce" />
+                    <FaHeart
+                      color="teal"
+                      size={18}
+                      className="transition-all duration-300 animate-heart-bounce"
+                    />
                   ) : (
-                    <FaRegHeart color="black" size={18} className="transition-all duration-300" />
+                    <FaRegHeart
+                      color="black"
+                      size={18}
+                      className="transition-all duration-300"
+                    />
                   )}
                 </button>
               </div>
@@ -531,12 +605,21 @@ const decrementQuantity = () => {
               Description
             </button>
           </div> */}
-          <div className={`pt-6 ${activeTab === "description" ? "block" : "hidden"}`}>
-            <div id="Description" className="mt-5 p-3 text-sm border rounded-lg">
+          <div
+            className={`pt-6 ${
+              activeTab === "description" ? "block" : "hidden"
+            }`}
+          >
+            <div
+              id="Description"
+              className="mt-5 p-3 text-sm border rounded-lg"
+            >
               <h2 className="text-xl font-bold text-gray-900">Description</h2>
               <div className="w-[6.5rem] h-[2px] bg-[#212121] mt-1 mb-4"></div>
               {descriptionText ? (
-                <p className="text-gray-600 whitespace-pre-line mb-4">{descriptionText}</p>
+                <p className="text-gray-600 whitespace-pre-line mb-4">
+                  {descriptionText}
+                </p>
               ) : (
                 <p>Description is not available</p>
               )}
@@ -551,7 +634,9 @@ const decrementQuantity = () => {
               relatedProducts.map((item) => (
                 <Link
                   key={item.id}
-                  href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
+                  href={`/products/${sanitizeSlug(
+                    item?.brand_name || item?.name
+                  )}/${item?.id}`}
                   className="group"
                 >
                   <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
@@ -563,14 +648,20 @@ const decrementQuantity = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <h3 className="font-medium text-sm mb-1 line-clamp-1">{item.name}</h3>
+                  <h3 className="font-medium text-sm mb-1 line-clamp-1">
+                    {item.name}
+                  </h3>
                   <p className="text-sm">
-                    {country?.value === "BD" ? `৳ ${item.retails_price}` : `$ ${item?.intl_retails_price || 0}`}
+                    {country?.value === "BD"
+                      ? `৳ ${item.retails_price}`
+                      : `$ ${item?.intl_retails_price || 0}`}
                   </p>
                 </Link>
               ))
             ) : (
-              <p className="col-span-4 text-gray-500">No related products available.</p>
+              <p className="col-span-4 text-gray-500">
+                No related products available.
+              </p>
             )}
           </div>
         </div>
@@ -582,7 +673,9 @@ const decrementQuantity = () => {
               recentProducts.map((item) => (
                 <Link
                   key={item.id}
-                  href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
+                  href={`/products/${sanitizeSlug(
+                    item?.brand_name || item?.name
+                  )}/${item?.id}`}
                   className="group"
                 >
                   <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
@@ -594,14 +687,18 @@ const decrementQuantity = () => {
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
                   </div>
-                  <h3 className="font-medium text-sm mb-1 line-clamp-1">{item.name}</h3>
+                  <h3 className="font-medium text-sm mb-1 line-clamp-1">
+                    {item.name}
+                  </h3>
                   <p className="text-sm">
                     {country?.value === "BD" ? `৳` : "$"} {item.price}
                   </p>
                 </Link>
               ))
             ) : (
-              <p className="col-span-4 text-gray-500">No recently viewed products.</p>
+              <p className="col-span-4 text-gray-500">
+                No recently viewed products.
+              </p>
             )}
           </div>
         </div>
@@ -612,50 +709,69 @@ const decrementQuantity = () => {
           <div className="max-w-7xl mx-auto flex items-center justify-between">
             <div className="flex items-center gap-4">
               <Image
-                src={imageArray && imageArray.length > 0 ? imageArray[0] : product.data.image_path || noImg}
+                src={
+                  imageArray && imageArray.length > 0
+                    ? imageArray[0]
+                    : product.data.image_path || noImg
+                }
                 alt={product.data.name}
                 width={50}
                 height={50}
                 className="rounded-md"
               />
               <div>
-                <h3 className="font-medium text-sm line-clamp-1">{product.data.name}</h3>
+                <h3 className="font-medium text-sm line-clamp-1">
+                  {product.data.name}
+                </h3>
                 <p className="text-sm font-bold">
                   ৳
                   {country?.value === "BD"
                     ? product.data.discount > 0
                       ? (
                           product.data.retails_price -
-                          (product.data.retails_price * product.data.discount) / 100
+                          (product.data.retails_price * product.data.discount) /
+                            100
                         ).toFixed(0)
                       : product.data.retails_price
                     : product.data.intl_discount > 0
-                      ? (
-                          product.data.intl_retails_price -
-                          (product.data.intl_retails_price * product.data.intl_discount) / 100
-                        ).toFixed(0)
-                      : product.data.intl_retails_price}
+                    ? (
+                        product.data.intl_retails_price -
+                        (product.data.intl_retails_price *
+                          product.data.intl_discount) /
+                          100
+                      ).toFixed(0)
+                    : product.data.intl_retails_price}
                 </p>
                 <p className="text-xs text-gray-500">Size: {selectedSize}</p>
               </div>
             </div>
             <div className="flex flex-col md:flex-row items-center gap-3">
               <div className="flex items-center border border-gray-300 rounded-md">
-                <button onClick={decrementQuantity} className="px-2 py-1 text-gray-600">
+                <button
+                  onClick={decrementQuantity}
+                  className="px-2 py-1 text-gray-600"
+                >
                   <Minus className="h-3 w-3" />
                 </button>
-                <span className="px-3 py-1 border-x border-gray-300">{quantity}</span>
-                <button onClick={incrementQuantity} className="px-2 py-1 text-gray-600">
+                <span className="px-3 py-1 border-x border-gray-300">
+                  {quantity}
+                </span>
+                <button
+                  onClick={incrementQuantity}
+                  className="px-2 py-1 text-gray-600"
+                >
                   <Plus className="h-3 w-3" />
                 </button>
               </div>
               <button
                 onClick={(e) => {
-                  e.preventDefault()
-                  handleCart(product.data, quantity)
+                  e.preventDefault();
+                  handleCart(product?.data, quantity, selectedId);
                 }}
                 className={`py-2 px-4 rounded-md font-medium ${
-                  isCartItem ? "bg-white text-black border border-gray-300" : "bg-black hover:bg-gray-800 text-white"
+                  isCartItem
+                    ? "bg-white text-black border border-gray-300"
+                    : "bg-black hover:bg-gray-800 text-white"
                 }`}
                 disabled={isCartItem && selectedSize}
               >
@@ -695,7 +811,11 @@ const decrementQuantity = () => {
           <Typography color="black" variant="h6" mb={2}>
             MEN&apos;S THOBE - REGULAR FIT
           </Typography>
-          <Tabs value={tab} onChange={handleTabChange} aria-label="Size Guide Tabs">
+          <Tabs
+            value={tab}
+            onChange={handleTabChange}
+            aria-label="Size Guide Tabs"
+          >
             <Tab label="IN" />
           </Tabs>
           <Box mt={2}>
@@ -724,7 +844,7 @@ const decrementQuantity = () => {
         </Box>
       </Modal>
     </section>
-  )
-}
+  );
+};
 
-export default ProductPage
+export default ProductPage;
