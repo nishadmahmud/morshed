@@ -109,13 +109,7 @@ const DeliveryForm = ({
     fetcher
   );
 
-  const {
-    setToken,
-    googleLogin,
-    setUserInfo,
-    getCartItems,
-  } = useStore();
-
+  const { setToken, googleLogin, setUserInfo, getCartItems } = useStore();
 
   // State declarations
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -140,25 +134,21 @@ const DeliveryForm = ({
   const [prizeName, setPrizeName] = useState("");
   const [invoiceId, setInvoiceId] = useState(null);
   const [spinCount, setSpinCount] = useState(0);
-  const [customerId,setCustomerId] = useState(null);
-
+  const [customerId, setCustomerId] = useState(null);
+  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const searchParams = useSearchParams();
   const intendedUrl = searchParams.get("redirect");
-
+  const [insufficientProducts, setInsufficientProducts] = useState([]);
   // Use refs to prevent recreating objects
   const userDataRef = useRef(null);
 
-
-  // Memoize stable values
-  const userData = userDataRef.current
+  const userData = userDataRef.current;
   const date = useMemo(() => new Date().toISOString(), []);
   const deliveryNote = useMemo(
     () => localStorage.getItem("cartAttachment"),
     []
   );
-
-
 
   // Memoize user name parsing
   const { firstName, lastName } = useMemo(() => {
@@ -176,12 +166,10 @@ const DeliveryForm = ({
     [location]
   );
 
-  // Update shipping fee when it changes
   useEffect(() => {
     setShippingFee(shippingFee);
   }, [shippingFee, setShippingFee]);
 
-  // Update coupon value when couponAmount changes
   useEffect(() => {
     setCouponValue(couponAmount);
   }, [couponAmount]);
@@ -212,25 +200,28 @@ const DeliveryForm = ({
     if (items.length) {
       setCartItems(items);
       setLoading(false);
-      const total = items.reduce((prev, curr) => country.value === "BD" ? prev + curr.retails_price : prev + curr?.intl_retails_price, 0);
+      const total = items.reduce(
+        (prev, curr) =>
+          country.value === "BD"
+            ? prev + curr.retails_price
+            : prev + curr?.intl_retails_price,
+        0
+      );
       setCartTotal(total);
       setOrderSchema((prev) => ({
         ...prev,
-        sub_total: cartTotal
-      }))
+        sub_total: cartTotal,
+      }));
     }
   }, [getCartItems]);
 
-    const [countries, setCountries] = useState([]);
+  const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("Bangladesh");
 
   useEffect(() => {
     const countryNames = getNames(); // returns all country names
     setCountries(countryNames);
   }, []);
-
- 
-
 
   // Create order schema - memoized to prevent constant recreation
   const orderSchema = useMemo(() => {
@@ -250,7 +241,7 @@ const DeliveryForm = ({
         size: 1,
         sales_id: 3,
         imei_id: item?.imeis ? item?.imeis[0]?.id : null,
-        product_variant_id : item.product_variant_id
+        product_variant_id: item.product_variant_id,
       })),
       delivery_method_id: 1,
       delivery_note: deliveryNote,
@@ -280,8 +271,9 @@ const DeliveryForm = ({
       }),
       created_at: date,
       customer_id: customerId,
-      customer_name: `${formData.firstName || firstName} ${formData.lastName || lastName
-        }`,
+      customer_name: `${formData.firstName || firstName} ${
+        formData.lastName || lastName
+      }`,
       customer_phone: formData?.phone,
       sales_id: userId,
       user_id: userId,
@@ -308,16 +300,14 @@ const DeliveryForm = ({
     lastName,
     paymentMethods?.data?.data,
     date,
-    customerId
+    customerId,
   ]);
 
   const [orderSchemaState, setOrderSchema] = useState(orderSchema);
-  
 
-    useEffect(() => {
+  useEffect(() => {
     setOrderSchema(orderSchema);
   }, [orderSchema]);
-
 
   // Event handlers - all memoized
   const handleGoogleLogin = useCallback(async () => {
@@ -327,7 +317,13 @@ const DeliveryForm = ({
       try {
         await axios.post(
           `${process.env.NEXT_PUBLIC_API}/customer-registration`,
-          { name: result.displayName, phone: result.phoneNumber, email: result.email, password: result.uid, user_id: String(userId) },
+          {
+            name: result.displayName,
+            phone: result.phoneNumber,
+            email: result.email,
+            password: result.uid,
+            user_id: String(userId),
+          },
           { headers: { "Content-Type": "application/json" } }
         );
       } catch (error) {
@@ -339,7 +335,6 @@ const DeliveryForm = ({
         { email: result.email, password: result.uid, user_id: String(userId) },
         { headers: { "Content-Type": "application/json" } }
       );
-
 
       setCustomerId(loginResponse?.data?.customer?.id);
       setReload(true);
@@ -361,8 +356,8 @@ const DeliveryForm = ({
         ...formData,
         firstName: result.displayName,
         phone: result.phoneNumber,
-        email: result.email
-      })
+        email: result.email,
+      });
       localStorage.setItem(
         "user",
         JSON.stringify(loginResponse?.data?.customer)
@@ -377,7 +372,6 @@ const DeliveryForm = ({
     setSelectedCountry(e.target.value);
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-    
   }, []);
 
   const handlePayment = useCallback((e) => {
@@ -408,15 +402,15 @@ const DeliveryForm = ({
           selectedDonate === "Not now" ? 0 : Number(selectedDonate),
       };
 
-// console.log(finalOrderSchema);
-// return;
+      console.log(finalOrderSchema);
+      // return;
       axios
         .post(
-          `${process.env.NEXT_PUBLIC_API}/public/ecommerce-save-sales`,
+          `${process.env.NEXT_PUBLIC_API}/public/ecommerce-sales-with-check`,
           finalOrderSchema
         )
         .then((res) => {
-          if (res.status === 200) {
+          if (res.status === 200 && res?.data?.success === true) {
             const _invoiceId = res?.data?.data?.invoice_id;
             setInvoiceId(_invoiceId);
             localStorage.removeItem("cart");
@@ -424,13 +418,19 @@ const DeliveryForm = ({
             toast.success("Order Placed Successfully!");
             router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
           }
+
+        
         })
         .catch((err) => {
           toast.error("Error occurred. Try again.");
           console.log(err);
+          if (err.response?.data?.success === false) {
+            setInsufficientProducts(err?.response?.data?.insufficient_products || []);
+            setIsOpen(true);
+          }
         })
         .finally(() => {
-          setLoading(false); // stop loading
+          setLoading(false);
         });
     },
     [cartItems, orderSchemaState, selectedDonate, router, payment]
@@ -565,11 +565,11 @@ const DeliveryForm = ({
         ...formData,
         firstName: user.name,
         email: user.email,
-        phone: user.phone || null
-      })
-      setCustomerId(user.id)
+        phone: user.phone || null,
+      });
+      setCustomerId(user.id);
     }
-  }, [])
+  }, []);
 
   return (
     <div className="space-y-4">
@@ -591,15 +591,15 @@ const DeliveryForm = ({
           </div>
 
           <div className="text-black mb-5">
-            {
-              orderSchema.customer_name && orderSchema.email && <>
+            {orderSchema.customer_name && orderSchema.email && (
+              <>
                 <button type="button" onClick={handleGoogleLogin}>
                   <FcGoogle size={25} />
                 </button>
                 <br />
                 <span>or</span>
               </>
-            }
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -684,30 +684,29 @@ const DeliveryForm = ({
               />
             </div>
 
-
             {/* Select country */}
 
-             <div className="md:col-span-1">
-      <label className="block text-sm font-medium text-gray-700 mb-2">
-        <GiWorld className="inline h-4 w-4 mr-1" />
-        Select Country <span className="text-red-600">*</span>
-      </label>
+            <div className="md:col-span-1">
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                <GiWorld className="inline h-4 w-4 mr-1" />
+                Select Country <span className="text-red-600">*</span>
+              </label>
 
-      <select
-        value={selectedCountry}
-        onChange={handleChange}
-        className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
-      >
-        <option value="" disabled>
-          -- Select a country --
-        </option>
-        {countries.map((country) => (
-          <option key={country} value={country}>
-            {country}
-          </option>
-        ))}
-      </select>
-    </div>
+              <select
+                value={selectedCountry}
+                onChange={handleChange}
+                className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              >
+                <option value="" disabled>
+                  -- Select a country --
+                </option>
+                {countries.map((country) => (
+                  <option key={country} value={country}>
+                    {country}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             {/* Address */}
             <div className="md:col-span-2">
@@ -761,10 +760,11 @@ const DeliveryForm = ({
           </div>
           <div className="space-y-3">
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "inside"
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                location === "inside"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
             >
               <input
                 type="radio"
@@ -776,10 +776,11 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "inside"
-                    ? "border-blue-500"
-                    : "border-gray-300"
-                    }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    location === "inside"
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
                 >
                   {location === "inside" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -800,10 +801,11 @@ const DeliveryForm = ({
             </label>
 
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "outside"
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                location === "outside"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
             >
               <input
                 type="radio"
@@ -815,10 +817,11 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "outside"
-                    ? "border-blue-500"
-                    : "border-gray-300"
-                    }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    location === "outside"
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
                 >
                   {location === "outside" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -864,10 +867,11 @@ const DeliveryForm = ({
           </div>
           <div className="space-y-3">
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${payment === "Cash"
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                payment === "Cash"
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
             >
               <input
                 type="radio"
@@ -882,8 +886,9 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${payment === "Cash" ? "border-blue-500" : "border-gray-300"
-                    }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    payment === "Cash" ? "border-blue-500" : "border-gray-300"
+                  }`}
                 >
                   {payment === "Cash" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -904,7 +909,7 @@ const DeliveryForm = ({
           {!isCod && (
             <div className="mt-4 p-4 bg-gray-50 rounded-lg">
               {paymentMethods?.data?.data &&
-                paymentMethods?.data?.data?.length > 0 ? (
+              paymentMethods?.data?.data?.length > 0 ? (
                 (() => {
                   const otherMethods = paymentMethods?.data?.data?.filter(
                     (item) => item?.type_name !== "Cash"
@@ -915,14 +920,14 @@ const DeliveryForm = ({
                         <div
                           onClick={() => handlePaymentMethod(item)}
                           key={item.id}
-                          className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${item?.payment_type_category[0]
-                            ?.payment_category_name === payment
-                            ? "border-blue-500 bg-blue-50"
-                            : "border-gray-200 hover:border-gray-300"
-                            }`}
+                          className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${
+                            item?.payment_type_category[0]
+                              ?.payment_category_name === payment
+                              ? "border-blue-500 bg-blue-50"
+                              : "border-gray-200 hover:border-gray-300"
+                          }`}
                         >
                           <Image
-
                             src={item?.icon_image || "/placeholder.svg"}
                             alt={
                               item?.payment_type_category[0]
@@ -980,10 +985,11 @@ const DeliveryForm = ({
           </div>
           <div className="space-y-3">
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${billingSameAsShipping
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                billingSameAsShipping
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
             >
               <input
                 type="radio"
@@ -995,10 +1001,11 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${billingSameAsShipping
-                    ? "border-blue-500"
-                    : "border-gray-300"
-                    }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    billingSameAsShipping
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
                 >
                   {billingSameAsShipping && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -1011,10 +1018,11 @@ const DeliveryForm = ({
             </label>
 
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${!billingSameAsShipping
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
+                !billingSameAsShipping
+                  ? "border-blue-500 bg-blue-50"
+                  : "border-gray-200 hover:border-gray-300"
+              }`}
             >
               <input
                 type="radio"
@@ -1026,10 +1034,11 @@ const DeliveryForm = ({
               />
               <div className="flex items-center space-x-4">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${!billingSameAsShipping
-                    ? "border-blue-500"
-                    : "border-gray-300"
-                    }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                    !billingSameAsShipping
+                      ? "border-blue-500"
+                      : "border-gray-300"
+                  }`}
                 >
                   {!billingSameAsShipping && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -1157,12 +1166,15 @@ const DeliveryForm = ({
                     type="button"
                     key={donation}
                     onClick={() => handleDonationClick(donation)}
-                    className={`px-4 py-2 rounded-full border text-sm ${isSelected
-                      ? "bg-gray-800 text-white border-gray-800"
-                      : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
-                      }`}
+                    className={`px-4 py-2 rounded-full border text-sm ${
+                      isSelected
+                        ? "bg-gray-800 text-white border-gray-800"
+                        : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
+                    }`}
                   >
-                    {country?.value === "BD" ? `Tk ${displayText}` : `$ ${displayText}`}
+                    {country?.value === "BD"
+                      ? `Tk ${displayText}`
+                      : `$ ${displayText}`}
                   </button>
                 );
               })}
@@ -1181,14 +1193,16 @@ const DeliveryForm = ({
         {/* Complete Order Button */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <button
-           onClick={handleOrderComplete}
-      disabled={loading}
+            onClick={handleOrderComplete}
+            disabled={loading}
             type="submit"
-            className={`${loading ? 'cursor-not-allowed' : 'cursor-pointer'} w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2`}
+            className={`${
+              loading ? "cursor-not-allowed" : "cursor-pointer"
+            } w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2`}
           >
             <div className="flex items-center justify-center space-x-2">
               <ShoppingBag className="h-5 w-5" />
-             <span>{loading ? "Order Placing..." : "Complete Order"}</span>
+              <span>{loading ? "Order Placing..." : "Complete Order"}</span>
             </div>
           </button>
           <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-gray-500">
@@ -1224,7 +1238,7 @@ const DeliveryForm = ({
 
       <Dialog
         open={showWheelModal}
-        onClose={() => { }}
+        onClose={() => {}}
         className="relative z-50"
       >
         <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
@@ -1257,6 +1271,96 @@ const DeliveryForm = ({
           </Dialog.Panel>
         </div>
       </Dialog>
+
+      {/* api response false modal */}
+
+     {isOpen && (
+  <div style={{ marginTop: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    {/* Black Overlay - Full Screen */}
+    <div 
+      className="absolute inset-0 bg-black/60 backdrop-blur-sm bottom-0"
+      onClick={() => setIsOpen(false)}
+    />
+    
+    {/* Modal Content */}
+    <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto transform transition-all duration-300 ease-out">
+      {/* Header */}
+      <div className="flex items-center justify-between p-6 border-b border-gray-100">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+            <span className="text-red-600 text-xl">🚨</span>
+          </div>
+          <h2 className="text-xl font-bold text-gray-900">
+            Stock Out
+          </h2>
+        </div>
+        <button
+          onClick={() => setIsOpen(false)}
+          className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+        >
+          <span className="text-gray-500 text-lg">×</span>
+        </button>
+      </div>
+
+      {/* Content */}
+      <div className="p-6 max-h-96 overflow-y-auto">
+        <div className="space-y-4">
+          {insufficientProducts.map((item, i) => (
+            <div 
+              key={i} 
+              className="bg-red-50 border border-red-200 rounded-lg p-4 transition-all hover:bg-red-100"
+            >
+              <div className="flex items-start justify-between">
+                <div className="flex-1">
+                  <p className="font-semibold text-gray-900 mb-1">
+                    {item.product_name}
+                  </p>
+                  <div className="flex items-center gap-4 text-sm">
+                    <span className="text-red-600 font-medium">
+                      Requested: {item.requested_qty}
+                    </span>
+                    <span className="text-gray-600">
+                      Available: {item.available_qty}
+                    </span>
+                  </div>
+                </div>
+                <div className="w-8 h-8 bg-red-200 rounded-full flex items-center justify-center ml-3">
+                  <span className="text-red-600 text-sm font-bold">!</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex items-center justify-center gap-3 p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+        {/* <button
+          onClick={() => setIsOpen(false)}
+          className="px-5 py-2.5 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium transition-all duration-200 hover:shadow-sm"
+        >
+          Close
+        </button> */}
+
+        { insufficientProducts.length < 0 ? (
+         <button
+          onClick={() => router.push("/cart")}
+          className="px-5 py-2 w-full rounded-sm bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+        >
+          Go to Cart
+        </button>
+        ): ( <button
+          onClick={() => router.push("/cart")}
+          className="px-5 py-2 w-full rounded-sm bg-red-500 hover:bg-red-600 text-white font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+        >
+          Dismiss
+        </button>)}
+        
+       
+      </div>
+    </div>
+  </div>
+)}
 
       <PrizeModal
         invoiceId={invoiceId}
