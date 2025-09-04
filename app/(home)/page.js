@@ -41,7 +41,7 @@ export default async function Home() {
   return (
     <>
     {/* <SelectRegionModal></SelectRegionModal> */}
-      <PromotionModal promotionBanner={promotion?.data[0]}/>
+      <PromotionModal offers={promotion}/>
       <HeroSlider />
       <BrandMarquee />
       <div>

@@ -43,8 +43,8 @@ const OfferPage = ({categories}) => {
         <Image
           src="/banner-04.jpg"
           alt="Roland Grand White Shirt"
-          layout="fill"
-          objectFit="cover"
+          fill
+          className='object-cover'
         />
       </div>
 
@@ -53,9 +53,8 @@ const OfferPage = ({categories}) => {
         <Image
           src="/banner-04.jpg"
           alt="Roland Grand White Shirt"
-          layout="fill"
-          objectFit="cover"
-          className="z-0"
+          fill
+          className="z-0 object-cover"
         />
 
         <div className="absolute inset-0 bg-gray-800/20 flex items-center justify-end z-10">

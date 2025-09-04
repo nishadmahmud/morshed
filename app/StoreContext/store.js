@@ -2,8 +2,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
-import useSWR from "swr";
-import { fetcher, userId } from "../(home)/page";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import auth from "@/firebase/config";
 
@@ -43,7 +41,6 @@ const StoreProvider = ({ children }) => {
   const [country, setCountry] = useState("BD");
   const [wishlist, setWishlist] = useState([]);
   const [selectedSizeCart, setSelectedSizeCart] = useState("")
-console.log(selectedSizeCart);
 
   const [isInCart, setIsInCart] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
@@ -326,11 +323,6 @@ const handleDncQuantity = (id, qty, selectedSize) => {
     }
 
 
-  const { data: blogs } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}/latest-ecommerce-blog-list/${userId}`,
-    fetcher
-  );
-
   const values = {
     handleCart,
      prices,
@@ -378,7 +370,6 @@ const handleDncQuantity = (id, qty, selectedSize) => {
     handleClosePromo,
     handlePromoBanner,
     setIsOpenPromoBanner,
-    blogs,
     setSelectedCountry,
     selectedCountry,
     countries,

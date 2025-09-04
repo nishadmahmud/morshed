@@ -43,7 +43,7 @@ const HeaderUi = ({ data }) => {
   } = useStore();
   const [keyword, setKeyword] = useState("");
   const [searchedItem, setSearchedItem] = useState([]);
-
+  const [user,setUser] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSearchSidebarOpen, setIsSearchSidebarOpen] = useState(false);
@@ -51,30 +51,23 @@ const HeaderUi = ({ data }) => {
   const searchBarRef = useRef(null);
 
   // Mock user and cart data
-  const user =
-    typeof window !== "undefined" ? localStorage.getItem("user") : null;
   const items = getCartItems();
   const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
   };
 
-  // search api
-  // useEffect(() => {
-  //   if (keyword) {
-  //     const timer = setTimeout(() => {
-  //       setIsSearching(true);
-  //     }, 600);
+  useEffect(() => {
+    if(typeof window !== "undefined"){
+      const info = localStorage.getItem("user");
+      setUser(info);
+    }
+  },[])
 
-  //     return () => clearTimeout(timer);
-  //   } else {
-  //     setSearchedItem([]);
-  //   }
-  // }, [keyword]);
 
   const handleChange = (e) => {
     setKeyword(e.target.value);
-    if(debounceRef.current){
+    if (debounceRef.current) {
       clearTimeout(debounceRef.current);
     }
 
@@ -87,10 +80,10 @@ const HeaderUi = ({ data }) => {
     setIsSearching(true);
     try {
       const res = await axios
-      .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, {
-        keyword : value,
-        user_id: userId,
-      });
+        .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, {
+          keyword: value,
+          user_id: userId,
+        });
       const data = res.data;
       setSearchedItem(data?.data?.data);
       setIsSearching(false);
@@ -143,7 +136,7 @@ const HeaderUi = ({ data }) => {
 
   const handleModalClose = () => setIsLoginModal(false);
 
-  const selectedCountry = JSON.parse(localStorage.getItem("selectedCountry"));
+  const selectedCountry = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("selectedCountry")) : "BD";
 
   const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
 
@@ -193,24 +186,20 @@ const HeaderUi = ({ data }) => {
               className="relative z-50 w-8 h-8 flex items-center justify-center"
             >
               <div
-                className={`burger-menu text-white bg-white ${
-                  isSidebarOpen ? "open" : ""
-                }`}
+                className={`burger-menu text-white bg-white ${isSidebarOpen ? "open" : ""
+                  }`}
               >
                 <span
-                  className={`block w-5 h-0.5 bg-black transition-all duration-300 ${
-                    isSidebarOpen ? "rotate-45 translate-y-1" : ""
-                  }`}
+                  className={`block w-5 h-0.5 bg-black transition-all duration-300 ${isSidebarOpen ? "rotate-45 translate-y-1" : ""
+                    }`}
                 ></span>
                 <span
-                  className={`block w-5 h-0.5 bg-black my-1 transition-all duration-300 ${
-                    isSidebarOpen ? "opacity-0" : ""
-                  }`}
+                  className={`block w-5 h-0.5 bg-black my-1 transition-all duration-300 ${isSidebarOpen ? "opacity-0" : ""
+                    }`}
                 ></span>
                 <span
-                  className={`block w-5 h-0.5 bg-black transition-all duration-300 ${
-                    isSidebarOpen ? "-rotate-45 -translate-y-1" : ""
-                  }`}
+                  className={`block w-5 h-0.5 bg-black transition-all duration-300 ${isSidebarOpen ? "-rotate-45 -translate-y-1" : ""
+                    }`}
                 ></span>
               </div>
             </button>
@@ -309,9 +298,8 @@ const HeaderUi = ({ data }) => {
         {/* Mobile sidebar */}
         <div
           data-sidebar="mobile"
-          className={`fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white text-gray-800 z-50 transform transition-transform duration-300 ease-in-out shadow-lg ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          }`}
+          className={`fixed top-0 left-0 w-4/5 max-w-xs h-full bg-white text-gray-800 z-50 transform transition-transform duration-300 ease-in-out shadow-lg ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
         >
           {/* Header */}
           <div className="flex justify-between items-center p-4 border-b">
@@ -396,9 +384,8 @@ const HeaderUi = ({ data }) => {
         {/* Search sidebar - slides from top */}
         <div
           data-sidebar="search"
-          className={`fixed inset-0 top-0 bg-white text-black z-50 transform transition-transform duration-500 ease-in-out shadow-lg ${
-            isSearchSidebarOpen ? "translate-y-0" : "-translate-y-full"
-          }`}
+          className={`fixed inset-0 top-0 bg-white text-black z-50 transform transition-transform duration-500 ease-in-out shadow-lg ${isSearchSidebarOpen ? "translate-y-0" : "-translate-y-full"
+            }`}
         >
           <div className="max-w-4xl mx-auto p-6">
             <div className="flex justify-between items-center mb-6">
@@ -555,7 +542,7 @@ const HeaderUi = ({ data }) => {
                                       item.retails_price -
                                       (item.retails_price *
                                         (item.discount || 0)) /
-                                        100
+                                      100
                                     ).toFixed(2)}
                                   </p>
                                 )}
@@ -582,13 +569,14 @@ const HeaderUi = ({ data }) => {
           </div>
         </div>
 
-        <Navbar
-          setIsLoginModal={setIsLoginModal}
-          openCart={openCart}
-          setOpenCart={setOpenCart}
-          data={data}
-          user={userInfo}
-        />
+          <Navbar
+            setIsLoginModal={setIsLoginModal}
+            openCart={openCart}
+            setOpenCart={setOpenCart}
+            data={data}
+            user={userInfo}
+          />
+
 
         {/* Mobile search results */}
         {keyword && searchedItem?.length > 0 && !isSearchSidebarOpen && (

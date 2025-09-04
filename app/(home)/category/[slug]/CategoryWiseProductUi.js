@@ -9,7 +9,7 @@ import Pagination from "@/app/Components/pagination"
 
 const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function ProductListing({ params }) {
+export default function CategoryWiseProductUi() {
   const searchParams = useSearchParams();
   const { country } = useStore();
   const searchedCategory = searchParams.get("category") || "All Products"

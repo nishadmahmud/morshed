@@ -3,24 +3,31 @@
 import Image from "next/image"
 import noImg from "/public/no-image.jpg"
 import Link from "next/link"
-import { useEffect } from "react"
-import { ShoppingCart } from "lucide-react"
+import { useEffect, useState } from "react"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import useWishlist from "../CustomHooks/useWishlist"
 import useStore from "../CustomHooks/useStore"
 
 const ProductCard = ({ product }) => {
-  const { handleCart, handleBuy, prices, country, setProductPrice } = useStore()
-  const { toggleWishlist, isInWishlist } = useWishlist()
+  const { prices, country, setProductPrice } = useStore()
+  const { toggleWishlist, isInWishlist } = useWishlist();
+  const [selectedCountry,setSelectedCountry] = useState("BD");
 
-  const selectedCountry = JSON.parse(localStorage.getItem("selectedCountry"))
-  const countrySign = selectedCountry?.value === "BD" ? "৳" : "$"
+ 
+  const countrySign = selectedCountry === "BD" ? "৳" : "$"
+
+  useEffect(() => {
+    if(typeof window !== 'undefined'){
+      const storedCountry = JSON.parse(localStorage.getItem("selectedCountry"));
+      setSelectedCountry(storedCountry);
+    }
+  },[])
 
   useEffect(() => {
     if (product?.id && product?.retails_price) {
       setProductPrice(product.id, product?.retails_price, product?.intl_retails_price || null)
     }
-  }, [product.id, product.retails_price, product.intl_retails_price])
+  }, [product.id, product.retails_price, product.intl_retails_price,setProductPrice])
 
   const productPrice = prices[product.id]
 
