@@ -22,6 +22,7 @@
     "colornames": "^1.1.1",
     "country-list": "^2.3.0",
     "date-fns": "^4.1.0",
+    "embla-carousel-react": "^8.6.0",
     "firebase": "^11.9.1",
     "framer-motion": "^12.0.5",
     "html-to-text": "^9.0.5",
@@ -63,7 +64,6 @@
     "world-countries": "^5.1.0"
   },
   "devDependencies": {
-    "daisyui": "^4.12.23",
     "eslint": "^8",
     "eslint-config-next": "14.2.14",
     "postcss": "^8",
