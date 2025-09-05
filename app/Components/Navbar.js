@@ -11,11 +11,9 @@ import { Heart } from "lucide-react";
 
 const Navbar = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
   const categoryRef = useRef(null);
   const [showCategory, setShowCategory] = useState(false);
-  //   const loggedInUser = JSON.parse(localStorage.getItem('user'))
-  const [loggedInUser, setLoggedInUser] = useState(null);
+  const [user,setUser] = useState(null);
 
   const { getCartItems, refetch, setRefetch, country, wishlist } = useStore();
   const handleCategoryClose = (event) => {
@@ -24,7 +22,6 @@ const Navbar = ({ data }) => {
     }
   };
 
-  const user = typeof window !== "undefined" ? localStorage.getItem("user") : null
 
 
   useEffect(() => {
@@ -32,14 +29,12 @@ const Navbar = ({ data }) => {
     return () => document.removeEventListener("click", handleCategoryClose);
   }, []);
 
-  // const handleMobileCategory = () => {
-  //     setIsHovered(!isHovered)
-  // }
+
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (user) {
-        setLoggedInUser(user);
+      const storedUser = localStorage.getItem("user");
+      if (storedUser) {
+        setUser(JSON.parse(storedUser));
       }
     }
   }, []);
