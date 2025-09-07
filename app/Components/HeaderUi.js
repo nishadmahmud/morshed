@@ -19,9 +19,6 @@ import Search from "./Search";
 import useStore from "../CustomHooks/useStore";
 import CartItems from "./CartItems";
 import { useSearchParams } from "next/navigation";
-import RegisterForm from "./RegisterForm";
-import LoginForm from "./LoginForm";
-import Modal from "./Modal";
 import Navbar from "./Navbar";
 import { userId } from "../(home)/page";
 import GlobeModalButton from "./GlobeModalButton";
@@ -43,7 +40,7 @@ const HeaderUi = ({ data }) => {
   } = useStore();
   const [keyword, setKeyword] = useState("");
   const [searchedItem, setSearchedItem] = useState([]);
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
   const [isSearching, setIsSearching] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isSearchSidebarOpen, setIsSearchSidebarOpen] = useState(false);
@@ -58,12 +55,11 @@ const HeaderUi = ({ data }) => {
   };
 
   useEffect(() => {
-    if(typeof window !== "undefined"){
+    if (typeof window !== "undefined") {
       const info = localStorage.getItem("user");
       setUser(info);
     }
-  },[])
-
+  }, [])
 
   const handleChange = (e) => {
     setKeyword(e.target.value);
@@ -136,9 +132,8 @@ const HeaderUi = ({ data }) => {
 
   const handleModalClose = () => setIsLoginModal(false);
 
-  const selectedCountry = typeof window !== "undefined" ? JSON.parse(localStorage.getItem("selectedCountry")) : "BD";
 
-  const countrySign = selectedCountry?.value === "BD" ? "৳" : "$";
+  const countrySign = country?.value === "BD" ? "৳" : "$";
 
 
   // utils/pricing.js (or right above your component)
@@ -337,7 +332,7 @@ const HeaderUi = ({ data }) => {
                       item?.category_id || ""
                     )}?category=${encodeURIComponent(
                       item?.name || ""
-                    )}&total=${encodeURIComponent(item?.product_count || 0)}`}
+                    )}&page=1&limit=20&total=${encodeURIComponent(item?.product_count || 0)}`}
                     className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-teal-50 transition"
                   >
                     <span className="text-sm font-medium">
@@ -569,13 +564,13 @@ const HeaderUi = ({ data }) => {
           </div>
         </div>
 
-          <Navbar
-            setIsLoginModal={setIsLoginModal}
-            openCart={openCart}
-            setOpenCart={setOpenCart}
-            data={data}
-            user={userInfo}
-          />
+        <Navbar
+          setIsLoginModal={setIsLoginModal}
+          openCart={openCart}
+          setOpenCart={setOpenCart}
+          data={data}
+          user={userInfo}
+        />
 
 
         {/* Mobile search results */}
@@ -607,34 +602,7 @@ const HeaderUi = ({ data }) => {
           />
         )}
 
-        {isLoginModal && (
-          <Modal
-            isOpen={isLoginModal}
-            onClose={handleModalClose}
-            title={isRegistered ? "Sign In" : "Sign Up"}
-            content={
-              isRegistered ? (
-                <LoginForm
-                  isLoginModal={isLoginModal}
-                  onClose={handleModalClose}
-                  setIsRegistered={setIsRegistered}
-                  setReload={setReload}
-                  isRegistered={isRegistered}
-                  modal={true}
-                />
-              ) : (
-                <RegisterForm
-                  setIsRegistered={setIsRegistered}
-                  isLoginModal={isLoginModal}
-                  onClose={handleModalClose}
-                  isRegistered={isRegistered}
-                  setReload={setReload}
-                  modal={true} // ✅ Added for consistency
-                />
-              )
-            }
-          />
-        )}
+       
       </div>
     </div>
   );

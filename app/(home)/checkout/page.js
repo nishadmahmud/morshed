@@ -2,7 +2,7 @@
 // import DeliveryForm from "@/app/Components/DeliveryForm";
 import useStore from "@/app/CustomHooks/useStore"
 import Image from "next/image"
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { ShoppingCart, Package } from "lucide-react"
 import dynamic from "next/dynamic"
 import toast from "react-hot-toast"
@@ -18,7 +18,7 @@ const CheckoutPage = () => {
   const cartItems = getCartItems()
   const quantity = cartItems.reduce((acc, curr) => acc + curr.quantity, 0)
 
-console.log(cartItems);
+  console.log(cartItems);
   const getPriceByCountry = (item) => {
     const productPrice = prices[item.id]
 
@@ -29,19 +29,19 @@ console.log(cartItems);
     }
   }
 
- 
+
   const Subtotal = cartItems.reduce((prev, curr) => {
     const basePrice = getPriceByCountry(curr)
     const priceAfterDiscount = country?.value === "BD" ? curr.discount
       ? curr.discount_type === "Fixed"
         ? basePrice - curr.discount
         : basePrice - (basePrice * curr.discount) / 100
-      : basePrice 
-      : curr.discount
-      ? curr.discount_type === "Fixed"
-        ? basePrice - curr.intl_discount
-        : basePrice - (basePrice * curr.intl_discount) / 100
       : basePrice
+      : curr.discount
+        ? curr.discount_type === "Fixed"
+          ? basePrice - curr.intl_discount
+          : basePrice - (basePrice * curr.intl_discount) / 100
+        : basePrice
 
     return prev + priceAfterDiscount * curr.quantity
   }, 0)
@@ -133,18 +133,21 @@ console.log(cartItems);
         <div className="grid lg:grid-cols-12 gap-4 lg:gap-8">
           {/* Main Content */}
           <div className="lg:col-span-7 order-last lg:order-first">
-            <DeliveryForm
-            country={country}
-              selectedDonate={selectedDonate}
-              setSelectedDonate={setSelectedDonate}
-              donations={donations}
-              shippingFee={shippingFee}
-              setShippingFee={setShippingFee}
-              cartItems={cartItems}
-              cartTotal={Subtotal}
-              couponCode={couponCode}
-              couponAmount={couponAmount}
-            />
+            <Suspense>
+              <DeliveryForm
+                country={country}
+                selectedDonate={selectedDonate}
+                setSelectedDonate={setSelectedDonate}
+                donations={donations}
+                shippingFee={shippingFee}
+                setShippingFee={setShippingFee}
+                cartItems={cartItems}
+                cartTotal={Subtotal}
+                couponCode={couponCode}
+                couponAmount={couponAmount}
+              />
+            </Suspense>
+
           </div>
 
           {/* Order Summary Sidebar */}

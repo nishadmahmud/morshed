@@ -7,8 +7,10 @@ const useWishlist = () => {
   const { setWishlist, wishlist } = useStore();
   
   useEffect(() => {
-    const stored = JSON.parse(localStorage.getItem("wishlist") || "[]");
-    setWishlist(stored);
+    if(typeof window !== 'undefined'){
+      const stored = JSON.parse(localStorage.getItem("wishlist") || "[]");
+      setWishlist(stored);
+    }
   }, []);
 
   

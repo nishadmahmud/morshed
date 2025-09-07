@@ -31,12 +31,18 @@ const MyOrders = () => {
   const [expandedOrders, setExpandedOrders] = useState({});
   const [copied, setCopied] = useState(false);
   const [showToast, setShowToast] = useState(false);
+  const [userData,setUserData] = useState({id: null});
 
-  // Get user data from localStorage
-  const userData =
-    typeof window !== "undefined"
-      ? JSON.parse(localStorage.getItem("user") || '{"id": null}')
-      : { id: null };
+
+  useEffect(() => {
+    if(typeof window !== "undefined"){
+      const storedData = localStorage.getItem("user") || null;
+      if(storedData){
+        setUserData(JSON.parse(storedData));
+      }
+    }
+  },[])
+
   const customer_id = userData?.id;
 
   const toggleOrderExpand = (orderId) => {

@@ -73,13 +73,15 @@ export default function Counter() {
   const [targetTime, setTargetTime] = useState(Date.now() + 86400 * 1000);
 
   useEffect(() => {
-    const storedTime = localStorage.getItem("countdownTargetTime");
-    if (storedTime) {
-      setTargetTime(parseInt(storedTime, 10));
-    } else {
-      const initialTargetTime = Date.now() + 5000;
-      setTargetTime(initialTargetTime);
-      localStorage.setItem("countdownTargetTime", initialTargetTime);
+    if(typeof window !== 'undefined'){
+      const storedTime = localStorage.getItem("countdownTargetTime");
+      if (storedTime) {
+        setTargetTime(parseInt(storedTime, 10));
+      } else {
+        const initialTargetTime = Date.now() + 5000;
+        setTargetTime(initialTargetTime);
+        localStorage.setItem("countdownTargetTime", initialTargetTime);
+      }
     }
   }, []);
 

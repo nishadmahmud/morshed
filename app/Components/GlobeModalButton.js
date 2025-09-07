@@ -15,7 +15,7 @@ const GlobeModalButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { selectedCountry, setSelectedCountry } = useContext(storeContext);
 
-  const { country, setCountry } = useStore();
+  const {setCountry } = useStore();
   const [countryOptions, setCountryOptions] = useState([]);
 
   // Load countries

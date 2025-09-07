@@ -1,7 +1,6 @@
 "use client"
 
 import useStore from "@/app/CustomHooks/useStore";
-import { MapPinCheckIcon } from "lucide-react";
 import { MapPin } from "lucide-react";
 import { FileUser, ShoppingBag, KeyRound, CircleUser, LogOut, X, Menu } from "lucide-react";
 import Link from "next/link";
@@ -10,28 +9,27 @@ import { useEffect, useState } from "react";
 
 const DashboardLayout = ({ children }) => {
   const [email, setEmail] = useState(null);
-  const [user, setUser] = useState(null);
   const [reload, setReload] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const { setToken, setHasToken } = useStore();
   const route = useRouter();
 
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
 
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-    if (userInfo) {
-      setUser(userInfo);
-      setEmail(userInfo?.email);
-      setReload(false);
-
-       // Ensure name is a valid string before splitting
-       const fullName = userInfo?.name || "";
-       const nameParts = fullName?.split(" ");
-       setFirstName(nameParts[0] || ""); // First word
-       setLastName(nameParts.slice(1).join(" ") || ""); // Rest of the name
+    if(typeof window !== 'undefined'){
+      const storedUser = localStorage.getItem("user");
+      const userInfo = JSON.parse(storedUser);
+      if (userInfo) {
+        setEmail(userInfo?.email);
+        setReload(false);
+  
+         // Ensure name is a valid string before splitting
+         const fullName = userInfo?.name || "";
+         const nameParts = fullName?.split(" ");
+         setFirstName(nameParts[0] || ""); // First word
+      }
     }
   }, [email, reload]);
 
@@ -44,7 +42,6 @@ const DashboardLayout = ({ children }) => {
     setToken(null);
     setHasToken(false);
     setEmail(null);
-    setUser(null); // Ensure user is set to null
     setReload(prev => !prev); // Trigger a re-render
     route.push('/')
 };

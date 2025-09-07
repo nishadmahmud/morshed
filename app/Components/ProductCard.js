@@ -3,7 +3,7 @@
 import Image from "next/image"
 import noImg from "/public/no-image.jpg"
 import Link from "next/link"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import useWishlist from "../CustomHooks/useWishlist"
 import useStore from "../CustomHooks/useStore"
@@ -11,23 +11,15 @@ import useStore from "../CustomHooks/useStore"
 const ProductCard = ({ product }) => {
   const { prices, country, setProductPrice } = useStore()
   const { toggleWishlist, isInWishlist } = useWishlist();
-  const [selectedCountry,setSelectedCountry] = useState("BD");
 
- 
-  const countrySign = selectedCountry === "BD" ? "৳" : "$"
+  const countrySign = country?.value === "BD" ? "৳" : "$"
 
-  useEffect(() => {
-    if(typeof window !== 'undefined'){
-      const storedCountry = JSON.parse(localStorage.getItem("selectedCountry"));
-      setSelectedCountry(storedCountry);
-    }
-  },[])
 
   useEffect(() => {
     if (product?.id && product?.retails_price) {
       setProductPrice(product.id, product?.retails_price, product?.intl_retails_price || null)
     }
-  }, [product.id, product.retails_price, product.intl_retails_price,setProductPrice])
+  }, [product.id, product.retails_price, product.intl_retails_price])
 
   const productPrice = prices[product.id]
 

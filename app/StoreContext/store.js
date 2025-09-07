@@ -77,50 +77,29 @@ const StoreProvider = ({ children }) => {
 
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setLoading(false);
-      setToken(storedToken);
-      setHasToken(true);
-    } else {
-      setToken(null);
-      // setLoading(false);
+    if(typeof window !== 'undefined'){
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        setLoading(false);
+        setToken(storedToken);
+        setHasToken(true);
+      } else {
+        setToken(null);
+        // setLoading(false);
+      }
     }
   }, []);
 
   useEffect(() => {
+      if(typeof window !== 'undefined'){
         const user = JSON.parse(localStorage.getItem("user"));
         if(user){
             setUserInfo(user);
         }
+      }
     },[])
 
  
-
-  //   const cartItems = JSON.parse(localStorage.getItem("cart")) || [];
-  //   const existingProduct = cartItems.find((product) => product.id === item.id);
-
-  //   // Check stock
-  //   const isInStock =
-  //     (newItem.status && newItem.status.toLowerCase() !== "stock out") ||
-  //     newItem.current_stock > 0;
-  //   if (!isInStock) {
-  //     toast.error("Out of stock!");
-  //     return;
-  //   }
-
-  //   // Prevent duplicates
-  //   if (existingProduct) {
-  //     toast.error("Item already in cart");
-  //     return;
-  //   }
-
-  //   const itemWithQty = { ...newItem, quantity };
-  //   cartItems.push(itemWithQty);
-  //   localStorage.setItem("cart", JSON.stringify(cartItems));
-  //   toast.success("Item added to cart successfully");
-  // };
-
 
  const handleCart = (item, quantity, variant_id) => {
    if (!selectedSizeCart) {

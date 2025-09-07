@@ -1,22 +1,30 @@
 "use client"
 
-import React, { useEffect, useState, useRef } from "react"
-import { useSearchParams } from "next/navigation"
-import useSWR from "swr"
+import React, { useEffect, useState, useRef, use } from "react"
 import useStore from "@/app/CustomHooks/useStore"
 import ProductCard from "@/app/Components/ProductCard"
+import { useQuery } from "@tanstack/react-query"
+import { ProductCardSkeleton } from "@/app/Components/ProductCardSkeleton"
 import Pagination from "@/app/Components/pagination"
+import axios from "axios"
 
-const fetcher = (url) => fetch(url).then((res) => res.json())
 
-export default function CategoryWiseProductUi() {
-  const searchParams = useSearchParams();
+export default function CategoryWiseProductUi({ searchedCategory, searchedTotal, limit, id, data }) {
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const { data: products, isLoading } = useQuery({
+    queryKey: ['categoryProducts', id, currentPage, limit],
+    queryFn: () => {
+      return axios.get(`${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`)
+    },
+    initialData: currentPage === 1 ? data : undefined,
+    placeholderData: (previousData) => previousData,
+    enabled: currentPage !== 1,
+  })
+
+
   const { country } = useStore();
-  const searchedCategory = searchParams.get("category") || "All Products"
-  const searchedTotal = searchParams.get("total") || "100"
-  const limit = 20;
   const totalPage = Math.ceil(Number.parseInt(searchedTotal) / limit)
-  const { slug: id } = params
   const [filteredItems, setFilteredItems] = useState([])
   const [sortBy, setSortBy] = useState("")
   const [isFilterOpen, setIsFilterOpen] = useState(false)
@@ -30,25 +38,13 @@ export default function CategoryWiseProductUi() {
     brand: true,
   });
   const [brands, setBrands] = useState([]);
-  const [selectedBrand, setSelectedBrand] = useState("")
+  const [selectedBrand, setSelectedBrand] = useState("");
 
+  // console.log(filteredItems)
 
   const [minimum, setMinimum] = useState(0);
 
-  const filterRef = useRef(null)
-
-  const [currentPage, setCurrentPage] = useState(() => {
-    if (typeof window !== "undefined") {
-      return Number.parseInt(sessionStorage.getItem(`currentPage-${id}`)) || 1
-    }
-    return 1
-  })
-
-  const { data: products, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`,
-    fetcher,
-  )
-
+  const filterRef = useRef(null);
 
 
   useEffect(() => {
@@ -56,8 +52,13 @@ export default function CategoryWiseProductUi() {
       setFilteredItems(products.data);
       const brands = [...new Set(products.data.map(item => item.brand_name))];
       setBrands(brands);
+    } else if (products?.data?.data?.data) {
+      setFilteredItems(products.data.data);
+      const brands = [...new Set(products.data.data.data.map(item => item.brand_name))];
+      setBrands(brands);
     }
   }, [products])
+
 
   useEffect(() => {
     let filtered = products?.data || []
@@ -76,11 +77,6 @@ export default function CategoryWiseProductUi() {
     setFilteredItems(filtered)
   }, [sortBy, products, selectedSizes, selectedColors, priceRange])
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem(`currentPage-${id}`, currentPage)
-    }
-  }, [currentPage, id])
 
   // Close filter sidebar when clicking outside (for mobile)
   useEffect(() => {
@@ -346,7 +342,7 @@ export default function CategoryWiseProductUi() {
                             min={minimum}
                             max={priceRange[1]}
                             value={priceRange[0]}
-                            onChange={(e) => setPriceRange([Number.parseInt(e.target.value),priceRange[1]])}
+                            onChange={(e) => setPriceRange([Number.parseInt(e.target.value), priceRange[1]])}
                             className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                           />
                           <div className="flex items-center justify-between mt-2">
@@ -433,34 +429,89 @@ export default function CategoryWiseProductUi() {
             </div>
           )}
 
-          {isLoading ? (
-            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {[...Array(8)].map((_, i) => (
-                <ProductCardSkeleton key={i} />
-              ))}
-            </div>
-          ) : (
+          {
             <>
-              {filteredItems.length === 0 ? (
-                <div className="text-center py-12">
-                  <h3 className="text-lg font-medium">No products found</h3>
-                  <p className="text-gray-500 mt-2">Try adjusting your filters</p>
-                </div>
-              ) : (
-                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                  {filteredItems.map((product) => (
-                    <ProductCard key={product.id} product={product} />
-                  ))}
-                </div>
-              )}
+              {
+                isLoading ?
+                  Array.from({ length: 8 }, (_, i) => (
+                    <ProductCardSkeleton key={i} />
+                  ))
+                  :
+                  filteredItems?.length === 0 ? (
+                    <div className="text-center py-12">
+                      <h3 className="text-lg font-medium">No products found</h3>
+                      <p className="text-gray-500 mt-2">Try adjusting your filters</p>
+                    </div>
+                  ) : (
+                    filteredItems?.data?.length ?
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {filteredItems?.data?.map((product) => (
+                          <ProductCard key={product.id} product={product} />
+                        ))}
+                      </div>
+                      :
+                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        {filteredItems?.map((product) => (
+                          <ProductCard key={product.id} product={product} />
+                        ))}
+                      </div>
+                  )}
             </>
-          )}
+          }
 
           {/* Pagination */}
           {totalPage > 1 && (
-            <div className="mt-12 flex justify-center">
-              <Pagination currentPage={currentPage} totalPages={totalPage} onPageChange={setCurrentPage} />
-            </div>
+            // <div className="mt-12 flex justify-center gap-3">
+            //   {
+            //     page == 1 ?
+            //       <button
+            //         disabled
+            //         className="px-4 py-1 rounded-md flex items-center gap-1 opacity-50 cursor-not-allowed"
+            //       >
+            //         <MdNavigateBefore />
+            //         <span className="hidden md:inline">Previous</span>
+            //       </button>
+            //       :
+            //       <Link
+            //         href={`/category/6749?category=${encodeURIComponent(searchedCategory)}&page=${Number(page) - 1}&limit=${limit}&total=${searchedTotal}`}
+            //         className="hover:bg-[#115e59] px-4 py-1 rounded-md hover:text-white transition flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+            //       >
+            //         <MdNavigateBefore />
+            //         <span className="hidden md:inline">Previous</span>
+            //       </Link>
+            //   }
+
+
+            //   {
+            //     Array.from({ length: totalPage }, (_, i) => {
+            //       return <Link href={`/category/6749?category=${encodeURIComponent(searchedCategory)}&page=${i + 1}&limit=${limit}&total=${searchedTotal}`} key={i} className={`px-3 py-2 rounded-md transition min-w-[32px] ${page == (i + 1)
+            //         ? 'bg-[#115e59] text-white font-semibold'
+            //         : 'bg-gray-200 text-black hover:bg-gray-300'
+            //         }`}>{i + 1}</Link>
+            //     })
+            //   }
+
+            //   {
+            //     page == totalPage ?
+            //       <button
+            //         disabled
+            //         className="px-4 py-1 rounded-md flex items-center gap-1 opacity-50 cursor-not-allowed"
+            //       >
+            //         <span className="hidden md:inline">Next</span>
+            //         <MdNavigateNext />
+            //       </button>
+            //       :
+            //       <Link
+            //         href={`/category/6749?category=${encodeURIComponent(searchedCategory)}&page=${Number(page) + 1}&limit=${limit}&total=${searchedTotal}`}
+            //         className="hover:bg-[#115e59] px-4 py-1 rounded-md hover:text-white transition flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
+            //       >
+            //         <span className="hidden md:inline">Next</span>
+            //         <MdNavigateNext />
+            //       </Link>
+            //   }
+
+            // </div>
+            <Pagination currentPage={currentPage} onPageChange={setCurrentPage} totalPage={totalPage} />
           )}
         </div>
       </div>
@@ -496,18 +547,4 @@ export default function CategoryWiseProductUi() {
   )
 }
 
-
-
-// Product Card Skeleton
-function ProductCardSkeleton() {
-  return (
-    <div className="animate-pulse">
-      <div className="aspect-[3/4] rounded-md bg-gray-200"></div>
-      <div className="mt-3 space-y-2">
-        <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-        <div className="h-4 bg-gray-200 rounded w-1/2"></div>
-      </div>
-    </div>
-  )
-}
 

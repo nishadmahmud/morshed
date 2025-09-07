@@ -26,12 +26,12 @@ export default async function Home() {
   const promotion = await promotionRes.json();
 
   const bannerRes = await fetch(`${process.env.NEXT_PUBLIC_API}/get-banners/${userId}`,{
-    cache : 'no-cache'
+    next : {revalidate : 360}
   })
   const banner = await bannerRes.json();
 
   const categoriesRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`,{
-    cache : 'no-cache'
+    next : {revalidate : 360}
   });
   const categories = await categoriesRes.json();
 

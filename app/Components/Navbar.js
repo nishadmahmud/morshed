@@ -22,8 +22,6 @@ const Navbar = ({ data }) => {
     }
   };
 
-
-
   useEffect(() => {
     document.addEventListener("click", handleCategoryClose);
     return () => document.removeEventListener("click", handleCategoryClose);
@@ -145,7 +143,7 @@ const Navbar = ({ data }) => {
                     item?.category_id
                   )}?category=${encodeURIComponent(
                     item?.name
-                  )}&total=${encodeURIComponent(item?.product_count)}`}
+                  )}&page=1&limit={20}&total=${encodeURIComponent(item?.product_count)}`}
                   className={`text-black text-sm text-nowrap font-semibold flex items-center gap-1 `}
                 >
                   {item.name}

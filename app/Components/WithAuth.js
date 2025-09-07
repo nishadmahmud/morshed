@@ -8,11 +8,13 @@ const WithAuth = (WrappedComponent) => {
     const router  = useRouter();
 
     useEffect(() => {
+        if(typeof window !== 'undefined'){
+            const token = localStorage.getItem('token');
+            if(!token){
+                router.push('/login')
+            } 
+        }
         // const intendedUrl = window.location.pathname;
-        const token = localStorage.getItem('token');
-        if(!token){
-            router.push('/login')
-        } 
     },[router])
 
     return <WrappedComponent {...props}/>

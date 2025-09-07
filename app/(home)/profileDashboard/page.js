@@ -16,19 +16,22 @@ const PersonalInfo = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const userInfo = JSON.parse(localStorage.getItem("user"));
-
-    if (userInfo) {
-      setUser(userInfo);
-      setEmail(userInfo?.email || "");
-      setAddress(userInfo?.address || "");
-      setMobileNumber(userInfo?.mobile_number || "");
-
-      const fullName = userInfo?.name || "";
-      const nameParts = fullName.split(" ");
-      setFirstName(nameParts[0] || ""); 
-      setLastName(nameParts.slice(1).join(" ") || "");
+    if(typeof window !== 'undefined'){
+      const storedUser = localStorage.getItem("user");
+      const userInfo = JSON.parse(storedUser);
+      if (userInfo) {
+        setUser(userInfo);
+        setEmail(userInfo?.email || "");
+        setAddress(userInfo?.address || "");
+        setMobileNumber(userInfo?.mobile_number || "");
+  
+        const fullName = userInfo?.name || "";
+        const nameParts = fullName.split(" ");
+        setFirstName(nameParts[0] || ""); 
+        setLastName(nameParts.slice(1).join(" ") || "");
+      }
     }
+
   }, []);
 
   const handleUpdate = async () => {

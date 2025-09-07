@@ -81,22 +81,19 @@ const CartPage = () => {
   }, [cartItems, country]);
 
   useEffect(() => {
-    const savedNote = localStorage.getItem("cartAttachment");
-    if (savedNote) setNote(savedNote);
+    if(typeof window !== 'undefined'){
+      const savedNote = localStorage.getItem("cartAttachment");
+      if (savedNote) setNote(savedNote);
+    }
   }, []);
 
   useEffect(() => {
-    if (note) localStorage.setItem("cartAttachment", note);
-    else localStorage.removeItem("cartAttachment");
+     if(typeof window !== 'undefined'){
+       if (note) localStorage.setItem("cartAttachment", note);
+       else localStorage.removeItem("cartAttachment");
+     }
   }, [note]);
 
-  // const handleCartItemDelete = (id) => {
-  //   storeHandleDelete(id);
-  //   const items = getCartItems().filter((item) => item.id !== id);
-  //   localStorage.setItem("cart", JSON.stringify(items));
-  //   setCartItems(items);
-  //   toast.success("Item removed from cart");
-  // };
 
    const handleCartUpdate = () => {
     setRefetch(true);

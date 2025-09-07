@@ -15,7 +15,7 @@ const FeaturedProducts = ({ banner }) => {
     `${process.env.NEXT_PUBLIC_API}/public/best-deals/${userId}`,
     fetcher
   );
-  const { handleBuy, handleCart } = useStore();
+  const { handleCart } = useStore();
   ;
   // Handle recent view when product card is clicked
   const updateRecentViews = (product) => {
