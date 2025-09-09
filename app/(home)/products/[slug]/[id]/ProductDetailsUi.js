@@ -160,7 +160,7 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
   useEffect(() => {
     if(typeof window !== 'undefined'){
       const storedProducts = localStorage.getItem("recentlyViewed") || [];
-      const products = JSON.parse(storedProducts);
+      const products = storedProducts ? JSON.parse(storedProducts) : "";
       if (products?.length) {
         const withoutThisProduct = products.filter((item) => item.id != id);
         setRecentProducts(withoutThisProduct);
