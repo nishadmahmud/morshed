@@ -4,7 +4,6 @@ import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import StoreProvider from "../StoreContext/store";
 import AvatarChat from "../Components/AvatarChat";
-import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import Script from "next/script";
@@ -104,7 +103,6 @@ export default async function RootLayout({ children }) {
         <Toaster></Toaster>
         <StoreProvider>
           <Header />
-          <Suspense>
             <div className="bg-[#ffffff] ">
               <Providers>
                 <ClientLayout>{children}</ClientLayout>
@@ -112,7 +110,6 @@ export default async function RootLayout({ children }) {
               <AvatarChat />
             </div>
             <Footer />
-          </Suspense>
         </StoreProvider>
       </body>
     </html>
