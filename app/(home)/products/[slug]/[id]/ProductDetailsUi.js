@@ -55,7 +55,6 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
   } = useStore();
 
 
-  console.log(product)
 
   // size guide modal
   const [open, setOpen] = useState(false);
