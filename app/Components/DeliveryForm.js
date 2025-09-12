@@ -387,7 +387,10 @@ const DeliveryForm = ({
   const handleOrderComplete = useCallback(
     (e) => {
       e.preventDefault();
-
+  if (!formData.firstName || !formData.phone || !formData.address) {
+    toast.error("Please fill all required fields!");
+    return;
+  }
       if (cartItems.length === 0) {
         alert("Add some products to the cart first.");
         router.push("/");
