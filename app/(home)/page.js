@@ -2,7 +2,6 @@
 import HeroSlider from "../Components/HeroSlider";
 import BannerSection from '../Components/BannerSection';
 import FeaturedCategories from '../Components/FeaturedCategories';
-import NewArrival from "../Components/NewArrival";
 import PromotionModal from "../Components/PromotionModal";
 import SmallBanner from "../Components/SmallBanner";
 import MensBanner from "../Components/MensBanner";
@@ -11,8 +10,8 @@ import OfferPage from "../Components/OfferPage";
 import HalfSelveePolo from "../Components/HalfSelveePolo";
 import BenefitsSection from "../Components/BenefitsSection";
 import VideoSection from "../Components/VideoSection";
-import SummerCollection from "../Components/SummerCollection";
 import BrandMarquee from "../Components/BrandMarquee";
+import StripeShirt from "../Components/StripeShirt";
 
 
 export const userId = 203;
@@ -46,9 +45,8 @@ export default async function Home() {
       <BrandMarquee />
       <div>
         <FeaturedCategories />
-        <NewArrival banner={banner}/> 
         <MensBanner banner={banner}></MensBanner>
-        <SummerCollection></SummerCollection>
+        <StripeShirt></StripeShirt>
         <SmallBanner banner={banner}/>
         <SolidTshirt></SolidTshirt>
         <VideoSection></VideoSection>

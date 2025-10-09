@@ -7,13 +7,13 @@ import { Autoplay } from 'swiper/modules';
 import 'swiper/css';
 
 
-export default function SummerCollectionUi({data}) {
+export default function StripeShirtUi({data}) {
 
     const collections = use(data);
 
     return (
         <div className="mt-12 w-11/12 md:w-10/12 mx-auto">
-            <Heading title={'Summer Collections'} />
+            <Heading title={'Stripe Pattern Shirts'} />
 
             <Swiper
                 spaceBetween={20}
@@ -22,7 +22,7 @@ export default function SummerCollectionUi({data}) {
                 loop={true}
                 speed={800}
                 autoplay={{
-                    delay: 2000,
+                    delay: 5000,
                     disableOnInteraction: false,
                 }}
                 modules={[Autoplay]}

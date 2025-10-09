@@ -972,7 +972,7 @@ const DeliveryForm = ({
         </div>
 
         {/* Billing Address */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        {/* <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <div className="flex items-center space-x-3 mb-6">
             <div className="bg-indigo-100 p-2 rounded-lg">
               <Mail className="h-6 w-6 text-indigo-600" />
@@ -1133,7 +1133,7 @@ const DeliveryForm = ({
               </div>
             </div>
           )}
-        </div>
+        </div> */}
 
         {/* Donation */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">

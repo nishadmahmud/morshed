@@ -24,7 +24,7 @@ const SolidShirtUi = ({data}) => {
           loop={true}
           speed={800}
           autoplay={{
-            delay: 2000,
+            delay: 5000,
             disableOnInteraction: false,
           }}
           modules={[Autoplay]}

@@ -45,7 +45,7 @@ export default function InvoiceUi({payMode}) {
                 <div className="h-16 w-16 rounded-full border-2 border-emerald-200 animate-ping"></div>
               </div>
             </div>
-            <h1 className="text-2xl font-bold text-gray-900 mb-1">Payment Successful!</h1>
+            <h1 className="text-2xl font-bold text-gray-900 mb-1">Order Successful!</h1>
             <p className="text-gray-600 text-sm">Your order has been confirmed</p>
           </div>
 
