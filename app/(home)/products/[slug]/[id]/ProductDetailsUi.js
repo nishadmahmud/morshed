@@ -157,16 +157,25 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
 
 
 
-  useEffect(() => {
-    if(typeof window !== 'undefined'){
-      const storedProducts = localStorage.getItem("recentlyViewed") || [];
-      const products = storedProducts ? JSON.parse(storedProducts) : "";
-      if (products?.length) {
-        const withoutThisProduct = products.filter((item) => item.id != id);
-        setRecentProducts(withoutThisProduct);
-      }
+ useEffect(() => {
+  if (typeof window !== 'undefined') {
+    const storedProducts = localStorage.getItem("recentlyViewed");
+    let products = [];
+
+    try {
+      products = storedProducts ? JSON.parse(storedProducts) : [];
+    } catch (error) {
+      console.error("Error parsing recentlyViewed:", error);
+      products = [];
     }
-  }, [id]);
+
+    if (products.length) {
+      const withoutThisProduct = products.filter((item) => item.id != id);
+      setRecentProducts(withoutThisProduct);
+    }
+  }
+}, [id]);
+
 
   useEffect(() => {
     if (product?.data) {
