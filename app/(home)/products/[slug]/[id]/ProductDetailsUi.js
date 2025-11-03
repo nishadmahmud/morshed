@@ -157,24 +157,7 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
 
 
 
- useEffect(() => {
-  if (typeof window !== 'undefined') {
-    const storedProducts = localStorage.getItem("recentlyViewed");
-    let products = [];
 
-    try {
-      products = storedProducts ? JSON.parse(storedProducts) : [];
-    } catch (error) {
-      console.error("Error parsing recentlyViewed:", error);
-      products = [];
-    }
-
-    if (products.length) {
-      const withoutThisProduct = products.filter((item) => item.id != id);
-      setRecentProducts(withoutThisProduct);
-    }
-  }
-}, [id]);
 
 
   useEffect(() => {
@@ -581,42 +564,7 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
           </div>
         </div>
         {/* Recently Viewed */}
-        <div className="mb-12">
-          <h2 className="text-xl font-bold mb-6">Recently Viewed</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-4 pb-10">
-            {recentProducts && recentProducts.length > 0 ? (
-              recentProducts.map((item) => (
-                <Link
-                  key={item.id}
-                  href={`/products/${sanitizeSlug(
-                    item?.brand_name || item?.name
-                  )}/${item?.id}`}
-                  className="group"
-                >
-                  <div className="aspect-square rounded-md overflow-hidden bg-gray-100 mb-3">
-                    <Image
-                      src={item.image || noImg}
-                      alt={item.name}
-                      width={300}
-                      height={300}
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                  </div>
-                  <h3 className="font-medium text-sm mb-1 line-clamp-1">
-                    {item.name}
-                  </h3>
-                  <p className="text-sm">
-                    {country?.value === "BD" ? `৳` : "$"} {item.price}
-                  </p>
-                </Link>
-              ))
-            ) : (
-              <p className="col-span-4 text-gray-500">
-                No recently viewed products.
-              </p>
-            )}
-          </div>
-        </div>
+        
       </div>
       {/* Sticky Add to Cart Bar */}
       {scroll > 500 && product?.data && (
