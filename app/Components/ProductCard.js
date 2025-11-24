@@ -91,7 +91,7 @@ const ProductCard = ({ product }) => {
       >
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-          onClick={updateRecentViews}
+          // onClick={updateRecentViews}
           className="block w-full h-full"
         >
           <Image
@@ -159,7 +159,7 @@ const ProductCard = ({ product }) => {
         {/* Product Name */}
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-          onClick={updateRecentViews}
+          // onClick={updateRecentViews}
           className="flex-1 xl:w-56 w-40"
         >
           <h3

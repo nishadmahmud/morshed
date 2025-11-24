@@ -78,7 +78,9 @@ const FeaturedProducts = ({ banner }) => {
                   </div>
 
                   <div> 
-                    <Link onClick={() =>updateRecentViews(product)} href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`} 
+                    <Link 
+                    // onClick={() =>updateRecentViews(product)}
+                     href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`} 
                     className="font-semibold md:text-sm text-xs text-ellipsis line-clamp-2 hover:text-gray-700">{product.name}</Link>
                     <div className="flex items-center gap-5">
                       

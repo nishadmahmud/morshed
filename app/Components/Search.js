@@ -46,7 +46,7 @@ const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) 
                 onClick={() => {
                   setSearchText("");
                   setSearchedItem([]);
-                  updateRecentViews(item);
+                  // updateRecentViews(item);
                 }}
                 href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
                 key={idx}
