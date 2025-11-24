@@ -17,28 +17,7 @@ const FeaturedProducts = ({ banner }) => {
   );
   const { handleCart } = useStore();
   ;
-  // Handle recent view when product card is clicked
-  // const updateRecentViews = (product) => {
-  //   if (!product?.id) return;
-
-  //   let recentViews = JSON.parse(
-  //     localStorage.getItem("recentlyViewed") || "[]"
-  //   );
-  
-  //   recentViews = recentViews.filter((p) => p.id !== product.id);
-  //   recentViews.unshift({
-  //     id: product.id,
-  //     name: product.name,
-  //     image: product.image_path || product.images?.[0] || noImg.src,
-  //     price: product.retails_price,
-  //     discount: product.discount || 0,
-  //   });
-
-  //   // Keep only last 5 items
-  //   if (recentViews.length > 6) recentViews.pop();
-
-  //   localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
-  // };
+ 
 
   const sanitizeSlug = (str) => {
     return str
@@ -79,7 +58,7 @@ const FeaturedProducts = ({ banner }) => {
 
                   <div> 
                     <Link 
-                    // onClick={() =>updateRecentViews(product)}
+                  
                      href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`} 
                     className="font-semibold md:text-sm text-xs text-ellipsis line-clamp-2 hover:text-gray-700">{product.name}</Link>
                     <div className="flex items-center gap-5">

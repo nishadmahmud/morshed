@@ -44,22 +44,6 @@ const ProductCard = ({ product }) => {
     : null
   const discountSuffix = product?.discount_type === "Percentage" ? "%" : product?.discount_type === "Fixed" ? "Tk" : ""
 
-  // const updateRecentViews = () => {
-  //   if (!product?.id) return
-
-  //   let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
-  //   recentViews = recentViews.filter((p) => p.id !== product.id)
-  //   recentViews.unshift({
-  //     id: product.id,
-  //     name: product.name,
-  //     image: product.image_path || product.images?.[0] || noImg.src,
-  //     price: product.retails_price,
-  //     discount: product.discount || 0,
-  //   })
-
-  //   if (recentViews.length > 6) recentViews.pop()
-  //   localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
-  // }
 
   const sanitizeSlug = (str) => {
     return str
@@ -91,7 +75,6 @@ const ProductCard = ({ product }) => {
       >
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-          // onClick={updateRecentViews}
           className="block w-full h-full"
         >
           <Image
@@ -159,7 +142,6 @@ const ProductCard = ({ product }) => {
         {/* Product Name */}
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-          // onClick={updateRecentViews}
           className="flex-1 xl:w-56 w-40"
         >
           <h3

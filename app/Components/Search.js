@@ -12,26 +12,7 @@ const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) 
       .replace(/[^a-z0-9-]/g, "");
   };
 
-  // const updateRecentViews = (product) => {
-  //   if (!product?.id) return;
-
-  //   let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]");
-
-  //   recentViews = recentViews.filter((p) => p.id !== product.id);
-
-  //   recentViews.unshift({
-  //     id: product.id,
-  //     name: product.name,
-  //     image: product.image_path || (product.images && product.images[0]) || noImg,
-  //     price: product.retails_price,
-  //     discount: product.discount || 0,
-  //   });
-
-  //   if (recentViews.length > 6) recentViews.pop();
-
-  //   localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
-  // };
-
+ 
   return (
     <>
       <div
@@ -46,7 +27,6 @@ const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) 
                 onClick={() => {
                   setSearchText("");
                   setSearchedItem([]);
-                  // updateRecentViews(item);
                 }}
                 href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
                 key={idx}
