@@ -44,22 +44,22 @@ const ProductCard = ({ product }) => {
     : null
   const discountSuffix = product?.discount_type === "Percentage" ? "%" : product?.discount_type === "Fixed" ? "Tk" : ""
 
-  const updateRecentViews = () => {
-    if (!product?.id) return
+  // const updateRecentViews = () => {
+  //   if (!product?.id) return
 
-    let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
-    recentViews = recentViews.filter((p) => p.id !== product.id)
-    recentViews.unshift({
-      id: product.id,
-      name: product.name,
-      image: product.image_path || product.images?.[0] || noImg.src,
-      price: product.retails_price,
-      discount: product.discount || 0,
-    })
+  //   let recentViews = JSON.parse(localStorage.getItem("recentlyViewed") || "[]")
+  //   recentViews = recentViews.filter((p) => p.id !== product.id)
+  //   recentViews.unshift({
+  //     id: product.id,
+  //     name: product.name,
+  //     image: product.image_path || product.images?.[0] || noImg.src,
+  //     price: product.retails_price,
+  //     discount: product.discount || 0,
+  //   })
 
-    if (recentViews.length > 6) recentViews.pop()
-    localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
-  }
+  //   if (recentViews.length > 6) recentViews.pop()
+  //   localStorage.setItem("recentlyViewed", JSON.stringify(recentViews))
+  // }
 
   const sanitizeSlug = (str) => {
     return str

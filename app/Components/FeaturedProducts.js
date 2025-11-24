@@ -18,30 +18,27 @@ const FeaturedProducts = ({ banner }) => {
   const { handleCart } = useStore();
   ;
   // Handle recent view when product card is clicked
-  const updateRecentViews = (product) => {
-    if (!product?.id) return;
+  // const updateRecentViews = (product) => {
+  //   if (!product?.id) return;
 
-    let recentViews = JSON.parse(
-      localStorage.getItem("recentlyViewed") || "[]"
-    );
+  //   let recentViews = JSON.parse(
+  //     localStorage.getItem("recentlyViewed") || "[]"
+  //   );
+  
+  //   recentViews = recentViews.filter((p) => p.id !== product.id);
+  //   recentViews.unshift({
+  //     id: product.id,
+  //     name: product.name,
+  //     image: product.image_path || product.images?.[0] || noImg.src,
+  //     price: product.retails_price,
+  //     discount: product.discount || 0,
+  //   });
 
-    // Remove existing entry if present
-    recentViews = recentViews.filter((p) => p.id !== product.id);
+  //   // Keep only last 5 items
+  //   if (recentViews.length > 6) recentViews.pop();
 
-    // Add new entry to beginning
-    recentViews.unshift({
-      id: product.id,
-      name: product.name,
-      image: product.image_path || product.images?.[0] || noImg.src,
-      price: product.retails_price,
-      discount: product.discount || 0,
-    });
-
-    // Keep only last 5 items
-    if (recentViews.length > 6) recentViews.pop();
-
-    localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
-  };
+  //   localStorage.setItem("recentlyViewed", JSON.stringify(recentViews));
+  // };
 
   const sanitizeSlug = (str) => {
     return str

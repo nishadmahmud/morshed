@@ -468,27 +468,27 @@ const HeaderUi = ({ data }) => {
                           setSearchedItem([]);
                           toggleSearchSidebar();
 
-                          let recentViews = JSON.parse(
-                            localStorage.getItem("recentlyViewed") || "[]"
-                          );
-                          recentViews = recentViews.filter(
-                            (p) => p.id !== item.id
-                          );
-                          recentViews.unshift({
-                            id: item.id,
-                            name: item.name,
-                            image:
-                              item.image_path ||
-                              (item.images && item.images[0]) ||
-                              noImg.src,
-                            price: item.retails_price,
-                            discount: item.discount || 0,
-                          });
-                          if (recentViews.length > 6) recentViews.pop();
-                          localStorage.setItem(
-                            "recentlyViewed",
-                            JSON.stringify(recentViews)
-                          );
+                          // let recentViews = JSON.parse(
+                          //   localStorage.getItem("recentlyViewed") || "[]"
+                          // );
+                          // recentViews = recentViews.filter(
+                          //   (p) => p.id !== item.id
+                          // );
+                          // recentViews.unshift({
+                          //   id: item.id,
+                          //   name: item.name,
+                          //   image:
+                          //     item.image_path ||
+                          //     (item.images && item.images[0]) ||
+                          //     noImg.src,
+                          //   price: item.retails_price,
+                          //   discount: item.discount || 0,
+                          // });
+                          // if (recentViews.length > 6) recentViews.pop();
+                          // localStorage.setItem(
+                          //   "recentlyViewed",
+                          //   JSON.stringify(recentViews)
+                          // );
                         }}
                         className="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition"
                       >
