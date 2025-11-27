@@ -639,7 +639,7 @@ const DeliveryForm = ({
             </div> */}
 
             {/* Email */}
-            <div>
+            <div className="hidden">
               <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
                 <Mail size={18} />
                 Email
@@ -689,7 +689,7 @@ const DeliveryForm = ({
 
             {/* Select country */}
 
-            <div className="md:col-span-1">
+            <div className="md:col-span-1 hidden">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <GiWorld className="inline h-4 w-4 mr-1" />
                 Select Country <span className="text-red-600">*</span>

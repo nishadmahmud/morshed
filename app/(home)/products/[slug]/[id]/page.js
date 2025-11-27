@@ -5,7 +5,7 @@ import { userId } from '@/app/(home)/page';
 export default async function ProductDetailsPage({ params }) {
   const { id } = params;
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}`, { next: { revalidate: 360 } });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}`, { next: { revalidate: 100 } });
   const data =  res.json();
 
   const relatedProductRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/get-related-products`, {

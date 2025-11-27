@@ -118,7 +118,7 @@ const Navbar = ({ data }) => {
               </Link>
             )}
 
-            <div className="text-teal-700 relative">
+            <div className="text-teal-700 relative hidden">
               <GlobeModalButton />
 
               {country?.value && (

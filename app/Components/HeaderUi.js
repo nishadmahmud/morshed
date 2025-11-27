@@ -278,7 +278,7 @@ const HeaderUi = ({ data }) => {
               </Link>
             )}
 
-            <div className="hidden md:block text-black relative">
+            <div className="hidden text-black relative">
               <GlobeModalButton />
 
               {country?.value && (
