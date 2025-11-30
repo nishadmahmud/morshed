@@ -60,7 +60,7 @@ const CheckoutPage = () => {
     return prev + discountAmount * curr.quantity
   }, 0)
 
-  const [shippingFee, setShippingFee] = useState(70)
+  const [shippingFee, setShippingFee] = useState(0);
   const [couponCode, setCouponCode] = useState("")
   const [couponAmount, setCouponAmount] = useState("")
   const [loading, setLoading] = useState(false)

@@ -31,6 +31,7 @@ import { Wheel } from "react-custom-roulette";
 import useStore from "../CustomHooks/useStore";
 import { GiWorld } from "react-icons/gi";
 import { getNames } from "country-list";
+import AddressSelect from "./AddressSelect";
 
 const prizeData = [
   {
@@ -97,6 +98,7 @@ const prizeData = [
 
 const DeliveryForm = ({
   country,
+  shippingFee,
   setShippingFee,
   couponAmount,
   couponCode,
@@ -142,6 +144,21 @@ const DeliveryForm = ({
   const [insufficientProducts, setInsufficientProducts] = useState([]);
   // Use refs to prevent recreating objects
   const userDataRef = useRef(null);
+ const [selectedCity, setSelectedCity] = useState([]);
+ const [selectedDistrict, setSelectedDistrict] = useState([]);
+  
+
+useEffect(() => {
+  if (!selectedDistrict) return;
+
+  if (selectedDistrict === "Dhaka") {
+    setShippingFee(70);
+  } else {
+    setShippingFee(130);
+  }
+}, [selectedDistrict]);
+
+
 
   const userData = userDataRef.current;
   const date = useMemo(() => new Date().toISOString(), []);
@@ -161,14 +178,14 @@ const DeliveryForm = ({
   }, [userData?.name]);
 
   // Memoize shipping fee calculation
-  const shippingFee = useMemo(
+  const shippingFees = useMemo(
     () => (location === "inside" ? 70 : 130),
     [location]
   );
 
   useEffect(() => {
-    setShippingFee(shippingFee);
-  }, [shippingFee, setShippingFee]);
+    setShippingFee(shippingFees);
+  }, [shippingFees, setShippingFee]);
 
   useEffect(() => {
     setCouponValue(couponAmount);
@@ -194,6 +211,8 @@ const DeliveryForm = ({
     billPostalCode: "",
     billPhone: "",
   });
+
+  
 
   useEffect(() => {
     const items = getCartItems();
@@ -222,6 +241,9 @@ const DeliveryForm = ({
     const countryNames = getNames(); // returns all country names
     setCountries(countryNames);
   }, []);
+
+
+ 
 
   // Create order schema - memoized to prevent constant recreation
   const orderSchema = useMemo(() => {
@@ -377,67 +399,79 @@ const DeliveryForm = ({
   const handlePayment = useCallback((e) => {
     setPayment(e.target.value);
   }, []);
-
-  const handleBillingChange = useCallback((e) => {
-    setBillingSameAsShipping(e.target.value === "same");
-  }, []);
+console.log(selectedCity, selectedDistrict);
 
   const handleClose = useCallback(() => setShowPaymentModal(false), []);
 
   const handleOrderComplete = useCallback(
-    (e) => {
-      e.preventDefault();
-  if (!formData.firstName || !formData.phone || !formData.address) {
-    toast.error("Please fill all required fields!");
+  async (e) => {
+    e.preventDefault();
+
+    const bdPhoneRegex = /^(013|014|015|016|017|018|019)\d{8}$/;
+
+    if (!bdPhoneRegex.test(formData.phone)) {
+      toast.error("Please enter a valid 11-digit Bangladeshi mobile number");
+      return;
+    }
+
+    if (!formData.firstName || !formData.phone || !formData.address) {
+      toast.error("Please fill all required fields!");
+      return;
+    }
+
+    if (cartItems.length === 0) {
+      alert("Add some products to the cart first.");
+      router.push("/");
+      return;
+    }
+
+    setLoading(true); // disable button
+
+    const finalOrderSchema = {
+      ...orderSchemaState,
+      donation_amount:
+        selectedDonate === "Not now" ? 0 : Number(selectedDonate),
+        delivery_city: selectedCity,
+        delivery_district: selectedDistrict
+
+    };
+    console.log(finalOrderSchema);
+
     return;
-  }
-      if (cartItems.length === 0) {
-        alert("Add some products to the cart first.");
-        router.push("/");
-        return;
+
+    try {
+      const res = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/public/ecommerce-sales-with-check`,
+        finalOrderSchema
+      );
+
+      if (res.status === 200 && res?.data?.success === true) {
+        const _invoiceId = res?.data?.data?.invoice_id;
+        setInvoiceId(_invoiceId);
+        localStorage.removeItem("cart");
+        localStorage.removeItem("cartAttachment");
+        toast.success("Order Placed Successfully!");
+         setLoading(false);
+        router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
+        // don't setLoading(false) here because user is redirected
+      } else {
+        // if success is false, enable button
+        setLoading(false);
+        toast.error("Order failed. Please try again.");
       }
+    } catch (err) {
+      console.log(err);
+      toast.error("Error occurred. Try again.");
+      if (err.response?.data?.success === false) {
+        setInsufficientProducts(err?.response?.data?.insufficient_products || []);
+        setIsOpen(true);
+      }
+      setLoading(false); // enable button on error
+    }
+  },
+  [cartItems, orderSchemaState, selectedDonate, router, payment]
+);
 
-      setLoading(true); // start loading
-
-      const finalOrderSchema = {
-        ...orderSchemaState,
-        donation_amount:
-          selectedDonate === "Not now" ? 0 : Number(selectedDonate),
-      };
-
-      console.log(finalOrderSchema);
-      // return;
-      axios
-        .post(
-          `${process.env.NEXT_PUBLIC_API}/public/ecommerce-sales-with-check`,
-          finalOrderSchema
-        )
-        .then((res) => {
-          if (res.status === 200 && res?.data?.success === true) {
-            const _invoiceId = res?.data?.data?.invoice_id;
-            setInvoiceId(_invoiceId);
-            localStorage.removeItem("cart");
-            localStorage.removeItem("cartAttachment");
-            toast.success("Order Placed Successfully!");
-            router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
-          }
-
-        
-        })
-        .catch((err) => {
-          toast.error("Error occurred. Try again.");
-          console.log(err);
-          if (err.response?.data?.success === false) {
-            setInsufficientProducts(err?.response?.data?.insufficient_products || []);
-            setIsOpen(true);
-          }
-        })
-        .finally(() => {
-          setLoading(false);
-        });
-    },
-    [cartItems, orderSchemaState, selectedDonate, router, payment]
-  );
 
   const handleSpinClick = useCallback(() => {
     const nextTimeIndex = prizeData.findIndex(
@@ -595,13 +629,13 @@ const DeliveryForm = ({
 
           <div className="text-black mb-5">
             {orderSchema.customer_name && orderSchema.email && (
-              <>
+              <div className="flex items-center gap-3">
                 <button type="button" onClick={handleGoogleLogin}>
                   <FcGoogle size={25} />
                 </button>
                 <br />
                 <span>or</span>
-              </>
+              </div>
             )}
           </div>
 
@@ -660,16 +694,24 @@ const DeliveryForm = ({
                 <Phone className="inline h-4 w-4 mr-1" />
                 Phone Number <span className="text-red-600">*</span>
               </label>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
-                placeholder="Enter your phone number"
-                required
-                className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
-              />
+             <input
+  type="tel"
+  name="phone"
+  value={formData.phone}
+  onChange={handleChange}
+  placeholder="Enter your phone number"
+  required
+  pattern="^(013|014|015|016|017|018|019)[0-9]{8}$"
+  className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
+/>
+
             </div>
+              <div className="col-span-2">
+             <AddressSelect selectedCity={selectedCity} setSelectedCity={setSelectedCity} selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict}></AddressSelect>
+
+              </div>
+             {/* <p className="text-black">{JSON.stringify(selected)}</p> */}
+
 
             {/* City - Hidden */}
             <div className="hidden">
@@ -715,7 +757,7 @@ const DeliveryForm = ({
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Home className="inline h-4 w-4 mr-1" />
-                Address <span className="text-red-600">*</span>
+                Full Address <span className="text-red-600">*</span>
               </label>
               <input
                 type="text"
@@ -747,7 +789,7 @@ const DeliveryForm = ({
         </div>
 
         {/* Shipping Method */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <div className="bg-white rounded-xl hidden shadow-sm border border-gray-200 p-6">
           <div className="flex items-center space-x-3 mb-6">
             <div className="bg-green-100 p-2 rounded-lg">
               <Truck className="h-6 w-6 text-green-600" />
@@ -1196,18 +1238,46 @@ const DeliveryForm = ({
         {/* Complete Order Button */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <button
-            onClick={handleOrderComplete}
-            disabled={loading}
-            type="submit"
-            className={`${
-              loading ? "cursor-not-allowed" : "cursor-pointer"
-            } w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2`}
-          >
-            <div className="flex items-center justify-center space-x-2">
-              <ShoppingBag className="h-5 w-5" />
-              <span>{loading ? "Order Placing..." : "Complete Order"}</span>
-            </div>
-          </button>
+  onClick={handleOrderComplete}
+  disabled={loading} // button stays disabled while loading
+  type="submit"
+  className={`${
+    loading ? "cursor-not-allowed" : "cursor-pointer"
+  } w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 flex items-center justify-center space-x-2`}
+>
+  {loading ? (
+    <>
+      {/* Spinner */}
+      <svg
+        className="animate-spin h-5 w-5 text-white"
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+      >
+        <circle
+          className="opacity-25"
+          cx="12"
+          cy="12"
+          r="10"
+          stroke="currentColor"
+          strokeWidth="4"
+        ></circle>
+        <path
+          className="opacity-75"
+          fill="currentColor"
+          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+        ></path>
+      </svg>
+      <span>Order Placing...</span>
+    </>
+  ) : (
+    <>
+      <ShoppingBag className="h-5 w-5" />
+      <span>Complete Order</span>
+    </>
+  )}
+</button>
+
           <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-gray-500">
             <Shield className="h-4 w-4" />
             <span>

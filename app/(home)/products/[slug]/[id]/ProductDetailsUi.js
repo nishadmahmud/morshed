@@ -527,7 +527,7 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
         {/* Related Products */}
         <div className="mb-12">
           <h2 className="text-xl font-bold mb-6">You May Also Like</h2>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
             {relatedProducts && relatedProducts.length > 0 ? (
               relatedProducts.map((item) => (
                 <Link
