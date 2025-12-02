@@ -644,7 +644,7 @@ console.log('selected district: ', selectedDistrict);
               <h2 className="text-xl font-semibold text-gray-900">
                 Delivery Information
               </h2>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 hidden md:block">
                 Where should we deliver your order?
               </p>
             </div>
@@ -664,7 +664,7 @@ console.log('selected district: ', selectedDistrict);
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* First Name */}
-            <div>
+            <div className="col-span-2 md:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <User className="inline h-4 w-4 mr-1" />
                 Full Name <span className="text-red-600">*</span>
@@ -729,6 +729,7 @@ console.log('selected district: ', selectedDistrict);
 />
 
             </div>
+
               <div className="col-span-2">
              <AddressSelect selectedCity={selectedCity} setSelectedCity={setSelectedCity} selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict}></AddressSelect>
 
@@ -777,12 +778,12 @@ console.log('selected district: ', selectedDistrict);
             </div>
 
             {/* Address */}
-            <div className="md:col-span-2">
+            <div className="col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 <Home className="inline h-4 w-4 mr-1" />
                 Full Address <span className="text-red-600">*</span>
               </label>
-              <input
+              <textarea
                 type="text"
                 name="address"
                 value={formData.address}
@@ -821,7 +822,7 @@ console.log('selected district: ', selectedDistrict);
               <h3 className="text-xl font-semibold text-gray-900">
                 Shipping Method
               </h3>
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 hidden md:block">
                 Choose your preferred delivery option
               </p>
             </div>
@@ -927,7 +928,7 @@ console.log('selected district: ', selectedDistrict);
               <h3 className="text-xl font-semibold text-gray-900">
                 Payment Method
               </h3>
-              <p className="text-sm text-gray-600 flex items-center">
+              <p className="text-sm text-gray-600 flex items-center hidden md:block">
                 <Shield className="h-4 w-4 mr-1" />
                 All transactions are secure and encrypted
               </p>
@@ -1211,7 +1212,7 @@ console.log('selected district: ', selectedDistrict);
                 <h3 className="text-xl font-semibold text-gray-900">
                   Donation
                 </h3>
-                <p className="text-sm text-gray-600">
+                <p className="text-sm hidden md:block text-gray-600">
                   Your donated money will be distributed among the poor and
                   needy.
                 </p>
