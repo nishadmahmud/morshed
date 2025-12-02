@@ -133,26 +133,21 @@ export default function AddressSelect({
       </label>
 
       <Select
-        className="text-black"
-        options={options}
-        components={{ Option }}
-        value={getValue()}
-        onChange={handleChange}
-        isMulti
-        isClearable
-        menuIsOpen={menuIsOpen}
-        onMenuOpen={() => setMenuIsOpen(true)}
-        onMenuClose={() => setMenuIsOpen(false)}
-        closeMenuOnSelect={false}
-        placeholder={
-          selectedDistrict
-            ? selectedCity
-              ? `${selectedDistrict} → ${selectedCity}`
-              : `${selectedDistrict} → Select City`
-            : "Select District → City"
-        }
-        filterOption={filterOption}
-      />
+  className="text-black"
+  options={options}
+  components={{ Option }}
+  value={getValue()}
+  onChange={handleChange}
+  isMulti
+  isClearable
+  menuIsOpen={menuIsOpen}
+  onMenuOpen={() => setMenuIsOpen(true)}
+  onMenuClose={() => setMenuIsOpen(false)}
+  closeMenuOnSelect={false}
+  filterOption={filterOption}
+  placeholder="Select your address" // ← Add this
+/>
+
     </div>
   );
 }

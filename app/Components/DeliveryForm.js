@@ -144,19 +144,37 @@ const DeliveryForm = ({
   const [insufficientProducts, setInsufficientProducts] = useState([]);
   // Use refs to prevent recreating objects
   const userDataRef = useRef(null);
- const [selectedCity, setSelectedCity] = useState([]);
+ const [selectedCity, setSelectedCity] = useState('Select your address');
  const [selectedDistrict, setSelectedDistrict] = useState([]);
   
 
 useEffect(() => {
-  if (!selectedDistrict) return;
+  if (!selectedDistrict && !selectedCity) {
+    setShippingFee(0); // optional: reset if nothing selected
+    return;
+  }
 
-  if (selectedDistrict === "Dhaka") {
+  // Priority: specific city rules first
+  if (selectedCity === "Demra" || selectedCity?.includes("Savar")) {
+    setShippingFee(90);
+  }
+  // Then district-specific rules
+  else if (selectedDistrict === "Dhaka") {
     setShippingFee(70);
-  } else {
+  } 
+  else if (selectedDistrict === "Gazipur") {
+    setShippingFee(90);
+  } 
+  // Default for other districts/cities
+  else {
     setShippingFee(130);
   }
-}, [selectedDistrict]);
+}, [selectedDistrict, selectedCity]);
+
+
+console.log('shipping fee: ', shippingFee);
+console.log('selected city: ', selectedCity);
+console.log('selected district: ', selectedDistrict);
 
 
 
@@ -266,6 +284,8 @@ useEffect(() => {
         product_variant_id: item.product_variant_id,
       })),
       delivery_method_id: 1,
+      delivery_city: selectedCity,
+      delivery_district: selectedDistrict,
       delivery_note: deliveryNote,
       donation_amount:
         selectedDonate === "Not now" ? 0 : Number(selectedDonate),
@@ -399,7 +419,6 @@ useEffect(() => {
   const handlePayment = useCallback((e) => {
     setPayment(e.target.value);
   }, []);
-console.log(selectedCity, selectedDistrict);
 
   const handleClose = useCallback(() => setShowPaymentModal(false), []);
 
@@ -408,6 +427,11 @@ console.log(selectedCity, selectedDistrict);
     e.preventDefault();
 
     const bdPhoneRegex = /^(013|014|015|016|017|018|019)\d{8}$/;
+
+    if (!selectedCity && !selectedDistrict) {
+      toast.error("Please Select City or District!");
+      return;
+    }
 
     if (!bdPhoneRegex.test(formData.phone)) {
       toast.error("Please enter a valid 11-digit Bangladeshi mobile number");
@@ -430,9 +454,8 @@ console.log(selectedCity, selectedDistrict);
     const finalOrderSchema = {
       ...orderSchemaState,
       donation_amount:
-        selectedDonate === "Not now" ? 0 : Number(selectedDonate),
-        delivery_city: selectedCity,
-        delivery_district: selectedDistrict
+        selectedDonate === "Not now" ? 0 : Number(selectedDonate)
+        
 
     };
     console.log(finalOrderSchema);

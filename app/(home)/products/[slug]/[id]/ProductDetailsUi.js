@@ -30,6 +30,7 @@ import CursorImageZoom from "@/app/Components/CustomImageZoom";
 const ProductDetailsUi = ({data,id,relatedProductsData}) => {
 
   const product = use(data);
+  console.log(product);
   const relatedProducts = use(relatedProductsData); 
   const [quantity, setQuantity] = useState(1);
   const [imageIndex, setImageIndex] = useState(0);

@@ -1,29 +1,50 @@
 "use client"
-
-import React, { useEffect, useState, useRef, use } from "react"
+import { useEffect, useState, useRef } from "react"
 import useStore from "@/app/CustomHooks/useStore"
 import ProductCard from "@/app/Components/ProductCard"
 import { useQuery } from "@tanstack/react-query"
 import { ProductCardSkeleton } from "@/app/Components/ProductCardSkeleton"
 import Pagination from "@/app/Components/pagination"
 import axios from "axios"
+import { useSearchParams } from "next/navigation"
 
+export default function CategoryWiseProductUi({ id }) {
+  const searchParams = useSearchParams()
+  // Get values using .get()
+  const searchedCategory = searchParams.get("category")
+  const searchedTotal = searchParams.get("total")
+  const limit = searchParams.get("limit")
+  const page = searchParams.get("page")
+  console.log(searchedCategory, searchedTotal, limit, page)
 
-export default function CategoryWiseProductUi({ searchedCategory, searchedTotal, limit, id, data }) {
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data: products, isLoading } = useQuery({
-    queryKey: ['categoryProducts', id, currentPage, limit],
-    queryFn: () => {
-      return axios.get(`${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`)
-    },
-    initialData: currentPage === 1 ? data : undefined,
-    placeholderData: (previousData) => previousData,
-    enabled: currentPage !== 1,
-  })
+  const [products, setProducts] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
+  useEffect(() => {
+    
+    const fetchProducts = async () => {
+      setIsLoading(true);
+      try {
+        const res = await axios.get(`https://www.outletexpense.xyz/api/public/categorywise-products/${id}`);
+        console.log(res);
+        setProducts(res?.data);
+      } catch (err) {
+        setError(err);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  const { country } = useStore();
+    fetchProducts();
+  }, [id, currentPage, limit]);
+
+  console.log(products);
+
+  const { country } = useStore()
+
   const totalPage = Math.ceil(Number.parseInt(searchedTotal) / limit)
   const [filteredItems, setFilteredItems] = useState([])
   const [sortBy, setSortBy] = useState("")
@@ -36,32 +57,27 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
     size: true,
     color: true,
     brand: true,
-  });
-  const [brands, setBrands] = useState([]);
-  const [selectedBrand, setSelectedBrand] = useState("");
+  })
 
-  // console.log(filteredItems)
-
-  const [minimum, setMinimum] = useState(0);
-
-  const filterRef = useRef(null);
-
-
+  const [brands, setBrands] = useState([])
+  const [selectedBrand, setSelectedBrand] = useState("")
+  const [minimum, setMinimum] = useState(0)
+  const filterRef = useRef(null)
+console.log(products);
   useEffect(() => {
-    if (products?.data && products?.data?.length) {
-      setFilteredItems(products.data);
-      const brands = [...new Set(products.data.map(item => item.brand_name))];
-      setBrands(brands);
-    } else if (products?.data?.data?.data) {
-      setFilteredItems(products.data.data);
-      const brands = [...new Set(products.data.data.data.map(item => item.brand_name))];
-      setBrands(brands);
+    if (products?.data) {
+      const productList = Array.isArray(products.data) ? products.data : products.data.data || []
+      setFilteredItems(productList)
+      const brandList = [...new Set(productList.map((item) => item.brand_name))]
+      setBrands(brandList)
     }
   }, [products])
 
-
   useEffect(() => {
     let filtered = products?.data || []
+    if (!Array.isArray(filtered)) {
+      filtered = filtered.data || []
+    }
 
     if (sortBy === "low-to-high") {
       filtered = [...filtered].sort((a, b) => a.retails_price - b.retails_price)
@@ -73,10 +89,8 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
       filtered = [...filtered].sort((a, b) => b.name.localeCompare(a.name))
     }
 
-
     setFilteredItems(filtered)
   }, [sortBy, products, selectedSizes, selectedColors, priceRange])
-
 
   // Close filter sidebar when clicking outside (for mobile)
   useEffect(() => {
@@ -92,24 +106,26 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
     }
   }, [isFilterOpen])
 
-
   useEffect(() => {
-    if (products?.data && products?.data?.length) {
-      const prices = country?.value === "BD" ? products.data.map(item => item.retails_price) : products.data.map(item => item.intl_retails_price ? item.intl_retails_price : 0);
-      const maximum = Math.max(...prices);
-      const minimum = Math.min(...prices);
-      setPriceRange([minimum, maximum]);
-      setMinimum(minimum);
+    if (products?.data) {
+      const productList = Array.isArray(products.data) ? products.data : products.data.data || []
+      const prices =
+        country?.value === "BD"
+          ? productList.map((item) => item.retails_price)
+          : productList.map((item) => item.intl_retails_price || 0)
 
+      if (prices.length > 0) {
+        const maximum = Math.max(...prices)
+        const minimum = Math.min(...prices)
+        setPriceRange([minimum, maximum])
+        setMinimum(minimum)
+      }
     }
   }, [country?.value, products?.data])
-
 
   const handleSizeToggle = (size) => {
     setSelectedSizes((prev) => (prev.includes(size) ? prev.filter((s) => s !== size) : [...prev, size]))
   }
-
-
 
   const clearAllFilters = () => {
     setSelectedSizes([])
@@ -126,12 +142,15 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
 
   useEffect(() => {
     if (products?.data) {
-      const rangedProducts = [...products.data.filter(item => country?.value === "BD" ? item.retails_price >= priceRange[0] && item.retails_price <= priceRange[1] : item.intl_retails_price >= priceRange[0] && item.intl_retails_price <= priceRange[1])];
-      setFilteredItems(rangedProducts);
+      const productList = Array.isArray(products.data) ? products.data : products.data.data || []
+      const rangedProducts = productList.filter((item) =>
+        country?.value === "BD"
+          ? item.retails_price >= priceRange[0] && item.retails_price <= priceRange[1]
+          : item.intl_retails_price >= priceRange[0] && item.intl_retails_price <= priceRange[1],
+      )
+      setFilteredItems(rangedProducts)
     }
-  }, [priceRange[0], country?.value])
-
-
+  }, [priceRange[0], country?.value, products?.data])
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl text-black">
@@ -144,7 +163,6 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
           <h1 className="text-3xl font-serif font-medium text-gray-900">{searchedCategory}</h1>
           <p className="text-gray-500 mt-1">{searchedTotal || filteredItems.length} products</p>
         </div>
-
         <div className="flex items-center gap-4 mt-4 md:mt-0">
           <div className="flex items-center gap-2">
             <button
@@ -174,7 +192,6 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
               </svg>
               Filter
             </button>
-
             <div className="relative">
               <select
                 className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-4 pr-10 text-sm leading-5 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 w-[180px]"
@@ -182,7 +199,6 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
                 onChange={(e) => setSortBy(e.target.value)}
               >
                 <option value="">Sort by</option>
-
                 <option value="low-to-high">Price: Low to High</option>
                 <option value="high-to-low">Price: High to Low</option>
                 <option value="a-z">Name: A to Z</option>
@@ -210,7 +226,6 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
                 </button>
               )}
             </div>
-
             <div className="space-y-4">
               {/* Price Range */}
               <div className="border-b border-gray-200 pb-4">
@@ -228,7 +243,6 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </button>
-
                 {isAccordionOpen.price && (
                   <div className="pt-2 pb-6">
                     <div className="relative pt-5 pb-6">
@@ -237,45 +251,56 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
                         min={minimum}
                         max={priceRange[1]}
                         value={priceRange[0]}
-                        onChange={(e) => setPriceRange([parseInt(e.target.value), priceRange[1]])}
+                        onChange={(e) => setPriceRange([Number.parseInt(e.target.value), priceRange[1]])}
                         className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
                       />
                       <div className="flex items-center justify-between mt-2">
-                        <span>{country?.value === "BD" ? "৳" : "$"} {priceRange[0]}</span>
-                        <span>{country?.value === "BD" ? "৳" : "$"} {priceRange[1]}</span>
+                        <span>
+                          {country?.value === "BD" ? "৳" : "$"} {priceRange[0]}
+                        </span>
+                        <span>
+                          {country?.value === "BD" ? "৳" : "$"} {priceRange[1]}
+                        </span>
                       </div>
                     </div>
                   </div>
                 )}
               </div>
 
-
               {/* Brands */}
-
               <div>
                 <h2>Brands</h2>
-                {
-                  brands.length ?
-                    brands.map(item => (
-                      (
-                        <div key={item} className="flex items-center gap-3 text-base">
-                          <input checked={item === selectedBrand} type="checkbox" onChange={() => {
-                            setSelectedBrand(item)
+                {brands.length
+                  ? brands.map((item) => (
+                      <div key={item} className="flex items-center gap-3 text-base">
+                        <input
+                          checked={item === selectedBrand}
+                          type="checkbox"
+                          onChange={() => {
                             if (item === selectedBrand) {
-                              setSelectedBrand("");
-                              setFilteredItems(products.data);
+                              setSelectedBrand("")
+                              if (products?.data) {
+                                const productList = Array.isArray(products.data)
+                                  ? products.data
+                                  : products.data.data || []
+                                setFilteredItems(productList)
+                              }
                             } else {
-                              const filtered = products.data.filter(pdt => pdt.brand_name === item);
-                              setFilteredItems(filtered);
-                              setSelectedBrand(item);
+                              setSelectedBrand(item)
+                              if (products?.data) {
+                                const productList = Array.isArray(products.data)
+                                  ? products.data
+                                  : products.data.data || []
+                                const filtered = productList.filter((pdt) => pdt.brand_name === item)
+                                setFilteredItems(filtered)
+                              }
                             }
-                          }} />
-                          <label>{item}</label>
-                        </div>
-                      )
-                    )) :
-                    ""
-                }
+                          }}
+                        />
+                        <label>{item}</label>
+                      </div>
+                    ))
+                  : null}
               </div>
             </div>
           </div>
@@ -308,14 +333,12 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
                   </svg>
                 </button>
               </div>
-
               <div className="p-4">
                 {(selectedSizes.length > 0 || selectedColors.length > 0) && (
                   <button className="text-sm text-gray-500 hover:text-gray-700 mb-4" onClick={clearAllFilters}>
                     Clear all filters
                   </button>
                 )}
-
                 <div className="space-y-4">
                   {/* Price Range */}
                   <div className="border-b border-gray-200 pb-4">
@@ -333,7 +356,6 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                       </svg>
                     </button>
-
                     {isAccordionOpen.price && (
                       <div className="pt-2 pb-6">
                         <div className="relative pt-5 pb-6">
@@ -355,34 +377,41 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
                   </div>
 
                   {/* Brands */}
-
                   <div>
                     <h2>Brands</h2>
-                    {
-                      brands.length ?
-                        brands.map(item => (
-                          (
-                            <div key={item} className="flex items-center gap-3 text-base">
-                              <input checked={item === selectedBrand} type="checkbox" onChange={() => {
-                                setSelectedBrand(item)
+                    {brands.length
+                      ? brands.map((item) => (
+                          <div key={item} className="flex items-center gap-3 text-base">
+                            <input
+                              checked={item === selectedBrand}
+                              type="checkbox"
+                              onChange={() => {
                                 if (item === selectedBrand) {
-                                  setSelectedBrand("");
-                                  setFilteredItems(products.data);
+                                  setSelectedBrand("")
+                                  if (products?.data) {
+                                    const productList = Array.isArray(products.data)
+                                      ? products.data
+                                      : products.data.data || []
+                                    setFilteredItems(productList)
+                                  }
                                 } else {
-                                  const filtered = products.data.filter(pdt => pdt.brand_name === item);
-                                  setFilteredItems(filtered);
-                                  setSelectedBrand(item);
+                                  setSelectedBrand(item)
+                                  if (products?.data) {
+                                    const productList = Array.isArray(products.data)
+                                      ? products.data
+                                      : products.data.data || []
+                                    const filtered = productList.filter((pdt) => pdt.brand_name === item)
+                                    setFilteredItems(filtered)
+                                  }
                                 }
-                              }} />
-                              <label>{item}</label>
-                            </div>
-                          )
-                        )) :
-                        ""
-                    }
+                              }}
+                            />
+                            <label>{item}</label>
+                          </div>
+                        ))
+                      : null}
                   </div>
                 </div>
-
                 <div className="mt-6">
                   <button
                     className="w-full bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors"
@@ -425,94 +454,32 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
                   </button>
                 </span>
               ))}
-
             </div>
           )}
 
-          {
-            <>
-              {
-                isLoading ?
-                  Array.from({ length: 8 }, (_, i) => (
-                    <ProductCardSkeleton key={i} />
-                  ))
-                  :
-                  filteredItems?.length === 0 ? (
-                    <div className="text-center py-12">
-                      <h3 className="text-lg font-medium">No products found</h3>
-                      <p className="text-gray-500 mt-2">Try adjusting your filters</p>
-                    </div>
-                  ) : (
-                    filteredItems?.data?.length ?
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {filteredItems?.data?.map((product) => (
-                          <ProductCard key={product.id} product={product} />
-                        ))}
-                      </div>
-                      :
-                      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {filteredItems?.map((product) => (
-                          <ProductCard key={product.id} product={product} />
-                        ))}
-                      </div>
-                  )}
-            </>
-          }
+          {isLoading ? (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 8 }, (_, i) => (
+                <ProductCardSkeleton key={i} />
+              ))}
+            </div>
+          ) : filteredItems?.length === 0 ? (
+            <div className="text-center py-12">
+              <h3 className="text-lg font-medium">No products found</h3>
+              <p className="text-gray-500 mt-2">Try adjusting your filters</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {filteredItems?.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          )}
 
           {/* Pagination */}
-          {totalPage > 1 && (
-            // <div className="mt-12 flex justify-center gap-3">
-            //   {
-            //     page == 1 ?
-            //       <button
-            //         disabled
-            //         className="px-4 py-1 rounded-md flex items-center gap-1 opacity-50 cursor-not-allowed"
-            //       >
-            //         <MdNavigateBefore />
-            //         <span className="hidden md:inline">Previous</span>
-            //       </button>
-            //       :
-            //       <Link
-            //         href={`/category/6749?category=${encodeURIComponent(searchedCategory)}&page=${Number(page) - 1}&limit=${limit}&total=${searchedTotal}`}
-            //         className="hover:bg-[#115e59] px-4 py-1 rounded-md hover:text-white transition flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
-            //       >
-            //         <MdNavigateBefore />
-            //         <span className="hidden md:inline">Previous</span>
-            //       </Link>
-            //   }
-
-
-            //   {
-            //     Array.from({ length: totalPage }, (_, i) => {
-            //       return <Link href={`/category/6749?category=${encodeURIComponent(searchedCategory)}&page=${i + 1}&limit=${limit}&total=${searchedTotal}`} key={i} className={`px-3 py-2 rounded-md transition min-w-[32px] ${page == (i + 1)
-            //         ? 'bg-[#115e59] text-white font-semibold'
-            //         : 'bg-gray-200 text-black hover:bg-gray-300'
-            //         }`}>{i + 1}</Link>
-            //     })
-            //   }
-
-            //   {
-            //     page == totalPage ?
-            //       <button
-            //         disabled
-            //         className="px-4 py-1 rounded-md flex items-center gap-1 opacity-50 cursor-not-allowed"
-            //       >
-            //         <span className="hidden md:inline">Next</span>
-            //         <MdNavigateNext />
-            //       </button>
-            //       :
-            //       <Link
-            //         href={`/category/6749?category=${encodeURIComponent(searchedCategory)}&page=${Number(page) + 1}&limit=${limit}&total=${searchedTotal}`}
-            //         className="hover:bg-[#115e59] px-4 py-1 rounded-md hover:text-white transition flex items-center gap-1 disabled:opacity-50 disabled:cursor-not-allowed"
-            //       >
-            //         <span className="hidden md:inline">Next</span>
-            //         <MdNavigateNext />
-            //       </Link>
-            //   }
-
-            // </div>
+          {/* {totalPage > 1 && (
             <Pagination currentPage={currentPage} onPageChange={setCurrentPage} totalPage={totalPage} />
-          )}
+          )} */}
         </div>
       </div>
 
@@ -546,5 +513,3 @@ export default function CategoryWiseProductUi({ searchedCategory, searchedTotal,
     </div>
   )
 }
-
-

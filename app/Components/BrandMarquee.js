@@ -7,7 +7,7 @@ import { userId } from '../(home)/page';
 
 const BrandMarquee = async() => {
 
-   const brandsRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/brands/${userId}`,{next : {revalidate : 100}});
+   const brandsRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/brands/${userId}`,{cache: 'no-cache'});
   const brands = await brandsRes.json();
 
   return (
