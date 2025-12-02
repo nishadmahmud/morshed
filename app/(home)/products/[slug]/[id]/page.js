@@ -4,7 +4,6 @@ import { userId } from '@/app/(home)/page';
 
 export default async function ProductDetailsPage({ params }) {
   const { id } = params;
-
   const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}`, { cache: 'no-cache' });
   const data =  res.json();
 
