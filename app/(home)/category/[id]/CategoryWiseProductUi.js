@@ -13,24 +13,29 @@ export default function CategoryWiseProductUi({ id }) {
   // Get values using .get()
   const searchedCategory = searchParams.get("category")
   const searchedTotal = searchParams.get("total")
-  const limit = searchParams.get("limit")
   const page = searchParams.get("page")
-  console.log(searchedCategory, searchedTotal, limit, page)
+  // console.log(searchedCategory, searchedTotal, limit, page)
 
-  const [currentPage, setCurrentPage] = useState(1)
 
-  const [products, setProducts] = useState(null);
+ 
+ const [products, setProducts] = useState([]);
+  const [pagination, setPagination] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [limit, setLimit] = useState(20);
+
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    
     const fetchProducts = async () => {
       setIsLoading(true);
       try {
-        const res = await axios.get(`https://www.outletexpense.xyz/api/public/categorywise-products/${id}`);
-        console.log(res);
-        setProducts(res?.data);
+        const res = await axios.get(
+          `https://www.outletexpense.xyz/api/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`
+        );
+
+        setProducts(res.data || []);
+        setPagination(res.data?.pagination || null);
       } catch (err) {
         setError(err);
       } finally {
@@ -151,6 +156,8 @@ console.log(products);
       setFilteredItems(rangedProducts)
     }
   }, [priceRange[0], country?.value, products?.data])
+
+  console.log(pagination);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-7xl text-black">
@@ -475,6 +482,19 @@ console.log(products);
               ))}
             </div>
           )}
+
+          {/* PAGINATION */}
+      
+        {
+          pagination && (
+            <Pagination
+          currentPage={pagination?.current_page}
+          lastPage={pagination?.last_page}
+          onPageChange={(page) => setCurrentPage(page)}
+        />
+          )
+        }
+     
 
           {/* Pagination */}
           {/* {totalPage > 1 && (
