@@ -110,10 +110,30 @@ const StoreProvider = ({ children }) => {
 
 
   setRefetch(true);
+  const discountedPrice =
+  item.is_international
+    ? item.discount_type === "Percentage"
+      ? item.intl_discount
+        ? Math.round(
+            item.intl_retails_price -
+              (item.intl_retails_price * item.intl_discount) / 100
+          )
+        : null
+      : item.intl_retails_price - item.intl_discount
+    : item.discount_type === "Percentage"
+    ? item.discount
+      ? Math.round(
+          item.retails_price -
+            (item.retails_price * item.discount) / 100
+        )
+      : null
+    : item.retails_price - item.discount;
 
+
+      
   const newItem = {
     ...item,
-    retails_price: item.price ?? item.retails_price,
+    retails_price: item?.discount > 0 ? discountedPrice : item.price ?? item.retails_price,
     currency_retail_price: convertedPrice,
     selectedSize: selectedSizeCart,
     selectedSizeId: selectedId, // make sure we have this for comparison

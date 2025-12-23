@@ -103,23 +103,32 @@ const ProductCard = ({ product }) => {
 
         {/* Discount Badge */}
       {
-        !countrySign ? <>
+        countrySign ? <>
           {product?.discount && (
           <div className="absolute top-2 left-2 z-10 sm:top-3 sm:left-3">
             <span
               className="
-              bg-red-500 text-white text-xs font-bold 
-              py-1 px-2 rounded-full shadow-lg
-              sm:py-1.5 sm:px-2.5
+              bg-gray-900 text-white text-xs font-semibold 
+              py-0.5 px-3 rounded-full
+             
             "
             >
-              -{product.discount}
+              Save {product?.discount}
               {discountSuffix}
             </span>
           </div>
         )}
         </> : ""
       }
+
+        {product?.status.toLowerCase() === "stock out" ? (
+                      <div className={`absolute z-10 top-5 right-3 bg-red-500 text-white text-xs font-semibold 
+              py-0.5 px-3 rounded-full`}>
+                     
+                     Stock Out
+
+                      </div>
+                    ): ""}
 
 
        
@@ -174,7 +183,7 @@ const ProductCard = ({ product }) => {
                 <p
                   className="
                   text-xs text-gray-500 
-                  sm:text-sm md:text-xs text-start lg:text-sm
+                  sm:text-sm md:text-xs font-medium line-through text-start lg:text-sm
                 "
                 >
                   {countrySign}
@@ -193,8 +202,6 @@ const ProductCard = ({ product }) => {
               </span>
             )}
           </div>
-
-
           
         {/* Wishlist Button */}
         <button

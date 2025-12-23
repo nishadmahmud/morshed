@@ -138,6 +138,9 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
   const percentageDiscount =
     product?.data.discount_type === "Percentage" ? "%" : null;
 
+
+    console.log(discountedPrice);
+
   useEffect(() => {
     const getCartItems = () => {
       const storedCart = localStorage.getItem("cart");
@@ -269,17 +272,24 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
               <div className="relative flex-1">
                 {country?.value === "BD"
                   ? product?.data?.discount > 0 && (
-                      <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                        SAVE {product?.data?.discount}{" "}
+                      <div className="absolute top-4 left-2 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
+                        Save {product?.data?.discount}{" "}
                         {fixedDiscount || percentageDiscount}
                       </div>
                     )
                   : product?.data?.intl_discount > 0 && (
-                      <div className="absolute top-4 left-4 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                        SAVE {product?.data?.intl_discount}{" "}
+                      <div className="absolute top-4 left-2 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
+                        Save {product?.data?.intl_discount}{" "}
                         {fixedDiscount || percentageDiscount}
                       </div>
                     )}
+
+                    {product.data.status === "Stock Out" ? (
+                      <div className={`absolute top-4  ${product?.data?.discount > 0 ? 'left-24' : 'left-2'} z-10 bg-red-600 text-white text-xs font-medium px-2 py-1 rounded-md`}>
+                     
+                     Stock Out
+                      </div>
+                    ): ""}
                 {imageArray && imageArray.length > 0 ? (
                   <CursorImageZoom
                     src={imageArray[imageIndex]}
@@ -307,21 +317,24 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
               {product?.data?.name}
             </h1>
             <div className="flex items-center gap-3 mb-4">
-              {!countrySign ? (
+            
+              <span className="text-2xl font-bold">
+                
+                  ৳{discountedPrice}
+              </span>
+                {countrySign ? (
                 <>
-                  {product?.data?.discount > 0 && (
+                  {product?.data?.discount > 0 ? (
                     <span className="text-gray-500 line-through text-sm">
                       ৳{getPriceByCountry()}
+                    
                     </span>
-                  )}
+                  ): ""}
                 </>
               ) : (
                 ""
               )}
-              <span className="text-2xl font-bold">
-                {countrySign}
-                {getPriceByCountry() || discountedPrice}
-              </span>
+
               {!countrySign ? (
                 <>
                   {product?.data?.discount > 0 && (
@@ -526,7 +539,7 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
           </div>
         </div>
         {/* Related Products */}
-        <div className="mb-12">
+        <div className="pb-12">
           <h2 className="text-xl font-bold mb-6">You May Also Like</h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
             {relatedProducts && relatedProducts.length > 0 ? (

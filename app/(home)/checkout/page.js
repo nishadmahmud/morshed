@@ -19,46 +19,14 @@ const CheckoutPage = () => {
   const quantity = cartItems.reduce((acc, curr) => acc + curr.quantity, 0)
 
   console.log(cartItems);
-  const getPriceByCountry = (item) => {
-    const productPrice = prices[item.id]
+ const Subtotal = cartItems.reduce((prev, curr) => {
+  const price = curr?.retails_price || 0;
+  return prev + price * curr.quantity;
+}, 0);
 
-    if (country && country.value === "BD") {
-      return productPrice?.basePrice || item?.retails_price || 0
-    } else {
-      return productPrice?.intl_retails_price || item?.intl_retails_price || 0;
-    }
-  }
+const SubtotalWithoutDiscount = Subtotal;
+const TotalDiscount = 0;
 
-
-  const Subtotal = cartItems.reduce((prev, curr) => {
-    const basePrice = getPriceByCountry(curr)
-    const priceAfterDiscount = country?.value === "BD" ? curr.discount
-      ? curr.discount_type === "Fixed"
-        ? basePrice - curr.discount
-        : basePrice - (basePrice * curr.discount) / 100
-      : basePrice
-      : curr.discount
-        ? curr.discount_type === "Fixed"
-          ? basePrice - curr.intl_discount
-          : basePrice - (basePrice * curr.intl_discount) / 100
-        : basePrice
-
-    return prev + priceAfterDiscount * curr.quantity
-  }, 0)
-
-  const SubtotalWithoutDiscount = cartItems.reduce((prev, curr) => {
-    const basePrice = getPriceByCountry(curr)
-    return prev + basePrice * curr.quantity
-  }, 0)
-
-  const TotalDiscount = cartItems.reduce((prev, curr) => {
-    if (!curr.discount) return prev
-
-    const basePrice = getPriceByCountry(curr)
-    const discountAmount = curr.discount_type === "Fixed" ? curr.discount : (basePrice * curr.discount) / 100
-
-    return prev + discountAmount * curr.quantity
-  }, 0)
 
   const [shippingFee, setShippingFee] = useState(0);
   const [couponCode, setCouponCode] = useState("")
@@ -108,8 +76,6 @@ const CheckoutPage = () => {
   //     })
   //   }
   // }, [cartItems, setProductPrice])
-
-  console.log(cartItems);
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14">
@@ -167,7 +133,7 @@ const CheckoutPage = () => {
                   <div className="px-6 py-4 max-h-96 overflow-y-auto">
                     <div className="space-y-4">
                       {cartItems.map((item) => {
-                        const itemPrice = getPriceByCountry(item)
+                        const itemPrice = item.retails_price
                         return (
                           <div
                             key={item.id}
