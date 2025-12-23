@@ -17,16 +17,33 @@ const CheckoutPage = () => {
 
   const cartItems = getCartItems()
   const quantity = cartItems.reduce((acc, curr) => acc + curr.quantity, 0)
-
+const discount = cartItems.reduce((prev, item) => {
+      let discountAmount = 0;
+      if (country.value == "BD") {
+        if (item.discount_type === "Fixed") {
+          discountAmount = (item.discount || 0) * item.quantity;
+        } else if (item.discount_type === "Percentage") {
+          discountAmount =
+            ((item.retails_price * (item.discount || 0)) / 100) * item.quantity;
+        }
+      } else {
+        if (item.discount_type === "Fixed") {
+          discountAmount = (item.intl_discount || 0) * item.quantity;
+        } else if (item.discount_type === "Percentage") {
+          discountAmount =
+            ((item.intl_retails_price * (item.intl_discount || 0)) / 100) *
+            item.quantity;
+        }
+      }
+      return prev + discountAmount;
+    }, 0);
   console.log(cartItems);
  const Subtotal = cartItems.reduce((prev, curr) => {
-  const price = curr?.retails_price || 0;
+  const price = curr?.orginalPrice || 0;
   return prev + price * curr.quantity;
 }, 0);
 
 const SubtotalWithoutDiscount = Subtotal;
-const TotalDiscount = 0;
-
 
   const [shippingFee, setShippingFee] = useState(0);
   const [couponCode, setCouponCode] = useState("")
@@ -176,10 +193,22 @@ const TotalDiscount = 0;
                               <div className="flex items-center justify-between">
                                 <div className="text-sm text-gray-600">Qty: {item.quantity}</div>
                                 <div className="text-sm text-gray-600">Size: {item.selectedSize || "N/A"}</div>
-                                <div className="text-sm font-semibold text-gray-900">
+                                {
+                                  item.discount > 0 ? (
+                                    <div className="flex gap-2">
+                                    <div className="text-xs font-medium text-gray-500 line-through">
+                                     ৳{item.orginalPrice}
+                                    </div>
+                                    <div className="text-sm font-semibold text-gray-900">
                                   {country && country.value === "BD" ? "৳" : "$"}
                                   {itemPrice}
                                 </div>
+                                    </div>
+                                  ) : (<div className="text-sm font-semibold text-gray-900">
+                                  {country && country.value === "BD" ? "৳" : "$"}
+                                  {itemPrice}
+                                </div>)
+                                }
                               </div>
                             </div>
                           </div>
@@ -208,6 +237,9 @@ const TotalDiscount = 0;
                         </button>
                       </div>
                     </div>
+
+                    
+
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Subtotal ({quantity} items)</span>
                       <span className="font-medium text-gray-900">
@@ -216,21 +248,21 @@ const TotalDiscount = 0;
                       </span>
                     </div>
 
-                    {TotalDiscount > 0 && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Discount</span>
-                        <span className="font-medium text-red-600">
-                          -{country && country.value === "BD" ? "৳" : "$"}
-                          {TotalDiscount.toFixed(2)}
-                        </span>
-                      </div>
-                    )}
+                    
 
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Coupon Discount</span>
                       <span className="font-medium text-red-600">
                         -{country && country.value === "BD" ? "৳" : "$"}
                         {Number(couponAmount).toFixed(2)}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between text-sm">
+                      <span className="text-gray-600">Discount</span>
+                      <span className="font-medium text-red-600">
+                        -{country && country.value === "BD" ? "৳" : "$"}
+                        {Number(discount).toFixed(2)}
                       </span>
                     </div>
 
@@ -261,7 +293,7 @@ const TotalDiscount = 0;
                             Number.parseInt(Subtotal) +
                             (selectedDonate === "Not now" ? 0 : Number(selectedDonate)) +
                             shippingFee -
-                            couponAmount
+                           (discount + couponAmount)
                           ).toFixed(2)}
                         </span>
                       </div>

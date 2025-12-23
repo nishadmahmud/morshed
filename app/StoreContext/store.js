@@ -133,6 +133,7 @@ const StoreProvider = ({ children }) => {
       
   const newItem = {
     ...item,
+    orginalPrice: item.price ?? item.retails_price,
     retails_price: item?.discount > 0 ? discountedPrice : item.price ?? item.retails_price,
     currency_retail_price: convertedPrice,
     selectedSize: selectedSizeCart,

@@ -70,7 +70,7 @@ const CartPage = () => {
     const subtotal = cartItems.reduce((acc, item) => {
       const price =
         country.value == "BD"
-          ? Number(item?.retails_price)
+          ? Number(item?.orginalPrice)
           : Number(item?.intl_retails_price) || 0;
       return acc + price * item.quantity;
     }, 0);
@@ -214,11 +214,19 @@ const CartPage = () => {
                       <td className="py-4 px-4 font-medium">
                         {item.selectedSize || "N/A"}
                       </td>
-                      <td className="py-4 px-4 text-right">
-                        {getPriceByCountry(item).toLocaleString()}
+                      {item.discount > 0 ? (
+                        <td className="py-4 px-4 text-right font-medium">
+                          <span className="line-through text-xs text-gray-500"> ৳{item.orginalPrice}</span>
+                        ㅤ৳{getPriceByCountry(item).toLocaleString()}
                       </td>
+                      ): (
+                      <td className="py-4 px-4 text-right">
+                        ৳{getPriceByCountry(item).toLocaleString()}
+                      </td>
+                    )}
+                     
                       <td className="py-4 px-4 text-right font-medium">
-                        {(
+                        ৳{(
                           getPriceByCountry(item) * item.quantity
                         ).toLocaleString()}
                       </td>
@@ -260,6 +268,8 @@ const CartPage = () => {
 
               <div className="bg-white rounded-lg dark:text-black w-full max-w-2xl mx-auto">
                 <div className="space-y-3">
+                  
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700 font-medium">
                       Sub-Total:
@@ -269,20 +279,22 @@ const CartPage = () => {
                       {totalSubtotalWithoutDiscount.toLocaleString()}
                     </span>
                   </div>
+
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700 font-medium">
-                      Total Discount:
+                      Discount Amount:
                     </span>
-                    <span>
+                    <span className="text-red-500">
                       {country?.value === "BD" ? "BDT" : "USD"}{" "}
                       {totalDiscount.toLocaleString()}
                     </span>
                   </div>
+                  
                   <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                     <span className="text-gray-900 font-bold">Total:</span>
                     <span className="text-teal-800 font-bold">
                       {country?.value === "BD" ? "BDT" : "USD"}{" "}
-                      {cartTotal.toLocaleString()}
+                      {totalSubtotalWithoutDiscount - totalDiscount.toLocaleString()}
                     </span>
                   </div>
                 </div>

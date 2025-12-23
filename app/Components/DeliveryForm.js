@@ -146,6 +146,7 @@ const DeliveryForm = ({
   const userDataRef = useRef(null);
  const [selectedCity, setSelectedCity] = useState('Select your address');
  const [selectedDistrict, setSelectedDistrict] = useState([]);
+ const [totalDiscount, setTotalDiscount] = useState(0);
   
 
 useEffect(() => {
@@ -170,11 +171,6 @@ useEffect(() => {
     setShippingFee(130);
   }
 }, [selectedDistrict, selectedCity]);
-
-
-console.log('shipping fee: ', shippingFee);
-console.log('selected city: ', selectedCity);
-console.log('selected district: ', selectedDistrict);
 
 
 
@@ -230,27 +226,56 @@ console.log('selected district: ', selectedDistrict);
     billPhone: "",
   });
 
-  
 
-  useEffect(() => {
-    const items = getCartItems();
-    if (items.length) {
-      setCartItems(items);
-      setLoading(false);
-      const total = items.reduce(
-        (prev, curr) =>
-          country.value === "BD"
-            ? prev + curr.retails_price
-            : prev + curr?.intl_retails_price,
-        0
-      );
-      setCartTotal(total);
-      setOrderSchema((prev) => ({
-        ...prev,
-        sub_total: cartTotal,
-      }));
-    }
-  }, [getCartItems]);
+useEffect(() => {
+  const items = getCartItems();
+
+  const discount = items.reduce((prev, item) => {
+      let discountAmount = 0;
+      if (country.value == "BD") {
+        if (item.discount_type === "Fixed") {
+          discountAmount = (item.discount || 0) * item.quantity;
+        } else if (item.discount_type === "Percentage") {
+          discountAmount =
+            ((item.retails_price * (item.discount || 0)) / 100) * item.quantity;
+        }
+      } else {
+        if (item.discount_type === "Fixed") {
+          discountAmount = (item.intl_discount || 0) * item.quantity;
+        } else if (item.discount_type === "Percentage") {
+          discountAmount =
+            ((item.intl_retails_price * (item.intl_discount || 0)) / 100) *
+            item.quantity;
+        }
+      }
+      return prev + discountAmount;
+    }, 0);
+    setTotalDiscount (discount)
+
+  if (!items || !items.length) {
+    setLoading(false);
+    return;
+  }
+
+  setCartItems(items);
+  setLoading(false);
+
+  // ✅ Calculate subtotal using orginalPrice × quantity
+  const total = items.reduce((sum, item) => {
+    const price = Number(item.orginalPrice || 0);
+    const qty = Number(item.quantity || 1);
+    return sum + price * qty;
+  }, 0);
+
+  setCartTotal(total);
+
+  // ✅ Use calculated total, NOT cartTotal state
+  setOrderSchema((prev) => ({
+    ...prev,
+    sub_total: total,
+  }));
+}, [getCartItems]);
+
 
   const [countries, setCountries] = useState([]);
   const [selectedCountry, setSelectedCountry] = useState("Bangladesh");
@@ -261,22 +286,22 @@ console.log('selected district: ', selectedDistrict);
   }, []);
 
 
- 
+ console.log(cartTotal);
 
   // Create order schema - memoized to prevent constant recreation
   const orderSchema = useMemo(() => {
     return {
       pay_mode: payment,
       paid_amount: 0,
-      sub_total: Number(cartTotal) + shippingFee,
+      sub_total: Number(cartTotal),
       vat: 0,
       tax: 0,
-      discount: couponValue,
+      discount: Number(totalDiscount + couponValue),
       coupon_code: couponCode,
       product: cartItems.map((item) => ({
         product_id: item.id,
         qty: item.quantity,
-        price: item.retails_price,
+        price: item.orginalPrice,
         mode: 1,
         size: 1,
         sales_id: 3,

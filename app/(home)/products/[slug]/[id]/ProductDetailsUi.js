@@ -234,7 +234,7 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
 
   const isCartItem = cartItems.find(
     (item) =>
-      item?.id === product?.data.id && item?.selectedSizeId === selectedId
+      item?.id === product?.data?.id && item?.selectedSizeId === selectedId
   );
 
   return (
