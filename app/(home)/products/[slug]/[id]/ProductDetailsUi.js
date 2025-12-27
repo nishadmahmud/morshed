@@ -27,11 +27,11 @@ import CursorImageZoom from "@/app/Components/CustomImageZoom";
 
 // Fetcher function from the original code
 
-const ProductDetailsUi = ({data,id,relatedProductsData}) => {
+const ProductDetailsUi = ({ data, id, relatedProductsData }) => {
 
   const product = use(data);
   console.log(product);
-  const relatedProducts = use(relatedProductsData); 
+  const relatedProducts = use(relatedProductsData);
   const [quantity, setQuantity] = useState(1);
   const [imageIndex, setImageIndex] = useState(0);
   const [scroll, setScroll] = useState(0);
@@ -107,25 +107,28 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
     }
   }, [product?.data]);
 
-  const discountedPrice =
+  const basePrice =
     country?.value === "BD"
-      ? product?.data.discount_type === "Percentage"
-        ? product?.data?.discount
-          ? (
-              product?.data?.retails_price -
-              (product?.data?.retails_price * product?.data.discount) / 100
-            ).toFixed(0)
-          : null
-        : product?.data.retails_price - product?.data.discount
-      : product?.data.discount_type === "Percentage"
-      ? product?.data?.intl_discount
-        ? (
-            product?.data?.intl_retails_price -
-            (product?.data?.intl_retails_price * product?.data.intl_discount) /
-              100
-          ).toFixed(0)
-        : null
-      : product?.data.intl_retails_price - product?.data.intl_discount;
+      ? product?.data?.retails_price
+      : product?.data?.intl_retails_price || 0;
+  const discount =
+    country?.value === "BD"
+      ? product?.data?.discount
+      : product?.data?.intl_discount || 0;
+  const discountType = product?.data?.discount_type;
+
+  let calculatedPrice = basePrice;
+  if (discount > 0) {
+    if (discountType === "Percentage") {
+      calculatedPrice = basePrice - (basePrice * discount) / 100;
+    } else if (discountType === "Fixed") {
+      calculatedPrice = basePrice - discount;
+    } else {
+      calculatedPrice = basePrice - discount;
+    }
+  }
+
+  const discountedPrice = Number(calculatedPrice).toFixed(0);
 
   const fixedDiscount =
     country?.value === "BD"
@@ -133,20 +136,20 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
         ? "Tk"
         : null
       : product?.data.discount_type === "Fixed"
-      ? "$"
-      : null;
+        ? "$"
+        : null;
   const percentageDiscount =
     product?.data.discount_type === "Percentage" ? "%" : null;
 
 
-    console.log(discountedPrice);
+  console.log(discountedPrice);
 
   useEffect(() => {
     const getCartItems = () => {
       const storedCart = localStorage.getItem("cart");
       return storedCart ? JSON.parse(storedCart) : [];
     };
-    if(typeof window !== 'undefined'){
+    if (typeof window !== 'undefined') {
       setCartItems(getCartItems());
     }
     if (product?.data) {
@@ -217,19 +220,19 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
     );
   }
 
-//   if (error) {
-//     return (
-//       <div className="flex justify-center items-center min-h-screen">
-//         <div className="text-red-500">Failed to load product data</div>
-//       </div>
-//     );
-//   }
+  //   if (error) {
+  //     return (
+  //       <div className="flex justify-center items-center min-h-screen">
+  //         <div className="text-red-500">Failed to load product data</div>
+  //       </div>
+  //     );
+  //   }
 
   const descriptionText = product?.data?.description
     ? htmlToText(product.data.description, {
-        wordwrap: false,
-        selectors: [{ selector: "a", options: { ignoreHref: true } }],
-      })
+      wordwrap: false,
+      selectors: [{ selector: "a", options: { ignoreHref: true } }],
+    })
     : null;
 
   const isCartItem = cartItems.find(
@@ -251,9 +254,8 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
                     <button
                       key={idx}
                       onClick={() => setImageIndex(idx)}
-                      className={`relative border rounded-md overflow-hidden ${
-                        imageIndex === idx ? "ring-2 ring-black" : ""
-                      }`}
+                      className={`relative border rounded-md overflow-hidden ${imageIndex === idx ? "ring-2 ring-black" : ""
+                        }`}
                     >
                       <Image
                         src={image || noImg}
@@ -272,24 +274,24 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
               <div className="relative flex-1">
                 {country?.value === "BD"
                   ? product?.data?.discount > 0 && (
-                      <div className="absolute top-4 left-2 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                        Save {product?.data?.discount}{" "}
-                        {fixedDiscount || percentageDiscount}
-                      </div>
-                    )
+                    <div className="absolute top-4 left-2 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
+                      Save {product?.data?.discount}{" "}
+                      {fixedDiscount || percentageDiscount}
+                    </div>
+                  )
                   : product?.data?.intl_discount > 0 && (
-                      <div className="absolute top-4 left-2 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
-                        Save {product?.data?.intl_discount}{" "}
-                        {fixedDiscount || percentageDiscount}
-                      </div>
-                    )}
+                    <div className="absolute top-4 left-2 z-10 bg-black text-white text-xs font-medium px-2 py-1 rounded-md">
+                      Save {product?.data?.intl_discount}{" "}
+                      {fixedDiscount || percentageDiscount}
+                    </div>
+                  )}
 
-                    {product.data.status === "Stock Out" ? (
-                      <div className={`absolute top-4  ${product?.data?.discount > 0 ? 'left-24' : 'left-2'} z-10 bg-red-600 text-white text-xs font-medium px-2 py-1 rounded-md`}>
-                     
-                     Stock Out
-                      </div>
-                    ): ""}
+                {product.data.status === "Stock Out" ? (
+                  <div className={`absolute top-4  ${product?.data?.discount > 0 ? 'left-24' : 'left-2'} z-10 bg-red-600 text-white text-xs font-medium px-2 py-1 rounded-md`}>
+
+                    Stock Out
+                  </div>
+                ) : ""}
                 {imageArray && imageArray.length > 0 ? (
                   <CursorImageZoom
                     src={imageArray[imageIndex]}
@@ -317,19 +319,19 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
               {product?.data?.name}
             </h1>
             <div className="flex items-center gap-3 mb-4">
-            
+
               <span className="text-2xl font-bold">
-                
-                  ৳{discountedPrice}
+
+                {countrySign}{discountedPrice}
               </span>
-                {countrySign ? (
+              {countrySign ? (
                 <>
-                  {product?.data?.discount > 0 ? (
+                  {discount > 0 ? (
                     <span className="text-gray-500 line-through text-sm">
-                      ৳{getPriceByCountry()}
-                    
+                      {countrySign}{getPriceByCountry()}
+
                     </span>
-                  ): ""}
+                  ) : ""}
                 </>
               ) : (
                 ""
@@ -337,9 +339,9 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
 
               {!countrySign ? (
                 <>
-                  {product?.data?.discount > 0 && (
+                  {discount > 0 && (
                     <span className="text-xs font-medium text-green-600 border border-green-600 px-2 py-0.5 rounded-full">
-                      {product?.data?.discount}{" "}
+                      {discount}{" "}
                       {fixedDiscount || percentageDiscount} OFF
                     </span>
                   )}
@@ -365,7 +367,7 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
                   <h3 className="font-medium text-sm">
                     Size:{" "}
                     {product?.data?.product_variants &&
-                    product.data.product_variants.length > 0
+                      product.data.product_variants.length > 0
                       ? selectedSize
                       : "N/A"}{" "}
                     <span className="text-xs font-normal">
@@ -384,47 +386,45 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
               <div className="flex gap-3">
                 <div className="flex gap-3">
                   {product?.data?.product_variants &&
-                  product.data.product_variants.length > 0
+                    product.data.product_variants.length > 0
                     ? product.data.product_variants.map((variant) => {
-                        const isSelected = selectedSize === variant.name;
-                        const isDisabled = variant.quantity < 1;
+                      const isSelected = selectedSize === variant.name;
+                      const isDisabled = variant.quantity < 1;
 
-                        // Check if this size is already in the cart
-                        const isInCartSize = cartItems.find(
-                          (item) =>
-                            item.id === product.data.id &&
-                            item.selectedSizeId === variant.id
-                        );
+                      // Check if this size is already in the cart
+                      const isInCartSize = cartItems.find(
+                        (item) =>
+                          item.id === product.data.id &&
+                          item.selectedSizeId === variant.id
+                      );
 
-                        return (
-                          <button
-                            key={variant.name}
-                            onClick={() => {
-                              if (!isDisabled && !isInCartSize) {
-                                setSelectedSize(variant?.name);
-                                setSelectedSizeCart(variant?.name);
-                                setSizeQuantity(variant?.quantity);
-                                setSelectedId(variant.id);
-                                setQuantity(1);
-                              }
-                            }}
-                            disabled={isDisabled || isInCartSize}
-                            className={`flex items-center justify-center w-12 h-12 border rounded-md transition
-              ${
-                isSelected
-                  ? "border-black bg-black text-white"
-                  : "border-gray-300 hover:border-gray-400"
-              }
-              ${
-                isDisabled || isInCartSize
-                  ? "opacity-20 cursor-not-allowed hover:border-gray-300"
-                  : "cursor-pointer"
-              }`}
-                          >
-                            {variant.name}
-                          </button>
-                        );
-                      })
+                      return (
+                        <button
+                          key={variant.name}
+                          onClick={() => {
+                            if (!isDisabled && !isInCartSize) {
+                              setSelectedSize(variant?.name);
+                              setSelectedSizeCart(variant?.name);
+                              setSizeQuantity(variant?.quantity);
+                              setSelectedId(variant.id);
+                              setQuantity(1);
+                            }
+                          }}
+                          disabled={isDisabled || isInCartSize}
+                          className={`flex items-center justify-center w-12 h-12 border rounded-md transition
+              ${isSelected
+                              ? "border-black bg-black text-white"
+                              : "border-gray-300 hover:border-gray-400"
+                            }
+              ${isDisabled || isInCartSize
+                              ? "opacity-20 cursor-not-allowed hover:border-gray-300"
+                              : "cursor-pointer"
+                            }`}
+                        >
+                          {variant.name}
+                        </button>
+                      );
+                    })
                     : "No size available"}
                 </div>
               </div>
@@ -465,11 +465,10 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
                     e.preventDefault();
                     handleCart(product?.data, quantity, selectedId);
                   }}
-                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium cursor-pointer transition-colors ${
-                    isInCart
-                      ? "bg-white text-black border border-gray-300"
-                      : "bg-gray-200 hover:bg-gray-300 text-black"
-                  }`}
+                  className={`flex-1 md:text-base text-sm flex items-center justify-center gap-2 py-2 px-4 rounded-md font-medium cursor-pointer transition-colors ${isInCart
+                    ? "bg-white text-black border border-gray-300"
+                    : "bg-gray-200 hover:bg-gray-300 text-black"
+                    }`}
                   disabled={isInCart}
                 >
                   {!isInCart ? (
@@ -518,9 +517,8 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
             </button>
           </div> */}
           <div
-            className={`pt-6 ${
-              activeTab === "description" ? "block" : "hidden"
-            }`}
+            className={`pt-6 ${activeTab === "description" ? "block" : "hidden"
+              }`}
           >
             <div
               id="Description"
@@ -578,7 +576,7 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
           </div>
         </div>
         {/* Recently Viewed */}
-        
+
       </div>
       {/* Sticky Add to Cart Bar */}
       {scroll > 500 && product?.data && (
@@ -601,23 +599,8 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
                   {product.data.name}
                 </h3>
                 <p className="text-sm font-bold">
-                  ৳
-                  {country?.value === "BD"
-                    ? product.data.discount > 0
-                      ? (
-                          product.data.retails_price -
-                          (product.data.retails_price * product.data.discount) /
-                            100
-                        ).toFixed(0)
-                      : product.data.retails_price
-                    : product.data.intl_discount > 0
-                    ? (
-                        product.data.intl_retails_price -
-                        (product.data.intl_retails_price *
-                          product.data.intl_discount) /
-                          100
-                      ).toFixed(0)
-                    : product.data.intl_retails_price}
+                  {countrySign}
+                  {discountedPrice}
                 </p>
                 <p className="text-xs text-gray-500">Size: {selectedSize}</p>
               </div>
@@ -645,11 +628,10 @@ const ProductDetailsUi = ({data,id,relatedProductsData}) => {
                   e.preventDefault();
                   handleCart(product?.data, quantity, selectedId);
                 }}
-                className={`py-2 px-4 rounded-md font-medium ${
-                  isCartItem
-                    ? "bg-white text-black border border-gray-300"
-                    : "bg-black hover:bg-gray-800 text-white"
-                }`}
+                className={`py-2 px-4 rounded-md font-medium ${isCartItem
+                  ? "bg-white text-black border border-gray-300"
+                  : "bg-black hover:bg-gray-800 text-white"
+                  }`}
                 disabled={isCartItem && selectedSize}
               >
                 {isCartItem ? "Added" : "Add to Cart"}
