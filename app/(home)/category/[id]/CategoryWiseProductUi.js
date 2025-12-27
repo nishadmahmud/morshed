@@ -17,8 +17,8 @@ export default function CategoryWiseProductUi({ id }) {
   // console.log(searchedCategory, searchedTotal, limit, page)
 
 
- 
- const [products, setProducts] = useState([]);
+
+  const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(20);
@@ -56,6 +56,7 @@ export default function CategoryWiseProductUi({ id }) {
   const [isFilterOpen, setIsFilterOpen] = useState(false)
   const [priceRange, setPriceRange] = useState([0, 0])
   const [selectedSizes, setSelectedSizes] = useState([])
+  const [sizes, setSizes] = useState([]) // State for unique sizes
   const [selectedColors, setSelectedColors] = useState([])
   const [isAccordionOpen, setIsAccordionOpen] = useState({
     price: true,
@@ -68,13 +69,21 @@ export default function CategoryWiseProductUi({ id }) {
   const [selectedBrand, setSelectedBrand] = useState("")
   const [minimum, setMinimum] = useState(0)
   const filterRef = useRef(null)
-console.log(products);
+  console.log(products);
   useEffect(() => {
     if (products?.data) {
       const productList = Array.isArray(products.data) ? products.data : products.data.data || []
-      setFilteredItems(productList)
-      const brandList = [...new Set(productList.map((item) => item.brand_name))]
+      // setFilteredItems(productList) // Removed: Filter logic now handles initialization
+
+      const brandList = [...new Set(productList.map((item) => item.brand_name).filter(Boolean))]
       setBrands(brandList)
+
+      // Extract unique sizes from product variants
+      const allSizes = productList.flatMap(product =>
+        product.product_variants ? product.product_variants.map(variant => variant.name) : []
+      );
+      const uniqueSizes = [...new Set(allSizes)].filter(Boolean).sort();
+      setSizes(uniqueSizes);
     }
   }, [products])
 
@@ -84,6 +93,28 @@ console.log(products);
       filtered = filtered.data || []
     }
 
+    // 1. Filter by Price Range
+    if (country?.value === "BD") {
+      filtered = filtered.filter(item => item.retails_price >= priceRange[0] && item.retails_price <= priceRange[1]);
+    } else {
+      filtered = filtered.filter(item => (item.intl_retails_price || 0) >= priceRange[0] && (item.intl_retails_price || 0) <= priceRange[1]);
+    }
+
+    // 2. Filter by Brand
+    if (selectedBrand) {
+      filtered = filtered.filter(item => item.brand_name === selectedBrand);
+    }
+
+    // 3. Filter by Selected Sizes
+    if (selectedSizes.length > 0) {
+      filtered = filtered.filter(item => {
+        if (!item.product_variants) return false;
+        // Check if product has ANY of the selected sizes
+        return item.product_variants.some(variant => selectedSizes.includes(variant.name));
+      });
+    }
+
+    // 4. Sort
     if (sortBy === "low-to-high") {
       filtered = [...filtered].sort((a, b) => a.retails_price - b.retails_price)
     } else if (sortBy === "high-to-low") {
@@ -95,7 +126,7 @@ console.log(products);
     }
 
     setFilteredItems(filtered)
-  }, [sortBy, products, selectedSizes, selectedColors, priceRange])
+  }, [sortBy, products, selectedSizes, selectedColors, priceRange, selectedBrand, country?.value])
 
   // Close filter sidebar when clicking outside (for mobile)
   useEffect(() => {
@@ -274,39 +305,68 @@ console.log(products);
                 )}
               </div>
 
+              {/* Sizes */}
+              <div className="border-b border-gray-200 pb-4">
+                <button
+                  className="flex w-full items-center justify-between py-3 text-base font-medium"
+                  onClick={() => toggleAccordion("size")}
+                >
+                  Size
+                  <svg
+                    className={`h-5 w-5 transition-transform ${isAccordionOpen.size ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {isAccordionOpen.size && (
+                  <div className="pt-2">
+                    {sizes.length > 0 ? (
+                      <div className="flex flex-wrap gap-2">
+                        {sizes.map((size) => (
+                          <button
+                            key={size}
+                            onClick={() => handleSizeToggle(size)}
+                            className={`px-3 py-1 text-sm border rounded-md transition-colors ${selectedSizes.includes(size)
+                                ? "bg-gray-900 text-white border-gray-900"
+                                : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+                              }`}
+                          >
+                            {size}
+                          </button>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-gray-500">No sizes available</p>
+                    )}
+                  </div>
+                )}
+              </div>
+
               {/* Brands */}
               <div>
                 <h2>Brands</h2>
                 {brands.length
                   ? brands.map((item) => (
-                      <div key={item} className="flex items-center gap-3 text-base">
-                        <input
-                          checked={item === selectedBrand}
-                          type="checkbox"
-                          onChange={() => {
-                            if (item === selectedBrand) {
-                              setSelectedBrand("")
-                              if (products?.data) {
-                                const productList = Array.isArray(products.data)
-                                  ? products.data
-                                  : products.data.data || []
-                                setFilteredItems(productList)
-                              }
-                            } else {
-                              setSelectedBrand(item)
-                              if (products?.data) {
-                                const productList = Array.isArray(products.data)
-                                  ? products.data
-                                  : products.data.data || []
-                                const filtered = productList.filter((pdt) => pdt.brand_name === item)
-                                setFilteredItems(filtered)
-                              }
-                            }
-                          }}
-                        />
-                        <label>{item}</label>
-                      </div>
-                    ))
+                    <div key={item} className="flex items-center gap-3 text-base">
+                      <input
+                        checked={item === selectedBrand}
+                        type="checkbox"
+                        onChange={() => {
+                          if (item === selectedBrand) {
+                            setSelectedBrand("")
+                            // Logic moved to main useEffect
+                          } else {
+                            setSelectedBrand(item)
+                            // Logic moved to main useEffect
+                          }
+                        }}
+                      />
+                      <label>{item}</label>
+                    </div>
+                  ))
                   : null}
               </div>
             </div>
@@ -383,39 +443,68 @@ console.log(products);
                     )}
                   </div>
 
+                  {/* Sizes - Mobile */}
+                  <div className="border-b border-gray-200 pb-4">
+                    <button
+                      className="flex w-full items-center justify-between py-3 text-base font-medium"
+                      onClick={() => toggleAccordion("size")}
+                    >
+                      Size
+                      <svg
+                        className={`h-5 w-5 transition-transform ${isAccordionOpen.size ? "rotate-180" : ""}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {isAccordionOpen.size && (
+                      <div className="pt-2">
+                        {sizes.length > 0 ? (
+                          <div className="flex flex-wrap gap-2">
+                            {sizes.map((size) => (
+                              <button
+                                key={size}
+                                onClick={() => handleSizeToggle(size)}
+                                className={`px-3 py-1 text-sm border rounded-md transition-colors ${selectedSizes.includes(size)
+                                    ? "bg-gray-900 text-white border-gray-900"
+                                    : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+                                  }`}
+                              >
+                                {size}
+                              </button>
+                            ))}
+                          </div>
+                        ) : (
+                          <p className="text-sm text-gray-500">No sizes available</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+
                   {/* Brands */}
                   <div>
                     <h2>Brands</h2>
                     {brands.length
                       ? brands.map((item) => (
-                          <div key={item} className="flex items-center gap-3 text-base">
-                            <input
-                              checked={item === selectedBrand}
-                              type="checkbox"
-                              onChange={() => {
-                                if (item === selectedBrand) {
-                                  setSelectedBrand("")
-                                  if (products?.data) {
-                                    const productList = Array.isArray(products.data)
-                                      ? products.data
-                                      : products.data.data || []
-                                    setFilteredItems(productList)
-                                  }
-                                } else {
-                                  setSelectedBrand(item)
-                                  if (products?.data) {
-                                    const productList = Array.isArray(products.data)
-                                      ? products.data
-                                      : products.data.data || []
-                                    const filtered = productList.filter((pdt) => pdt.brand_name === item)
-                                    setFilteredItems(filtered)
-                                  }
-                                }
-                              }}
-                            />
-                            <label>{item}</label>
-                          </div>
-                        ))
+                        <div key={item} className="flex items-center gap-3 text-base">
+                          <input
+                            checked={item === selectedBrand}
+                            type="checkbox"
+                            onChange={() => {
+                              if (item === selectedBrand) {
+                                setSelectedBrand("")
+                                // Logic moved to main useEffect
+                              } else {
+                                setSelectedBrand(item)
+                                // Logic moved to main useEffect
+                              }
+                            }}
+                          />
+                          <label>{item}</label>
+                        </div>
+                      ))
                       : null}
                   </div>
                 </div>
@@ -484,17 +573,17 @@ console.log(products);
           )}
 
           {/* PAGINATION */}
-      
-        {
-          pagination && (
-            <Pagination
-          currentPage={pagination?.current_page}
-          lastPage={pagination?.last_page}
-          onPageChange={(page) => setCurrentPage(page)}
-        />
-          )
-        }
-     
+
+          {
+            pagination && (
+              <Pagination
+                currentPage={pagination?.current_page}
+                lastPage={pagination?.last_page}
+                onPageChange={(page) => setCurrentPage(page)}
+              />
+            )
+          }
+
 
           {/* Pagination */}
           {/* {totalPage > 1 && (

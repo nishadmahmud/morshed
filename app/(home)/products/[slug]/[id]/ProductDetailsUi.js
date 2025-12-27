@@ -17,7 +17,7 @@ import { IoIosDoneAll } from "react-icons/io";
 import Link from "next/link";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import toast from "react-hot-toast";
-import noImg from "/public/no-image.jpg";
+const noImg = "/no-image.jpg";
 import { htmlToText } from "html-to-text";
 import "react-inner-image-zoom/lib/styles.min.css";
 import useStore from "@/app/CustomHooks/useStore";
@@ -212,10 +212,10 @@ const ProductDetailsUi = ({ data, id, relatedProductsData }) => {
       .replace(/[^a-z0-9-]/g, "");
   };
 
-  if (!product && !error) {
+  if (!product || !product.data) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-gray-900"></div>
+        <div className="text-red-500 text-xl font-bold">Product not found or failed to load.</div>
       </div>
     );
   }

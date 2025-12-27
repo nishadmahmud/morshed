@@ -14,7 +14,7 @@ import {
 } from "lucide-react";
 import { IoCloseSharp, IoSearch } from "react-icons/io5";
 import axios from "axios";
-import noImg from "/public/no-image.jpg";
+const noImg = "/no-image.jpg";
 import Search from "./Search";
 import useStore from "../CustomHooks/useStore";
 import CartItems from "./CartItems";
@@ -468,7 +468,7 @@ const HeaderUi = ({ data }) => {
                           setSearchedItem([]);
                           toggleSearchSidebar();
 
-                          
+
                         }}
                         className="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition"
                       >
@@ -582,7 +582,7 @@ const HeaderUi = ({ data }) => {
           />
         )}
 
-       
+
       </div>
     </div>
   );

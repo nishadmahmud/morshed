@@ -7,7 +7,7 @@ import Link from "next/link";
 import toast from "react-hot-toast";
 import { ShoppingBag, NotebookPen, ShoppingCart, Trash2 } from "lucide-react";
 import CartSkeleton from "@/app/Components/CartSkeleton";
-import noImg from "/public/no-image.jpg";
+const noImg = "/no-image.jpg";
 
 const CartPage = () => {
   const {
@@ -81,35 +81,35 @@ const CartPage = () => {
   }, [cartItems, country]);
 
   useEffect(() => {
-    if(typeof window !== 'undefined'){
+    if (typeof window !== 'undefined') {
       const savedNote = localStorage.getItem("cartAttachment");
       if (savedNote) setNote(savedNote);
     }
   }, []);
 
   useEffect(() => {
-     if(typeof window !== 'undefined'){
-       if (note) localStorage.setItem("cartAttachment", note);
-       else localStorage.removeItem("cartAttachment");
-     }
+    if (typeof window !== 'undefined') {
+      if (note) localStorage.setItem("cartAttachment", note);
+      else localStorage.removeItem("cartAttachment");
+    }
   }, [note]);
 
 
-   const handleCartUpdate = () => {
+  const handleCartUpdate = () => {
     setRefetch(true);
     const updatedItems = getCartItems();
     setCartItems(updatedItems);
   };
- const handleCartItemDelete = (cartItemId) => {
-  const updatedCart = getCartItems().filter(
-    (item) => item.cartItemId !== cartItemId
-  );
+  const handleCartItemDelete = (cartItemId) => {
+    const updatedCart = getCartItems().filter(
+      (item) => item.cartItemId !== cartItemId
+    );
 
-  localStorage.setItem("cart", JSON.stringify(updatedCart));
-  handleCartUpdate()
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+    handleCartUpdate()
 
-  toast.success("Item removed from cart");
-};
+    toast.success("Item removed from cart");
+  };
 
 
 
@@ -217,26 +217,26 @@ const CartPage = () => {
                       {item.discount > 0 ? (
                         <td className="py-4 px-4 text-right font-medium">
                           <span className="line-through text-xs text-gray-500"> ৳{item.orginalPrice}</span>
-                        ㅤ৳{getPriceByCountry(item).toLocaleString()}
-                      </td>
-                      ): (
-                      <td className="py-4 px-4 text-right">
-                        ৳{getPriceByCountry(item).toLocaleString()}
-                      </td>
-                    )}
-                     
+                          ㅤ৳{getPriceByCountry(item).toLocaleString()}
+                        </td>
+                      ) : (
+                        <td className="py-4 px-4 text-right">
+                          ৳{getPriceByCountry(item).toLocaleString()}
+                        </td>
+                      )}
+
                       <td className="py-4 px-4 text-right font-medium">
                         ৳{(
                           getPriceByCountry(item) * item.quantity
                         ).toLocaleString()}
                       </td>
                       <td className="py-4 px-4 text-center text-gray-500 hover:text-red-500">
-                     <button
-  onClick={() => handleCartItemDelete(item.cartItemId)}
-  className="text-gray-500 hover:text-red-500"
->
-  <Trash2 size={20} />
-</button>
+                        <button
+                          onClick={() => handleCartItemDelete(item.cartItemId)}
+                          className="text-gray-500 hover:text-red-500"
+                        >
+                          <Trash2 size={20} />
+                        </button>
 
 
                       </td>
@@ -268,7 +268,7 @@ const CartPage = () => {
 
               <div className="bg-white rounded-lg dark:text-black w-full max-w-2xl mx-auto">
                 <div className="space-y-3">
-                  
+
 
                   <div className="flex justify-between items-center">
                     <span className="text-gray-700 font-medium">
@@ -289,7 +289,7 @@ const CartPage = () => {
                       {totalDiscount.toLocaleString()}
                     </span>
                   </div>
-                  
+
                   <div className="flex justify-between items-center pt-3 border-t border-gray-200">
                     <span className="text-gray-900 font-bold">Total:</span>
                     <span className="text-teal-800 font-bold">

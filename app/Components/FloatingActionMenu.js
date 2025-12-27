@@ -14,40 +14,39 @@ const FloatingActionMenu = () => {
     <div style={{ zIndex: 0 }}>
       <FloatingMenu
         style={{ zIndex: 0 }}
-        slideSpeed={500}
         direction="left"
         spacing={8}
         isOpen={isOpen}
       >
         <MainButton
-        className="bg-white"
+          className="bg-white"
           iconResting={<MessageCircleMore style={{ fontSize: 25, color: "#115e59" }} />}
           iconActive={<MdClose style={{ fontSize: 20, color: "#115e59" }} />}
-          backgroundColor="white"
+          style={{ backgroundColor: "white" }}
           onClick={() => setIsOpen(!isOpen)}
           size={56}
         />
         {/* Facebook Button with Icon Background */}
         <ChildButton
-        className="bg-white" 
-          icon={<FaFacebook style={{ fontSize: 20, color: "blue", zIndex: 0,  backgroundColor: "white", }} />}
-          backgroundColor="#0068ff" 
+          className="bg-white"
+          icon={<FaFacebook style={{ fontSize: 20, color: "blue", zIndex: 0, backgroundColor: "white", }} />}
+          style={{ backgroundColor: "#0068ff" }}
           size={40}
           onClick={() => window.open("https://www.facebook.com/morshed.mart2.0", "_blank")}
         />
         {/* WhatsApp Button with Icon Background */}
         <ChildButton
-          icon={<IoLogoWhatsapp style={{ fontSize: 20, color: "green",  backgroundColor: "white", }} />}
-          backgroundColor="white"
-          className="bg-white" 
+          icon={<IoLogoWhatsapp style={{ fontSize: 20, color: "green", backgroundColor: "white", }} />}
+          style={{ backgroundColor: "white" }}
+          className="bg-white"
           size={40}
           onClick={() => window.open("https://wa.me/+8801970085954", "_blank")}
         />
         {/* Support/Contact Button with Icon Background */}
         <ChildButton
-        className="bg-white" 
+          className="bg-white"
           icon={<FaPhoneAlt style={{ fontSize: 15, color: "#115e59" }} />}
-          backgroundColor="white" 
+          style={{ backgroundColor: "white" }}
           size={40}
           onClick={() => window.open("tel: +8801970085954")}
         />

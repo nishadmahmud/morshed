@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import React, { useRef } from 'react';
 import { motion, useInView } from 'framer-motion';
-import noImg from '/public/no-image.jpg';
+const noImg = '/no-image.jpg';
 
 const textVariants = {
   hidden: { opacity: 0, x: -50 },
@@ -45,8 +45,8 @@ const MensBanner = ({ banner }) => {
               i === 0
                 ? 'text-2xl md:text-4xl lg:text-5xl font-semibold mb-3 text-center lg:text-left'
                 : i === 1
-                ? 'text-xl md:text-3xl lg:text-4xl font-semibold mb-5 text-center lg:text-left'
-                : 'text-sm md:text-base lg:text-lg mb-5 text-center lg:text-left'
+                  ? 'text-xl md:text-3xl lg:text-4xl font-semibold mb-5 text-center lg:text-left'
+                  : 'text-sm md:text-base lg:text-lg mb-5 text-center lg:text-left'
             }
           >
             {text}

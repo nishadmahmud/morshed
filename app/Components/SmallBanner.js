@@ -1,5 +1,5 @@
 import React from 'react';
-import noImg from '/public/no-image.jpg';
+const noImg = '/no-image.jpg';
 
 const SmallBanner = ({ banner }) => {
   const imageUrl = banner?.data?.[0]?.image_path || noImg.src;

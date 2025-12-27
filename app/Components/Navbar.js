@@ -5,7 +5,7 @@ import { LogIn, NotebookPen, ShoppingCart } from "lucide-react";
 import { House } from "lucide-react";
 import useStore from "../CustomHooks/useStore";
 import Image from "next/image";
-import loginLogo from "/public/user.png";
+const loginLogo = "/user.png";
 import GlobeModalButton from "./GlobeModalButton";
 import { Heart } from "lucide-react";
 
@@ -13,7 +13,7 @@ const Navbar = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const categoryRef = useRef(null);
   const [showCategory, setShowCategory] = useState(false);
-  const [user,setUser] = useState(null);
+  const [user, setUser] = useState(null);
 
   const { getCartItems, refetch, setRefetch, country, wishlist } = useStore();
   const handleCategoryClose = (event) => {

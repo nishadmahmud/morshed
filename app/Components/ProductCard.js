@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import noImg from "/public/no-image.jpg"
+const noImg = "/no-image.jpg"
 import Link from "next/link"
 import { useEffect } from "react"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
@@ -27,21 +27,21 @@ const ProductCard = ({ product }) => {
     if (country && country.value === "BD") {
       return productPrice?.basePrice || product?.retails_price || 0
     } else {
-      return productPrice?.intl_retails_price  || product?.intl_retails_price || 0
+      return productPrice?.intl_retails_price || product?.intl_retails_price || 0
     }
   }
 
-  const discountedPrice = country?.value === "BD"?
+  const discountedPrice = country?.value === "BD" ?
     product?.discount
-    ? product?.discount_type === "Percentage"
-      ? (product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)
-      : (product.retails_price - product.discount).toFixed(0)
-    : null
-  :  product?.intl_discount
-    ? product?.discount_type === "Percentage"
-      ? (product.intl_retails_price - (product.intl_retails_price * product.intl_discount) / 100).toFixed(0)
-      : (product.intl_retails_price - product.intl_discount).toFixed(0)
-    : null
+      ? product?.discount_type === "Percentage"
+        ? (product.retails_price - (product.retails_price * product.discount) / 100).toFixed(0)
+        : (product.retails_price - product.discount).toFixed(0)
+      : null
+    : product?.intl_discount
+      ? product?.discount_type === "Percentage"
+        ? (product.intl_retails_price - (product.intl_retails_price * product.intl_discount) / 100).toFixed(0)
+        : (product.intl_retails_price - product.intl_discount).toFixed(0)
+      : null
   const discountSuffix = product?.discount_type === "Percentage" ? "%" : product?.discount_type === "Fixed" ? "Tk" : ""
 
 
@@ -55,7 +55,7 @@ const ProductCard = ({ product }) => {
       .replace(/[^a-z0-9-]/g, "")
   }
 
-  
+
 
   return (
     <div
@@ -102,36 +102,36 @@ const ProductCard = ({ product }) => {
         </Link>
 
         {/* Discount Badge */}
-      {
-        countrySign ? <>
-          {product?.discount && (
-          <div className="absolute top-2 left-2 z-10 sm:top-3 sm:left-3">
-            <span
-              className="
+        {
+          countrySign ? <>
+            {product?.discount && (
+              <div className="absolute top-2 left-2 z-10 sm:top-3 sm:left-3">
+                <span
+                  className="
               bg-gray-900 text-white text-xs font-semibold 
               py-0.5 px-3 rounded-full
              
             "
-            >
-              Save {product?.discount}
-              {discountSuffix}
-            </span>
-          </div>
-        )}
-        </> : ""
-      }
+                >
+                  Save {product?.discount}
+                  {discountSuffix}
+                </span>
+              </div>
+            )}
+          </> : ""
+        }
 
         {product?.status.toLowerCase() === "stock out" ? (
-                      <div className={`absolute z-10 top-5 right-3 bg-red-500 text-white text-xs font-semibold 
+          <div className={`absolute z-10 top-5 right-3 bg-red-500 text-white text-xs font-semibold 
               py-0.5 px-3 rounded-full`}>
-                     
-                     Stock Out
 
-                      </div>
-                    ): ""}
+            Stock Out
+
+          </div>
+        ) : ""}
 
 
-       
+
       </div>
 
       {/* Product Info */}
@@ -202,26 +202,26 @@ const ProductCard = ({ product }) => {
               </span>
             )}
           </div>
-          
-        {/* Wishlist Button */}
-        <button
-          className="
+
+          {/* Wishlist Button */}
+          <button
+            className="
             flex p-1.5 rounded-full hover:bg-gray-100 
               text-gray-600 hover:text-gray-900 transition-all duration-200
               sm:p-2
           "
-          onClick={(e) => {
-            e.stopPropagation()
-            toggleWishlist(product)
-          }}
-          title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
-        >
-          {isInWishlist(product.id) ? (
-            <FaHeart className="w-4 h-4 text-teal-600 sm:w-5 sm:h-5" />
-          ) : (
-            <FaRegHeart className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors sm:w-5 sm:h-5" />
-          )}
-        </button>
+            onClick={(e) => {
+              e.stopPropagation()
+              toggleWishlist(product)
+            }}
+            title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+          >
+            {isInWishlist(product.id) ? (
+              <FaHeart className="w-4 h-4 text-teal-600 sm:w-5 sm:h-5" />
+            ) : (
+              <FaRegHeart className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors sm:w-5 sm:h-5" />
+            )}
+          </button>
         </div>
       </div>
     </div>

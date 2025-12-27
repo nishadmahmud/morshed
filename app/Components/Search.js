@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import noImg from "/public/no-image.jpg";
+const noImg = "/no-image.jpg";
 
 const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) => {
   const sanitizeSlug = (str) => {
@@ -12,7 +12,7 @@ const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) 
       .replace(/[^a-z0-9-]/g, "");
   };
 
- 
+
   return (
     <>
       <div

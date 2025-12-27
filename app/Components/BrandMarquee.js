@@ -1,13 +1,13 @@
 import Image from 'next/image';
 import React from 'react';
 import Marquee from 'react-fast-marquee';
-import noImg from '/public/no-image.jpg'
+const noImg = '/no-image.jpg'
 import { userId } from '../(home)/page';
 
 
-const BrandMarquee = async() => {
+const BrandMarquee = async () => {
 
-   const brandsRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/brands/${userId}`,{cache: 'no-cache'});
+  const brandsRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/brands/${userId}`, { cache: 'no-cache' });
   const brands = await brandsRes.json();
 
   return (
