@@ -4,7 +4,7 @@ import axios from "axios";
 const Chatbot = () => {
   const [messages, setMessages] = useState([]);
   const [input, setInput] = useState("");
-  const API_KEY = "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"; // Replace with your OpenAI API key
+  const API_KEY = process.env.NEXT_PUBLIC_OPENAI_API_KEY;
 
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -28,15 +28,15 @@ const Chatbot = () => {
           },
         }
       );
-      
-    
-    
+
+
+
       const botMessage = { role: "assistant", content: response.data.choices[0].message.content };
       setMessages([...updatedMessages, botMessage]);
     } catch (error) {
       console.error("Error:", error.response ? error.response.data : error.message);
     }
-    
+
   };
 
   return (
