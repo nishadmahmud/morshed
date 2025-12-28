@@ -2,12 +2,10 @@ import React from 'react';
 import SliderUi from './SliderUi';
 import { userId } from '../(home)/page';
 
-const HeroSlider = async() => {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/get-sliders/${userId}`,{cache: 'no-cache'});
-  const slider = await res.json();
+const HeroSlider = ({ slider }) => {
   return (
     <div>
-      <SliderUi slider={slider}/>
+      <SliderUi slider={slider} />
     </div>
   );
 };

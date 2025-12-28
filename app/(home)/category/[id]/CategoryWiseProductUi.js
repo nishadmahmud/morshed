@@ -8,7 +8,7 @@ import Pagination from "@/app/Components/pagination"
 import axios from "axios"
 import { useSearchParams } from "next/navigation"
 
-export default function CategoryWiseProductUi({ id }) {
+export default function CategoryWiseProductUi({ id, initialProducts }) {
   const searchParams = useSearchParams()
   // Get values using .get()
   const searchedCategory = searchParams.get("category")
@@ -18,8 +18,8 @@ export default function CategoryWiseProductUi({ id }) {
 
 
 
-  const [products, setProducts] = useState([]);
-  const [pagination, setPagination] = useState(null);
+  const [products, setProducts] = useState(initialProducts || []);
+  const [pagination, setPagination] = useState(initialProducts?.pagination || null);
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(20);
 
@@ -27,11 +27,28 @@ export default function CategoryWiseProductUi({ id }) {
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    // If we have initial products and we are on the first page/default limit, skip the first client-side fetch
+    if (initialProducts && currentPage === 1 && limit === 20 && !products.length === 0) {
+      // logic to ensure we don't double fetch, but actually `useEffect` runs after render.
+      // If we initialize state with initialProducts, we must be careful not to overwrite it with "loading" state immediately.
+      // However, this dependency array [id, currentPage, limit] will trigger on mount.
+      // We can use a ref to track if it's the first mount and we have initial data.
+    }
+  }, []);
+
+  const isFirstRun = useRef(true);
+
+  useEffect(() => {
     const fetchProducts = async () => {
+      if (isFirstRun.current && initialProducts) {
+        isFirstRun.current = false;
+        return;
+      }
+
       setIsLoading(true);
       try {
         const res = await axios.get(
-          `https://www.outletexpense.xyz/api/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`
+          `${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`
         );
 
         setProducts(res.data || []);
@@ -330,8 +347,8 @@ export default function CategoryWiseProductUi({ id }) {
                             key={size}
                             onClick={() => handleSizeToggle(size)}
                             className={`px-3 py-1 text-sm border rounded-md transition-colors ${selectedSizes.includes(size)
-                                ? "bg-gray-900 text-white border-gray-900"
-                                : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+                              ? "bg-gray-900 text-white border-gray-900"
+                              : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
                               }`}
                           >
                             {size}
@@ -468,8 +485,8 @@ export default function CategoryWiseProductUi({ id }) {
                                 key={size}
                                 onClick={() => handleSizeToggle(size)}
                                 className={`px-3 py-1 text-sm border rounded-md transition-colors ${selectedSizes.includes(size)
-                                    ? "bg-gray-900 text-white border-gray-900"
-                                    : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+                                  ? "bg-gray-900 text-white border-gray-900"
+                                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
                                   }`}
                               >
                                 {size}

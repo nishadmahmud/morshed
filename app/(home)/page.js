@@ -21,41 +21,54 @@ export const fetcher = (url) => fetch(url).then(res => res.json());
 
 export default async function Home() {
 
-  const promotionRes = await fetch(`${process.env.NEXT_PUBLIC_API}/latest-ecommerce-offer-list/${userId}`);
-  const promotion = await promotionRes.json();
+  const promotionPromise = fetch(`${process.env.NEXT_PUBLIC_API}/latest-ecommerce-offer-list/${userId}`, { next: { revalidate: 60 } });
 
-  const bannerRes = await fetch(`${process.env.NEXT_PUBLIC_API}/get-banners/${userId}`,{
-    cache: 'no-cache'
+  const bannerPromise = fetch(`${process.env.NEXT_PUBLIC_API}/get-banners/${userId}`, {
+    next: { revalidate: 60 }
   })
-  const banner = await bannerRes.json();
 
-  const categoriesRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`,{
-   cache: 'no-cache'
+  const categoriesPromise = fetch(`${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`, {
+    next: { revalidate: 60 }
   });
-  const categories = await categoriesRes.json();
 
- 
+  const sliderPromise = fetch(`${process.env.NEXT_PUBLIC_API}/get-sliders/${userId}`, {
+    next: { revalidate: 60 }
+  });
+
+  const [promotionRes, bannerRes, categoriesRes, sliderRes] = await Promise.all([
+    promotionPromise,
+    bannerPromise,
+    categoriesPromise,
+    sliderPromise
+  ]);
+
+  const promotion = promotionRes.ok ? await promotionRes.json() : null;
+  const banner = bannerRes.ok ? await bannerRes.json() : null;
+  const categories = categoriesRes.ok ? await categoriesRes.json() : [];
+  const slider = sliderRes.ok ? await sliderRes.json() : [];
+
+
 
 
   return (
     <>
-    {/* <SelectRegionModal></SelectRegionModal> */}
-      <PromotionModal offers={promotion}/>
-      <HeroSlider />
+      {/* <SelectRegionModal></SelectRegionModal> */}
+      <PromotionModal offers={promotion} />
+      <HeroSlider slider={slider} />
       <BrandMarquee />
       <div>
         <FeaturedCategories />
         <MensBanner banner={banner}></MensBanner>
         <StripeShirt></StripeShirt>
-        <SmallBanner banner={banner}/>
+        <SmallBanner banner={banner} />
         <SolidTshirt></SolidTshirt>
         <VideoSection></VideoSection>
-        <BannerSection categories={categories} banner={banner}/>
+        <BannerSection categories={categories} banner={banner} />
         <HalfSelveePolo></HalfSelveePolo>
         <OfferPage categories={categories}></OfferPage>
         <BenefitsSection></BenefitsSection>
       </div>
-        
+
     </>
   );
 }
