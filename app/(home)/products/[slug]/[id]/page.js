@@ -1,5 +1,6 @@
 import React, { Suspense } from 'react'
 import ProductDetailsUi from './ProductDetailsUi';
+import BrandedSpinner from '@/app/Components/BrandedSpinner';
 import { userId } from '@/app/(home)/page';
 
 export default async function ProductDetailsPage({ params }) {
@@ -21,23 +22,21 @@ export default async function ProductDetailsPage({ params }) {
     cache: "no-store",
   });
 
-  const [res, relatedProductRes] = await Promise.all([productPromise, relatedProductPromise]);
+  const productDataPromise = productPromise.then(res => res.ok ? res.json() : null);
+  const relatedDataPromise = relatedProductPromise.then(res => res.ok ? res.json() : []);
 
-  if (!res.ok) {
-    console.error(`Product API Error: ${res.status} ${res.statusText}`);
-  }
-
-  if (!relatedProductRes.ok) {
-    console.error(`Related Products API Error: ${relatedProductRes.status} ${relatedProductRes.statusText}`);
-  }
-
-  const data = res.ok ? res.json() : Promise.resolve(null);
-  const relatedProducts = relatedProductRes.ok ? relatedProductRes.json() : Promise.resolve([]);
-
-
+  /* 
+     Streaming Implementation:
+     We pass the promises directly to the client component.
+     The client component will use `React.use()` to unwrap them, suspending rendering until data is available.
+  */
   return (
-    <Suspense>
-      <ProductDetailsUi data={data} id={id} relatedProductsData={relatedProducts} />
+    <Suspense fallback={<BrandedSpinner />}>
+      <ProductDetailsUi
+        productPromise={productDataPromise}
+        id={id}
+        relatedProductPromise={relatedDataPromise}
+      />
     </Suspense>
   )
 }

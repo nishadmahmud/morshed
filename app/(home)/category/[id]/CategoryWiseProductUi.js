@@ -1,68 +1,40 @@
 "use client"
-import { useEffect, useState, useRef } from "react"
+import { useEffect, useState, useRef, use } from "react"
 import useStore from "@/app/CustomHooks/useStore"
 import ProductCard from "@/app/Components/ProductCard"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, keepPreviousData } from "@tanstack/react-query"
 import { ProductCardSkeleton } from "@/app/Components/ProductCardSkeleton"
 import Pagination from "@/app/Components/pagination"
 import axios from "axios"
 import { useSearchParams } from "next/navigation"
 
-export default function CategoryWiseProductUi({ id, initialProducts }) {
+export default function CategoryWiseProductUi({ id }) {
   const searchParams = useSearchParams()
   // Get values using .get()
   const searchedCategory = searchParams.get("category")
   const searchedTotal = searchParams.get("total")
-  const page = searchParams.get("page")
   // console.log(searchedCategory, searchedTotal, limit, page)
 
 
-
-  const [products, setProducts] = useState(initialProducts || []);
-  const [pagination, setPagination] = useState(initialProducts?.pagination || null);
   const [currentPage, setCurrentPage] = useState(1);
   const [limit, setLimit] = useState(20);
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const fetchProducts = async () => {
+    const res = await axios.get(
+      `${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`
+    );
+    return res.data;
+  };
 
-  useEffect(() => {
-    // If we have initial products and we are on the first page/default limit, skip the first client-side fetch
-    if (initialProducts && currentPage === 1 && limit === 20 && !products.length === 0) {
-      // logic to ensure we don't double fetch, but actually `useEffect` runs after render.
-      // If we initialize state with initialProducts, we must be careful not to overwrite it with "loading" state immediately.
-      // However, this dependency array [id, currentPage, limit] will trigger on mount.
-      // We can use a ref to track if it's the first mount and we have initial data.
-    }
-  }, []);
+  const { data, isLoading } = useQuery({
+    queryKey: ['category-products', id, currentPage, limit],
+    queryFn: fetchProducts,
+    placeholderData: keepPreviousData,
+    staleTime: 60 * 1000,
+  });
 
-  const isFirstRun = useRef(true);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      if (isFirstRun.current && initialProducts) {
-        isFirstRun.current = false;
-        return;
-      }
-
-      setIsLoading(true);
-      try {
-        const res = await axios.get(
-          `${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${id}?page=${currentPage}&limit=${limit}`
-        );
-
-        setProducts(res.data || []);
-        setPagination(res.data?.pagination || null);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, [id, currentPage, limit]);
-
+  const products = data || { data: [] };
+  const pagination = data?.pagination || null;
   console.log(products);
 
   const { country } = useStore()

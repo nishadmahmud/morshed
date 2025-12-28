@@ -27,11 +27,11 @@ import CursorImageZoom from "@/app/Components/CustomImageZoom";
 
 // Fetcher function from the original code
 
-const ProductDetailsUi = ({ data, id, relatedProductsData }) => {
+const ProductDetailsUi = ({ productPromise, id, relatedProductPromise }) => {
 
-  const product = use(data);
+  const product = use(productPromise);
   console.log(product);
-  const relatedProducts = use(relatedProductsData);
+  const relatedProducts = use(relatedProductPromise);
   const [quantity, setQuantity] = useState(1);
   const [imageIndex, setImageIndex] = useState(0);
   const [scroll, setScroll] = useState(0);
