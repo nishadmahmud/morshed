@@ -1,42 +1,33 @@
 import React, { Suspense } from 'react'
 import ProductDetailsUi from './ProductDetailsUi';
 import BrandedSpinner from '@/app/Components/BrandedSpinner';
-import { userId } from '@/app/(home)/page';
+import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
+import { cookies } from 'next/headers';
 
 export default async function ProductDetailsPage({ params }) {
   const { id } = await params;
-  console.log("API URL:", process.env.NEXT_PUBLIC_API);
-  console.log("Product ID:", id);
 
-  const productPromise = fetch(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}`, { next: { revalidate: 60 } });
+  const cookieStore = await cookies();
+  const userId = cookieStore.get("user_id")?.value;
 
-  const relatedProductPromise = fetch(`${process.env.NEXT_PUBLIC_API}/public/get-related-products`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      product_id: id,
-      user_id: userId,
-    }),
-    cache: "no-store",
+  const queryClient = new QueryClient();
+
+  await queryClient.prefetchQuery({
+    queryKey: ['product-details', id],
+    queryFn: async () => {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}`, {
+        next: { revalidate: 60 }
+      });
+      if (!res.ok) throw new Error("Failed");
+      return res.json();
+    }
   });
 
-  const productDataPromise = productPromise.then(res => res.ok ? res.json() : null);
-  const relatedDataPromise = relatedProductPromise.then(res => res.ok ? res.json() : []);
-
-  /* 
-     Streaming Implementation:
-     We pass the promises directly to the client component.
-     The client component will use `React.use()` to unwrap them, suspending rendering until data is available.
-  */
   return (
     <Suspense fallback={<BrandedSpinner />}>
-      <ProductDetailsUi
-        productPromise={productDataPromise}
-        id={id}
-        relatedProductPromise={relatedDataPromise}
-      />
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <ProductDetailsUi id={id} userId={userId} />
+      </HydrationBoundary>
     </Suspense>
   )
 }

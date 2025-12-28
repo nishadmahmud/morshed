@@ -24,14 +24,42 @@ import useStore from "@/app/CustomHooks/useStore";
 import useWishlist from "@/app/CustomHooks/useWishlist";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import CursorImageZoom from "@/app/Components/CustomImageZoom";
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
+import axios from "axios";
 
-// Fetcher function from the original code
+// Fetcher function needs to be defined or used from axios
+const fetchProductDetails = async (id) => {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}`);
+  if (!res.ok) throw new Error("Failed");
+  return res.json();
+}
 
-const ProductDetailsUi = ({ productPromise, id, relatedProductPromise }) => {
+const ProductDetailsUi = ({ id, userId }) => {
 
-  const product = use(productPromise);
-  console.log(product);
-  const relatedProducts = use(relatedProductPromise);
+  const { data: productData, isLoading: isProductLoading } = useQuery({
+    queryKey: ['product-details', id],
+    queryFn: () => fetchProductDetails(id),
+    staleTime: 60 * 1000,
+  });
+
+  const { data: relatedData } = useQuery({
+    queryKey: ['related-products', id],
+    queryFn: async () => {
+      const res = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/get-related-products`, {
+        product_id: id,
+        user_id: userId,
+      });
+      return res.data;
+    },
+    staleTime: 60 * 1000,
+    enabled: !!id // Only fetch if ID exists
+  });
+
+
+  // Mimic old structure
+  const product = productData || null;
+  const relatedProducts = relatedData || [];
+
   const [quantity, setQuantity] = useState(1);
   const [imageIndex, setImageIndex] = useState(0);
   const [scroll, setScroll] = useState(0);
@@ -73,24 +101,24 @@ const ProductDetailsUi = ({ productPromise, id, relatedProductPromise }) => {
 
 
   useEffect(() => {
-    if (product?.data.id && product?.data.retails_price) {
+    if (product?.data?.id && product?.data?.retails_price) {
       setProductPrice(
         product.data.id,
         product?.data.retails_price,
         product?.data.intl_retails_price || null
       );
     }
-  }, []);
+  }, [product]);
 
-  const productPrice = prices[product?.data.id];
+  const productPrice = product?.data?.id ? prices[product.data.id] : null;
 
   const getPriceByCountry = () => {
     if (country && country.value === "BD") {
-      return productPrice?.basePrice || product?.data.retails_price || 0;
+      return productPrice?.basePrice || product?.data?.retails_price || 0;
     } else {
       return (
         productPrice?.intl_retails_price ||
-        product?.data.intl_retails_price ||
+        product?.data?.intl_retails_price ||
         0
       );
     }
