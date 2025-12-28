@@ -296,12 +296,12 @@ useEffect(() => {
       sub_total: Number(cartTotal),
       vat: 0,
       tax: 0,
-      discount: Number(totalDiscount + couponValue),
+      discount: Number(couponValue),
       coupon_code: couponCode,
       product: cartItems.map((item) => ({
         product_id: item.id,
         qty: item.quantity,
-        price: item.orginalPrice,
+        price: item.retails_price,
         mode: 1,
         size: 1,
         sales_id: 3,
@@ -953,8 +953,8 @@ useEffect(() => {
               <h3 className="text-xl font-semibold text-gray-900">
                 Payment Method
               </h3>
-              <p className="text-sm text-gray-600 flex items-center hidden md:block">
-                <Shield className="h-4 w-4 mr-1" />
+              <p className="text-sm text-gray-600  items-center hidden md:flex">
+              
                 All transactions are secure and encrypted
               </p>
             </div>

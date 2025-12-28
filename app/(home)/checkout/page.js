@@ -24,7 +24,7 @@ const discount = cartItems.reduce((prev, item) => {
           discountAmount = (item.discount || 0) * item.quantity;
         } else if (item.discount_type === "Percentage") {
           discountAmount =
-            ((item.retails_price * (item.discount || 0)) / 100) * item.quantity;
+            ((item?.orginalPrice * (item.discount || 0)) / 100) * item.quantity;
         }
       } else {
         if (item.discount_type === "Fixed") {
