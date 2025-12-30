@@ -60,13 +60,7 @@ export default function CategoryWiseProductUi({ id }) {
   const [selectedSize, setSelectedSize] = useState("")
   const [minimum, setMinimum] = useState(0)
   const filterRef = useRef(null)
-<<<<<<< HEAD
   console.log(products);
-=======
-console.log('products---',products);
-
-// sort by brands
->>>>>>> a982b24a89c46299c6731d16b3023d11dddca870
   useEffect(() => {
     if (products?.data) {
       const productList = Array.isArray(products.data) ? products.data : products.data.data || []
@@ -87,56 +81,56 @@ console.log('products---',products);
 
   // sort by size
   useEffect(() => {
-  if (!products?.data) return;
+    if (!products?.data) return;
 
-  const productList = Array.isArray(products.data)
-    ? products.data
-    : products.data.data || [];
+    const productList = Array.isArray(products.data)
+      ? products.data
+      : products.data.data || [];
 
-  setFilteredItems(productList);
-
-  // Extract unique size names (S, M, L, XL, XXL)
-  const sizeSet = new Set();
-
-  productList.forEach((product) => {
-    product.product_variants?.forEach((variant) => {
-      if (variant.quantity > 0) {
-        sizeSet.add(variant.name);
-      }
-    });
-  });
-
-  setSizes([...sizeSet]);
-}, [products]);
-
-const handleSizeChange = (size) => {
-  if (!products?.data) return;
-
-  const productList = Array.isArray(products.data)
-    ? products.data
-    : products.data.data || [];
-
-  if (size === selectedSize) {
-    setSelectedSize("");
     setFilteredItems(productList);
-    return;
-  }
 
-  setSelectedSize(size);
+    // Extract unique size names (S, M, L, XL, XXL)
+    const sizeSet = new Set();
 
-  const filtered = productList.filter((product) =>
-    product.product_variants?.some(
-      (variant) => variant.name === size && variant.quantity > 0
-    )
-  );
+    productList.forEach((product) => {
+      product.product_variants?.forEach((variant) => {
+        if (variant.quantity > 0) {
+          sizeSet.add(variant.name);
+        }
+      });
+    });
 
-  setFilteredItems(filtered);
-};
+    setSizes([...sizeSet]);
+  }, [products]);
+
+  const handleSizeChange = (size) => {
+    if (!products?.data) return;
+
+    const productList = Array.isArray(products.data)
+      ? products.data
+      : products.data.data || [];
+
+    if (size === selectedSize) {
+      setSelectedSize("");
+      setFilteredItems(productList);
+      return;
+    }
+
+    setSelectedSize(size);
+
+    const filtered = productList.filter((product) =>
+      product.product_variants?.some(
+        (variant) => variant.name === size && variant.quantity > 0
+      )
+    );
+
+    setFilteredItems(filtered);
+  };
 
 
 
 
-// sort by price
+  // sort by price
   useEffect(() => {
     let filtered = products?.data || []
     if (!Array.isArray(filtered)) {
@@ -355,7 +349,6 @@ const handleSizeChange = (size) => {
                 )}
               </div>
 
-<<<<<<< HEAD
               {/* Sizes */}
               <div className="border-b border-gray-200 pb-4">
                 <button
@@ -397,9 +390,6 @@ const handleSizeChange = (size) => {
               </div>
 
               {/* Brands */}
-=======
-              {/* Sort by Brands */}
->>>>>>> a982b24a89c46299c6731d16b3023d11dddca870
               <div>
                 <h2>Brands</h2>
                 {brands.length
@@ -425,191 +415,193 @@ const handleSizeChange = (size) => {
               </div>
 
               {/* Sort by Size */}
-             <div>
-  <h2>Size</h2>
+              <div>
+                <h2>Size</h2>
 
-  {size.map((item) => (
-    <div key={item} className="flex items-center gap-3 text-base">
-      <input
-        type="checkbox"
-        checked={item === selectedSize}
-        onChange={() => handleSizeChange(item)}
-      />
-      <label>{item}</label>
-    </div>
-  ))}
-</div>
+                {size.map((item) => (
+                  <div key={item} className="flex items-center gap-3 text-base">
+                    <input
+                      type="checkbox"
+                      checked={item === selectedSize}
+                      onChange={() => handleSizeChange(item)}
+                    />
+                    <label>{item}</label>
+                  </div>
+                ))}
+              </div>
 
 
-            </div>
-          </div>
-        </div>
+            </div >
+          </div >
+        </div >
 
         {/* Mobile Filter Sidebar */}
-        {isFilterOpen && (
-          <>
-            <div className="fixed inset-0 bg-black bg-opacity-40 z-40" onClick={() => setIsFilterOpen(false)}></div>
-            <div
-              ref={filterRef}
-              className="fixed right-0 top-0 h-full w-full sm:max-w-md bg-white z-50 overflow-y-auto"
-            >
-              <div className="flex items-center justify-between p-4 border-b border-gray-200">
-                <h2 className="text-lg font-medium">Filters</h2>
-                <button onClick={() => setIsFilterOpen(false)} className="text-gray-500 hover:text-gray-700">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                  </svg>
-                </button>
-              </div>
-              <div className="p-4">
-                {(selectedSizes.length > 0 || selectedColors.length > 0) && (
-                  <button className="text-sm text-gray-500 hover:text-gray-700 mb-4" onClick={clearAllFilters}>
-                    Clear all filters
-                  </button>
-                )}
-                <div className="space-y-4">
-                  {/* Price Range */}
-                  <div className="border-b border-gray-200 pb-4">
-                    <button
-                      className="flex w-full items-center justify-between py-3 text-base font-medium"
-                      onClick={() => toggleAccordion("price")}
+        {
+          isFilterOpen && (
+            <>
+              <div className="fixed inset-0 bg-black bg-opacity-40 z-40" onClick={() => setIsFilterOpen(false)}></div>
+              <div
+                ref={filterRef}
+                className="fixed right-0 top-0 h-full w-full sm:max-w-md bg-white z-50 overflow-y-auto"
+              >
+                <div className="flex items-center justify-between p-4 border-b border-gray-200">
+                  <h2 className="text-lg font-medium">Filters</h2>
+                  <button onClick={() => setIsFilterOpen(false)} className="text-gray-500 hover:text-gray-700">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
                     >
-                      Price Range
-                      <svg
-                        className={`h-5 w-5 transition-transform ${isAccordionOpen.price ? "rotate-180" : ""}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
+                      <line x1="18" y1="6" x2="6" y2="18"></line>
+                      <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                  </button>
+                </div>
+                <div className="p-4">
+                  {(selectedSizes.length > 0 || selectedColors.length > 0) && (
+                    <button className="text-sm text-gray-500 hover:text-gray-700 mb-4" onClick={clearAllFilters}>
+                      Clear all filters
                     </button>
-                    {isAccordionOpen.price && (
-                      <div className="pt-2 pb-6">
-                        <div className="relative pt-5 pb-6">
-                          <input
-                            type="range"
-                            min={minimum}
-                            max={priceRange[1]}
-                            value={priceRange[0]}
-                            onChange={(e) => setPriceRange([Number.parseInt(e.target.value), priceRange[1]])}
-                            className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
-                          />
-                          <div className="flex items-center justify-between mt-2">
-                            <span>${priceRange[0]}</span>
-                            <span>${priceRange[1]}</span>
+                  )}
+                  <div className="space-y-4">
+                    {/* Price Range */}
+                    <div className="border-b border-gray-200 pb-4">
+                      <button
+                        className="flex w-full items-center justify-between py-3 text-base font-medium"
+                        onClick={() => toggleAccordion("price")}
+                      >
+                        Price Range
+                        <svg
+                          className={`h-5 w-5 transition-transform ${isAccordionOpen.price ? "rotate-180" : ""}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {isAccordionOpen.price && (
+                        <div className="pt-2 pb-6">
+                          <div className="relative pt-5 pb-6">
+                            <input
+                              type="range"
+                              min={minimum}
+                              max={priceRange[1]}
+                              value={priceRange[0]}
+                              onChange={(e) => setPriceRange([Number.parseInt(e.target.value), priceRange[1]])}
+                              className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                            />
+                            <div className="flex items-center justify-between mt-2">
+                              <span>${priceRange[0]}</span>
+                              <span>${priceRange[1]}</span>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    )}
-                  </div>
+                      )}
+                    </div>
 
-                  {/* Sizes - Mobile */}
-                  <div className="border-b border-gray-200 pb-4">
-                    <button
-                      className="flex w-full items-center justify-between py-3 text-base font-medium"
-                      onClick={() => toggleAccordion("size")}
-                    >
-                      Size
-                      <svg
-                        className={`h-5 w-5 transition-transform ${isAccordionOpen.size ? "rotate-180" : ""}`}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
+                    {/* Sizes - Mobile */}
+                    <div className="border-b border-gray-200 pb-4">
+                      <button
+                        className="flex w-full items-center justify-between py-3 text-base font-medium"
+                        onClick={() => toggleAccordion("size")}
                       >
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                      </svg>
-                    </button>
-                    {isAccordionOpen.size && (
-                      <div className="pt-2">
-                        {sizes.length > 0 ? (
-                          <div className="flex flex-wrap gap-2">
-                            {sizes.map((size) => (
-                              <button
-                                key={size}
-                                onClick={() => handleSizeToggle(size)}
-                                className={`px-3 py-1 text-sm border rounded-md transition-colors ${selectedSizes.includes(size)
-                                  ? "bg-gray-900 text-white border-gray-900"
-                                  : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
-                                  }`}
-                              >
-                                {size}
-                              </button>
-                            ))}
-                          </div>
-                        ) : (
-                          <p className="text-sm text-gray-500">No sizes available</p>
-                        )}
-                      </div>
-                    )}
-                  </div>
+                        Size
+                        <svg
+                          className={`h-5 w-5 transition-transform ${isAccordionOpen.size ? "rotate-180" : ""}`}
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                      </button>
+                      {isAccordionOpen.size && (
+                        <div className="pt-2">
+                          {sizes.length > 0 ? (
+                            <div className="flex flex-wrap gap-2">
+                              {sizes.map((size) => (
+                                <button
+                                  key={size}
+                                  onClick={() => handleSizeToggle(size)}
+                                  className={`px-3 py-1 text-sm border rounded-md transition-colors ${selectedSizes.includes(size)
+                                    ? "bg-gray-900 text-white border-gray-900"
+                                    : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+                                    }`}
+                                >
+                                  {size}
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-sm text-gray-500">No sizes available</p>
+                          )}
+                        </div>
+                      )}
+                    </div>
 
-                  {/* Brands */}
-                  <div>
-                    <h2>Brands</h2>
-                    {brands.length
-                      ? brands.map((item) => (
+                    {/* Brands */}
+                    <div>
+                      <h2>Brands</h2>
+                      {brands.length
+                        ? brands.map((item) => (
+                          <div key={item} className="flex items-center gap-3 text-base">
+                            <input
+                              checked={item === selectedBrand}
+                              type="checkbox"
+                              onChange={() => {
+                                if (item === selectedBrand) {
+                                  setSelectedBrand("")
+                                  // Logic moved to main useEffect
+                                } else {
+                                  setSelectedBrand(item)
+                                  // Logic moved to main useEffect
+                                }
+                              }}
+                            />
+                            <label>{item}</label>
+                          </div>
+                        ))
+                        : null}
+                    </div>
+
+                    <div>
+                      <h2>Size</h2>
+
+                      {size.map((item) => (
                         <div key={item} className="flex items-center gap-3 text-base">
                           <input
-                            checked={item === selectedBrand}
                             type="checkbox"
-                            onChange={() => {
-                              if (item === selectedBrand) {
-                                setSelectedBrand("")
-                                // Logic moved to main useEffect
-                              } else {
-                                setSelectedBrand(item)
-                                // Logic moved to main useEffect
-                              }
-                            }}
+                            checked={item === selectedSize}
+                            onChange={() => handleSizeChange(item)}
                           />
                           <label>{item}</label>
                         </div>
-                      ))
-                      : null}
+                      ))}
+                    </div>
+
+
+
                   </div>
-
-                  <div>
-  <h2>Size</h2>
-
-  {size.map((item) => (
-    <div key={item} className="flex items-center gap-3 text-base">
-      <input
-        type="checkbox"
-        checked={item === selectedSize}
-        onChange={() => handleSizeChange(item)}
-      />
-      <label>{item}</label>
-    </div>
-  ))}
-</div>
-
-
-                  
-                </div>
-                <div className="mt-6">
-                  <button
-                    className="w-full bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors"
-                    onClick={() => setIsFilterOpen(false)}
-                  >
-                    Apply Filters
-                  </button>
+                  <div className="mt-6">
+                    <button
+                      className="w-full bg-gray-900 text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors"
+                      onClick={() => setIsFilterOpen(false)}
+                    >
+                      Apply Filters
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          </>
-        )}
+            </>
+          )
+        }
 
         {/* Product Grid */}
         <div className="flex-1">
@@ -680,12 +672,13 @@ const handleSizeChange = (size) => {
             <Pagination currentPage={currentPage} onPageChange={setCurrentPage} totalPage={totalPage} />
           )} */}
         </div>
-      </div>
+      </div >
 
       {/* Mobile Filter Button (Fixed) */}
-      <button
+      < button
         className="md:hidden fixed bottom-24 left-7 bg-gray-900 text-white p-3 rounded-full z-30 shadow-lg"
-        onClick={() => setIsFilterOpen(true)}
+        onClick={() => setIsFilterOpen(true)
+        }
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -708,7 +701,7 @@ const handleSizeChange = (size) => {
           <line x1="9" y1="8" x2="15" y2="8"></line>
           <line x1="17" y1="16" x2="23" y2="16"></line>
         </svg>
-      </button>
-    </div>
+      </button >
+    </div >
   )
 }
