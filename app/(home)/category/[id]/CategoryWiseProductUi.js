@@ -55,7 +55,6 @@ export default function CategoryWiseProductUi({ id }) {
   })
 
   const [brands, setBrands] = useState([])
-  const [size, setSizes] = useState([])
   const [selectedBrand, setSelectedBrand] = useState("")
   const [selectedSize, setSelectedSize] = useState("")
   const [minimum, setMinimum] = useState(0)
