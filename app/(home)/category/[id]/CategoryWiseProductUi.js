@@ -55,10 +55,18 @@ export default function CategoryWiseProductUi({ id }) {
   })
 
   const [brands, setBrands] = useState([])
+  const [size, setSizes] = useState([])
   const [selectedBrand, setSelectedBrand] = useState("")
+  const [selectedSize, setSelectedSize] = useState("")
   const [minimum, setMinimum] = useState(0)
   const filterRef = useRef(null)
+<<<<<<< HEAD
   console.log(products);
+=======
+console.log('products---',products);
+
+// sort by brands
+>>>>>>> a982b24a89c46299c6731d16b3023d11dddca870
   useEffect(() => {
     if (products?.data) {
       const productList = Array.isArray(products.data) ? products.data : products.data.data || []
@@ -76,6 +84,59 @@ export default function CategoryWiseProductUi({ id }) {
     }
   }, [products])
 
+
+  // sort by size
+  useEffect(() => {
+  if (!products?.data) return;
+
+  const productList = Array.isArray(products.data)
+    ? products.data
+    : products.data.data || [];
+
+  setFilteredItems(productList);
+
+  // Extract unique size names (S, M, L, XL, XXL)
+  const sizeSet = new Set();
+
+  productList.forEach((product) => {
+    product.product_variants?.forEach((variant) => {
+      if (variant.quantity > 0) {
+        sizeSet.add(variant.name);
+      }
+    });
+  });
+
+  setSizes([...sizeSet]);
+}, [products]);
+
+const handleSizeChange = (size) => {
+  if (!products?.data) return;
+
+  const productList = Array.isArray(products.data)
+    ? products.data
+    : products.data.data || [];
+
+  if (size === selectedSize) {
+    setSelectedSize("");
+    setFilteredItems(productList);
+    return;
+  }
+
+  setSelectedSize(size);
+
+  const filtered = productList.filter((product) =>
+    product.product_variants?.some(
+      (variant) => variant.name === size && variant.quantity > 0
+    )
+  );
+
+  setFilteredItems(filtered);
+};
+
+
+
+
+// sort by price
   useEffect(() => {
     let filtered = products?.data || []
     if (!Array.isArray(filtered)) {
@@ -294,6 +355,7 @@ export default function CategoryWiseProductUi({ id }) {
                 )}
               </div>
 
+<<<<<<< HEAD
               {/* Sizes */}
               <div className="border-b border-gray-200 pb-4">
                 <button
@@ -335,6 +397,9 @@ export default function CategoryWiseProductUi({ id }) {
               </div>
 
               {/* Brands */}
+=======
+              {/* Sort by Brands */}
+>>>>>>> a982b24a89c46299c6731d16b3023d11dddca870
               <div>
                 <h2>Brands</h2>
                 {brands.length
@@ -358,6 +423,24 @@ export default function CategoryWiseProductUi({ id }) {
                   ))
                   : null}
               </div>
+
+              {/* Sort by Size */}
+             <div>
+  <h2>Size</h2>
+
+  {size.map((item) => (
+    <div key={item} className="flex items-center gap-3 text-base">
+      <input
+        type="checkbox"
+        checked={item === selectedSize}
+        onChange={() => handleSizeChange(item)}
+      />
+      <label>{item}</label>
+    </div>
+  ))}
+</div>
+
+
             </div>
           </div>
         </div>
@@ -496,6 +579,24 @@ export default function CategoryWiseProductUi({ id }) {
                       ))
                       : null}
                   </div>
+
+                  <div>
+  <h2>Size</h2>
+
+  {size.map((item) => (
+    <div key={item} className="flex items-center gap-3 text-base">
+      <input
+        type="checkbox"
+        checked={item === selectedSize}
+        onChange={() => handleSizeChange(item)}
+      />
+      <label>{item}</label>
+    </div>
+  ))}
+</div>
+
+
+                  
                 </div>
                 <div className="mt-6">
                   <button

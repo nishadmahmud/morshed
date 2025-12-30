@@ -3,7 +3,7 @@ import "../globals.css";
 import Header from "../Components/Header";
 import Footer from "../Components/Footer";
 import StoreProvider from "../StoreContext/store";
-import AvatarChat from "../Components/AvatarChat";
+import { AvatarChat } from "../Components/LazyComponents";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import Script from "next/script";
@@ -31,31 +31,37 @@ const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
+  display: 'swap',
 });
 const ptSerif = PT_Serif({
   variable: "--font-poppins",
   subsets: ['latin'],
   weight: ['400', '700'],
+  display: 'swap',
 });
 const ptSans = PT_Sans({
   variable: "--font-pt-sans",
   subsets: ['latin'],
   weight: ['400', '700'],
+  display: 'swap',
 });
 const openSans = Open_Sans({
   variable: "--font-poppins",
   subsets: ['latin'],
   weight: ['300', '400', '500', '600', '700', '800'],
+  display: 'swap',
 });
 const cinzel = Cinzel({
   variable: "--font-cinzel",
   subsets: ['latin'],
   weight: ['400', '500', '600', '700', '800'],
+  display: 'swap',
 });
 const jost = Jost({
   variable: "--font-jost",
   subsets: ['latin'],
   weight: ['100', '200', '300', '400', '500', '600', '700', '800'],
+  display: 'swap',
 });
 
 export const metadata = {
@@ -103,13 +109,13 @@ export default async function RootLayout({ children }) {
         <Toaster></Toaster>
         <StoreProvider>
           <Header />
-            <div className="bg-[#ffffff] ">
-              <Providers>
-                <ClientLayout>{children}</ClientLayout>
-              </Providers>
-              <AvatarChat />
-            </div>
-            <Footer />
+          <div className="bg-[#ffffff] ">
+            <Providers>
+              <ClientLayout>{children}</ClientLayout>
+            </Providers>
+            <AvatarChat />
+          </div>
+          <Footer />
         </StoreProvider>
       </body>
     </html>

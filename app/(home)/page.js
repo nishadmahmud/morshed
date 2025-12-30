@@ -1,15 +1,14 @@
 
+
 import HeroSlider from "../Components/HeroSlider";
 import BannerSection from '../Components/BannerSection';
 import FeaturedCategories from '../Components/FeaturedCategories';
-import PromotionModal from "../Components/PromotionModal";
+import { PromotionModal, VideoSection, BenefitsSection } from '../Components/LazyComponents';
 import SmallBanner from "../Components/SmallBanner";
 import MensBanner from "../Components/MensBanner";
 import SolidTshirt from "../Components/SolidTshirt";
 import OfferPage from "../Components/OfferPage";
 import HalfSelveePolo from "../Components/HalfSelveePolo";
-import BenefitsSection from "../Components/BenefitsSection";
-import VideoSection from "../Components/VideoSection";
 import BrandMarquee from "../Components/BrandMarquee";
 import StripeShirt from "../Components/StripeShirt";
 
