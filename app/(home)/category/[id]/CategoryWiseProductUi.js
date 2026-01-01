@@ -417,7 +417,7 @@ export default function CategoryWiseProductUi({ id }) {
               <div>
                 <h2>Size</h2>
 
-                {size.map((item) => (
+                {sizes.map((item) => (
                   <div key={item} className="flex items-center gap-3 text-base">
                     <input
                       type="checkbox"
