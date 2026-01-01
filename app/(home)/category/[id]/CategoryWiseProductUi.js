@@ -136,6 +136,13 @@ export default function CategoryWiseProductUi({ id }) {
       filtered = filtered.data || []
     }
 
+    console.log('🔍 Filter Debug:', {
+      totalProducts: filtered.length,
+      selectedSizes,
+      priceRange,
+      selectedBrand
+    });
+
     // 1. Filter by Price Range
     if (country?.value === "BD") {
       filtered = filtered.filter(item => item.retails_price >= priceRange[0] && item.retails_price <= priceRange[1]);
@@ -148,14 +155,24 @@ export default function CategoryWiseProductUi({ id }) {
       filtered = filtered.filter(item => item.brand_name === selectedBrand);
     }
 
-    // 3. Filter by Selected Sizes
+    // 3. Filter by Selected Sizes (only show products with selected sizes AND quantity > 0)
     if (selectedSizes.length > 0) {
+      console.log('🎯 Filtering by sizes:', selectedSizes);
       filtered = filtered.filter(item => {
-        if (!item.product_variants) return false;
-        // Check if product has ANY of the selected sizes
-        return item.product_variants.some(variant => selectedSizes.includes(variant.name));
+        if (!item.product_variants) {
+          console.log('❌ No variants for:', item.name);
+          return false;
+        }
+        // Check if product has ANY of the selected sizes WITH quantity > 0
+        const hasSize = item.product_variants.some(variant =>
+          selectedSizes.includes(variant.name) && variant.quantity > 0
+        );
+        console.log(`${hasSize ? '✅' : '❌'} ${item.name}:`, item.product_variants.map(v => `${v.name}(${v.quantity})`));
+        return hasSize;
       });
     }
+
+    console.log('✨ Filtered result:', filtered.length, 'products');
 
     // 4. Sort
     if (sortBy === "low-to-high") {
@@ -411,22 +428,6 @@ export default function CategoryWiseProductUi({ id }) {
                     </div>
                   ))
                   : null}
-              </div>
-
-              {/* Sort by Size */}
-              <div>
-                <h2>Size</h2>
-
-                {sizes.map((item) => (
-                  <div key={item} className="flex items-center gap-3 text-base">
-                    <input
-                      type="checkbox"
-                      checked={item === selectedSize}
-                      onChange={() => handleSizeChange(item)}
-                    />
-                    <label>{item}</label>
-                  </div>
-                ))}
               </div>
 
 
