@@ -68,9 +68,13 @@ export default function CategoryWiseProductUi({ id }) {
       const brandList = [...new Set(productList.map((item) => item.brand_name).filter(Boolean))]
       setBrands(brandList)
 
-      // Extract unique sizes from product variants
+      // Extract unique sizes from product variants (only sizes with quantity > 0)
       const allSizes = productList.flatMap(product =>
-        product.product_variants ? product.product_variants.map(variant => variant.name) : []
+        product.product_variants
+          ? product.product_variants
+            .filter(variant => variant.quantity > 0)  // Only include sizes with stock
+            .map(variant => variant.name)
+          : []
       );
       const uniqueSizes = [...new Set(allSizes)].filter(Boolean).sort();
       setSizes(uniqueSizes);
