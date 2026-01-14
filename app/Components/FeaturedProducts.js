@@ -4,7 +4,7 @@ import Heading from "../CustomHooks/heading";
 const noImg = "/no-image.jpg";
 import Image from "next/image";
 import useSWR from "swr";
-import { fetcher, userId } from "../(home)/page";
+import { fetcher, userId } from "../constants";
 import CardSkeleton from "./CardSkeleton";
 import useStore from "../CustomHooks/useStore";
 import Link from "next/link";

@@ -1,13 +1,10 @@
 "use client";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import { LogIn, NotebookPen, ShoppingCart } from "lucide-react";
-import { House } from "lucide-react";
+import { LogIn, ShoppingCart, House, Heart } from "lucide-react";
 import useStore from "../CustomHooks/useStore";
 import Image from "next/image";
 const loginLogo = "/user.png";
-import GlobeModalButton from "./GlobeModalButton";
-import { Heart } from "lucide-react";
 
 const Navbar = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -15,7 +12,8 @@ const Navbar = ({ data }) => {
   const [showCategory, setShowCategory] = useState(false);
   const [user, setUser] = useState(null);
 
-  const { getCartItems, refetch, setRefetch, country, wishlist } = useStore();
+  const { getCartItems, refetch, setRefetch, wishlist } = useStore();
+
   const handleCategoryClose = (event) => {
     if (categoryRef.current && !categoryRef.current.contains(event.target)) {
       setShowCategory(false);
@@ -26,7 +24,6 @@ const Navbar = ({ data }) => {
     document.addEventListener("click", handleCategoryClose);
     return () => document.removeEventListener("click", handleCategoryClose);
   }, []);
-
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -50,114 +47,98 @@ const Navbar = ({ data }) => {
 
   return (
     <div className="relative">
-      {/* desktop menu */}
-
-
-      {/* mobile & tablet menu */}
+      {/* Mobile & tablet bottom navigation */}
       <div className="relative">
-        <div className="fixed border-t -bottom-1 left-0 right-0 bg-[#f9f9f9] pt-1 z-50 shadow-lg lg:hidden">
-          <div className="flex justify-around items-center py-2">
+        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 lg:hidden">
+          <div className="flex justify-around items-center py-2 px-2">
+            {/* Home */}
             <Link
               href="/"
-              className="flex flex-col items-center text-sm text-[#115e59]"
+              className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors"
             >
-              <House className="text-2xl" />
-              <span className="text-black">Home</span>
+              <House size={22} />
+              <span className="text-[10px] font-medium">Home</span>
             </Link>
 
+            {/* Wishlist */}
             <Link
-              href='/wishlist'
-
-              className="flex flex-col items-center text-sm text-[#115e59]"
+              href="/wishlist"
+              className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors relative"
             >
-              <div>
-                <Heart className="text-2xl" />
-                {wishlist ? (<p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
-                  {wishlist.length}
-                </p>) : ""}
+              <div className="relative">
+                <Heart size={22} />
+                {wishlist?.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-[9px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
+                    {wishlist.length}
+                  </span>
+                )}
               </div>
-              <span className="text-black">Wishlist</span>
+              <span className="text-[10px] font-medium">Wishlist</span>
             </Link>
 
+            {/* Cart */}
             <Link
-              href='/cart'
-
-              className="flex flex-col items-center text-sm text-[#115e59]"
+              href="/cart"
+              className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors relative"
             >
-              <div>
-                <ShoppingCart className="text-2xl" />
-                {total ? (<p className="bg-[#115e59] z-[900] h-fit text-[#ffffff] w-fit px-1 text-xs rounded-full absolute top-2">
-                  {total}
-                </p>) : ""}
+              <div className="relative">
+                <ShoppingCart size={22} />
+                {total > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-[9px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
+                    {total}
+                  </span>
+                )}
               </div>
-              <span className="text-black">Cart</span>
+              <span className="text-[10px] font-medium">Cart</span>
             </Link>
+
+            {/* Account/Login */}
             {user ? (
               <Link
                 href="/profileDashboard"
-                className="flex flex-col items-center text-sm text-[#115e59]"
+                className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors"
               >
                 <Image
-
-                  className="border-2 p-0.5 border-[#115e59] rounded-full"
+                  className="border border-gray-300 rounded-full"
                   src={loginLogo}
                   alt="navLogo"
-                  width={30}
-                  height={30}
+                  width={24}
+                  height={24}
                 />
-                <span className="text-black">Account</span>
+                <span className="text-[10px] font-medium">Account</span>
               </Link>
             ) : (
               <Link
                 href="/login"
-
-                className="flex flex-col items-center text-sm text-[#115e59] cursor-pointer"
+                className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors"
               >
-                <LogIn className="text-2xl" />
-                <span className="text-black">Login</span>
+                <LogIn size={22} />
+                <span className="text-[10px] font-medium">Login</span>
               </Link>
             )}
-
-            <div className="text-teal-700 relative hidden">
-              <GlobeModalButton />
-
-              {country?.value && (
-                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[7px] font-medium rounded-full px-1 py-1">
-                  {country.value}
-                </span>
-              )}
-              {/* <div className="text-black">Cn</div> */}
-            </div>
           </div>
-
-
         </div>
+
+        {/* Category dropdown - if needed */}
         {isOpen && (
           <div className="bg-white flex flex-col space-y-3 text-white p-5 transition ease-in-out">
-            {data?.data.slice(0, 7).map((item, idx) => {
-              return (
-                <Link
-                  key={idx}
-                  onClick={() => setIsOpen(false)}
-                  href={`/category/${encodeURIComponent(
-                    item?.category_id
-                  )}?category=${encodeURIComponent(
-                    item?.name
-                  )}&page=1&limit={20}&total=${encodeURIComponent(item?.product_count)}`}
-                  className={`text-black text-sm text-nowrap font-semibold flex items-center gap-1 `}
-                >
-                  {item.name}
-                </Link>
-              );
-            })}
+            {data?.data?.slice(0, 7).map((item, idx) => (
+              <Link
+                key={idx}
+                onClick={() => setIsOpen(false)}
+                href={`/category/${encodeURIComponent(
+                  item?.category_id
+                )}?category=${encodeURIComponent(
+                  item?.name
+                )}&page=1&limit=${20}&total=${encodeURIComponent(item?.product_count)}`}
+                className="text-black text-sm text-nowrap font-semibold flex items-center gap-1"
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
         )}
-
       </div>
-
-      {/*all categories */}
-      {/* {isHovered && <CategoryPopup isHovered={isHovered} setIsHovered={setIsHovered}/>} */}
-      {/* {isHovered && <CategoryPopup isHovered={isHovered} setIsHovered={setIsHovered}/>} */}
     </div>
   );
 };

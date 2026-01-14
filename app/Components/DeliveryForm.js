@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import toast from "react-hot-toast";
 import useSWR from "swr";
-import { fetcher, userId } from "../(home)/page";
+import { fetcher, userId } from "../constants";
 import Image from "next/image";
 import Modal from "./Modal";
 import PaymentMethodForm from "./PaymentMethodForm";
@@ -144,33 +144,33 @@ const DeliveryForm = ({
   const [insufficientProducts, setInsufficientProducts] = useState([]);
   // Use refs to prevent recreating objects
   const userDataRef = useRef(null);
- const [selectedCity, setSelectedCity] = useState('Select your address');
- const [selectedDistrict, setSelectedDistrict] = useState([]);
- const [totalDiscount, setTotalDiscount] = useState(0);
-  
+  const [selectedCity, setSelectedCity] = useState('Select your address');
+  const [selectedDistrict, setSelectedDistrict] = useState([]);
+  const [totalDiscount, setTotalDiscount] = useState(0);
 
-useEffect(() => {
-  if (!selectedDistrict && !selectedCity) {
-    setShippingFee(0); // optional: reset if nothing selected
-    return;
-  }
 
-  // Priority: specific city rules first
-  if (selectedCity === "Demra" || selectedCity?.includes("Savar")) {
-    setShippingFee(90);
-  }
-  // Then district-specific rules
-  else if (selectedDistrict === "Dhaka") {
-    setShippingFee(70);
-  } 
-  else if (selectedDistrict === "Gazipur") {
-    setShippingFee(90);
-  } 
-  // Default for other districts/cities
-  else {
-    setShippingFee(130);
-  }
-}, [selectedDistrict, selectedCity]);
+  useEffect(() => {
+    if (!selectedDistrict && !selectedCity) {
+      setShippingFee(0); // optional: reset if nothing selected
+      return;
+    }
+
+    // Priority: specific city rules first
+    if (selectedCity === "Demra" || selectedCity?.includes("Savar")) {
+      setShippingFee(90);
+    }
+    // Then district-specific rules
+    else if (selectedDistrict === "Dhaka") {
+      setShippingFee(70);
+    }
+    else if (selectedDistrict === "Gazipur") {
+      setShippingFee(90);
+    }
+    // Default for other districts/cities
+    else {
+      setShippingFee(130);
+    }
+  }, [selectedDistrict, selectedCity]);
 
 
 
@@ -227,10 +227,10 @@ useEffect(() => {
   });
 
 
-useEffect(() => {
-  const items = getCartItems();
+  useEffect(() => {
+    const items = getCartItems();
 
-  const discount = items.reduce((prev, item) => {
+    const discount = items.reduce((prev, item) => {
       let discountAmount = 0;
       if (country.value == "BD") {
         if (item.discount_type === "Fixed") {
@@ -250,31 +250,31 @@ useEffect(() => {
       }
       return prev + discountAmount;
     }, 0);
-    setTotalDiscount (discount)
+    setTotalDiscount(discount)
 
-  if (!items || !items.length) {
+    if (!items || !items.length) {
+      setLoading(false);
+      return;
+    }
+
+    setCartItems(items);
     setLoading(false);
-    return;
-  }
 
-  setCartItems(items);
-  setLoading(false);
+    // ✅ Calculate subtotal using orginalPrice × quantity
+    const total = items.reduce((sum, item) => {
+      const price = Number(item.orginalPrice || 0);
+      const qty = Number(item.quantity || 1);
+      return sum + price * qty;
+    }, 0);
 
-  // ✅ Calculate subtotal using orginalPrice × quantity
-  const total = items.reduce((sum, item) => {
-    const price = Number(item.orginalPrice || 0);
-    const qty = Number(item.quantity || 1);
-    return sum + price * qty;
-  }, 0);
+    setCartTotal(total);
 
-  setCartTotal(total);
-
-  // ✅ Use calculated total, NOT cartTotal state
-  setOrderSchema((prev) => ({
-    ...prev,
-    sub_total: total,
-  }));
-}, [getCartItems]);
+    // ✅ Use calculated total, NOT cartTotal state
+    setOrderSchema((prev) => ({
+      ...prev,
+      sub_total: total,
+    }));
+  }, [getCartItems]);
 
 
   const [countries, setCountries] = useState([]);
@@ -286,7 +286,7 @@ useEffect(() => {
   }, []);
 
 
- console.log(cartTotal);
+  console.log(cartTotal);
 
   // Create order schema - memoized to prevent constant recreation
   const orderSchema = useMemo(() => {
@@ -338,9 +338,8 @@ useEffect(() => {
       }),
       created_at: date,
       customer_id: customerId,
-      customer_name: `${formData.firstName || firstName} ${
-        formData.lastName || lastName
-      }`,
+      customer_name: `${formData.firstName || firstName} ${formData.lastName || lastName
+        }`,
       customer_phone: formData?.phone,
       sales_id: userId,
       user_id: userId,
@@ -448,77 +447,77 @@ useEffect(() => {
   const handleClose = useCallback(() => setShowPaymentModal(false), []);
 
   const handleOrderComplete = useCallback(
-  async (e) => {
-    e.preventDefault();
+    async (e) => {
+      e.preventDefault();
 
-    const bdPhoneRegex = /^(013|014|015|016|017|018|019)\d{8}$/;
+      const bdPhoneRegex = /^(013|014|015|016|017|018|019)\d{8}$/;
 
-    if (!selectedCity && !selectedDistrict) {
-      toast.error("Please Select City or District!");
-      return;
-    }
-
-    if (!bdPhoneRegex.test(formData.phone)) {
-      toast.error("Please enter a valid 11-digit Bangladeshi mobile number");
-      return;
-    }
-
-    if (!formData.firstName || !formData.phone || !formData.address) {
-      toast.error("Please fill all required fields!");
-      return;
-    }
-
-    if (cartItems.length === 0) {
-      alert("Add some products to the cart first.");
-      router.push("/");
-      return;
-    }
-
-    setLoading(true); // disable button
-
-    const finalOrderSchema = {
-      ...orderSchemaState,
-      donation_amount:
-        selectedDonate === "Not now" ? 0 : Number(selectedDonate)
-        
-
-    };
-    console.log(finalOrderSchema);
-
-    // return;
-
-    try {
-      const res = await axios.post(
-        `${process.env.NEXT_PUBLIC_API}/public/ecommerce-sales-with-check`,
-        finalOrderSchema
-      );
-
-      if (res.status === 200 && res?.data?.success === true) {
-        const _invoiceId = res?.data?.data?.invoice_id;
-        setInvoiceId(_invoiceId);
-        localStorage.removeItem("cart");
-        localStorage.removeItem("cartAttachment");
-        toast.success("Order Placed Successfully!");
-         setLoading(false);
-        router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
-        // don't setLoading(false) here because user is redirected
-      } else {
-        // if success is false, enable button
-        setLoading(false);
-        toast.error("Order failed. Please try again.");
+      if (!selectedCity && !selectedDistrict) {
+        toast.error("Please Select City or District!");
+        return;
       }
-    } catch (err) {
-      console.log(err);
-      toast.error("Error occurred. Try again.");
-      if (err.response?.data?.success === false) {
-        setInsufficientProducts(err?.response?.data?.insufficient_products || []);
-        setIsOpen(true);
+
+      if (!bdPhoneRegex.test(formData.phone)) {
+        toast.error("Please enter a valid 11-digit Bangladeshi mobile number");
+        return;
       }
-      setLoading(false); // enable button on error
-    }
-  },
-  [cartItems, orderSchemaState, selectedDonate, router, payment]
-);
+
+      if (!formData.firstName || !formData.phone || !formData.address) {
+        toast.error("Please fill all required fields!");
+        return;
+      }
+
+      if (cartItems.length === 0) {
+        alert("Add some products to the cart first.");
+        router.push("/");
+        return;
+      }
+
+      setLoading(true); // disable button
+
+      const finalOrderSchema = {
+        ...orderSchemaState,
+        donation_amount:
+          selectedDonate === "Not now" ? 0 : Number(selectedDonate)
+
+
+      };
+      console.log(finalOrderSchema);
+
+      // return;
+
+      try {
+        const res = await axios.post(
+          `${process.env.NEXT_PUBLIC_API}/public/ecommerce-sales-with-check`,
+          finalOrderSchema
+        );
+
+        if (res.status === 200 && res?.data?.success === true) {
+          const _invoiceId = res?.data?.data?.invoice_id;
+          setInvoiceId(_invoiceId);
+          localStorage.removeItem("cart");
+          localStorage.removeItem("cartAttachment");
+          toast.success("Order Placed Successfully!");
+          setLoading(false);
+          router.push(`/payment-success/${_invoiceId}?pay_mode=${payment}`);
+          // don't setLoading(false) here because user is redirected
+        } else {
+          // if success is false, enable button
+          setLoading(false);
+          toast.error("Order failed. Please try again.");
+        }
+      } catch (err) {
+        console.log(err);
+        toast.error("Error occurred. Try again.");
+        if (err.response?.data?.success === false) {
+          setInsufficientProducts(err?.response?.data?.insufficient_products || []);
+          setIsOpen(true);
+        }
+        setLoading(false); // enable button on error
+      }
+    },
+    [cartItems, orderSchemaState, selectedDonate, router, payment]
+  );
 
 
   const handleSpinClick = useCallback(() => {
@@ -742,24 +741,24 @@ useEffect(() => {
                 <Phone className="inline h-4 w-4 mr-1" />
                 Phone Number <span className="text-red-600">*</span>
               </label>
-             <input
-  type="tel"
-  name="phone"
-  value={formData.phone}
-  onChange={handleChange}
-  placeholder="Enter your phone number"
-  required
-  pattern="^(013|014|015|016|017|018|019)[0-9]{8}$"
-  className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
-/>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Enter your phone number"
+                required
+                pattern="^(013|014|015|016|017|018|019)[0-9]{8}$"
+                className="w-full dark:bg-white px-4 py-3 border text-black border-gray-300 rounded-lg focus:ring-2 transition-colors"
+              />
 
             </div>
 
-              <div className="col-span-2">
-             <AddressSelect selectedCity={selectedCity} setSelectedCity={setSelectedCity} selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict}></AddressSelect>
+            <div className="col-span-2">
+              <AddressSelect selectedCity={selectedCity} setSelectedCity={setSelectedCity} selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict}></AddressSelect>
 
-              </div>
-             {/* <p className="text-black">{JSON.stringify(selected)}</p> */}
+            </div>
+            {/* <p className="text-black">{JSON.stringify(selected)}</p> */}
 
 
             {/* City - Hidden */}
@@ -854,11 +853,10 @@ useEffect(() => {
           </div>
           <div className="space-y-3">
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                location === "inside"
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "inside"
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <input
                 type="radio"
@@ -870,11 +868,10 @@ useEffect(() => {
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    location === "inside"
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "inside"
                       ? "border-blue-500"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   {location === "inside" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -895,11 +892,10 @@ useEffect(() => {
             </label>
 
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                location === "outside"
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "outside"
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <input
                 type="radio"
@@ -911,11 +907,10 @@ useEffect(() => {
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    location === "outside"
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "outside"
                       ? "border-blue-500"
                       : "border-gray-300"
-                  }`}
+                    }`}
                 >
                   {location === "outside" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -954,18 +949,17 @@ useEffect(() => {
                 Payment Method
               </h3>
               <p className="text-sm text-gray-600  items-center hidden md:flex">
-              
+
                 All transactions are secure and encrypted
               </p>
             </div>
           </div>
           <div className="space-y-3">
             <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${
-                payment === "Cash"
+              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${payment === "Cash"
                   ? "border-blue-500 bg-blue-50"
                   : "border-gray-200 hover:border-gray-300"
-              }`}
+                }`}
             >
               <input
                 type="radio"
@@ -980,9 +974,8 @@ useEffect(() => {
               />
               <div className="flex items-center space-x-4 flex-1">
                 <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                    payment === "Cash" ? "border-blue-500" : "border-gray-300"
-                  }`}
+                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${payment === "Cash" ? "border-blue-500" : "border-gray-300"
+                    }`}
                 >
                   {payment === "Cash" && (
                     <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
@@ -1003,7 +996,7 @@ useEffect(() => {
           {!isCod && (
             <div className="mt-4 p-4 bg-gray-50 rounded-lg">
               {paymentMethods?.data?.data &&
-              paymentMethods?.data?.data?.length > 0 ? (
+                paymentMethods?.data?.data?.length > 0 ? (
                 (() => {
                   const otherMethods = paymentMethods?.data?.data?.filter(
                     (item) => item?.type_name !== "Cash"
@@ -1014,12 +1007,11 @@ useEffect(() => {
                         <div
                           onClick={() => handlePaymentMethod(item)}
                           key={item.id}
-                          className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${
-                            item?.payment_type_category[0]
+                          className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${item?.payment_type_category[0]
                               ?.payment_category_name === payment
                               ? "border-blue-500 bg-blue-50"
                               : "border-gray-200 hover:border-gray-300"
-                          }`}
+                            }`}
                         >
                           <Image
                             src={item?.icon_image || "/placeholder.svg"}
@@ -1260,11 +1252,10 @@ useEffect(() => {
                     type="button"
                     key={donation}
                     onClick={() => handleDonationClick(donation)}
-                    className={`px-4 py-2 rounded-full border text-sm ${
-                      isSelected
+                    className={`px-4 py-2 rounded-full border text-sm ${isSelected
                         ? "bg-gray-800 text-white border-gray-800"
                         : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
-                    }`}
+                      }`}
                   >
                     {country?.value === "BD"
                       ? `Tk ${displayText}`
@@ -1287,45 +1278,44 @@ useEffect(() => {
         {/* Complete Order Button */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
           <button
-  onClick={handleOrderComplete}
-  disabled={loading} // button stays disabled while loading
-  type="submit"
-  className={`${
-    loading ? "cursor-not-allowed" : "cursor-pointer"
-  } w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 flex items-center justify-center space-x-2`}
->
-  {loading ? (
-    <>
-      {/* Spinner */}
-      <svg
-        className="animate-spin h-5 w-5 text-white"
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-      >
-        <circle
-          className="opacity-25"
-          cx="12"
-          cy="12"
-          r="10"
-          stroke="currentColor"
-          strokeWidth="4"
-        ></circle>
-        <path
-          className="opacity-75"
-          fill="currentColor"
-          d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
-        ></path>
-      </svg>
-      <span>Order Placing...</span>
-    </>
-  ) : (
-    <>
-      <ShoppingBag className="h-5 w-5" />
-      <span>Complete Order</span>
-    </>
-  )}
-</button>
+            onClick={handleOrderComplete}
+            disabled={loading} // button stays disabled while loading
+            type="submit"
+            className={`${loading ? "cursor-not-allowed" : "cursor-pointer"
+              } w-full bg-gradient-to-r from-teal-600 to-teal-700 hover:from-teal-500 hover:to-teal-600 text-white font-semibold py-4 px-6 rounded-lg transition-all duration-200 transform hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 flex items-center justify-center space-x-2`}
+          >
+            {loading ? (
+              <>
+                {/* Spinner */}
+                <svg
+                  className="animate-spin h-5 w-5 text-white"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <circle
+                    className="opacity-25"
+                    cx="12"
+                    cy="12"
+                    r="10"
+                    stroke="currentColor"
+                    strokeWidth="4"
+                  ></circle>
+                  <path
+                    className="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+                  ></path>
+                </svg>
+                <span>Order Placing...</span>
+              </>
+            ) : (
+              <>
+                <ShoppingBag className="h-5 w-5" />
+                <span>Complete Order</span>
+              </>
+            )}
+          </button>
 
           <div className="mt-4 flex items-center justify-center space-x-2 text-xs text-gray-500">
             <Shield className="h-4 w-4" />
@@ -1360,7 +1350,7 @@ useEffect(() => {
 
       <Dialog
         open={showWheelModal}
-        onClose={() => {}}
+        onClose={() => { }}
         className="relative z-50"
       >
         <div className="fixed inset-0 bg-black/40" aria-hidden="true" />
@@ -1396,93 +1386,93 @@ useEffect(() => {
 
       {/* api response false modal */}
 
-     {isOpen && (
-  <div style={{ marginTop: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4">
-    {/* Black Overlay - Full Screen */}
-    <div 
-      className="absolute inset-0 bg-black/60 backdrop-blur-sm bottom-0"
-      onClick={() => setIsOpen(false)}
-    />
-    
-    {/* Modal Content */}
-    <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto transform transition-all duration-300 ease-out">
-      {/* Header */}
-      <div className="flex items-center justify-between p-6 border-b border-gray-100">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
-            <span className="text-red-600 text-xl">🚨</span>
-          </div>
-          <h2 className="text-xl font-bold text-gray-900">
-            Stock Out
-          </h2>
-        </div>
-        <button
-          onClick={() => setIsOpen(false)}
-          className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
-        >
-          <span className="text-gray-500 text-lg">×</span>
-        </button>
-      </div>
+      {isOpen && (
+        <div style={{ marginTop: 0 }} className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          {/* Black Overlay - Full Screen */}
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm bottom-0"
+            onClick={() => setIsOpen(false)}
+          />
 
-      {/* Content */}
-      <div className="p-6 max-h-96 overflow-y-auto">
-        <div className="space-y-4">
-          {insufficientProducts.map((item, i) => (
-            <div 
-              key={i} 
-              className="bg-red-50 border border-red-200 rounded-lg p-4 transition-all hover:bg-red-100"
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <p className="font-semibold text-gray-900 mb-1">
-                    {item.product_name}
-                  </p>
-                  <div className="flex items-center gap-4 text-sm">
-                    <span className="text-red-600 font-medium">
-                      Requested: {item.requested_qty}
-                    </span>
-                    <span className="text-gray-600">
-                      Available: {item.available_qty}
-                    </span>
+          {/* Modal Content */}
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-auto transform transition-all duration-300 ease-out">
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-gray-100">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-red-100 rounded-full flex items-center justify-center">
+                  <span className="text-red-600 text-xl">🚨</span>
+                </div>
+                <h2 className="text-xl font-bold text-gray-900">
+                  Stock Out
+                </h2>
+              </div>
+              <button
+                onClick={() => setIsOpen(false)}
+                className="w-8 h-8 rounded-full bg-gray-100 hover:bg-gray-200 flex items-center justify-center transition-colors"
+              >
+                <span className="text-gray-500 text-lg">×</span>
+              </button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 max-h-96 overflow-y-auto">
+              <div className="space-y-4">
+                {insufficientProducts.map((item, i) => (
+                  <div
+                    key={i}
+                    className="bg-red-50 border border-red-200 rounded-lg p-4 transition-all hover:bg-red-100"
+                  >
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <p className="font-semibold text-gray-900 mb-1">
+                          {item.product_name}
+                        </p>
+                        <div className="flex items-center gap-4 text-sm">
+                          <span className="text-red-600 font-medium">
+                            Requested: {item.requested_qty}
+                          </span>
+                          <span className="text-gray-600">
+                            Available: {item.available_qty}
+                          </span>
+                        </div>
+                      </div>
+                      <div className="w-8 h-8 bg-red-200 rounded-full flex items-center justify-center ml-3">
+                        <span className="text-red-600 text-sm font-bold">!</span>
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="w-8 h-8 bg-red-200 rounded-full flex items-center justify-center ml-3">
-                  <span className="text-red-600 text-sm font-bold">!</span>
-                </div>
+                ))}
               </div>
             </div>
-          ))}
-        </div>
-      </div>
 
-      {/* Footer */}
-      <div className="flex items-center justify-center gap-3 p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
-        {/* <button
+            {/* Footer */}
+            <div className="flex items-center justify-center gap-3 p-6 border-t border-gray-100 bg-gray-50 rounded-b-2xl">
+              {/* <button
           onClick={() => setIsOpen(false)}
           className="px-5 py-2.5 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 text-gray-700 font-medium transition-all duration-200 hover:shadow-sm"
         >
           Close
         </button> */}
 
-        { insufficientProducts.length < 0 ? (
-         <button
-          onClick={() => router.push("/cart")}
-          className="px-5 py-2 w-full rounded-sm bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
-        >
-          Go to Cart
-        </button>
-        ): ( <button
-          onClick={() => router.push("/cart")}
-          className="px-5 py-2 w-full rounded-sm bg-red-500 hover:bg-red-600 text-white font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
-        >
-          Dismiss
-        </button>)}
-        
-       
-      </div>
-    </div>
-  </div>
-)}
+              {insufficientProducts.length < 0 ? (
+                <button
+                  onClick={() => router.push("/cart")}
+                  className="px-5 py-2 w-full rounded-sm bg-blue-600 hover:bg-blue-700 text-white font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+                >
+                  Go to Cart
+                </button>
+              ) : (<button
+                onClick={() => router.push("/cart")}
+                className="px-5 py-2 w-full rounded-sm bg-red-500 hover:bg-red-600 text-white font-medium transition-all duration-200 hover:shadow-lg transform hover:scale-105"
+              >
+                Dismiss
+              </button>)}
+
+
+            </div>
+          </div>
+        </div>
+      )}
 
       <PrizeModal
         invoiceId={invoiceId}

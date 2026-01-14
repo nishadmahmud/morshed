@@ -1,77 +1,61 @@
-
-
 import HeroSlider from "../Components/HeroSlider";
-import BannerSection from '../Components/BannerSection';
 import FeaturedCategories from '../Components/FeaturedCategories';
-import { PromotionModal, VideoSection, BenefitsSection } from '../Components/LazyComponents';
-import SmallBanner from "../Components/SmallBanner";
-import MensBanner from "../Components/MensBanner";
-import SolidTshirt from "../Components/SolidTshirt";
-import OfferPage from "../Components/OfferPage";
-import HalfSelveePolo from "../Components/HalfSelveePolo";
+import { PromotionModal, BenefitsSection } from '../Components/LazyComponents';
 import BrandMarquee from "../Components/BrandMarquee";
-import StripeShirt from "../Components/StripeShirt";
+import NewArrivalSection from "../Components/NewArrivalSection";
+import BestDealsSection from "../Components/BestDealsSection";
+import LifestyleBanner from "../Components/LifestyleBanner";
+import ShopByStyle from "../Components/ShopByStyle";
+import { userId, fetcher } from "../constants";
 
-
-export const userId = 203;
-export const fetcher = (url) => fetch(url).then(res => res.json());
-
-
+// Re-export for backwards compatibility with other files that might import from here
+export { userId, fetcher };
 
 export default async function Home() {
-
-  const promotionPromise = fetch(`${process.env.NEXT_PUBLIC_API}/latest-ecommerce-offer-list/${userId}`, { next: { revalidate: 60 } });
-
-  const bannerPromise = fetch(`${process.env.NEXT_PUBLIC_API}/get-banners/${userId}`, {
-    next: { revalidate: 60 }
-  })
-
-  const categoriesPromise = fetch(`${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`, {
-    next: { revalidate: 60 }
-  });
-
-  const sliderPromise = fetch(`${process.env.NEXT_PUBLIC_API}/get-sliders/${userId}`, {
-    next: { revalidate: 60 }
-  });
-
-  const [promotionRes, bannerRes, categoriesRes, sliderRes] = await Promise.all([
-    promotionPromise,
-    bannerPromise,
-    categoriesPromise,
-    sliderPromise
+  // Fetch all data in parallel
+  const [promotionRes, sliderRes] = await Promise.all([
+    fetch(`${process.env.NEXT_PUBLIC_API}/latest-ecommerce-offer-list/${userId}`, { next: { revalidate: 60 } }),
+    fetch(`${process.env.NEXT_PUBLIC_API}/get-sliders/${userId}`, { next: { revalidate: 60 } })
   ]);
 
   const promotion = promotionRes.ok ? await promotionRes.json() : null;
-  const banner = bannerRes.ok ? await bannerRes.json() : null;
-  const categories = categoriesRes.ok ? await categoriesRes.json() : [];
   const slider = sliderRes.ok ? await sliderRes.json() : [];
-
-
-
 
   return (
     <>
-      {/* <SelectRegionModal></SelectRegionModal> */}
       <PromotionModal offers={promotion} />
-      <HeroSlider slider={slider} />
-      <BrandMarquee />
-      <div>
-        <FeaturedCategories />
-        <MensBanner banner={banner}></MensBanner>
-        <StripeShirt></StripeShirt>
-        <SmallBanner banner={banner} />
-        <SolidTshirt></SolidTshirt>
-        <VideoSection></VideoSection>
-        <BannerSection categories={categories} banner={banner} />
-        <HalfSelveePolo></HalfSelveePolo>
-        <OfferPage categories={categories}></OfferPage>
-        <BenefitsSection></BenefitsSection>
-      </div>
 
+      {/* Hero Slider */}
+      <HeroSlider slider={slider} />
+
+      {/* Brand Logos Bar */}
+      <BrandMarquee />
+
+      <main className="bg-white">
+        {/* Shop by Category Grid */}
+        <FeaturedCategories />
+
+        {/* New Arrivals Section */}
+        <NewArrivalSection />
+
+        {/* Lifestyle Banner */}
+        <LifestyleBanner
+          title="Elevate Your Style"
+          subtitle="Premium collection for the modern man"
+          ctaText="Explore Collection"
+          ctaLink="/category/6749?category=Stripe%20Pattern%20Shirt"
+          bannerIndex={2}
+        />
+
+        {/* Best Deals Section */}
+        <BestDealsSection />
+
+        {/* Shop by Style Section */}
+        <ShopByStyle />
+
+        {/* Benefits Section */}
+        <BenefitsSection />
+      </main>
     </>
   );
 }
-
-
-
-

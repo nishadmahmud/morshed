@@ -5,7 +5,7 @@ import "@smastrom/react-rating/style.css";
 import Heading from "../CustomHooks/heading";
 import useStore from "../CustomHooks/useStore";
 import useSWR from "swr";
-import { fetcher, userId } from "../(home)/page";
+import { fetcher, userId } from "../constants";
 import CardSkeleton from "./CardSkeleton";
 import ProductCard from "./ProductCard";
 
@@ -14,7 +14,7 @@ const TopBrandProducts = ({ brands }) => {
   const { handleCart } = useStore();
   const limit = 6;
 
-  
+
   const brandIds = brands?.data?.map((brand) => brand.id) || [];
 
 
@@ -34,18 +34,16 @@ const TopBrandProducts = ({ brands }) => {
       <Tabs selectedIndex={tabIndex} onSelect={(index) => setTabIndex(index)} className="mt-5">
         <TabList className="flex flex-wrap justify-center gap-6 mb-5 md:flex-wrap lg:flex-nowrap">
           <Tab
-            className={`text-sm cursor-pointer outline-none ${
-              tabIndex === 0 ? "font-semibold text-black" : "text-[#0000006B]"
-            }`}
+            className={`text-sm cursor-pointer outline-none ${tabIndex === 0 ? "font-semibold text-black" : "text-[#0000006B]"
+              }`}
           >
             All
           </Tab>
           {brands?.data?.map((brand, index) => (
             <Tab
               key={brand.id}
-              className={`text-sm cursor-pointer outline-none ${
-                tabIndex === index + 1 ? "font-semibold text-black" : "text-[#0000006B]"
-              }`}
+              className={`text-sm cursor-pointer outline-none ${tabIndex === index + 1 ? "font-semibold text-black" : "text-[#0000006B]"
+                }`}
             >
               {brand?.name}
             </Tab>

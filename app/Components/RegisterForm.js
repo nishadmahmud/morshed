@@ -2,10 +2,10 @@
 import axios from "axios";
 import Link from "next/link";
 import React, { useState } from "react";
-import { userId } from "../(home)/page";
+import { userId } from "../constants";
 import toast from "react-hot-toast";
 
-const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
+const RegisterForm = ({ setIsRegistered, isRegistered, isLoginModal }) => {
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -20,8 +20,8 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const payload = { ...formData, user_id: String(userId)};
-  
+    const payload = { ...formData, user_id: String(userId) };
+
     axios
       .post(`${process.env.NEXT_PUBLIC_API}/customer-registration`, payload, {
         headers: {
@@ -33,16 +33,16 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
         // Update formData with customer_id before saving it
         const updatedFormData = { ...formData, customer_id: customerId };
         setFormData(updatedFormData);
-        
+
         setIsRegistered(!isRegistered);
         toast.success("Register Successful!");
-  
+
         // Save the updated formData to localStorage
         localStorage.setItem("user", JSON.stringify(updatedFormData));
       })
       .catch((error) => toast.error("Invalid Register Credentials!"));
   };
-  
+
   return (
     <div className="">
       <form className="lg:w-full w-11/12 mx-auto space-y-3 bg-transparent relative" onSubmit={handleSubmit}>
@@ -55,7 +55,7 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
             value={formData.first_name}
             onChange={handleChange}
             placeholder="First Name"
-             className="input input-bordered border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-md bg-white dark:bg-white"
+            className="input input-bordered border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-md bg-white dark:bg-white"
           />
         </div>
 
@@ -68,7 +68,7 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
             value={formData.last_name}
             onChange={handleChange}
             placeholder="Last Name"
-             className="input input-bordered border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-md bg-white dark:bg-white"
+            className="input input-bordered border-[#C1CFEF] border-[1px] w-full mb-[10px] focus:outline-none rounded-md bg-white dark:bg-white"
           />
         </div>
         <div className="flex flex-col relative">
@@ -116,10 +116,10 @@ const RegisterForm = ({setIsRegistered,isRegistered,isLoginModal}) => {
           Register
         </button>
         {
-             !isLoginModal ?
-                <p className='text-black text-center'>Do Not Have an Account? <Link onClick={() => setIsRegistered(!isRegistered)} href={'/register'} className='hover:text-[#115e59] hover:underline'>Register</Link></p>
-              : <p className='text-black text-center'>Already Have an Account? <span onClick={() => setIsRegistered(!isRegistered)}  className='hover:text-[#115e59] cursor-pointer hover:underline font-semibold'>Login</span></p>
-              
+          !isLoginModal ?
+            <p className='text-black text-center'>Do Not Have an Account? <Link onClick={() => setIsRegistered(!isRegistered)} href={'/register'} className='hover:text-[#115e59] hover:underline'>Register</Link></p>
+            : <p className='text-black text-center'>Already Have an Account? <span onClick={() => setIsRegistered(!isRegistered)} className='hover:text-[#115e59] cursor-pointer hover:underline font-semibold'>Login</span></p>
+
         }
       </form>
     </div>

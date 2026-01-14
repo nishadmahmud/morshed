@@ -20,7 +20,7 @@ import useStore from "../CustomHooks/useStore";
 import CartItems from "./CartItems";
 import { useSearchParams } from "next/navigation";
 import Navbar from "./Navbar";
-import { userId } from "../(home)/page";
+import { userId } from "../constants";
 import GlobeModalButton from "./GlobeModalButton";
 
 const HeaderUi = ({ data }) => {
@@ -169,9 +169,9 @@ const HeaderUi = ({ data }) => {
           transform: translateY(-0.25rem) rotate(-45deg);
         }
       `}</style>
-      <div className="w-full z-50 text-black transition-all duration-500 fixed mt-0">
+      <div className="w-full z-50 text-black transition-all duration-300 fixed mt-0">
         {/* Main header */}
-        <div className="flex justify-between items-center bg-white backdrop-blur-md text-black p-3 pb-2 pt-3.5 lg:px-16">
+        <div className="flex justify-between items-center bg-white border-b border-gray-100 text-black px-4 py-3 lg:px-16">
           {/* Mobile menu button */}
           <div className="flex items-center lg:gap-3 gap-1">
             <button
@@ -203,8 +203,8 @@ const HeaderUi = ({ data }) => {
           {/* Centered logo for all screen sizes */}
           <div className="absolute left-1/2 transform -translate-x-1/2 flex justify-center">
             <Link href={"/"}>
-              <h4 className="logoFont text-xl font-semibold tracking-widest">
-                Morshed Mart
+              <h4 className="logoFont text-lg md:text-xl font-bold tracking-wider text-gray-900 hover:text-gray-700 transition-colors">
+                MORSHED MART
               </h4>
             </Link>
           </div>
@@ -319,7 +319,7 @@ const HeaderUi = ({ data }) => {
               <ShoppingBagIcon color="gray" size={18}></ShoppingBagIcon>
               Shop Now
             </Link>
-            <h3 className="text-sm font-semibold text-teal-700 mb-3">
+            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
               Categories
             </h3>
 
@@ -333,7 +333,7 @@ const HeaderUi = ({ data }) => {
                     )}?category=${encodeURIComponent(
                       item?.name || ""
                     )}&page=1&limit=30&total=${encodeURIComponent(item?.product_count || 0)}`}
-                    className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-teal-50 transition"
+                    className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-50 transition-colors duration-200"
                   >
                     <span className="text-sm font-medium">
                       {item?.name || `Category ${idx + 1}`}
@@ -350,26 +350,26 @@ const HeaderUi = ({ data }) => {
             <div className="space-y-4">
               <Link
                 onClick={toggleSidebar}
-                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-teal-50 transition"
+                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-50 transition-colors duration-200"
                 href="/offer"
               >
-                <Gift size={18} className="text-teal-600" />
+                <Gift size={18} className="text-gray-600" />
                 <span className="text-sm font-medium">Latest Offer</span>
               </Link>
               <Link
                 onClick={toggleSidebar}
-                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-teal-50 transition"
+                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-50 transition-colors duration-200"
                 href="/blogs"
               >
-                <NotebookPen size={18} className="text-teal-600" />
+                <NotebookPen size={18} className="text-gray-600" />
                 <span className="text-sm font-medium">Blog</span>
               </Link>
               <Link
                 onClick={toggleSidebar}
-                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-teal-50 transition"
-                href="/"
+                className="flex items-center gap-3 px-3 py-2 rounded-md hover:bg-gray-50 transition-colors duration-200"
+                href="/about-us"
               >
-                <FaUsers size={18} className="text-teal-600" />
+                <FaUsers size={18} className="text-gray-600" />
                 <span className="text-sm font-medium">About Us</span>
               </Link>
             </div>
