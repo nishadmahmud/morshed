@@ -8,7 +8,7 @@ import { FaHeart, FaRegHeart } from "react-icons/fa6"
 import useWishlist from "../CustomHooks/useWishlist"
 import useStore from "../CustomHooks/useStore"
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, compact = false }) => {
   const { prices, country, setProductPrice } = useStore()
   const { toggleWishlist, isInWishlist } = useWishlist();
 
@@ -55,23 +55,21 @@ const ProductCard = ({ product }) => {
       .replace(/[^a-z0-9-]/g, "")
   }
 
-
-
   return (
     <div
-      className="
+      className={`
       group bg-white rounded-lg overflow-hidden
       transition-all duration-300 mx-auto w-full max-w-sm
       flex flex-col h-full
-      sm:max-w-xs md:max-w-sm lg:max-w-xs xl:max-w-sm
-    "
+      ${compact ? 'text-sm' : 'sm:max-w-xs md:max-w-sm lg:max-w-xs xl:max-w-sm'}
+    `}
     >
       {/* Image Container */}
       <div
-        className="
-        relative aspect-square w-full overflow-hidden bg-gray-50
-        sm:aspect-[4/5] md:aspect-square lg:aspect-[4/5]
-      "
+        className={`
+        relative w-full overflow-hidden bg-gray-50
+        ${compact ? 'aspect-square' : 'aspect-square sm:aspect-[4/5] md:aspect-square lg:aspect-[4/5]'}
+      `}
       >
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
@@ -105,13 +103,13 @@ const ProductCard = ({ product }) => {
         {
           countrySign ? <>
             {product?.discount && (
-              <div className="absolute top-2 left-2 z-10 sm:top-3 sm:left-3">
+              <div className={`absolute left-2 z-10 ${compact ? 'top-2' : 'top-2 sm:top-3 sm:left-3'}`}>
                 <span
-                  className="
-              bg-gray-900 text-white text-xs font-semibold 
-              py-0.5 px-3 rounded-full
-             
-            "
+                  className={`
+              bg-gray-900 text-white font-semibold 
+              rounded-full
+              ${compact ? 'text-[10px] py-0.5 px-2' : 'text-xs py-0.5 px-3'}
+            `}
                 >
                   Save {product?.discount}
                   {discountSuffix}
@@ -121,28 +119,27 @@ const ProductCard = ({ product }) => {
           </> : ""
         }
 
-        {product?.status.toLowerCase() === "stock out" ? (
-          <div className={`absolute z-10 top-5 right-3 bg-red-500 text-white text-xs font-semibold 
-              py-0.5 px-3 rounded-full`}>
-
+        {product?.status.toLowerCase() === "stock out" && (
+          <div className={`
+              absolute z-10 right-3 bg-red-500 text-white font-semibold 
+              rounded-full
+              ${compact ? 'top-2 text-[10px] py-0.5 px-2' : 'top-5 text-xs py-0.5 px-3'}
+            `}>
             Stock Out
-
           </div>
-        ) : ""}
-
-
-
+        )}
       </div>
 
       {/* Product Info */}
-      <div className="py-3 space-y-2 flex-1 flex flex-col  sm:space-y-3">
+      <div className={`${compact ? 'py-2 space-y-1' : 'py-3 space-y-2 sm:space-y-3'} flex-1 flex flex-col`}>
         {/* Brand Name */}
         {product?.brand_name && (
           <h5
-            className="
-            text-xs text-start font-medium text-gray-800 uppercase tracking-wide 
-            truncate sm:text-xs
-          "
+            className={`
+            text-start font-medium text-gray-800 uppercase tracking-wide 
+            truncate
+            ${compact ? 'text-[10px]' : 'text-xs'}
+          `}
           >
             {product.brand_name}
           </h5>
@@ -151,16 +148,15 @@ const ProductCard = ({ product }) => {
         {/* Product Name */}
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-          className="flex-1 xl:w-56 w-40"
+          className="flex-1 w-full"
         >
           <h3
-            className="
-            font-medium xl:w-56 w-40 text-gray-900 hover:text-gray-600
+            className={`
+            font-medium text-gray-900 hover:text-gray-600
             transition-colors duration-200 
-            text-sm leading-tight truncate line-clamp-1
-            sm:text-base sm:max-w-xs md:max-w-sm lg:max-w-xs xl:max-w-sm sm:line-clamp-2
-            md:text-sm lg:text-base text-start
-          "
+            text-start truncate line-clamp-1
+            ${compact ? 'text-xs sm:line-clamp-1' : 'text-sm sm:text-base sm:line-clamp-2 md:text-sm lg:text-base'}
+          `}
           >
             {product?.name || "N/A"}
           </h3>
@@ -172,19 +168,20 @@ const ProductCard = ({ product }) => {
             {discountedPrice ? (
               <div className="flex items-start gap-2 flex-wrap">
                 <span
-                  className="
-                  text-base font-bold text-gray-900
-                  sm:text-lg md:text-base lg:text-lg
-                "
+                  className={`
+                  font-bold text-gray-900
+                  ${compact ? 'text-sm' : 'text-base sm:text-lg md:text-base lg:text-lg'}
+                `}
                 >
                   {countrySign}
                   {discountedPrice}
                 </span>
                 <p
-                  className="
-                  text-xs text-gray-500 
-                  sm:text-sm md:text-xs font-medium line-through text-start lg:text-sm
-                "
+                  className={`
+                  text-gray-500 
+                  font-medium line-through text-start
+                  ${compact ? 'text-[10px]' : 'text-xs sm:text-sm md:text-xs lg:text-sm'}
+                `}
                 >
                   {countrySign}
                   {getPriceByCountry()}
@@ -192,10 +189,10 @@ const ProductCard = ({ product }) => {
               </div>
             ) : (
               <span
-                className="
-                text-base font-bold text-gray-900
-                sm:text-lg md:text-base lg:text-lg
-              "
+                className={`
+                font-bold text-gray-900
+                ${compact ? 'text-sm' : 'text-base sm:text-lg md:text-base lg:text-lg'}
+              `}
               >
                 {countrySign}
                 {getPriceByCountry()}
@@ -205,11 +202,11 @@ const ProductCard = ({ product }) => {
 
           {/* Wishlist Button */}
           <button
-            className="
-            flex p-1.5 rounded-full hover:bg-gray-100 
+            className={`
+            flex rounded-full hover:bg-gray-100 
               text-gray-600 hover:text-gray-900 transition-all duration-200
-              sm:p-2
-          "
+             ${compact ? 'p-1' : 'p-1.5 sm:p-2'}
+          `}
             onClick={(e) => {
               e.stopPropagation()
               toggleWishlist(product)
@@ -217,9 +214,9 @@ const ProductCard = ({ product }) => {
             title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
           >
             {isInWishlist(product.id) ? (
-              <FaHeart className="w-4 h-4 text-teal-600 sm:w-5 sm:h-5" />
+              <FaHeart className={`${compact ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-5 sm:h-5'} text-teal-600`} />
             ) : (
-              <FaRegHeart className="w-4 h-4 text-gray-600 hover:text-red-500 transition-colors sm:w-5 sm:h-5" />
+              <FaRegHeart className={`${compact ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-5 sm:h-5'} text-gray-600 hover:text-red-500 transition-colors`} />
             )}
           </button>
         </div>

@@ -1,4 +1,3 @@
-
 @import url('https://fonts.maateen.me/adorsho-lipi/font.css');
 
 
@@ -9,122 +8,131 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --font-poppins : 'Poppins',serif;
-  --font-pt-serif : 'PT Serif',serif;
-  --font-pt-sans : 'PT Sans',serif;
-  --font-open-sans : 'Open Sans',serif;
-  --font-cinzel : 'Cinzel',serif;
-  --font-jost : 'Jost',sans-serif;
+  --font-poppins: 'Poppins', serif;
+  --font-pt-serif: 'PT Serif', serif;
+  --font-pt-sans: 'PT Sans', serif;
+  --font-open-sans: 'Open Sans', serif;
+  --font-cinzel: 'Cinzel', serif;
+  --font-jost: 'Jost', sans-serif;
 }
 
-html{
+html {
   scroll-behavior: smooth;
 }
 
-*{
+* {
   scroll-behavior: smooth;
   box-sizing: border-box;
   font-family: var(--font-jost);
 }
 
-body{
+body {
   overflow-x: hidden;
 }
 
 .perspective {
   perspective: 1000px;
 }
+
 .preserve-3d {
   transform-style: preserve-3d;
 }
+
 .backface-hidden {
   backface-visibility: hidden;
 }
+
 .rotate-y-180 {
   transform: rotateY(180deg);
 }
 
-.loaderText{
-   font-family: var(--font-cinzel);
-}
-
-.loaderSvg{
- 
-    position: absolute;
-    width: 100%;
-    height: 100%;
-}
-.loaderSvg text{
-    animation: stroke 5s infinite alternate;
-    stroke-width: 1;
-    stroke: teal;
-    
-    font-size: 50px;
-    transition: opacity 0.75s, visibility 0.75s;
-
-}
-
-@keyframes stroke{
-    0%
-    {
-        fill: rgba(72, 138, 20, 0); stroke: rgba(0, 128, 128);
-        stroke-dashoffset: 25%; 
-        stroke-dasharray: 0 50%;
-        stroke-width: 2;
-    }
-    70%
-    {
-        fill: rgba(72, 138, 20, 0); stroke: rgba(0, 128, 128);   
-    }
-    80%
-    {
-        fill: rgba(72, 138, 20, 0); stroke: rgba(0, 128, 128); 
-        stroke-width: 3; 
-    }
-    100%
-    {
-        fill: rgba(0, 128, 128); stroke: rgba(54, 95, 160, 0);  
-        stroke-dashoffset: -25%;
-        stroke-dasharray: 50% 0;
-        stroke-width: 0;
-    }
-}
-
-
-.logoFont{
+.loaderText {
   font-family: var(--font-cinzel);
 }
 
-.poppins{
+.loaderSvg {
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+.loaderSvg text {
+  animation: stroke 5s infinite alternate;
+  stroke-width: 1;
+  stroke: teal;
+
+  font-size: 50px;
+  transition: opacity 0.75s, visibility 0.75s;
+
+}
+
+@keyframes stroke {
+  0% {
+    fill: rgba(72, 138, 20, 0);
+    stroke: rgba(0, 128, 128);
+    stroke-dashoffset: 25%;
+    stroke-dasharray: 0 50%;
+    stroke-width: 2;
+  }
+
+  70% {
+    fill: rgba(72, 138, 20, 0);
+    stroke: rgba(0, 128, 128);
+  }
+
+  80% {
+    fill: rgba(72, 138, 20, 0);
+    stroke: rgba(0, 128, 128);
+    stroke-width: 3;
+  }
+
+  100% {
+    fill: rgba(0, 128, 128);
+    stroke: rgba(54, 95, 160, 0);
+    stroke-dashoffset: -25%;
+    stroke-dasharray: 50% 0;
+    stroke-width: 0;
+  }
+}
+
+
+.logoFont {
+  font-family: var(--font-cinzel);
+}
+
+.poppins {
   font-family: var(--font-poppins);
 }
 
-.logo{
+.logo {
   font-family: var(--font-pt-serif);
 }
-.sans{
-  font-family: var(--font-open-sans); 
+
+.sans {
+  font-family: var(--font-open-sans);
 }
 
-.font-bangla{
+.font-bangla {
   font-family: 'AdorshoLipi', sans-serif;
 }
 
 /* chatbot css */
 
 /* -----react chat bot------ */
-.react-chatbot-kit-chat-bot-message{
-  background-color:#115e59;
+.react-chatbot-kit-chat-bot-message {
+  background-color: #115e59;
 }
 
-.react-chatbot-kit-chat-bot-message-arrow{
- border-right: #115e59;
-}
-.react-chatbot-kit-chat-btn-send{
-  background:linear-gradient(90deg, rgb(192, 59, 44) 25%, rgb(137, 25, 13) 100%);
+.react-chatbot-kit-chat-bot-message-arrow {
+  border-right: #115e59;
 }
 
-.react-chatbot-kit-chat-input{
+.react-chatbot-kit-chat-btn-send {
+  background: linear-gradient(90deg, rgb(192, 59, 44) 25%, rgb(137, 25, 13) 100%);
+}
+
+.react-chatbot-kit-chat-input {
   background: linear-gradient(90deg, rgba(192, 59, 44) 25%, rgb(192, 59, 44) 100%);
   border-color: #115e59;
 }
@@ -198,7 +206,7 @@ body{
 body {
   color: var(--foreground);
   background: var(--background);
-  
+
 }
 
 @layer utilities {
@@ -208,19 +216,21 @@ body {
 }
 
 .slick-slide {
-  padding: 0 5px; /* Space between slides */
+  padding: 0 5px;
+  /* Space between slides */
 }
 
 .slick-list {
-  margin: 0 -5px; /* Prevent edge overflow */
+  margin: 0 -5px;
+  /* Prevent edge overflow */
 }
 
 .slick-prev::before,
 .slick-next::before {
-  content: ''; 
-  color: #ff8800 !important; 
-  font-size: 20px; 
-  opacity: .75 !important; 
+  content: '';
+  color: #ff8800 !important;
+  font-size: 20px;
+  opacity: .75 !important;
 }
 
 
@@ -228,12 +238,13 @@ body {
 
 
 
-.neon-white{
-    text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
-                 0 0 20px rgba(255, 255, 255, 0.6),
-                 0 0 30px rgba(255, 255, 255, 0.4),
-                 0 0 40px rgba(255, 255, 255, 0.2);
+.neon-white {
+  text-shadow: 0 0 10px rgba(255, 255, 255, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 30px rgba(255, 255, 255, 0.4),
+    0 0 40px rgba(255, 255, 255, 0.2);
 }
+
 .nunito {
   font-family: "Nunito", sans-serif;
   font-optical-sizing: auto;
@@ -248,7 +259,8 @@ body {
 }
 
 .no-arrows {
-  -moz-appearance: textfield; /* Firefox */
+  -moz-appearance: textfield;
+  /* Firefox */
 }
 
 .overlay {
@@ -257,8 +269,10 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-  display: none; /* Hidden by default */
+  background-color: rgba(0, 0, 0, 0.5);
+  /* Semi-transparent background */
+  display: none;
+  /* Hidden by default */
 }
 
 /* Show overlay when the cart is open */
@@ -275,7 +289,7 @@ body {
 .swiper-slide {
   text-align: center;
   font-size: 18px;
- 
+
 
   /* Center slide text vertically */
   display: flex;
@@ -295,19 +309,19 @@ body {
   align-items: stretch;
 }
 
-.trending-swiper img{
+.trending-swiper img {
   width: 100% !important;
   object-fit: cover;
 }
 
 
-.trending-swiper .swiper-slide > a {
+.trending-swiper .swiper-slide>a {
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.swiper-button-prev, 
+.swiper-button-prev,
 .swiper-button-next {
   color: #ccc !important;
 }
@@ -354,9 +368,10 @@ body {
 
 @keyframes flipDown {
   0% {
-    transform: rotateX(-180deg) ;
+    transform: rotateX(-180deg);
 
   }
+
   100% {
     transform: rotateX(0deg);
   }
@@ -371,7 +386,7 @@ body {
 
 
 @media only screen and (max-width: 600px) {
-  .trending-swiper img{
+  .trending-swiper img {
     width: 100%;
     object-fit: contain;
   }
@@ -385,3 +400,41 @@ body {
 }
 
 
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.group:hover .animate-marquee {
+  animation-play-state: paused;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0f766e;
+  /* Teal-700 to match accent */
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #115e59;
+  /* Teal-800 on hover */
+}

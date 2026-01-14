@@ -6,6 +6,7 @@ import NewArrivalSection from "../Components/NewArrivalSection";
 import BestDealsSection from "../Components/BestDealsSection";
 import LifestyleBanner from "../Components/LifestyleBanner";
 import ShopByStyle from "../Components/ShopByStyle";
+import CategoryShowcase from "../Components/CategoryShowcase";
 import { userId, fetcher } from "../constants";
 
 // Re-export for backwards compatibility with other files that might import from here
@@ -52,6 +53,21 @@ export default async function Home() {
 
         {/* Shop by Style Section */}
         <ShopByStyle />
+
+        {/* Category Showcase Section */}
+        <CategoryShowcase />
+
+        {/* Second Lifestyle Banner (Full Width) - Banner Index 3 */}
+        <LifestyleBanner
+          title="Urban Elegance"
+          subtitle="Discover the city look"
+          ctaText="Shop Now"
+          ctaLink="/category/6749?category=Stripe%20Pattern%20Shirt"
+          bannerIndex={3}
+        />
+
+        {/* Second Shop by Style Section (Two Banners) - Starting from Banner Index 4 */}
+        <ShopByStyle startBannerIndex={4} />
 
         {/* Benefits Section */}
         <BenefitsSection />

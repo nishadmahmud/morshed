@@ -5,14 +5,15 @@ import Link from "next/link";
 import useSWR from "swr";
 import { fetcher, userId } from "../constants";
 
-const ShopByStyle = () => {
+const ShopByStyle = ({ startBannerIndex = 0 }) => {
     const { data: banners, isLoading } = useSWR(
         `${process.env.NEXT_PUBLIC_API}/public/banners/${userId}`,
         fetcher
     );
 
     // Define the style metadata (titles and links for each banner)
-    const stylesMeta = [
+    // We rotate these based on index to ensure we have content if we go beyond the initial 2
+    const baseStylesMeta = [
         {
             title: "Casual Comfort",
             description: "Everyday essentials",
@@ -25,8 +26,21 @@ const ShopByStyle = () => {
         }
     ];
 
-    // Get first 2 banners from API
-    const bannerImages = banners?.banners?.slice(0, 2) || [];
+    const stylesMeta = baseStylesMeta;
+
+    // Get 2 banners starting from startBannerIndex
+    // If we run out of banners, we might want to wrap around, but for now simple slice
+    const bannerImages = banners?.banners?.slice(startBannerIndex, startBannerIndex + 2) || [];
+
+    // Safety check: if we have fewer than 2 banners in this slice, maybe cycle back?
+    // User response shows 5 banners (indices 0-4). 
+    // If startBannerIndex is 4, we get index 4 only. We need 2.
+    // Let's implement wrap around logic
+    if (banners?.banners && bannerImages.length < 2) {
+        const remainingNeeded = 2 - bannerImages.length;
+        const wrappedBanners = banners.banners.slice(0, remainingNeeded);
+        bannerImages.push(...wrappedBanners);
+    }
 
     if (isLoading) {
         return (
