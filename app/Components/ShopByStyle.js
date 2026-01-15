@@ -3,11 +3,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import useSWR from "swr";
-import { fetcher, userId } from "../constants";
+import { api, fetcher } from "../lib/api";
 
 const ShopByStyle = ({ startBannerIndex = 0 }) => {
     const { data: banners, isLoading } = useSWR(
-        `${process.env.NEXT_PUBLIC_API}/public/banners/${userId}`,
+        api.getBanners(),
         fetcher
     );
 

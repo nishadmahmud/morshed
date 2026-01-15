@@ -1,7 +1,7 @@
 'use client';
 import React, { use } from 'react';
-import ProductCard from '@/app/Components/ProductCard';
-import Heading from '../CustomHooks/heading';
+import ProductCard from '@/app/components/ProductCard';
+import Heading from '../hooks/heading';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay } from 'swiper/modules';
 import 'swiper/css';

@@ -9,7 +9,8 @@ const orderDelivered = "/delivered.png";
 import Image from "next/image";
 import toast from "react-hot-toast";
 import { userId } from "../page";
-import CurrencyConverter from "@/app/Components/CurrencyConverter";
+import { api } from "@/app/lib/api";
+import CurrencyConverter from "@/app/components/CurrencyConverter";
 
 const STEPS = [
   { title: "Order Received", image: orderRecived },
@@ -32,7 +33,7 @@ export default function Page() {
       setLoading(true);
       setError(null);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_API}/search-web-invoice`,
+        api.searchInvoice(),
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

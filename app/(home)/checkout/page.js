@@ -1,6 +1,6 @@
 "use client"
-// import DeliveryForm from "@/app/Components/DeliveryForm";
-import useStore from "@/app/CustomHooks/useStore"
+// import DeliveryForm from "@/app/components/DeliveryForm";
+import useStore from "@/app/hooks/useStore"
 import Image from "next/image"
 import { useState, useEffect, Suspense } from "react"
 import { ShoppingCart, Package } from "lucide-react"
@@ -8,7 +8,7 @@ import dynamic from "next/dynamic"
 import toast from "react-hot-toast"
 import axios from "axios"
 
-const DeliveryForm = dynamic(() => import("../../Components/DeliveryForm"), {
+const DeliveryForm = dynamic(() => import("../../components/DeliveryForm"), {
   ssr: false,
 })
 

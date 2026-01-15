@@ -1,6 +1,6 @@
 "use client"
 
-import useStore from "@/app/CustomHooks/useStore";
+import useStore from "@/app/hooks/useStore";
 import { MapPin } from "lucide-react";
 import { FileUser, ShoppingBag, KeyRound, CircleUser, LogOut, X, Menu } from "lucide-react";
 import Link from "next/link";
@@ -83,20 +83,20 @@ const DashboardLayout = ({ children }) => {
 
         <nav className="mt-6 space-y-4">
           <Link
-            href="/profileDashboard"
+            href="/profile-dashboard"
             className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <FileUser size={20} /> Personal Info
           </Link>
           <Link
-            href="/profileDashboard/orders"
+            href="/profile-dashboard/orders"
             className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <ShoppingBag size={20} /> My Orders
           </Link>
          
           <Link
-            href="/profileDashboard/updatePassword"
+            href="/profile-dashboard/updatePassword"
             className="text-white hover:text-gray-300 flex items-center gap-1"
           >
             <KeyRound size={20} /> Change Password

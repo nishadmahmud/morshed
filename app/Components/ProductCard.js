@@ -5,8 +5,8 @@ const noImg = "/no-image.jpg"
 import Link from "next/link"
 import { useEffect } from "react"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
-import useWishlist from "../CustomHooks/useWishlist"
-import useStore from "../CustomHooks/useStore"
+import useWishlist from "../hooks/useWishlist"
+import useStore from "../hooks/useStore"
 
 const ProductCard = ({ product, compact = false }) => {
   const { prices, country, setProductPrice } = useStore()

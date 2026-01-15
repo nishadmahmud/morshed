@@ -2,10 +2,10 @@ import Image from 'next/image';
 import React from 'react';
 import Link from 'next/link';
 const noImg = '/no-image.jpg'
-import { userId } from '../constants';
+import { api } from '../lib/api';
 
 const BrandMarquee = async () => {
-  const brandsRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/brands/${userId}`, { cache: 'no-cache' });
+  const brandsRes = await fetch(api.getBrands(), { cache: 'no-cache' });
   const brands = await brandsRes.json();
 
   return (

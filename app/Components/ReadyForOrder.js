@@ -1,9 +1,9 @@
 'use client'
 import React from 'react';
-import Heading from '../CustomHooks/heading';
-import useStore from '../CustomHooks/useStore';
+import Heading from '../hooks/heading';
+import useStore from '../hooks/useStore';
 import Link from 'next/link';
-import SubHeading from '../CustomHooks/subHeading';
+import SubHeading from '../hooks/subHeading';
 import Image from 'next/image';
 import useSWR from 'swr';
 import { fetcher, userId } from '../(home)/page';

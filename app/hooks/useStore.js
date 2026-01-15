@@ -1,9 +1,9 @@
 "use client"
 import  { useContext } from 'react';
-import { storeContext } from '../StoreContext/store';
+import { context } from '../context/store';
 
 const useStore = () => {
-    const store = useContext(storeContext)
+    const store = useContext(context)
     return store;
 };
 

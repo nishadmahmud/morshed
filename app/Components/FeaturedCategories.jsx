@@ -1,9 +1,9 @@
 import React, { Suspense } from 'react';
 import FeaturedCategoryUi from './FeaturedCategoryUi';
-import { userId } from '../(home)/page';
+import { api } from '../lib/api';
 
 const FeaturedCategories = async () => {
-  const categoriesRes = await fetch(`${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`, {
+  const categoriesRes = await fetch(api.getCategories(), {
     next: { revalidate: 60 }
   });
   const categories = categoriesRes.json();

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { userId } from "../page";
 import axios from "axios";
 const noImg = '/no-image.jpg'
-import useStore from "@/app/CustomHooks/useStore";
+import useStore from "@/app/hooks/useStore";
 
 const Page = () => {
   const [keyword1, setKeyword1] = useState("");

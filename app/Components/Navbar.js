@@ -2,7 +2,7 @@
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { LogIn, ShoppingCart, House, Heart } from "lucide-react";
-import useStore from "../CustomHooks/useStore";
+import useStore from "../hooks/useStore";
 import Image from "next/image";
 const loginLogo = "/user.png";
 
@@ -95,7 +95,7 @@ const Navbar = ({ data }) => {
             {/* Account/Login */}
             {user ? (
               <Link
-                href="/profileDashboard"
+                href="/profile-dashboard"
                 className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors"
               >
                 <Image

@@ -16,11 +16,11 @@ import { IoCloseSharp, IoSearch } from "react-icons/io5";
 import axios from "axios";
 const noImg = "/no-image.jpg";
 import Search from "./Search";
-import useStore from "../CustomHooks/useStore";
+import useStore from "../hooks/useStore";
 import CartItems from "./CartItems";
 import { useSearchParams } from "next/navigation";
 import Navbar from "./Navbar";
-import { userId } from "../constants";
+import { api, userId } from "../lib/api";
 import GlobeModalButton from "./GlobeModalButton";
 
 const HeaderUi = ({ data }) => {
@@ -76,7 +76,7 @@ const HeaderUi = ({ data }) => {
     setIsSearching(true);
     try {
       const res = await axios
-        .post(`${process.env.NEXT_PUBLIC_API}/public/search-product`, {
+        .post(api.searchProducts(), {
           keyword: value,
           user_id: userId,
         });
@@ -264,7 +264,7 @@ const HeaderUi = ({ data }) => {
               </Link>
             ) : (
               <Link
-                href="/profileDashboard"
+                href="/profile-dashboard"
                 className="hidden lg:flex items-center cursor-pointer"
               >
                 <div className="w-6 h-6 rounded-full overflow-hidden">

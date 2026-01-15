@@ -3,17 +3,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Globe } from "lucide-react";
 import RegionModal from "./RegionModal";
-import { storeContext } from "../StoreContext/store";
+import { context } from "../context/store";
 import Select from "react-select";
 import countries from "i18n-iso-countries";
 import enLocale from "i18n-iso-countries/langs/en.json";
-import useStore from "../CustomHooks/useStore";
+import useStore from "../hooks/useStore";
 
 countries.registerLocale(enLocale);
 
 const GlobeModalButton = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const { selectedCountry, setSelectedCountry } = useContext(storeContext);
+  const { selectedCountry, setSelectedCountry } = useContext(context);
 
   const {setCountry } = useStore();
   const [countryOptions, setCountryOptions] = useState([]);

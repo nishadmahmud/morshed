@@ -4,7 +4,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import axios from "axios"
 import toast from "react-hot-toast"
-import useStore from "@/app/CustomHooks/useStore"
+import useStore from "@/app/hooks/useStore"
 import { userId } from "../page"
 
 

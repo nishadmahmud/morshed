@@ -3,6 +3,7 @@ import ProductDetailsUi from './ProductDetailsUi';
 import BrandedSpinner from '@/app/Components/BrandedSpinner';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { cookies } from 'next/headers';
+import { api } from '@/app/lib/api';
 
 export default async function ProductDetailsPage({ params }) {
   const { id } = await params;
@@ -15,7 +16,7 @@ export default async function ProductDetailsPage({ params }) {
   await queryClient.prefetchQuery({
     queryKey: ['product-details', id],
     queryFn: async () => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API}/public/products-detail/${id}`, {
+      const res = await fetch(api.getProductDetails(id), {
         next: { revalidate: 60 }
       });
       if (!res.ok) throw new Error("Failed");

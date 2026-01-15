@@ -1,6 +1,6 @@
 "use client"
 import { useEffect } from "react"
-import useStore from "../CustomHooks/useStore"
+import useStore from "../hooks/useStore"
 
 const CurrencyConverter = ({ baseBDT, wholesalePrice }) => {
   const {

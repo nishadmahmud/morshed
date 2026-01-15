@@ -6,7 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 import { useEffect, useState, useCallback, useMemo, useRef } from "react";
 import toast from "react-hot-toast";
 import useSWR from "swr";
-import { fetcher, userId } from "../constants";
+import { fetcher, userId } from "../lib/constants";
 import Image from "next/image";
 import Modal from "./Modal";
 import PaymentMethodForm from "./PaymentMethodForm";
@@ -28,7 +28,7 @@ import {
 import PrizeModal from "./PrizeModal";
 import { Dialog } from "@headlessui/react";
 import { Wheel } from "react-custom-roulette";
-import useStore from "../CustomHooks/useStore";
+import useStore from "../hooks/useStore";
 import { GiWorld } from "react-icons/gi";
 import { getNames } from "country-list";
 import AddressSelect from "./AddressSelect";

@@ -1,10 +1,10 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import useSWR from "swr";
-import Loader from "@/app/Components/Loader";
-import ProductCard from "@/app/Components/ProductCard";
+import Loader from "@/app/components/Loader";
+import ProductCard from "@/app/components/ProductCard";
 import CardSkeleton from "./CardSkeleton";
-import Heading from "../CustomHooks/heading";
+import Heading from "../hooks/heading";
 
 const fetcher = (url) => fetch(url).then(res => res.json());
 

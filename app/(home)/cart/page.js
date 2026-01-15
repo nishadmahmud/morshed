@@ -1,12 +1,12 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import useStore from "../../CustomHooks/useStore";
+import useStore from "../../hooks/useStore";
 import Image from "next/image";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { ShoppingBag, NotebookPen, ShoppingCart, Trash2 } from "lucide-react";
-import CartSkeleton from "@/app/Components/CartSkeleton";
+import CartSkeleton from "@/app/components/CartSkeleton";
 const noImg = "/no-image.jpg";
 
 const CartPage = () => {

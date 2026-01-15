@@ -1,7 +1,7 @@
 'use client'
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
-import useStore from "../CustomHooks/useStore";
+import useStore from "../hooks/useStore";
 import { FadeLoader } from 'react-spinners';
 import { X } from 'lucide-react';
 

@@ -1,50 +1,56 @@
 import React, { useEffect, useState } from "react";
 import { IoClose } from "react-icons/io5";
-import { motion, AnimatePresence } from "framer-motion";
 
 const Modal = ({ onClose, content, title }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
+  const [shouldRender, setShouldRender] = useState(true);
+
+  useEffect(() => {
+    // Start animation on mount
+    requestAnimationFrame(() => setIsVisible(true));
+    return () => setIsVisible(false);
+  }, []);
 
   const handleClose = () => {
     setIsVisible(false);
     setTimeout(() => {
-      onClose(); // Close the modal after animation
-    }, 300); // Matches animation duration
+      setShouldRender(false);
+      onClose();
+    }, 300);
   };
 
-  return (
-    <AnimatePresence>
-      {isVisible && (
-        <motion.div
-          className="modal-overlay lg:h-full w-full mx-auto fixed inset-0 bg-black bg-opacity-50 backdrop-blur-md flex justify-center z-[9999] items-center px-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1, transition: { ease: "easeInOut", duration: 0.3 } }}
-          exit={{ opacity: 0, transition: { ease: "easeOut", duration: 0.3 } }}
-        >
-          <motion.dialog
-            open
-            className="w-full max-w-[350px] lg:max-w-[400px] overflow-y-auto max-h-[85vh] p-5 rounded-2xl flex flex-col bg-white text-black sm:w-[80%] md:w-[450px] focus:border-none focus:outline-none"
-            initial={{ scale: 0.8, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1, transition: { ease: "easeIn", duration: 0.3 } }}
-            exit={{ scale: 0.8, opacity: 0, transition: { ease: "easeOut", duration: 0.3 } }}
-          >
-            {/* Title Section */}
-            <div className="mb-5 w-full">
-              <div className="flex justify-between items-center w-full">
-                <h3 className="font-semibold text-xl">{title}</h3>
-                <div className="bg-[#dc2626] py-1 px-1 rounded-full">
-                  <IoClose className="cursor-pointer text-white" onClick={handleClose} />
-                </div>
-              </div>
-              <hr className="mt-2" />
-            </div>
+  if (!shouldRender) return null;
 
-            {/* Content */}
-            <div>{content}</div>
-          </motion.dialog>
-        </motion.div>
-      )}
-    </AnimatePresence>
+  return (
+    <div className={`fixed inset-0 z-[9999] flex items-center justify-center px-4 transition-opacity duration-300 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+      {/* Backdrop */}
+      <div
+        className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+        onClick={handleClose}
+      />
+
+      {/* Modal Content */}
+      <div
+        className={`relative w-full max-w-[350px] lg:max-w-[400px] md:w-[450px] bg-white rounded-2xl p-5 shadow-xl transform transition-all duration-300 flex flex-col max-h-[85vh] overflow-y-auto ${isVisible ? 'scale-100 translate-y-0' : 'scale-90 translate-y-4'}`}
+      >
+        {/* Title Section */}
+        <div className="mb-5 w-full">
+          <div className="flex justify-between items-center w-full">
+            <h3 className="font-semibold text-xl">{title}</h3>
+            <button
+              onClick={handleClose}
+              className="bg-red-600 hover:bg-red-700 text-white p-1 rounded-full transition-colors"
+            >
+              <IoClose size={20} />
+            </button>
+          </div>
+          <hr className="mt-2 border-gray-100" />
+        </div>
+
+        {/* Content */}
+        <div>{content}</div>
+      </div>
+    </div>
   );
 };
 

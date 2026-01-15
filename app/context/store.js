@@ -18,7 +18,7 @@ const countries = [
 
 
 
-export const storeContext = createContext(null);
+export const context = createContext(null);
 const StoreProvider = ({ children }) => {
   const [refetch, setRefetch] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
@@ -387,7 +387,7 @@ const handleDncQuantity = (id, qty, selectedSize) => {
   };
 
   return (
-    <storeContext.Provider value={values}>{children}</storeContext.Provider>
+    <context.Provider value={values}>{children}</context.Provider>
   );
 };
 

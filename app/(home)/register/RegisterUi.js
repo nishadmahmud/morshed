@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import axios from "axios"
 import toast from "react-hot-toast"
 import { userId } from "../page"
-import useStore from "@/app/CustomHooks/useStore"
+import useStore from "@/app/hooks/useStore"
 
 export default function RegisterUi({ intendedUrl }) {
     const [formData, setFormData] = useState({

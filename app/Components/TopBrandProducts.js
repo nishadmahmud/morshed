@@ -2,10 +2,10 @@
 import { useState } from "react";
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs";
 import "@smastrom/react-rating/style.css";
-import Heading from "../CustomHooks/heading";
-import useStore from "../CustomHooks/useStore";
+import Heading from "../hooks/heading";
+import useStore from "../hooks/useStore";
 import useSWR from "swr";
-import { fetcher, userId } from "../constants";
+import { fetcher, userId } from "../lib/constants";
 import CardSkeleton from "./CardSkeleton";
 import ProductCard from "./ProductCard";
 

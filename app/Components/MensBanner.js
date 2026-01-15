@@ -2,21 +2,8 @@
 
 import Image from 'next/image';
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
 const noImg = '/no-image.jpg';
-
-const textVariants = {
-  hidden: { opacity: 0, x: -50 },
-  visible: (i) => ({
-    opacity: 1,
-    x: 0,
-    transition: {
-      delay: i * 0.3,
-      duration: 0.6,
-      ease: 'easeOut',
-    },
-  }),
-};
 
 const MensBanner = ({ banner }) => {
   const imageSrc = banner?.data?.[1]?.image_path || noImg;
@@ -35,22 +22,22 @@ const MensBanner = ({ banner }) => {
           'A Curated Selection for Him',
           'Discover timeless silhouettes, sharp tailoring, and elevated essentials — designed for the modern man.',
         ].map((text, i) => (
-          <motion.div
+          <div
             key={i}
-            custom={i}
-            initial="hidden"
-            animate={isInView ? 'visible' : 'hidden'}
-            variants={textVariants}
-            className={
-              i === 0
+            className={`
+              transition-all duration-1000 ease-out fill-mode-forwards
+              ${isInView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-12'}
+              ${i === 0
                 ? 'text-2xl md:text-4xl lg:text-5xl font-semibold mb-3 text-center lg:text-left'
                 : i === 1
                   ? 'text-xl md:text-3xl lg:text-4xl font-semibold mb-5 text-center lg:text-left'
                   : 'text-sm md:text-base lg:text-lg mb-5 text-center lg:text-left'
-            }
+              }
+            `}
+            style={{ transitionDelay: `${i * 300}ms` }}
           >
             {text}
-          </motion.div>
+          </div>
         ))}
       </div>
 

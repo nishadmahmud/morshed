@@ -2,10 +2,10 @@
 import React, { useContext } from 'react';
 import { X } from 'lucide-react';
 import CurrencyConverter from './CurrencyConverter';
-import { storeContext } from '../StoreContext/store'; 
+import { context } from '../context/store'; 
 
 const SelectRegionModal = () => {
-  const { isSelectRegion, setIsSelectRegion } = useContext(storeContext);
+  const { isSelectRegion, setIsSelectRegion } = useContext(context);
 
   const handleClose = () => {
     setIsSelectRegion(false);

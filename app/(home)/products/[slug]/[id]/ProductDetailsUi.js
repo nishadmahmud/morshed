@@ -1,17 +1,5 @@
 "use client";
-import {
-  Modal,
-  Box,
-  Tab,
-  Tabs,
-  Typography,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import { IoIosDoneAll } from "react-icons/io";
 import Link from "next/link";
@@ -20,12 +8,13 @@ import toast from "react-hot-toast";
 const noImg = "/no-image.jpg";
 import { htmlToText } from "html-to-text";
 import "react-inner-image-zoom/lib/styles.min.css";
-import useStore from "@/app/CustomHooks/useStore";
-import useWishlist from "@/app/CustomHooks/useWishlist";
+import useStore from "@/app/hooks/useStore";
+import useWishlist from "@/app/hooks/useWishlist";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
-import CursorImageZoom from "@/app/Components/CustomImageZoom";
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import axios from "axios";
+import CursorImageZoom from "@/app/components/CustomImageZoom";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/app/lib/api";
+import Modal from "@/app/components/Modal";
 
 // Fetcher function needs to be defined or used from axios
 const fetchProductDetails = async (id) => {
@@ -45,11 +34,13 @@ const ProductDetailsUi = ({ id, userId }) => {
   const { data: relatedData } = useQuery({
     queryKey: ['related-products', id],
     queryFn: async () => {
-      const res = await axios.post(`${process.env.NEXT_PUBLIC_API}/public/get-related-products`, {
-        product_id: id,
-        user_id: userId,
+      const res = await fetch(api.getRelatedProducts(), {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ product_id: id, user_id: userId }),
       });
-      return res.data;
+      const data = await res.json();
+      return data;
     },
     staleTime: 60 * 1000,
     enabled: !!id // Only fetch if ID exists
@@ -674,62 +665,48 @@ const ProductDetailsUi = ({ id, userId }) => {
           </div>
         </div>
       )}
-      <Modal open={open} onClose={handleClose}>
-        <Box
-          sx={{
-            width: {
-              xs: "90%", // 90% width on extra-small devices (mobile)
-              sm: 500, // 500px on small devices (tablets)
-              md: 700, // 700px on medium+ devices (desktops)
-            },
-            bgcolor: "background.paper",
-            margin: "100px auto",
-            padding: {
-              xs: 2,
-              sm: 3,
-              md: 4,
-            },
-            outline: "none",
-            borderRadius: 2,
-            maxHeight: "90vh",
-            overflowY: "auto", // allow scroll if content overflows
-          }}
-        >
-          <Typography color="black" variant="h6" mb={2}>
-            MEN&apos;S THOBE - REGULAR FIT
-          </Typography>
-          <Tabs
-            value={tab}
-            onChange={handleTabChange}
-            aria-label="Size Guide Tabs"
-          >
-            <Tab label="IN" />
-          </Tabs>
-          <Box mt={2}>
-            <Table>
-              <TableHead>
-                <TableRow className="text-teal-500">
-                  <TableCell>Measurement Points</TableCell>
-                  <TableCell>S</TableCell>
-                  <TableCell>M</TableCell>
-                  <TableCell>L</TableCell>
-                  <TableCell>XL</TableCell>
-                  <TableCell>2XL</TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {(tab === 0 ? inches : []).map((row, i) => (
-                  <TableRow key={i}>
-                    {row.map((cell, j) => (
-                      <TableCell key={j}>{cell}</TableCell>
-                    ))}
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </Box>
-        </Box>
-      </Modal>
+      <Modal
+        open={open}
+        onClose={handleClose}
+        title="MEN'S THOBE - REGULAR FIT"
+        content={
+          <div className="w-full">
+            {/* Tabs substitute (visual only since there was only 1 tab) */}
+            <div className="flex border-b border-gray-200 mb-4">
+              <button className="py-2 px-4 text-sm font-medium text-black border-b-2 border-black">
+                IN
+              </button>
+            </div>
+
+            {/* Table */}
+            <div className="overflow-x-auto">
+              <table className="w-full text-sm text-left">
+                <thead className="text-teal-700 bg-gray-50 uppercase text-xs">
+                  <tr>
+                    <th className="px-3 py-2">Measurement Points</th>
+                    <th className="px-3 py-2">S</th>
+                    <th className="px-3 py-2">M</th>
+                    <th className="px-3 py-2">L</th>
+                    <th className="px-3 py-2">XL</th>
+                    <th className="px-3 py-2">2XL</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {inches.map((row, i) => (
+                    <tr key={i} className="hover:bg-gray-50">
+                      {row.map((cell, j) => (
+                        <td key={j} className="px-3 py-2 border-b border-gray-50 font-medium text-gray-600">
+                          {cell}
+                        </td>
+                      ))}
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        }
+      />
     </section>
   );
 };

@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { Heart, ShoppingCart } from "lucide-react";
 import { useEffect } from "react";
-import useWishlist from "@/app/CustomHooks/useWishlist";
-import useStore from "@/app/CustomHooks/useStore";
+import useWishlist from "@/app/hooks/useWishlist";
+import useStore from "@/app/hooks/useStore";
 import { FaDeleteLeft } from "react-icons/fa6";
 import { MdOutlineDelete } from "react-icons/md";
 

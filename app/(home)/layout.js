@@ -1,9 +1,9 @@
 import localFont from "next/font/local";
 import "../globals.css";
-import Header from "../Components/Header";
-import Footer from "../Components/Footer";
-import StoreProvider from "../StoreContext/store";
-import { AvatarChat } from "../Components/LazyComponents";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
+import StoreProvider from "../context/store";
+import { AvatarChat } from "../components/LazyComponents";
 import { Toaster } from "react-hot-toast";
 import Image from "next/image";
 import Script from "next/script";

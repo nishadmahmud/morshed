@@ -1,14 +1,14 @@
 "use client";
 
 import useSWR from "swr";
-import { fetcher, userId } from "../constants";
+import { api, fetcher } from "../lib/api";
 import ProductCard from "./ProductCard";
 import CardSkeleton from "./CardSkeleton";
 import Link from "next/link";
 
 const NewArrivalSection = () => {
     const { data: newArrivals, isLoading } = useSWR(
-        `${process.env.NEXT_PUBLIC_API}/public/new-arrivals/${userId}`,
+        api.getNewArrivals(),
         fetcher
     );
 

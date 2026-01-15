@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import useSWR from "swr";
-import { fetcher, userId } from "../constants";
+import { api, fetcher } from "../lib/api";
 import ProductCard from "./ProductCard";
 import CardSkeleton from "./CardSkeleton";
 
@@ -13,9 +13,7 @@ const noImg = "/no-image.jpg";
 const CategorySection = ({ category }) => {
     // Fetch products for this specific category
     const { data: productsData, isLoading } = useSWR(
-        category
-            ? `${process.env.NEXT_PUBLIC_API}/public/categorywise-products/${category.category_id}?page=1&limit=6`
-            : null,
+        category?.category_id ? api.getCategoryProducts(category.category_id) : null,
         fetcher
     );
 
@@ -126,7 +124,7 @@ const CategorySection = ({ category }) => {
 const CategoryShowcase = () => {
     // Fetch categories
     const { data: categoriesData, isLoading: categoriesLoading } = useSWR(
-        `${process.env.NEXT_PUBLIC_API}/public/categories/${userId}`,
+        api.getCategories(),
         fetcher
     );
 

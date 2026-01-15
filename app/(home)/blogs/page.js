@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import useStore from "@/app/CustomHooks/useStore";
+import useStore from "@/app/hooks/useStore";
 
 export default function Page() {
     const { blogs } = useStore();

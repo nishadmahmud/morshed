@@ -1,18 +1,18 @@
 "use client";
 
-import Heading from "../CustomHooks/heading";
+import Heading from "../hooks/heading";
 const noImg = "/no-image.jpg";
 import Image from "next/image";
 import useSWR from "swr";
-import { fetcher, userId } from "../constants";
+import { api, fetcher } from "../lib/api";
 import CardSkeleton from "./CardSkeleton";
-import useStore from "../CustomHooks/useStore";
+import useStore from "../hooks/useStore";
 import Link from "next/link";
 import { ShoppingCart } from "lucide-react";
 
 const FeaturedProducts = ({ banner }) => {
   const { data: bestDeals, isLoading } = useSWR(
-    `${process.env.NEXT_PUBLIC_API}/public/best-deals/${userId}`,
+    api.getBestDeals(),
     fetcher
   );
   const { handleCart } = useStore();
