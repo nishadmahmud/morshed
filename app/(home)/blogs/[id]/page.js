@@ -2,7 +2,7 @@
 
 import { use } from "react";
 import Image from "next/image";
-import useStore from "@/app/CustomHooks/useStore";
+import useStore from "@/app/hooks/useStore";
 const noImg = '/no-image.jpg'
 
 export default function BlogPost({ params }) {

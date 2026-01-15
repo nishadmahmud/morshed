@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react'
 import ProductDetailsUi from './ProductDetailsUi';
-import BrandedSpinner from '@/app/Components/BrandedSpinner';
+import BrandedSpinner from '@/app/components/BrandedSpinner';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
 import { cookies } from 'next/headers';
 import { api } from '@/app/lib/api';

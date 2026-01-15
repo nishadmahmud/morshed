@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react'
 import CategoryWiseProductUi from './CategoryWiseProductUi';
 import { dehydrate, HydrationBoundary, QueryClient } from '@tanstack/react-query';
-import BrandedSpinner from '@/app/Components/BrandedSpinner';
+import BrandedSpinner from '@/app/components/BrandedSpinner';
 
 export default async function CategoryProducts({ params }) {
 

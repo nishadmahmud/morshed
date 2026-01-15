@@ -1,6 +1,6 @@
 "use client";
 
-import ProductCard from "@/app/Components/ProductCard";
+import ProductCard from "@/app/components/ProductCard";
 import { use, useState } from "react";
 import Image from "next/image";
 
@@ -11,7 +11,7 @@ const OfferDetailsUi = ({ data, productsData, id }) => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
 
-    
+
     const filteredOffer = offerData?.data.find((offerItem) => offerItem.brand_id == id) || null;
 
     return (

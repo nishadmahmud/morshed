@@ -1,6 +1,6 @@
 "use client";
 
-import WithAuth from "@/app/Components/WithAuth";
+import WithAuth from "@/app/components/WithAuth";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import toast from "react-hot-toast";
@@ -16,7 +16,7 @@ const PersonalInfo = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if(typeof window !== 'undefined'){
+    if (typeof window !== 'undefined') {
       const storedUser = localStorage.getItem("user");
       const userInfo = JSON.parse(storedUser);
       if (userInfo) {
@@ -24,10 +24,10 @@ const PersonalInfo = () => {
         setEmail(userInfo?.email || "");
         setAddress(userInfo?.address || "");
         setMobileNumber(userInfo?.mobile_number || "");
-  
+
         const fullName = userInfo?.name || "";
         const nameParts = fullName.split(" ");
-        setFirstName(nameParts[0] || ""); 
+        setFirstName(nameParts[0] || "");
         setLastName(nameParts.slice(1).join(" ") || "");
       }
     }
@@ -35,53 +35,53 @@ const PersonalInfo = () => {
   }, []);
 
   const handleUpdate = async () => {
-  setLoading(true);
+    setLoading(true);
 
-  const token = localStorage.getItem("token"); 
+    const token = localStorage.getItem("token");
 
-  try {
-    const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API}/customer/update-profile`,
-      {
-        id: user?.id,
-       
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        address,
-        mobile_number: mobileNumber,
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          
-        },
-      }
-    );
+    try {
+      const response = await axios.post(
+        `${process.env.NEXT_PUBLIC_API}/customer/update-profile`,
+        {
+          id: user?.id,
 
-
-
-    if (response.data) {
-      toast.success("Customer info updated successfully!");
-      localStorage.setItem(
-        "user",
-        JSON.stringify({
-          ...user,
-           first_name: firstName,
-        last_name: lastName,
+          first_name: firstName,
+          last_name: lastName,
           email,
           address,
           mobile_number: mobileNumber,
-        })
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+
+          },
+        }
       );
+
+
+
+      if (response.data) {
+        toast.success("Customer info updated successfully!");
+        localStorage.setItem(
+          "user",
+          JSON.stringify({
+            ...user,
+            first_name: firstName,
+            last_name: lastName,
+            email,
+            address,
+            mobile_number: mobileNumber,
+          })
+        );
+      }
+    } catch (error) {
+      console.error("Update error:", error);
+      toast.error(error?.response?.data?.message || "An error occurred while updating.");
+    } finally {
+      setLoading(false);
     }
-  } catch (error) {
-    console.error("Update error:", error);
-    toast.error(error?.response?.data?.message || "An error occurred while updating.");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
 
   return (
@@ -90,11 +90,11 @@ const PersonalInfo = () => {
       <div className="bg-white p-6 shadow-md rounded-lg">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-          <div className="flex gap-1 items-center">
-            <User className="mb-1" color="gray" size={18}></User>
+            <div className="flex gap-1 items-center">
+              <User className="mb-1" color="gray" size={18}></User>
               <label className="block text-gray-700">
-              First Name</label>
-          </div>
+                First Name</label>
+            </div>
             <input
               type="text"
               value={firstName}
@@ -114,9 +114,9 @@ const PersonalInfo = () => {
         </div>
 
         <div className="mt-4">
-         <div className="flex gap-1.5 items-center">
+          <div className="flex gap-1.5 items-center">
             <Phone color="gray" size={17}></Phone>
-              <label className="block text-gray-700">
+            <label className="block text-gray-700">
               Mobile Number</label>
           </div>
           <input
@@ -129,8 +129,8 @@ const PersonalInfo = () => {
 
         <div className="mt-4">
           <div className="flex gap-1.5 items-center">
-            <Mail  color="gray" size={18}></Mail>
-              <label className="block text-gray-700">
+            <Mail color="gray" size={18}></Mail>
+            <label className="block text-gray-700">
               Email</label>
           </div>
           <input
@@ -142,9 +142,9 @@ const PersonalInfo = () => {
         </div>
 
         <div className="mt-4">
-           <div className="flex gap-1.5 items-center">
+          <div className="flex gap-1.5 items-center">
             <House className="mb-1" color="gray" size={18}></House>
-              <label className="block text-gray-700">
+            <label className="block text-gray-700">
               Address</label>
           </div>
           <input
