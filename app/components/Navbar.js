@@ -130,7 +130,7 @@ const Navbar = ({ data }) => {
                   item?.category_id
                 )}?category=${encodeURIComponent(
                   item?.name
-                )}&page=1&limit=${20}&total=${encodeURIComponent(item?.product_count)}`}
+                )}&page=1&limit=${20}&total=${encodeURIComponent(item?.products_count)}`}
                 className="text-black text-sm text-nowrap font-semibold flex items-center gap-1"
               >
                 {item.name}

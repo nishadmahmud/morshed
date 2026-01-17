@@ -26,7 +26,7 @@ const FeaturedCategoryUi = ({ categories }) => {
                 key={index}
                 href={`category/${encodeURIComponent(category?.category_id)}?category=${encodeURIComponent(
                   category?.name,
-                )}&total=${encodeURIComponent(category?.product_count)}`}
+                )}&total=${encodeURIComponent(category?.products_count)}`}
                 className="group block"
               >
                 <div className="relative overflow-hidden bg-gray-100 aspect-[3/4]">
@@ -47,9 +47,9 @@ const FeaturedCategoryUi = ({ categories }) => {
                     <h3 className="text-white font-semibold text-sm md:text-base truncate">
                       {category.name}
                     </h3>
-                    {category?.product_count && (
+                    {category?.products_count && (
                       <span className="text-white/80 text-xs">
-                        {category.product_count} items
+                        {category.products_count} items
                       </span>
                     )}
                   </div>

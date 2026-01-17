@@ -332,7 +332,7 @@ const HeaderUi = ({ data }) => {
                       item?.category_id || ""
                     )}?category=${encodeURIComponent(
                       item?.name || ""
-                    )}&page=1&limit=30&total=${encodeURIComponent(item?.product_count || 0)}`}
+                    )}&page=1&limit=30&total=${encodeURIComponent(item?.products_count || 0)}`}
                     className="flex items-center gap-2 px-3 py-2 rounded-md hover:bg-gray-50 transition-colors duration-200"
                   >
                     <span className="text-sm font-medium">

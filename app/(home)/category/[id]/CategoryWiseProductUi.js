@@ -263,7 +263,7 @@ export default function CategoryWiseProductUi({ id }) {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
         <div>
           <h1 className="text-3xl font-serif font-medium text-gray-900">{searchedCategory}</h1>
-          <p className="text-gray-500 mt-1">{searchedTotal || filteredItems.length} products</p>
+          <p className="text-gray-500 mt-1">{pagination?.total || (searchedTotal && searchedTotal !== "0" ? searchedTotal : filteredItems.length)} products</p>
         </div>
         <div className="flex items-center gap-4 mt-4 md:mt-0">
           <div className="flex items-center gap-2">

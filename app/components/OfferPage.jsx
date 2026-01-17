@@ -4,9 +4,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
-const OfferPage = ({categories}) => {
+const OfferPage = ({ categories }) => {
   const baseDate = new Date('2025-06-11T00:00:00');
-  const cycleDuration = 2 * 24 * 60 * 60 * 1000; 
+  const cycleDuration = 2 * 24 * 60 * 60 * 1000;
 
   const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
@@ -61,7 +61,7 @@ const OfferPage = ({categories}) => {
           <div className="text-black w-full md:w-1/2 px-10 space-y-6 text-center md:text-left">
             <p className="uppercase text-sm text-black  tracking-wide font-semibold">Deal of the week</p>
             <h2 className="text-4xl md:text-5xl font-medium leading-snug">
-             Ralph Lauren Beige <br></br> & Peach Stripe Shirt
+              Ralph Lauren Beige <br></br> & Peach Stripe Shirt
             </h2>
             <p className="text-black max-w-lg mx-auto md:mx-0">
               Ralph Lauren&apos;s beige and peach stripe shirt blends classic elegance with modern comfort.
@@ -76,11 +76,11 @@ const OfferPage = ({categories}) => {
               <div>{timeLeft.seconds.toString().padStart(2, '0')}<span className="text-sm">s</span></div>
             </div>
             {categoryList?.[3] && (
-  <div>
-     <Link href={`category/6749?category=Stripe%20Pattern%20Shirt&total=${encodeURIComponent(categoryList[3]?.product_count)}`} className="bg-black text-white px-6 py-3 text-sm hover:bg-gray-800 transition">Shop Now</Link>
-  </div>
-)}
-           
+              <div>
+                <Link href={`category/6749?category=Stripe%20Pattern%20Shirt&total=${encodeURIComponent(categoryList[3]?.products_count)}`} className="bg-black text-white px-6 py-3 text-sm hover:bg-gray-800 transition">Shop Now</Link>
+              </div>
+            )}
+
             <p className="text-xs space-x-2 text-black pt-6">
               Limited time offer. The deal will expires on <span className="bg-yellow-200 px-2 py-1 font-semibold text-black">June 11, 2025</span> HURRY UP!
             </p>
@@ -107,10 +107,10 @@ const OfferPage = ({categories}) => {
           <div>{timeLeft.seconds.toString().padStart(2, '0')}<span className="text-sm">s</span></div>
         </div>
         {categoryList?.[4] && (
-  <div>
-     <Link href={`category/6749?category=Stripe%20Pattern%20Shirt&total=${encodeURIComponent(categoryList[3]?.product_count)}`} className="bg-black text-white px-6 py-3 text-sm hover:bg-gray-800 transition">Shop Now</Link>
-  </div>
-)}
+          <div>
+            <Link href={`category/6749?category=Stripe%20Pattern%20Shirt&total=${encodeURIComponent(categoryList[3]?.products_count)}`} className="bg-black text-white px-6 py-3 text-sm hover:bg-gray-800 transition">Shop Now</Link>
+          </div>
+        )}
         <p className="text-xs space-x-2 text-black pt-6">
           Limited time offer. The deal will expires on <span className="bg-yellow-200 text-black px-2 py-1 font-semibold">June 11, 2025</span> HURRY UP!
         </p>

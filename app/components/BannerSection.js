@@ -37,7 +37,7 @@ const BannerSection = ({ banner, categories }) => {
               alt="Main Model"
               fill
               className="object-cover"
-              
+
             />
           ) : (
             <div className="bg-gray-300 w-full h-full" />
@@ -60,15 +60,15 @@ const BannerSection = ({ banner, categories }) => {
         </p>
 
         {categoryList?.[3] && (
-  <div className="mt-4">
-    <Link
-      className="inline-flex text-black items-center gap-2 border border-black px-5 py-2 font-medium hover:bg-black hover:text-white transition-all"
-      href={`category/6750?category=Solid%20Shirts&total=${encodeURIComponent(categoryList[3]?.product_count)}`}
-    >
-      Shop Now <FaArrowRight />
-    </Link>
-  </div>
-)}
+          <div className="mt-4">
+            <Link
+              className="inline-flex text-black items-center gap-2 border border-black px-5 py-2 font-medium hover:bg-black hover:text-white transition-all"
+              href={`category/6750?category=Solid%20Shirts&total=${encodeURIComponent(categoryList[3]?.products_count)}`}
+            >
+              Shop Now <FaArrowRight />
+            </Link>
+          </div>
+        )}
 
       </div>
     </section>
