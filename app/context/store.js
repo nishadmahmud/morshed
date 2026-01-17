@@ -32,10 +32,10 @@ const StoreProvider = ({ children }) => {
   const [isSelectRegion, setIsSelectRegion] = useState(false);
   const [selectedCountry, setSelectedCountry] = useState("Bangladesh");
   const [convertedPrice, setConvertedPrice] = useState(null);
-  const [basePrice,setBasePrice] = useState(0);
-  const [wholesalePrice,setWholesalePrice] = useState(0);
+  const [basePrice, setBasePrice] = useState(0);
+  const [wholesalePrice, setWholesalePrice] = useState(0);
   const googleProvider = new GoogleAuthProvider();
-  const [userInfo,setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);
   const [prices, setPrices] = useState({});
   const [country, setCountry] = useState("BD");
@@ -57,27 +57,27 @@ const StoreProvider = ({ children }) => {
     }));
   };
 
-  
+
 
 
   useEffect(() => {
     setIsMounted(true);
-  // const bangladesh = JSON.parse(localStorage.getItem("selectedCountry"))
+    // const bangladesh = JSON.parse(localStorage.getItem("selectedCountry"))
 
   }, []);
 
   const router = useRouter();
 
 
-// console.log(bangladesh);
+  // console.log(bangladesh);
   const getPriceByCountry = (basePrice, wholesalePrice) => {
-  return selectedCountry.valueOf === "BD" ? basePrice : wholesalePrice;
-};
+    return selectedCountry.valueOf === "BD" ? basePrice : wholesalePrice;
+  };
 
 
 
   useEffect(() => {
-    if(typeof window !== 'undefined'){
+    if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem("token");
       if (storedToken) {
         setLoading(false);
@@ -91,91 +91,97 @@ const StoreProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-      if(typeof window !== 'undefined'){
-        const user = JSON.parse(localStorage.getItem("user"));
-        if(user){
-            setUserInfo(user);
-        }
+    if (typeof window !== 'undefined') {
+      const user = JSON.parse(localStorage.getItem("user"));
+      if (user) {
+        setUserInfo(user);
       }
-    },[])
-
- 
-
- const handleCart = (item, quantity, variant_id) => {
-   if (!selectedSizeCart) {
-     toast.error("Please select a size first");
-     return; 
-   }
-  if (!isMounted) return;
+    }
+  }, [])
 
 
-  setRefetch(true);
-  const discountedPrice =
-  item.is_international
-    ? item.discount_type === "Percentage"
-      ? item.intl_discount
-        ? Math.round(
-            item.intl_retails_price -
+
+  const handleCart = (item, quantity, variant_id, overrideSize = null) => {
+    const sizeToUse = overrideSize || selectedSizeCart;
+
+    // Only enforce size selection if the product actually has variants
+    // Assuming 'have_variant' is '1' for true, '0' for false, or use product_variants length
+    const hasVariants = item.have_variant === "1" || (item.product_variants && item.product_variants.length > 0);
+
+    if (hasVariants && !sizeToUse) {
+      toast.error("Please select a size first");
+      return;
+    }
+    if (!isMounted) return;
+
+
+    setRefetch(true);
+    const discountedPrice =
+      item.is_international
+        ? item.discount_type === "Percentage"
+          ? item.intl_discount
+            ? Math.round(
+              item.intl_retails_price -
               (item.intl_retails_price * item.intl_discount) / 100
-          )
-        : null
-      : item.intl_retails_price - item.intl_discount
-    : item.discount_type === "Percentage"
-    ? item.discount
-      ? Math.round(
-          item.retails_price -
-            (item.retails_price * item.discount) / 100
-        )
-      : null
-    : item.retails_price - item.discount;
+            )
+            : null
+          : item.intl_retails_price - item.intl_discount
+        : item.discount_type === "Percentage"
+          ? item.discount
+            ? Math.round(
+              item.retails_price -
+              (item.retails_price * item.discount) / 100
+            )
+            : null
+          : item.retails_price - item.discount;
 
 
-      
-  const newItem = {
-    ...item,
-    orginalPrice: item.price ?? item.retails_price,
-    retails_price: item?.discount > 0 ? discountedPrice : item.price ?? item.retails_price,
-    currency_retail_price: convertedPrice,
-    selectedSize: selectedSizeCart,
-    selectedSizeId: selectedId, // make sure we have this for comparison
-    product_variant_id: selectedId,
-    variant_id,
-    cartItemId: `${item.id}_${selectedId}`,
-    quantity,
+
+    const newItem = {
+      ...item,
+      orginalPrice: item.price ?? item.retails_price,
+      retails_price: item?.discount > 0 ? discountedPrice : item.price ?? item.retails_price,
+      currency_retail_price: convertedPrice,
+      selectedSize: sizeToUse || "N/A", // Use the resolved size or N/A for non-variants
+      selectedSizeId: selectedId,
+      product_variant_id: selectedId,
+      variant_id,
+      cartItemId: `${item.id}_${selectedId || 'base'}`, // Ensure unique ID even without selectedId
+      quantity,
+    };
+
+    const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
+
+    // Check if the exact product with selected size already exists
+    const existingItemIndex = existingCart.findIndex(
+      (cartItem) =>
+        cartItem.id === item.id && cartItem.selectedSizeId === selectedId
+    );
+
+    // Check stock
+    const isInStock =
+      (newItem.status && newItem.status.toLowerCase() !== "stock out") ||
+      newItem.current_stock > 0;
+
+    if (!isInStock) {
+      toast.error("Out of stock!");
+      return;
+    }
+
+    // If item exists, show error
+    if (existingItemIndex > -1) {
+      toast.error("This product with the selected size is already in your cart!");
+      return;
+    }
+
+    // Add new item to cart
+    existingCart.push(newItem);
+    localStorage.setItem("cart", JSON.stringify(existingCart));
+    setCartItems(existingCart);
+    setIsInCart(true);
+
+    toast.success("Item added to cart successfully");
   };
-
-  const existingCart = JSON.parse(localStorage.getItem("cart") || "[]");
-
-  // Check if the exact product with selected size already exists
-  const existingItemIndex = existingCart.findIndex(
-    (cartItem) =>
-      cartItem.id === item.id && cartItem.selectedSizeId === selectedId
-  );
-
-  // Check stock
-  const isInStock =
-    (newItem.status && newItem.status.toLowerCase() !== "stock out") ||
-    newItem.current_stock > 0;
-
-  if (!isInStock) {
-    toast.error("Out of stock!");
-    return;
-  }
-
-  // If item exists, show error
-  if (existingItemIndex > -1) {
-    toast.error("This product with the selected size is already in your cart!");
-    return;
-  }
-
-  // Add new item to cart
-  existingCart.push(newItem);
-  localStorage.setItem("cart", JSON.stringify(existingCart));
-  setCartItems(existingCart);
-  setIsInCart(true);
-
-  toast.success("Item added to cart successfully");
-};
 
 
   const getCartItems = () => {
@@ -190,59 +196,59 @@ const StoreProvider = ({ children }) => {
     setCartItems(updatedItems);
   };
 
- const handleIncQuantity = (id, qty, selectedSize) => {
-  const items = getCartItems();
+  const handleIncQuantity = (id, qty, selectedSize) => {
+    const items = getCartItems();
 
-  const updatedItems = items.map((item) => {
-    if (item.id === id && item.selectedSize === selectedSize) {
-      // Find the matching variant inside product_variants array
-      const matchedVariant = item.product_variants?.find(
-        (variant) => variant.name === selectedSize
-      );
-
-      // If stock limit reached, show toast and return original item
-      if (matchedVariant && qty + 1 > matchedVariant.quantity) {
-        toast.error(`Only ${matchedVariant.quantity} items in stock`);
-        return item;
-      }
-
-      // Otherwise, increment quantity
-      return { ...item, quantity: qty + 1 };
-    }
-
-    return item;
-  });
-
-  localStorage.setItem("cart", JSON.stringify(updatedItems));
-  handleCartUpdate();
-};
-
-
-const handleDncQuantity = (id, qty, selectedSize) => {
-  const items = getCartItems();
-  let removedItemName = null;
-
-  const updatedItems = items
-    .map((item) => {
+    const updatedItems = items.map((item) => {
       if (item.id === id && item.selectedSize === selectedSize) {
-        const newQty = qty - 1;
-        if (newQty <= 0) {
-          removedItemName = item.name;
-          return null;
+        // Find the matching variant inside product_variants array
+        const matchedVariant = item.product_variants?.find(
+          (variant) => variant.name === selectedSize
+        );
+
+        // If stock limit reached, show toast and return original item
+        if (matchedVariant && qty + 1 > matchedVariant.quantity) {
+          toast.error(`Only ${matchedVariant.quantity} items in stock`);
+          return item;
         }
-        return { ...item, quantity: newQty };
+
+        // Otherwise, increment quantity
+        return { ...item, quantity: qty + 1 };
       }
+
       return item;
-    })
-    .filter(Boolean); // Remove nulls
+    });
 
-  localStorage.setItem("cart", JSON.stringify(updatedItems));
-  handleCartUpdate();
+    localStorage.setItem("cart", JSON.stringify(updatedItems));
+    handleCartUpdate();
+  };
 
-  if (removedItemName) {
-    toast.success(`${removedItemName} removed from cart`);
-  }
-};
+
+  const handleDncQuantity = (id, qty, selectedSize) => {
+    const items = getCartItems();
+    let removedItemName = null;
+
+    const updatedItems = items
+      .map((item) => {
+        if (item.id === id && item.selectedSize === selectedSize) {
+          const newQty = qty - 1;
+          if (newQty <= 0) {
+            removedItemName = item.name;
+            return null;
+          }
+          return { ...item, quantity: newQty };
+        }
+        return item;
+      })
+      .filter(Boolean); // Remove nulls
+
+    localStorage.setItem("cart", JSON.stringify(updatedItems));
+    handleCartUpdate();
+
+    if (removedItemName) {
+      toast.success(`${removedItemName} removed from cart`);
+    }
+  };
 
 
 
@@ -281,21 +287,21 @@ const handleDncQuantity = (id, qty, selectedSize) => {
     localStorage.setItem("wishlist", JSON.stringify(remainingItems));
   };
 
-  
-   const handleBuy = (item, quantity) => {
+
+  const handleBuy = (item, quantity) => {
     if (!selectedSizeCart) {
-    toast.error("Please select a size first");
-    return; 
-  }
+      toast.error("Please select a size first");
+      return;
+    }
 
     handleCart(item, quantity);
 
     const status = typeof item?.status === 'string' ? item.status.toLowerCase() : null;
 
     if ((status && status !== "stock out") || item?.current_stock) {
-        router.push('/checkout');
+      router.push('/checkout');
     }
-};
+  };
 
 
   const reload = (boolean) => {
@@ -319,14 +325,14 @@ const handleDncQuantity = (id, qty, selectedSize) => {
   };
 
   const googleLogin = () => {
-       return signInWithPopup(auth,googleProvider);
-    }
+    return signInWithPopup(auth, googleProvider);
+  }
 
 
   const values = {
     handleCart,
-     prices,
-        setProductPrice,
+    prices,
+    setProductPrice,
     setIsSelectRegion,
     isSelectRegion,
     handleSelectRegion,
@@ -353,7 +359,7 @@ const handleDncQuantity = (id, qty, selectedSize) => {
     setIsLoginModal,
     setWishlist,
     wishlist,
-   
+
     token,
     setWholesalePrice,
     wholesalePrice,
@@ -376,7 +382,7 @@ const handleDncQuantity = (id, qty, selectedSize) => {
     convertedPrice,
     setSelectedSizeCart,
     selectedSizeCart,
-    
+
     setConvertedPrice,
     setBasePrice,
     setCountry,

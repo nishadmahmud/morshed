@@ -3,17 +3,22 @@
 import Image from "next/image"
 const noImg = "/no-image.jpg"
 import Link from "next/link"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { FaHeart, FaRegHeart } from "react-icons/fa6"
+import { ShoppingBag, Check } from "lucide-react"
+import { useRouter } from "next/navigation"
 import useWishlist from "../hooks/useWishlist"
 import useStore from "../hooks/useStore"
+import toast from "react-hot-toast"
 
 const ProductCard = ({ product, compact = false }) => {
-  const { prices, country, setProductPrice } = useStore()
+  const { prices, country, setProductPrice, handleCart, cartItems, setSelectedSizeCart, setSelectedId } = useStore()
   const { toggleWishlist, isInWishlist } = useWishlist();
+  const router = useRouter();
+  const [selectedSize, setSelectedSize] = useState(null);
+  const [isAdding, setIsAdding] = useState(false);
 
   const countrySign = country?.value === "BD" ? "৳" : "$"
-
 
   useEffect(() => {
     if (product?.id && product?.retails_price) {
@@ -42,8 +47,8 @@ const ProductCard = ({ product, compact = false }) => {
         ? (product.intl_retails_price - (product.intl_retails_price * product.intl_discount) / 100).toFixed(0)
         : (product.intl_retails_price - product.intl_discount).toFixed(0)
       : null
-  const discountSuffix = product?.discount_type === "Percentage" ? "%" : product?.discount_type === "Fixed" ? "Tk" : ""
 
+  const discountPercent = product?.discount_type === "Percentage" ? product?.discount : null;
 
   const sanitizeSlug = (str) => {
     return str
@@ -55,21 +60,68 @@ const ProductCard = ({ product, compact = false }) => {
       .replace(/[^a-z0-9-]/g, "")
   }
 
+  // Check if product has variants
+  const hasVariants = product?.have_variant === "1" || (product?.product_variants && product.product_variants.length > 0);
+  const variants = product?.product_variants || [];
+
+  // Get available sizes (with stock > 0)
+  const availableSizes = variants.filter(v => v.quantity > 0);
+
+  // Check if item is already in cart
+  const isInCart = cartItems?.some(item => item.id === product.id);
+
+  const handleSizeSelect = (variant) => {
+    setSelectedSize(variant.name);
+    setSelectedSizeCart(variant.name);
+    setSelectedId(variant.id);
+  };
+
+  const onAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (hasVariants) {
+      if (!selectedSize) {
+        // Navigate to product page if no size selected
+        router.push(`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`);
+        return;
+      }
+      // Find selected variant
+      const variant = variants.find(v => v.name === selectedSize);
+      if (variant) {
+        setIsAdding(true);
+        handleCart(product, 1, variant.id, selectedSize);
+        setTimeout(() => {
+          setIsAdding(false);
+          setSelectedSize(null);
+        }, 1500);
+      }
+    } else {
+      setIsAdding(true);
+      handleCart(product, 1, null, null);
+      setTimeout(() => setIsAdding(false), 1500);
+    }
+  }
+
+  const isOutOfStock = product?.status?.toLowerCase() === "stock out";
+
   return (
     <div
       className={`
-      group bg-white rounded-lg overflow-hidden
-      transition-all duration-300 mx-auto w-full max-w-sm
-      flex flex-col h-full
-      ${compact ? 'text-sm' : 'sm:max-w-xs md:max-w-sm lg:max-w-xs xl:max-w-sm'}
-    `}
+        group bg-white rounded-xl overflow-hidden
+        transition-all duration-300 mx-auto w-full
+        flex flex-col h-full
+        hover:shadow-xl hover:-translate-y-1
+        border border-gray-100
+        ${compact ? 'max-w-[180px]' : 'max-w-sm'}
+      `}
     >
       {/* Image Container */}
       <div
         className={`
-        relative w-full overflow-hidden bg-gray-50
-        ${compact ? 'aspect-square' : 'aspect-square sm:aspect-[4/5] md:aspect-square lg:aspect-[4/5]'}
-      `}
+          relative w-full overflow-hidden bg-gray-50
+          ${compact ? 'aspect-square' : 'aspect-[4/5]'}
+        `}
       >
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
@@ -79,147 +131,182 @@ const ProductCard = ({ product, compact = false }) => {
             src={product?.image_path || noImg}
             alt={product?.name || "Product image"}
             fill
-            className="object-cover transition-all duration-500 group-hover:scale-105"
-            sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
           />
 
           {/* Hover Image */}
           {product?.image_path1 && (
             <Image
-              src={product.image_path1 || "/placeholder.svg"}
+              src={product.image_path1}
               alt={`${product?.name} alternate view`}
               fill
               className="
                 object-cover absolute inset-0 opacity-0 
                 group-hover:opacity-100 transition-opacity duration-500
-                hidden sm:block
               "
-              sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             />
           )}
         </Link>
 
-        {/* Discount Badge */}
-        {
-          countrySign ? <>
-            {product?.discount && (
-              <div className={`absolute left-2 z-10 ${compact ? 'top-2' : 'top-2 sm:top-3 sm:left-3'}`}>
-                <span
-                  className={`
-              bg-gray-900 text-white font-semibold 
-              rounded-full
-              ${compact ? 'text-[10px] py-0.5 px-2' : 'text-xs py-0.5 px-3'}
-            `}
-                >
-                  Save {product?.discount}
-                  {discountSuffix}
-                </span>
-              </div>
-            )}
-          </> : ""
-        }
+        {/* Top Left Badges */}
+        <div className="absolute top-2 left-2 flex flex-col gap-1.5 z-10">
+          {discountPercent && (
+            <span className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">
+              -{discountPercent}%
+            </span>
+          )}
+          {product?.is_new && (
+            <span className="bg-black text-white text-[10px] font-medium px-2 py-0.5 rounded">
+              NEW
+            </span>
+          )}
+        </div>
 
-        {product?.status.toLowerCase() === "stock out" && (
+        {/* Out of Stock Overlay */}
+        {isOutOfStock && (
+          <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
+            <span className="bg-white text-black text-xs font-semibold px-3 py-1.5 rounded">
+              SOLD OUT
+            </span>
+          </div>
+        )}
+
+        {/* Wishlist Button - Top Right */}
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            toggleWishlist(product);
+          }}
+          className={`
+            absolute top-2 right-2 z-10
+            w-8 h-8 rounded-full bg-white/90 backdrop-blur-sm
+            flex items-center justify-center
+            shadow-sm hover:shadow-md
+            transition-all duration-200
+            ${isInWishlist(product.id) ? 'text-red-500' : 'text-gray-600 hover:text-red-500'}
+          `}
+          title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
+        >
+          {isInWishlist(product.id) ? (
+            <FaHeart className="w-4 h-4" />
+          ) : (
+            <FaRegHeart className="w-4 h-4" />
+          )}
+        </button>
+
+        {/* Size Selector - Appears on hover for variant products */}
+        {hasVariants && availableSizes.length > 0 && !isOutOfStock && (
           <div className={`
-              absolute z-10 right-3 bg-red-500 text-white font-semibold 
-              rounded-full
-              ${compact ? 'top-2 text-[10px] py-0.5 px-2' : 'top-5 text-xs py-0.5 px-3'}
-            `}>
-            Stock Out
+            absolute bottom-0 left-0 right-0 
+            bg-white/95 backdrop-blur-sm
+            p-2 transform translate-y-full
+            group-hover:translate-y-0
+            transition-transform duration-300
+            border-t border-gray-100
+          `}>
+            <div className="flex items-center gap-1.5 flex-wrap justify-center">
+              {availableSizes.slice(0, 5).map((variant) => (
+                <button
+                  key={variant.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleSizeSelect(variant);
+                  }}
+                  className={`
+                    min-w-[32px] h-7 px-2
+                    text-xs font-medium
+                    rounded border
+                    transition-all duration-200
+                    ${selectedSize === variant.name
+                      ? 'bg-black text-white border-black'
+                      : 'bg-white text-gray-700 border-gray-300 hover:border-black'}
+                  `}
+                >
+                  {variant.name}
+                </button>
+              ))}
+            </div>
           </div>
         )}
       </div>
 
       {/* Product Info */}
-      <div className={`${compact ? 'py-2 space-y-1' : 'py-3 space-y-2 sm:space-y-3'} flex-1 flex flex-col`}>
+      <div className={`${compact ? 'p-2' : 'p-3'} flex-1 flex flex-col`}>
         {/* Brand Name */}
         {product?.brand_name && (
-          <h5
-            className={`
-            text-start font-medium text-gray-800 uppercase tracking-wide 
-            truncate
-            ${compact ? 'text-[10px]' : 'text-xs'}
-          `}
-          >
+          <p className={`
+            text-gray-400 uppercase tracking-wider mb-0.5
+            ${compact ? 'text-[9px]' : 'text-[10px]'}
+          `}>
             {product.brand_name}
-          </h5>
+          </p>
         )}
 
         {/* Product Name */}
         <Link
           href={`/products/${sanitizeSlug(product?.brand_name || product?.name)}/${product?.id}`}
-          className="flex-1 w-full"
+          className="flex-1"
         >
           <h3
             className={`
-            font-medium text-gray-900 hover:text-gray-600
-            transition-colors duration-200 
-            text-start truncate line-clamp-1
-            ${compact ? 'text-xs sm:line-clamp-1' : 'text-sm sm:text-base sm:line-clamp-2 md:text-sm lg:text-base'}
-          `}
+              font-medium text-gray-900 hover:text-black
+              transition-colors duration-200 
+              line-clamp-2 leading-snug
+              ${compact ? 'text-xs' : 'text-sm'}
+            `}
           >
             {product?.name || "N/A"}
           </h3>
         </Link>
 
-        {/* Price and Cart Section */}
-        <div className="flex items-center justify-between pt-1">
-          <div className="flex flex-col justify-between gap-1">
-            {discountedPrice ? (
-              <div className="flex items-start gap-2 flex-wrap">
-                <span
-                  className={`
-                  font-bold text-gray-900
-                  ${compact ? 'text-sm' : 'text-base sm:text-lg md:text-base lg:text-lg'}
-                `}
-                >
-                  {countrySign}
-                  {discountedPrice}
-                </span>
-                <p
-                  className={`
-                  text-gray-500 
-                  font-medium line-through text-start
-                  ${compact ? 'text-[10px]' : 'text-xs sm:text-sm md:text-xs lg:text-sm'}
-                `}
-                >
-                  {countrySign}
-                  {getPriceByCountry()}
-                </p>
-              </div>
-            ) : (
-              <span
-                className={`
-                font-bold text-gray-900
-                ${compact ? 'text-sm' : 'text-base sm:text-lg md:text-base lg:text-lg'}
-              `}
-              >
-                {countrySign}
-                {getPriceByCountry()}
+        {/* Price Row */}
+        <div className="flex items-center justify-between mt-2 gap-2">
+          <div className="flex items-baseline gap-1.5 flex-wrap">
+            <span className={`font-bold text-gray-900 ${compact ? 'text-sm' : 'text-base'}`}>
+              {countrySign}{discountedPrice || getPriceByCountry()}
+            </span>
+            {discountedPrice && (
+              <span className={`text-gray-400 line-through ${compact ? 'text-[10px]' : 'text-xs'}`}>
+                {countrySign}{getPriceByCountry()}
               </span>
             )}
           </div>
 
-          {/* Wishlist Button */}
-          <button
-            className={`
-            flex rounded-full hover:bg-gray-100 
-              text-gray-600 hover:text-gray-900 transition-all duration-200
-             ${compact ? 'p-1' : 'p-1.5 sm:p-2'}
-          `}
-            onClick={(e) => {
-              e.stopPropagation()
-              toggleWishlist(product)
-            }}
-            title={isInWishlist(product.id) ? "Remove from wishlist" : "Add to wishlist"}
-          >
-            {isInWishlist(product.id) ? (
-              <FaHeart className={`${compact ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-5 sm:h-5'} text-teal-600`} />
-            ) : (
-              <FaRegHeart className={`${compact ? 'w-3.5 h-3.5' : 'w-4 h-4 sm:w-5 sm:h-5'} text-gray-600 hover:text-red-500 transition-colors`} />
-            )}
-          </button>
+          {/* Add to Cart Button */}
+          {!isOutOfStock && (
+            <button
+              onClick={onAddToCart}
+              disabled={isAdding}
+              className={`
+                flex items-center justify-center
+                rounded-full
+                transition-all duration-300
+                ${isAdding
+                  ? 'bg-green-500 text-white'
+                  : 'bg-black text-white hover:bg-gray-800'}
+                ${compact ? 'w-7 h-7' : 'w-9 h-9'}
+              `}
+              title={hasVariants && !selectedSize ? "Select size" : "Add to Cart"}
+            >
+              {isAdding ? (
+                <Check className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
+              ) : (
+                <ShoppingBag className={compact ? 'w-3.5 h-3.5' : 'w-4 h-4'} />
+              )}
+            </button>
+          )}
         </div>
+
+        {/* Selected Size Indicator */}
+        {selectedSize && (
+          <p className="text-[10px] text-gray-500 mt-1">
+            Size: <span className="font-medium text-black">{selectedSize}</span>
+          </p>
+        )}
       </div>
     </div>
   )
