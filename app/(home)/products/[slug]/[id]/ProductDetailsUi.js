@@ -6,7 +6,6 @@ import Link from "next/link";
 import { Minus, Plus, ShoppingBag } from "lucide-react";
 import toast from "react-hot-toast";
 const noImg = "/no-image.jpg";
-import { htmlToText } from "html-to-text";
 import "react-inner-image-zoom/lib/styles.min.css";
 import useStore from "@/app/hooks/useStore";
 import useWishlist from "@/app/hooks/useWishlist";
@@ -275,12 +274,7 @@ const ProductDetailsUi = ({ id, userId }) => {
   //     );
   //   }
 
-  const descriptionText = product?.data?.description
-    ? htmlToText(product.data.description, {
-      wordwrap: false,
-      selectors: [{ selector: "a", options: { ignoreHref: true } }],
-    })
-    : null;
+
 
   const isCartItem = cartItems.find(
     (item) =>
@@ -395,15 +389,6 @@ const ProductDetailsUi = ({ id, userId }) => {
                 </>
               ) : (
                 ""
-              )}
-            </div>
-            <div className="text-sm text-gray-600 mb-6">
-              {descriptionText ? (
-                <p className="text-gray-600 whitespace-pre-line mb-4">
-                  {descriptionText.substring(0, 33)}
-                </p>
-              ) : (
-                <p>Description is not available</p>
               )}
             </div>
 
@@ -549,6 +534,17 @@ const ProductDetailsUi = ({ id, userId }) => {
                 </button>
               </div>
             </div>
+
+            <div className="text-sm text-gray-600 mb-6">
+              {product?.data?.description ? (
+                <div
+                  className="text-gray-600 whitespace-pre-line mb-4 prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: product.data.description }}
+                />
+              ) : (
+                <p>Description is not available</p>
+              )}
+            </div>
           </div>
         </div>
         {/* Product Information Tabs */}
@@ -573,10 +569,11 @@ const ProductDetailsUi = ({ id, userId }) => {
             >
               <h2 className="text-xl font-bold text-gray-900">Description</h2>
               <div className="w-[6.5rem] h-[2px] bg-[#212121] mt-1 mb-4"></div>
-              {descriptionText ? (
-                <p className="text-gray-600 whitespace-pre-line mb-4">
-                  {descriptionText}
-                </p>
+              {product?.data?.description ? (
+                <div
+                  className="text-gray-600 whitespace-pre-line mb-4 prose prose-sm max-w-none"
+                  dangerouslySetInnerHTML={{ __html: product.data.description }}
+                />
               ) : (
                 <p>Description is not available</p>
               )}
