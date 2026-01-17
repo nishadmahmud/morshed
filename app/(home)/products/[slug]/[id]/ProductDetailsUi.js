@@ -535,7 +535,7 @@ const ProductDetailsUi = ({ id, userId }) => {
               </div>
             </div>
 
-            <div className="text-sm text-gray-600 mb-6">
+            {/* <div className="text-sm text-gray-600 mb-6">
               {product?.data?.description ? (
                 <div
                   className="text-gray-600 whitespace-pre-line mb-4 prose prose-sm max-w-none"
@@ -544,12 +544,10 @@ const ProductDetailsUi = ({ id, userId }) => {
               ) : (
                 <p>Description is not available</p>
               )}
-            </div>
-          </div>
-        </div>
-        {/* Product Information Tabs */}
-        <div className="mb-12 lg:mt-20">
-          {/* <div className="border-b">
+            </div> */}
+
+            <div className="mb-12 lg:mt-20">
+              {/* <div className="border-b">
             <button
               onClick={() => setActiveTab("description")}
               className={`py-2 px-4 text-base font-medium ${
@@ -559,27 +557,30 @@ const ProductDetailsUi = ({ id, userId }) => {
               Description
             </button>
           </div> */}
-          <div
-            className={`pt-6 ${activeTab === "description" ? "block" : "hidden"
-              }`}
-          >
-            <div
-              id="Description"
-              className="mt-5 p-3 text-sm border rounded-lg"
-            >
-              <h2 className="text-xl font-bold text-gray-900">Description</h2>
-              <div className="w-[6.5rem] h-[2px] bg-[#212121] mt-1 mb-4"></div>
-              {product?.data?.description ? (
+              <div
+                className={`sm:mt-0 md:-mt-16 ${activeTab === "description" ? "block" : "hidden"}`}
+              >
                 <div
-                  className="text-gray-600 whitespace-pre-line mb-4 prose prose-sm max-w-none"
-                  dangerouslySetInnerHTML={{ __html: product.data.description }}
-                />
-              ) : (
-                <p>Description is not available</p>
-              )}
+                  id="Description"
+                  className="mt-3 md:mt-0 p-3 text-sm border rounded-lg"
+                >
+                  <h2 className="text-xl font-bold text-gray-900">Description</h2>
+                  <div className="w-[6.5rem] h-[2px] bg-[#212121] mt-1 mb-4"></div>
+                  {product?.data?.description ? (
+                    <div
+                      className="text-gray-600 whitespace-pre-line mb-4 prose prose-sm max-w-none"
+                      dangerouslySetInnerHTML={{ __html: product.data.description }}
+                    />
+                  ) : (
+                    <p>Description is not available</p>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
         </div>
+
+        {/* </div> */}
         {/* Related Products */}
         <div className="pb-12">
           <h2 className="text-xl font-bold mb-6">You May Also Like</h2>
@@ -623,133 +624,137 @@ const ProductDetailsUi = ({ id, userId }) => {
 
       </div>
       {/* Sticky Add to Cart Bar */}
-      {scroll > 500 && product?.data && (
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg py-3 px-4 z-50">
-          <div className="max-w-7xl mx-auto flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Image
-                src={
-                  imageArray && imageArray.length > 0
-                    ? imageArray[0]
-                    : product.data.image_path || noImg
-                }
-                alt={product.data.name}
-                width={50}
-                height={50}
-                className="rounded-md"
-              />
-              <div>
-                <h3 className="font-medium text-sm line-clamp-1">
-                  {product.data.name}
-                </h3>
-                <p className="text-sm font-bold">
-                  {countrySign}
-                  {discountedPrice}
-                </p>
-                <p className="text-xs text-gray-500">Size: {selectedSize}</p>
+      {
+        scroll > 500 && product?.data && (
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg py-3 px-4 z-50">
+            <div className="max-w-7xl mx-auto flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <Image
+                  src={
+                    imageArray && imageArray.length > 0
+                      ? imageArray[0]
+                      : product.data.image_path || noImg
+                  }
+                  alt={product.data.name}
+                  width={50}
+                  height={50}
+                  className="rounded-md"
+                />
+                <div>
+                  <h3 className="font-medium text-sm line-clamp-1">
+                    {product.data.name}
+                  </h3>
+                  <p className="text-sm font-bold">
+                    {countrySign}
+                    {discountedPrice}
+                  </p>
+                  <p className="text-xs text-gray-500">Size: {selectedSize}</p>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col md:flex-row items-center gap-3">
-              <div className="flex items-center border border-gray-300 rounded-md">
+              <div className="flex flex-col md:flex-row items-center gap-3">
+                <div className="flex items-center border border-gray-300 rounded-md">
+                  <button
+                    onClick={decrementQuantity}
+                    className="px-2 py-1 text-gray-600"
+                  >
+                    <Minus className="h-3 w-3" />
+                  </button>
+                  <span className="px-3 py-1 border-x border-gray-300">
+                    {quantity}
+                  </span>
+                  <button
+                    onClick={incrementQuantity}
+                    className="px-2 py-1 text-gray-600"
+                  >
+                    <Plus className="h-3 w-3" />
+                  </button>
+                </div>
                 <button
-                  onClick={decrementQuantity}
-                  className="px-2 py-1 text-gray-600"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleCart(product?.data, quantity, selectedId);
+                  }}
+                  className={`py-2 px-4 rounded-md font-medium ${isCartItem
+                    ? "bg-white text-black border border-gray-300"
+                    : "bg-black hover:bg-gray-800 text-white"
+                    }`}
+                  disabled={isCartItem && selectedSize}
                 >
-                  <Minus className="h-3 w-3" />
+                  {isCartItem ? "Added" : "Add to Cart"}
                 </button>
-                <span className="px-3 py-1 border-x border-gray-300">
-                  {quantity}
-                </span>
                 <button
-                  onClick={incrementQuantity}
-                  className="px-2 py-1 text-gray-600"
+                  onClick={() => handleBuy(product.data, quantity)}
+                  className="hidden md:block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium"
                 >
-                  <Plus className="h-3 w-3" />
+                  Buy Now
                 </button>
               </div>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleCart(product?.data, quantity, selectedId);
-                }}
-                className={`py-2 px-4 rounded-md font-medium ${isCartItem
-                  ? "bg-white text-black border border-gray-300"
-                  : "bg-black hover:bg-gray-800 text-white"
-                  }`}
-                disabled={isCartItem && selectedSize}
-              >
-                {isCartItem ? "Added" : "Add to Cart"}
-              </button>
-              <button
-                onClick={() => handleBuy(product.data, quantity)}
-                className="hidden md:block bg-black hover:bg-gray-800 text-white py-2 px-4 rounded-md font-medium"
-              >
-                Buy Now
-              </button>
             </div>
           </div>
-        </div>
-      )}
-      {open && (
-        <Modal
-          open={open}
-          onClose={handleClose}
-          title="MEN'S THOBE - REGULAR FIT"
-          content={
-            <div className="w-full">
-              {/* Tabs for Unit Selection */}
-              <div className="flex border-b border-gray-200 mb-4">
-                <button
-                  onClick={() => setMeasurementUnit("IN")}
-                  className={`py-2 px-4 text-sm font-medium transition-colors ${measurementUnit === "IN"
-                    ? "text-black border-b-2 border-black"
-                    : "text-gray-500 hover:text-gray-700"
-                    }`}
-                >
-                  IN
-                </button>
-                <button
-                  onClick={() => setMeasurementUnit("CM")}
-                  className={`py-2 px-4 text-sm font-medium transition-colors ${measurementUnit === "CM"
-                    ? "text-black border-b-2 border-black"
-                    : "text-gray-500 hover:text-gray-700"
-                    }`}
-                >
-                  CM
-                </button>
-              </div>
+        )
+      }
+      {
+        open && (
+          <Modal
+            open={open}
+            onClose={handleClose}
+            title="MEN'S THOBE - REGULAR FIT"
+            content={
+              <div className="w-full">
+                {/* Tabs for Unit Selection */}
+                <div className="flex border-b border-gray-200 mb-4">
+                  <button
+                    onClick={() => setMeasurementUnit("IN")}
+                    className={`py-2 px-4 text-sm font-medium transition-colors ${measurementUnit === "IN"
+                      ? "text-black border-b-2 border-black"
+                      : "text-gray-500 hover:text-gray-700"
+                      }`}
+                  >
+                    IN
+                  </button>
+                  <button
+                    onClick={() => setMeasurementUnit("CM")}
+                    className={`py-2 px-4 text-sm font-medium transition-colors ${measurementUnit === "CM"
+                      ? "text-black border-b-2 border-black"
+                      : "text-gray-500 hover:text-gray-700"
+                      }`}
+                  >
+                    CM
+                  </button>
+                </div>
 
-              {/* Table */}
-              <div className="overflow-x-auto">
-                <table className="w-full text-sm text-left">
-                  <thead className="text-teal-700 bg-gray-50 uppercase text-xs">
-                    <tr>
-                      <th className="px-3 py-2">Measurement Points</th>
-                      <th className="px-3 py-2">S</th>
-                      <th className="px-3 py-2">M</th>
-                      <th className="px-3 py-2">L</th>
-                      <th className="px-3 py-2">XL</th>
-                      <th className="px-3 py-2">2XL</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-100">
-                    {getMeasurementValues().map((row, i) => (
-                      <tr key={i} className="hover:bg-gray-50">
-                        {row.map((cell, j) => (
-                          <td key={j} className="px-3 py-2 border-b border-gray-50 font-medium text-gray-600">
-                            {cell}
-                          </td>
-                        ))}
+                {/* Table */}
+                <div className="overflow-x-auto">
+                  <table className="w-full text-sm text-left">
+                    <thead className="text-teal-700 bg-gray-50 uppercase text-xs">
+                      <tr>
+                        <th className="px-3 py-2">Measurement Points</th>
+                        <th className="px-3 py-2">S</th>
+                        <th className="px-3 py-2">M</th>
+                        <th className="px-3 py-2">L</th>
+                        <th className="px-3 py-2">XL</th>
+                        <th className="px-3 py-2">2XL</th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody className="divide-y divide-gray-100">
+                      {getMeasurementValues().map((row, i) => (
+                        <tr key={i} className="hover:bg-gray-50">
+                          {row.map((cell, j) => (
+                            <td key={j} className="px-3 py-2 border-b border-gray-50 font-medium text-gray-600">
+                              {cell}
+                            </td>
+                          ))}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          }
-        />
-      )}
-    </section>
+            }
+          />
+        )
+      }
+    </section >
   );
 };
 
