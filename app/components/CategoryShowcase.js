@@ -48,7 +48,7 @@ const CategorySection = ({ category }) => {
             {/* Left: Category Banner */}
             <Link
                 href={categoryLink}
-                className="relative w-full h-full min-h-[300px] lg:min-h-0 overflow-hidden rounded-lg group bg-white border border-gray-100 shadow-sm"
+                className="relative w-full aspect-square min-h-[300px] lg:min-h-0 overflow-hidden rounded-lg group bg-white border border-gray-100 shadow-sm"
             >
                 <Image
                     src={categoryImage}
@@ -128,9 +128,9 @@ const CategoryShowcase = () => {
         fetcher
     );
 
-    // Filter categories: products_count >= 7 AND has image_url or banner
+    // Filter categories: products_count >= 6 AND has image_url or banner
     const validCategories = categoriesData?.data?.filter(
-        (cat) => cat.products_count >= 7 && (cat.image_url || cat.banner)
+        (cat) => cat.products_count >= 6 && (cat.image_url || cat.banner)
     ) || [];
 
     if (categoriesLoading) {

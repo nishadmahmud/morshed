@@ -315,11 +315,7 @@ const HeaderUi = ({ data }) => {
 
           {/* Categories */}
           <div className="p-4 overflow-y-auto h-[calc(100vh-120px)]">
-            <Link className="flex items-center gap-1 mb-3" href="/">
-              <ShoppingBagIcon color="gray" size={18}></ShoppingBagIcon>
-              Shop Now
-            </Link>
-            <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">
+            <h3 className="text-sm font-bold text-black uppercase tracking-wider mb-4 mt-2">
               Categories
             </h3>
 
