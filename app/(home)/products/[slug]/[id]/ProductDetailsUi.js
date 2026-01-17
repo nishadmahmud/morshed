@@ -13,7 +13,7 @@ import useWishlist from "@/app/hooks/useWishlist";
 import { FaHeart, FaRegHeart } from "react-icons/fa6";
 import CursorImageZoom from "@/app/components/CustomImageZoom";
 import { useQuery } from "@tanstack/react-query";
-import { api } from "@/app/lib/api";
+import { api, userId as appUserId } from "@/app/lib/api";
 import Modal from "@/app/components/Modal";
 
 // Fetcher function needs to be defined or used from axios
@@ -37,7 +37,9 @@ const ProductDetailsUi = ({ id, userId }) => {
       const res = await fetch(api.getRelatedProducts(), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ product_id: id, user_id: userId }),
+        // Use appUserId (203) as fallback or primary if prop is unreliable. 
+        // User requested to fix it to 203.
+        body: JSON.stringify({ product_id: id, user_id: appUserId }),
       });
       const data = await res.json();
       return data;
@@ -88,6 +90,17 @@ const ProductDetailsUi = ({ id, userId }) => {
     ["LENGTH", "28", "29", "30", "31", "31.5"],
     ["COLLAR", "15", "15.5", "16", "16.5", "17"],
   ];
+
+  const [measurementUnit, setMeasurementUnit] = useState("IN");
+
+  const getMeasurementValues = () => {
+    if (measurementUnit === "IN") return inches;
+    return inches.map(row => {
+      const [name, ...values] = row;
+      const convertedValues = values.map(val => (parseFloat(val) * 2.54).toFixed(1));
+      return [name, ...convertedValues];
+    });
+  };
 
 
 
@@ -211,10 +224,25 @@ const ProductDetailsUi = ({ id, userId }) => {
   const countrySign = country?.value === "BD" ? "৳" : "$";
 
   const incrementQuantity = () => {
-    if (quantity < sizeQuantity) {
-      setQuantity((prev) => prev + 1);
+    // Check if product has variants
+    if (product?.data?.product_variants && product.data.product_variants.length > 0) {
+      if (!selectedSize) {
+        toast.error("Please select a size first");
+        return;
+      }
+      if (quantity < sizeQuantity) {
+        setQuantity((prev) => prev + 1);
+      } else {
+        toast.error(`Only ${sizeQuantity} items available in stock`);
+      }
     } else {
-      toast.error(`Only ${sizeQuantity} items available in stock`);
+      // Logic for products without variants
+      const maxStock = product?.data?.current_stock || 0;
+      if (quantity < maxStock) {
+        setQuantity((prev) => prev + 1);
+      } else {
+        toast.error(`Only ${maxStock} items available in stock`);
+      }
     }
   };
 
@@ -665,48 +693,65 @@ const ProductDetailsUi = ({ id, userId }) => {
           </div>
         </div>
       )}
-      <Modal
-        open={open}
-        onClose={handleClose}
-        title="MEN'S THOBE - REGULAR FIT"
-        content={
-          <div className="w-full">
-            {/* Tabs substitute (visual only since there was only 1 tab) */}
-            <div className="flex border-b border-gray-200 mb-4">
-              <button className="py-2 px-4 text-sm font-medium text-black border-b-2 border-black">
-                IN
-              </button>
-            </div>
+      {open && (
+        <Modal
+          open={open}
+          onClose={handleClose}
+          title="MEN'S THOBE - REGULAR FIT"
+          content={
+            <div className="w-full">
+              {/* Tabs for Unit Selection */}
+              <div className="flex border-b border-gray-200 mb-4">
+                <button
+                  onClick={() => setMeasurementUnit("IN")}
+                  className={`py-2 px-4 text-sm font-medium transition-colors ${measurementUnit === "IN"
+                    ? "text-black border-b-2 border-black"
+                    : "text-gray-500 hover:text-gray-700"
+                    }`}
+                >
+                  IN
+                </button>
+                <button
+                  onClick={() => setMeasurementUnit("CM")}
+                  className={`py-2 px-4 text-sm font-medium transition-colors ${measurementUnit === "CM"
+                    ? "text-black border-b-2 border-black"
+                    : "text-gray-500 hover:text-gray-700"
+                    }`}
+                >
+                  CM
+                </button>
+              </div>
 
-            {/* Table */}
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm text-left">
-                <thead className="text-teal-700 bg-gray-50 uppercase text-xs">
-                  <tr>
-                    <th className="px-3 py-2">Measurement Points</th>
-                    <th className="px-3 py-2">S</th>
-                    <th className="px-3 py-2">M</th>
-                    <th className="px-3 py-2">L</th>
-                    <th className="px-3 py-2">XL</th>
-                    <th className="px-3 py-2">2XL</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  {inches.map((row, i) => (
-                    <tr key={i} className="hover:bg-gray-50">
-                      {row.map((cell, j) => (
-                        <td key={j} className="px-3 py-2 border-b border-gray-50 font-medium text-gray-600">
-                          {cell}
-                        </td>
-                      ))}
+              {/* Table */}
+              <div className="overflow-x-auto">
+                <table className="w-full text-sm text-left">
+                  <thead className="text-teal-700 bg-gray-50 uppercase text-xs">
+                    <tr>
+                      <th className="px-3 py-2">Measurement Points</th>
+                      <th className="px-3 py-2">S</th>
+                      <th className="px-3 py-2">M</th>
+                      <th className="px-3 py-2">L</th>
+                      <th className="px-3 py-2">XL</th>
+                      <th className="px-3 py-2">2XL</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-gray-100">
+                    {getMeasurementValues().map((row, i) => (
+                      <tr key={i} className="hover:bg-gray-50">
+                        {row.map((cell, j) => (
+                          <td key={j} className="px-3 py-2 border-b border-gray-50 font-medium text-gray-600">
+                            {cell}
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        }
-      />
+          }
+        />
+      )}
     </section>
   );
 };

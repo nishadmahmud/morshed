@@ -31,7 +31,7 @@ const Modal = ({ onClose, content, title }) => {
 
       {/* Modal Content */}
       <div
-        className={`relative w-full max-w-[350px] lg:max-w-[400px] md:w-[450px] bg-white rounded-2xl p-5 shadow-xl transform transition-all duration-300 flex flex-col max-h-[85vh] overflow-y-auto ${isVisible ? 'scale-100 translate-y-0' : 'scale-90 translate-y-4'}`}
+        className={`relative w-full max-w-[350px] md:max-w-[600px] lg:max-w-[800px] bg-white rounded-2xl p-6 shadow-xl transform transition-all duration-300 flex flex-col max-h-[90vh] overflow-y-auto ${isVisible ? 'scale-100 translate-y-0' : 'scale-90 translate-y-4'}`}
       >
         {/* Title Section */}
         <div className="mb-5 w-full">
