@@ -2,10 +2,8 @@
 import Image from "next/image"
 import Link from "next/link"
 const noImg = "/no-image.jpg"
-import { use } from "react"
-
 const FeaturedCategoryUi = ({ categories }) => {
-  const categoryList = use(categories);
+  const categoryList = categories;
 
   return (
     <section className="bg-white py-12 md:py-16">
