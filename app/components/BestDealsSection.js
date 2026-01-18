@@ -24,8 +24,8 @@ const BestDealsSection = () => {
                         <p className="mt-1 text-gray-500">Limited time offers</p>
                     </div>
                     <Link
-                        href="/offer"
-                        className="hidden md:inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-teal-700 transition-colors"
+                        href="/best-deals"
+                        className="hidden md:inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-[#0f766e] transition-colors"
                     >
                         View All
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -37,13 +37,13 @@ const BestDealsSection = () => {
                 {/* Product Grid */}
                 {isLoading ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                        {Array.from({ length: 5 }).map((_, idx) => (
+                        {Array.from({ length: 8 }).map((_, idx) => (
                             <CardSkeleton key={idx} />
                         ))}
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                        {(Array.isArray(bestDeals?.data) ? bestDeals.data : []).slice(0, 10).map((product) => (
+                        {(Array.isArray(bestDeals?.data) ? bestDeals.data : []).slice(0, 8).map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>
@@ -52,8 +52,8 @@ const BestDealsSection = () => {
                 {/* Mobile View All Link */}
                 <div className="md:hidden text-center mt-6">
                     <Link
-                        href="/offer"
-                        className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-teal-700 transition-colors"
+                        href="/best-deals"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-[#0f766e] transition-colors"
                     >
                         View All Deals
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -67,3 +67,4 @@ const BestDealsSection = () => {
 };
 
 export default BestDealsSection;
+

@@ -43,7 +43,7 @@ const NewArrivalSection = () => {
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                        {(Array.isArray(newArrivals?.data?.data) ? newArrivals.data.data : []).slice(0, 10).map((product) => (
+                        {(Array.isArray(newArrivals?.data?.data) ? newArrivals.data.data : []).slice(0, 8).map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>

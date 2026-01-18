@@ -37,6 +37,8 @@ const HeaderUi = ({ data }) => {
     country,
     wishlist,
     prices,
+    isCategorySidebarOpen,
+    setIsCategorySidebarOpen,
   } = useStore();
   const [keyword, setKeyword] = useState("");
   const [searchedItem, setSearchedItem] = useState([]);
@@ -52,7 +54,18 @@ const HeaderUi = ({ data }) => {
   const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
+    // Also reset store state when closing
+    if (isSidebarOpen) {
+      setIsCategorySidebarOpen(false);
+    }
   };
+
+  // Sync store's isCategorySidebarOpen with local state
+  useEffect(() => {
+    if (isCategorySidebarOpen) {
+      setIsSidebarOpen(true);
+    }
+  }, [isCategorySidebarOpen]);
 
   useEffect(() => {
     if (typeof window !== "undefined") {

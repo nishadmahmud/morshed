@@ -115,20 +115,12 @@ export default function Footer() {
 
         {/* Payment Banner */}
         <div className="border-t border-gray-800 pt-8 pb-6 flex justify-center">
-          <div className="relative w-full max-w-4xl h-16 md:h-24">
-            {/* Desktop Banner */}
+          <div className="relative w-full max-w-4xl h-20 md:h-24">
             <Image
               src="/Payment Banner_Jul24_V1-02.png"
               alt="Payment Methods"
               fill
-              className="object-contain hidden md:block"
-            />
-            {/* Mobile Banner */}
-            <Image
-              src="/Payment Banner_Jul24_V1-04.png"
-              alt="Payment Methods Mobile"
-              fill
-              className="object-contain md:hidden"
+              className="object-contain"
             />
           </div>
         </div>

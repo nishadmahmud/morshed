@@ -44,6 +44,7 @@ const StoreProvider = ({ children }) => {
 
   const [isInCart, setIsInCart] = useState(false)
   const [selectedId, setSelectedId] = useState(null)
+  const [isCategorySidebarOpen, setIsCategorySidebarOpen] = useState(false)
   // console.log(selectedId)
 
   // Setter to update price for a specific product
@@ -389,7 +390,9 @@ const StoreProvider = ({ children }) => {
     country,
     setIsRegistered,
     basePrice,
-    isRegistered
+    isRegistered,
+    isCategorySidebarOpen,
+    setIsCategorySidebarOpen
   };
 
   return (

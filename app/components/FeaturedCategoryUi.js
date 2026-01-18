@@ -1,9 +1,16 @@
 "use client"
 import Image from "next/image"
 import Link from "next/link"
+import useStore from "../hooks/useStore"
 const noImg = "/no-image.jpg"
+
 const FeaturedCategoryUi = ({ categories }) => {
   const categoryList = categories;
+  const { setIsCategorySidebarOpen } = useStore();
+
+  const handleViewAllClick = () => {
+    setIsCategorySidebarOpen(true);
+  };
 
   return (
     <section className="bg-white py-12 md:py-16">
@@ -60,17 +67,17 @@ const FeaturedCategoryUi = ({ categories }) => {
             )}
         </div>
 
-        {/* View All Link */}
+        {/* View All Button - Opens Sidebar */}
         <div className="text-center mt-8">
-          <Link
-            href="/category"
-            className="inline-flex items-center gap-2 text-gray-900 font-medium hover:text-teal-700 transition-colors"
+          <button
+            onClick={handleViewAllClick}
+            className="inline-flex items-center gap-2 text-gray-900 font-medium hover:text-[#0f766e] transition-colors"
           >
             View All Categories
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
-          </Link>
+          </button>
         </div>
       </div>
     </section>
@@ -78,3 +85,4 @@ const FeaturedCategoryUi = ({ categories }) => {
 }
 
 export default FeaturedCategoryUi
+

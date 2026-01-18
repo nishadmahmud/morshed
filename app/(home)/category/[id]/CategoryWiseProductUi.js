@@ -254,63 +254,80 @@ export default function CategoryWiseProductUi({ id }) {
 
   console.log(pagination);
 
+  // Calculate active filter count
+  const activeFilterCount = selectedSizes.length + (selectedBrand ? 1 : 0);
+
   return (
-    <div className="container mx-auto px-4 py-8 max-w-7xl text-black">
+    <div className="container mx-auto px-4 pt-20 pb-8 max-w-7xl text-black">
       {/* Breadcrumb */}
-      <div className="text-sm text-gray-500 mb-6">Home / Collections / {searchedCategory}</div>
+      <nav className="flex items-center gap-2 text-sm text-gray-500 mb-6">
+        <a href="/" className="hover:text-[#0f766e] transition-colors">Home</a>
+        <span>/</span>
+        <span>Collections</span>
+        <span>/</span>
+        <span className="text-gray-900 font-medium">{searchedCategory}</span>
+      </nav>
 
       {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6">
         <div>
-          <h1 className="text-3xl font-serif font-medium text-gray-900">{searchedCategory}</h1>
-          <p className="text-gray-500 mt-1">{pagination?.total || (searchedTotal && searchedTotal !== "0" ? searchedTotal : filteredItems.length)} products</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">{searchedCategory}</h1>
+          <p className="text-gray-500 mt-1 text-sm">
+            {filteredItems.length !== (pagination?.total || products?.data?.length || 0)
+              ? `Showing ${filteredItems.length} of ${pagination?.total || searchedTotal || 0} products`
+              : `${pagination?.total || (searchedTotal && searchedTotal !== "0" ? searchedTotal : filteredItems.length)} products`
+            }
+          </p>
         </div>
-        <div className="flex items-center gap-4 mt-4 md:mt-0">
-          <div className="flex items-center gap-2">
-            <button
-              className="md:hidden flex items-center gap-2 px-4 py-2 border border-gray-300 rounded-md text-sm font-medium"
-              onClick={() => setIsFilterOpen(true)}
+        <div className="flex items-center gap-3 mt-4 md:mt-0">
+          {/* Mobile Filter Button with Count Badge */}
+          <button
+            className="md:hidden flex items-center gap-2 px-4 py-2.5 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors relative"
+            onClick={() => setIsFilterOpen(true)}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="4" y1="21" x2="4" y2="14"></line>
-                <line x1="4" y1="10" x2="4" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="12"></line>
-                <line x1="12" y1="8" x2="12" y2="3"></line>
-                <line x1="20" y1="21" x2="20" y2="16"></line>
-                <line x1="20" y1="12" x2="20" y2="3"></line>
-                <line x1="1" y1="14" x2="7" y2="14"></line>
-                <line x1="9" y1="8" x2="15" y2="8"></line>
-                <line x1="17" y1="16" x2="23" y2="16"></line>
+              <line x1="4" y1="21" x2="4" y2="14"></line>
+              <line x1="4" y1="10" x2="4" y2="3"></line>
+              <line x1="12" y1="21" x2="12" y2="12"></line>
+              <line x1="12" y1="8" x2="12" y2="3"></line>
+              <line x1="20" y1="21" x2="20" y2="16"></line>
+              <line x1="20" y1="12" x2="20" y2="3"></line>
+            </svg>
+            Filters
+            {activeFilterCount > 0 && (
+              <span className="absolute -top-2 -right-2 w-5 h-5 bg-[#0f766e] text-white text-xs rounded-full flex items-center justify-center">
+                {activeFilterCount}
+              </span>
+            )}
+          </button>
+
+          {/* Sort Dropdown */}
+          <div className="relative">
+            <select
+              className="appearance-none bg-white border border-gray-200 rounded-lg py-2.5 pl-4 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0f766e]/20 focus:border-[#0f766e] w-[160px] md:w-[180px] cursor-pointer transition-all"
+              value={sortBy}
+              onChange={(e) => setSortBy(e.target.value)}
+            >
+              <option value="">Sort by</option>
+              <option value="low-to-high">Price: Low to High</option>
+              <option value="high-to-low">Price: High to Low</option>
+              <option value="a-z">Name: A to Z</option>
+              <option value="z-a">Name: Z to A</option>
+            </select>
+            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
+              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
               </svg>
-              Filter
-            </button>
-            <div className="relative">
-              <select
-                className="appearance-none bg-white border border-gray-300 rounded-md py-2 pl-4 pr-10 text-sm leading-5 focus:outline-none focus:ring-2 focus:ring-gray-200 focus:border-gray-300 w-[180px]"
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-              >
-                <option value="">Sort by</option>
-                <option value="low-to-high">Price: Low to High</option>
-                <option value="high-to-low">Price: High to Low</option>
-                <option value="a-z">Name: A to Z</option>
-                <option value="z-a">Name: Z to A</option>
-              </select>
-              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
             </div>
           </div>
         </div>
@@ -321,10 +338,10 @@ export default function CategoryWiseProductUi({ id }) {
         <div className="hidden md:block w-64 flex-shrink-0">
           <div className="sticky top-24">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-lg font-medium">Filters</h2>
-              {(selectedSizes.length > 0 || selectedColors.length > 0) && (
-                <button className="text-sm text-gray-500 hover:text-gray-700" onClick={clearAllFilters}>
-                  Clear all
+              <h2 className="text-lg font-bold text-gray-900">Filters</h2>
+              {activeFilterCount > 0 && (
+                <button className="text-sm text-[#0f766e] hover:text-[#0a5c54] font-medium transition-colors" onClick={clearAllFilters}>
+                  Clear all ({activeFilterCount})
                 </button>
               )}
             </div>
@@ -332,12 +349,12 @@ export default function CategoryWiseProductUi({ id }) {
               {/* Price Range */}
               <div className="border-b border-gray-200 pb-4">
                 <button
-                  className="flex w-full items-center justify-between py-3 text-base font-medium"
+                  className="flex w-full items-center justify-between py-3 text-sm font-semibold text-gray-900"
                   onClick={() => toggleAccordion("price")}
                 >
                   Price Range
                   <svg
-                    className={`h-5 w-5 transition-transform ${isAccordionOpen.price ? "rotate-180" : ""}`}
+                    className={`h-4 w-4 transition-transform duration-200 ${isAccordionOpen.price ? "rotate-180" : ""}`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -346,22 +363,22 @@ export default function CategoryWiseProductUi({ id }) {
                   </svg>
                 </button>
                 {isAccordionOpen.price && (
-                  <div className="pt-2 pb-6">
-                    <div className="relative pt-5 pb-6">
+                  <div className="pt-2 pb-4">
+                    <div className="relative pt-4 pb-2">
                       <input
                         type="range"
                         min={minimum}
                         max={priceRange[1]}
                         value={priceRange[0]}
                         onChange={(e) => setPriceRange([Number.parseInt(e.target.value), priceRange[1]])}
-                        className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer"
+                        className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-[#0f766e]"
                       />
-                      <div className="flex items-center justify-between mt-2">
-                        <span>
-                          {country?.value === "BD" ? "৳" : "$"} {priceRange[0]}
+                      <div className="flex items-center justify-between mt-3 text-sm text-gray-600 font-medium">
+                        <span className="bg-gray-100 px-2 py-1 rounded">
+                          {country?.value === "BD" ? "৳" : "$"}{priceRange[0]}
                         </span>
-                        <span>
-                          {country?.value === "BD" ? "৳" : "$"} {priceRange[1]}
+                        <span className="bg-gray-100 px-2 py-1 rounded">
+                          {country?.value === "BD" ? "৳" : "$"}{priceRange[1]}
                         </span>
                       </div>
                     </div>
@@ -372,12 +389,12 @@ export default function CategoryWiseProductUi({ id }) {
               {/* Sizes */}
               <div className="border-b border-gray-200 pb-4">
                 <button
-                  className="flex w-full items-center justify-between py-3 text-base font-medium"
+                  className="flex w-full items-center justify-between py-3 text-sm font-semibold text-gray-900"
                   onClick={() => toggleAccordion("size")}
                 >
                   Size
                   <svg
-                    className={`h-5 w-5 transition-transform ${isAccordionOpen.size ? "rotate-180" : ""}`}
+                    className={`h-4 w-4 transition-transform duration-200 ${isAccordionOpen.size ? "rotate-180" : ""}`}
                     fill="none"
                     viewBox="0 0 24 24"
                     stroke="currentColor"
@@ -386,16 +403,16 @@ export default function CategoryWiseProductUi({ id }) {
                   </svg>
                 </button>
                 {isAccordionOpen.size && (
-                  <div className="pt-2">
+                  <div className="pt-3">
                     {sizes.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {sizes.map((size) => (
                           <button
                             key={size}
                             onClick={() => handleSizeToggle(size)}
-                            className={`px-3 py-1 text-sm border rounded-md transition-colors ${selectedSizes.includes(size)
-                              ? "bg-gray-900 text-white border-gray-900"
-                              : "bg-white text-gray-700 border-gray-300 hover:border-gray-400"
+                            className={`px-3 py-1.5 text-sm font-medium border rounded-lg transition-all duration-200 ${selectedSizes.includes(size)
+                              ? "bg-[#0f766e] text-white border-[#0f766e] shadow-sm"
+                              : "bg-white text-gray-700 border-gray-300 hover:border-[#0f766e] hover:text-[#0f766e]"
                               }`}
                           >
                             {size}
@@ -410,34 +427,50 @@ export default function CategoryWiseProductUi({ id }) {
               </div>
 
               {/* Brands */}
-              <div>
-                <h2>Brands</h2>
-                {brands.length
-                  ? brands.map((item) => (
-                    <div key={item} className="flex items-center gap-3 text-base">
-                      <input
-                        checked={item === selectedBrand}
-                        type="checkbox"
-                        onChange={() => {
-                          if (item === selectedBrand) {
-                            setSelectedBrand("")
-                            // Logic moved to main useEffect
-                          } else {
-                            setSelectedBrand(item)
-                            // Logic moved to main useEffect
-                          }
-                        }}
-                      />
-                      <label>{item}</label>
-                    </div>
-                  ))
-                  : null}
+              <div className="pb-4">
+                <button
+                  className="flex w-full items-center justify-between py-3 text-sm font-semibold text-gray-900"
+                  onClick={() => toggleAccordion("brand")}
+                >
+                  Brands
+                  <svg
+                    className={`h-4 w-4 transition-transform duration-200 ${isAccordionOpen.brand ? "rotate-180" : ""}`}
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {isAccordionOpen.brand && (
+                  <div className="pt-2 space-y-2">
+                    {brands.length
+                      ? brands.map((item) => (
+                        <label key={item} className="flex items-center gap-3 text-sm cursor-pointer group">
+                          <input
+                            checked={item === selectedBrand}
+                            type="checkbox"
+                            className="w-4 h-4 rounded border-gray-300 text-[#0f766e] focus:ring-[#0f766e] cursor-pointer"
+                            onChange={() => {
+                              if (item === selectedBrand) {
+                                setSelectedBrand("")
+                              } else {
+                                setSelectedBrand(item)
+                              }
+                            }}
+                          />
+                          <span className="text-gray-700 group-hover:text-gray-900 transition-colors">{item}</span>
+                        </label>
+                      ))
+                      : <p className="text-sm text-gray-500">No brands available</p>}
+                  </div>
+                )}
               </div>
 
 
-            </div >
-          </div >
-        </div >
+            </div>
+          </div>
+        </div>
 
         {/* Mobile Filter Sidebar */}
         {
@@ -578,7 +611,7 @@ export default function CategoryWiseProductUi({ id }) {
                     <div>
                       <h2>Size</h2>
 
-                      {size.map((item) => (
+                      {sizes.map((item) => (
                         <div key={item} className="flex items-center gap-3 text-base">
                           <input
                             type="checkbox"

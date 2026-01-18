@@ -18,14 +18,20 @@ const OfferDetailsUi = ({ data, productsData, id }) => {
         <div className="lg:pt-20 pt-16 py-5 w-11/12 mx-auto text-black">
             <div className="w-full bg-gray-200 rounded-lg shadow-md overflow-hidden">
                 <div className="relative">
-                    <Image
-                        width={1500}
-                        height={800}
-                        src={filteredOffer?.image}
-                        sizes="55vh"
-                        alt="banner-img"
-                        className="w-full object-cover rounded-lg h-[40vh]"
-                    />
+                    {filteredOffer?.image ? (
+                        <Image
+                            width={1500}
+                            height={800}
+                            src={filteredOffer.image}
+                            sizes="55vh"
+                            alt={filteredOffer?.title || "Offer banner"}
+                            className="w-full object-cover rounded-lg h-[40vh]"
+                        />
+                    ) : (
+                        <div className="w-full h-[40vh] bg-gray-300 rounded-lg flex items-center justify-center">
+                            <span className="text-gray-500">No image available</span>
+                        </div>
+                    )}
                 </div>
                 <div className="p-4 bg-gray-100 flex justify-between items-center">
                     <span className="text-lg font-semibold">{filteredOffer?.title}</span>

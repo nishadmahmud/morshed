@@ -7,6 +7,8 @@ import BestDealsSection from "../components/BestDealsSection";
 import LifestyleBanner from "../components/LifestyleBanner";
 import ShopByStyle from "../components/ShopByStyle";
 import CategoryShowcase from "../components/CategoryShowcase";
+import ValuePropositionBar from "../components/ValuePropositionBar";
+import Newsletter from "../components/Newsletter";
 import { api, fetcher, userId } from "../lib/api";
 
 // Re-export for backwards compatibility with other files that might import from here
@@ -29,8 +31,8 @@ export default async function Home() {
       {/* Hero Slider */}
       <HeroSlider slider={slider} />
 
-      {/* Brand Logos Bar */}
-      <BrandMarquee />
+      {/* Value Proposition Bar */}
+      <ValuePropositionBar />
 
       <main className="bg-white">
         {/* Shop by Category Grid */}
@@ -66,8 +68,11 @@ export default async function Home() {
           bannerIndex={3}
         />
 
-        {/* Second Shop by Style Section (Two Banners) - Starting from Banner Index 4 */}
-        <ShopByStyle startBannerIndex={4} />
+        {/* Newsletter Signup */}
+        <Newsletter />
+
+        {/* Brand Logos Bar - Trusted Brands */}
+        <BrandMarquee />
 
         {/* Benefits Section */}
         <BenefitsSection />
