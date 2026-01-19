@@ -223,64 +223,130 @@ const HeaderUi = ({ data }) => {
           </div>
 
           {/* Right side icons */}
-          <div className="flex items-center justify-end gap-2 md:gap-6">
-            {/* Search icon */}
+          <div className="flex items-center justify-end gap-1 md:gap-3">
+            {/* Inline Search Bar - Desktop */}
+            <div className="hidden lg:flex items-center relative">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={keyword}
+                  onChange={handleChange}
+                  placeholder="Search products..."
+                  className="w-48 xl:w-64 pl-10 pr-4 py-2 text-sm bg-gray-50 border border-gray-200 rounded-full focus:outline-none focus:ring-2 focus:ring-[#0f766e]/20 focus:border-[#0f766e] transition-all"
+                />
+                <IoSearch size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+              </div>
+
+              {/* Desktop Search Results Dropdown */}
+              {keyword && (
+                <div className="absolute top-full left-0 mt-2 min-w-[320px] w-[400px] bg-white border border-gray-200 rounded-xl shadow-2xl max-h-[420px] overflow-y-auto z-50">
+                  {isSearching ? (
+                    <div className="p-6 text-center text-gray-500">
+                      <div className="animate-spin w-6 h-6 border-2 border-[#0f766e] border-t-transparent rounded-full mx-auto mb-2"></div>
+                      Searching...
+                    </div>
+                  ) : searchedItem?.length > 0 ? (
+                    <div className="p-2">
+                      {searchedItem.slice(0, 6).map((item) => {
+                        const imageUrl = item.image_path || item.thumbnail_image || item.image || "/no-image.jpg";
+                        return (
+                          <Link
+                            key={item.id}
+                            href={`/products/${item?.product_slug || item?.name}/${item.id}`}
+                            onClick={() => setKeyword("")}
+                            className="flex items-center gap-4 p-3 hover:bg-gray-50 rounded-xl transition-colors"
+                          >
+                            <div className="w-14 h-14 rounded-lg overflow-hidden bg-gray-100 flex-shrink-0">
+                              <Image
+                                src={imageUrl}
+                                alt={item.name}
+                                width={56}
+                                height={56}
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm font-medium text-gray-900 line-clamp-2">{item.name}</p>
+                              <p className="text-sm text-[#0f766e] font-bold mt-1">
+                                {countrySign}{getPriceByCountry(item, prices, country)}
+                              </p>
+                            </div>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className="p-6 text-center text-gray-500">No products found</div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Mobile Search icon */}
             <button
               onClick={toggleSearchSidebar}
-              className="flex items-center transition ease-in-out text-black"
+              className="lg:hidden flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-100 transition-colors text-black"
               aria-label="Search"
               data-sidebar-trigger="search"
             >
-              <IoSearch size={23} />
+              <IoSearch size={22} />
             </button>
 
+            {/* Wishlist */}
             <Link
               href="/wishlist"
-              className="hidden md:flex flex-col items-center text-sm text-[#000000]"
+              className="hidden md:flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-100 transition-colors relative group"
+              aria-label="Wishlist"
             >
-              <div>
-                <Heart className="text-xl" />
-                {wishlist.length > 0 ? (
-                  <p className="bg-[#000000]  z-[900] text-[#ffffff] text-[9px] rounded-full w-4 h-4 text-center absolute top-4">
-                    {wishlist.length}
-                  </p>
-                ) : (
-                  ""
-                )}
-              </div>
+              <Heart size={21} className="text-gray-700 group-hover:text-[#0f766e] transition-colors" />
+              {wishlist.length > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-[#0f766e] text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center">
+                  {wishlist.length > 99 ? "99+" : wishlist.length}
+                </span>
+              )}
+              {/* Tooltip */}
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                Wishlist
+              </span>
             </Link>
 
             {/* Cart icon */}
             <Link
               href="/cart"
-              className="flex items-center cursor-pointer"
+              className="flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-100 transition-colors relative group"
               aria-label="Cart"
             >
-              <div className="relative">
-                <ShoppingBag size={22} className="text-black" />
-                {total > 0 && (
-                  <span className="absolute -top-1 -right-0 bg-black text-white text-[8px] rounded-full w-3 h-3 flex items-center justify-center">
-                    {total}
-                  </span>
-                )}
-              </div>
+              <ShoppingBag size={21} className="text-gray-700 group-hover:text-[#0f766e] transition-colors" />
+              {total > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 bg-[#0f766e] text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center">
+                  {total > 99 ? "99+" : total}
+                </span>
+              )}
+              {/* Tooltip */}
+              <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                Cart
+              </span>
             </Link>
 
             {/* User account */}
             {!user ? (
               <Link
                 href="/login"
-                className="hidden lg:flex items-center cursor-pointer"
+                className="hidden lg:flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-100 transition-colors relative group"
                 aria-label="Login"
               >
-                <User size={22} className="text-black" />
+                <User size={21} className="text-gray-700 group-hover:text-[#0f766e] transition-colors" />
+                {/* Tooltip */}
+                <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  Login
+                </span>
               </Link>
             ) : (
               <Link
                 href="/profile-dashboard"
-                className="hidden lg:flex items-center cursor-pointer"
+                className="hidden lg:flex items-center justify-center w-9 h-9 rounded-full hover:bg-gray-100 transition-colors relative group"
               >
-                <div className="w-6 h-6 rounded-full overflow-hidden">
+                <div className="w-7 h-7 rounded-full overflow-hidden border-2 border-transparent group-hover:border-[#0f766e] transition-colors">
                   <Image
                     src="/userLogin.png"
                     alt="User"
@@ -288,6 +354,10 @@ const HeaderUi = ({ data }) => {
                     height={32}
                   />
                 </div>
+                {/* Tooltip */}
+                <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  Account
+                </span>
               </Link>
             )}
 

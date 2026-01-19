@@ -1,16 +1,16 @@
 "use client";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
-import { LogIn, ShoppingCart, House, Heart } from "lucide-react";
+import { LogIn, ShoppingCart, House, Heart, User } from "lucide-react";
 import useStore from "../hooks/useStore";
-import Image from "next/image";
-const loginLogo = "/user.png";
+import { usePathname } from "next/navigation";
 
 const Navbar = ({ data }) => {
   const [isOpen, setIsOpen] = useState(false);
   const categoryRef = useRef(null);
   const [showCategory, setShowCategory] = useState(false);
   const [user, setUser] = useState(null);
+  const pathname = usePathname();
 
   const { getCartItems, refetch, setRefetch, wishlist } = useStore();
 
@@ -45,75 +45,85 @@ const Navbar = ({ data }) => {
   const items = getCartItems();
   const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
 
+  // Check if current path matches nav item
+  const isActive = (path) => {
+    if (path === "/") return pathname === "/";
+    return pathname.startsWith(path);
+  };
+
+  const navItems = [
+    { href: "/", icon: House, label: "Home" },
+    { href: "/wishlist", icon: Heart, label: "Wishlist", badge: wishlist?.length },
+    { href: "/cart", icon: ShoppingCart, label: "Cart", badge: total },
+  ];
+
   return (
     <div className="relative">
       {/* Mobile & tablet bottom navigation */}
       <div className="relative">
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 z-50 lg:hidden">
-          <div className="flex justify-around items-center py-2 px-2">
-            {/* Home */}
-            <Link
-              href="/"
-              className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              <House size={22} />
-              <span className="text-[10px] font-medium">Home</span>
-            </Link>
-
-            {/* Wishlist */}
-            <Link
-              href="/wishlist"
-              className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors relative"
-            >
-              <div className="relative">
-                <Heart size={22} />
-                {wishlist?.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-[9px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
-                    {wishlist.length}
+        <div className="fixed bottom-0 left-0 right-0 bg-white/95 backdrop-blur-md border-t border-gray-200 z-50 lg:hidden shadow-[0_-4px_20px_rgba(0,0,0,0.08)]">
+          <div className="flex justify-around items-center py-2 px-4 pb-[calc(0.5rem+env(safe-area-inset-bottom,0px))]">
+            {navItems.map((item) => {
+              const active = isActive(item.href);
+              return (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 ${active
+                      ? "text-[#0f766e]"
+                      : "text-gray-500 hover:text-gray-700 active:scale-95"
+                    }`}
+                >
+                  <div className="relative">
+                    <div className={`p-1.5 rounded-full transition-colors duration-200 ${active ? "bg-[#0f766e]/10" : ""
+                      }`}>
+                      <item.icon size={22} strokeWidth={active ? 2.5 : 2} />
+                    </div>
+                    {item.badge > 0 && (
+                      <span className="absolute -top-0.5 -right-0.5 bg-[#0f766e] text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center px-1">
+                        {item.badge > 99 ? "99+" : item.badge}
+                      </span>
+                    )}
+                  </div>
+                  <span className={`text-[10px] font-medium ${active ? "font-semibold" : ""}`}>
+                    {item.label}
                   </span>
-                )}
-              </div>
-              <span className="text-[10px] font-medium">Wishlist</span>
-            </Link>
-
-            {/* Cart */}
-            <Link
-              href="/cart"
-              className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors relative"
-            >
-              <div className="relative">
-                <ShoppingCart size={22} />
-                {total > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-gray-900 text-white text-[9px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
-                    {total}
-                  </span>
-                )}
-              </div>
-              <span className="text-[10px] font-medium">Cart</span>
-            </Link>
+                </Link>
+              );
+            })}
 
             {/* Account/Login */}
             {user ? (
               <Link
                 href="/profile-dashboard"
-                className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors"
+                className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 ${isActive("/profile-dashboard")
+                    ? "text-[#0f766e]"
+                    : "text-gray-500 hover:text-gray-700 active:scale-95"
+                  }`}
               >
-                <Image
-                  className="border border-gray-300 rounded-full"
-                  src={loginLogo}
-                  alt="navLogo"
-                  width={24}
-                  height={24}
-                />
-                <span className="text-[10px] font-medium">Account</span>
+                <div className={`p-1.5 rounded-full transition-colors duration-200 ${isActive("/profile-dashboard") ? "bg-[#0f766e]/10" : ""
+                  }`}>
+                  <User size={22} strokeWidth={isActive("/profile-dashboard") ? 2.5 : 2} />
+                </div>
+                <span className={`text-[10px] font-medium ${isActive("/profile-dashboard") ? "font-semibold" : ""}`}>
+                  Account
+                </span>
               </Link>
             ) : (
               <Link
                 href="/login"
-                className="flex flex-col items-center gap-0.5 text-gray-600 hover:text-gray-900 transition-colors"
+                className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 ${isActive("/login")
+                    ? "text-[#0f766e]"
+                    : "text-gray-500 hover:text-gray-700 active:scale-95"
+                  }`}
               >
-                <LogIn size={22} />
-                <span className="text-[10px] font-medium">Login</span>
+                <div className={`p-1.5 rounded-full transition-colors duration-200 ${isActive("/login") ? "bg-[#0f766e]/10" : ""
+                  }`}>
+                  <LogIn size={22} strokeWidth={isActive("/login") ? 2.5 : 2} />
+                </div>
+                <span className={`text-[10px] font-medium ${isActive("/login") ? "font-semibold" : ""}`}>
+                  Login
+                </span>
               </Link>
             )}
           </div>
