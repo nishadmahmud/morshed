@@ -103,7 +103,8 @@ const ProductCard = ({ product, compact = false }) => {
     }
   }
 
-  const isOutOfStock = product?.status?.toLowerCase() === "stock out";
+  // Disabled sold out check - show all products as normal
+  const isOutOfStock = false; // product?.status?.toLowerCase() === "stock out";
 
   return (
     <div
@@ -164,14 +165,14 @@ const ProductCard = ({ product, compact = false }) => {
           )}
         </div>
 
-        {/* Out of Stock Overlay */}
-        {isOutOfStock && (
+        {/* Out of Stock Overlay - Disabled */}
+        {/* {isOutOfStock && (
           <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-10">
             <span className="bg-white text-black text-xs font-semibold px-3 py-1.5 rounded">
               SOLD OUT
             </span>
           </div>
-        )}
+        )} */}
 
         {/* Wishlist Button - Top Right */}
         <button
