@@ -127,8 +127,17 @@ const HeaderUi = ({ data }) => {
       ) {
         setIsSearchSidebarOpen(false);
       }
+
+      // Close desktop search dropdown when clicking outside
+      if (
+        keyword &&
+        !event.target.closest('[data-desktop-search]')
+      ) {
+        setKeyword("");
+        setSearchedItem([]);
+      }
     },
-    [isSidebarOpen, isSearchSidebarOpen]
+    [isSidebarOpen, isSearchSidebarOpen, keyword]
   );
 
   useEffect(() => {
@@ -225,7 +234,7 @@ const HeaderUi = ({ data }) => {
           {/* Right side icons */}
           <div className="flex items-center justify-end gap-1 md:gap-3">
             {/* Inline Search Bar - Desktop */}
-            <div className="hidden lg:flex items-center relative">
+            <div className="hidden lg:flex items-center relative" data-desktop-search>
               <div className="relative">
                 <input
                   type="text"
