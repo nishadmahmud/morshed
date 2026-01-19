@@ -13,22 +13,12 @@ const FeaturedCategoryUi = ({ categories }) => {
   };
 
   return (
-    <section className="bg-white py-12 md:py-16">
+    <section className="py-8 md:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-10">
-          <h2 className="text-2xl md:text-4xl font-bold text-gray-900 tracking-tight">
-            Shop By Category
-          </h2>
-          <p className="mt-3 text-gray-500 text-base md:text-lg">
-            Find your perfect style
-          </p>
-        </div>
-
-        {/* Category Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
+        {/* Category Grid - 3 columns, 2 rows = 6 items */}
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
           {categoryList?.data && categoryList?.data?.length ?
-            categoryList.data.slice(0, 8).map((category, index) => (
+            categoryList.data.slice(0, 6).map((category, index) => (
               <Link
                 key={index}
                 href={`category/${encodeURIComponent(category?.category_id)}?category=${encodeURIComponent(
@@ -36,29 +26,25 @@ const FeaturedCategoryUi = ({ categories }) => {
                 )}&total=${encodeURIComponent(category?.products_count)}`}
                 className="group block"
               >
-                <div className="relative overflow-hidden bg-gray-100 aspect-[3/4]">
+                <div className="relative overflow-hidden rounded-lg aspect-square">
                   {/* Category Image */}
                   <Image
                     src={category.image_url || noImg}
                     alt={category.name || "category"}
                     fill
-                    className="object-cover transition-opacity duration-200 group-hover:opacity-90"
-                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+                    className="object-cover transition-transform duration-300 group-hover:scale-105"
+                    sizes="(max-width: 768px) 50vw, 33vw"
+                    unoptimized
                   />
 
-                  {/* Simple Dark Overlay on Hover */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors duration-200" />
+                  {/* Dark Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
 
-                  {/* Category Name Overlay */}
-                  <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                    <h3 className="text-white font-semibold text-sm md:text-base truncate">
+                  {/* Category Name at Bottom */}
+                  <div className="absolute bottom-0 left-0 right-0 p-4">
+                    <h3 className="text-white font-semibold text-sm md:text-lg text-center drop-shadow-lg">
                       {category.name}
                     </h3>
-                    {category?.products_count && (
-                      <span className="text-white/80 text-xs">
-                        {category.products_count} items
-                      </span>
-                    )}
                   </div>
                 </div>
               </Link>
@@ -68,10 +54,10 @@ const FeaturedCategoryUi = ({ categories }) => {
         </div>
 
         {/* View All Button - Opens Sidebar */}
-        <div className="text-center mt-8">
+        <div className="text-center mt-6">
           <button
             onClick={handleViewAllClick}
-            className="inline-flex items-center gap-2 text-gray-900 font-medium hover:text-[#0f766e] transition-colors"
+            className="inline-flex items-center gap-2 px-6 py-2.5 border-2 border-[#0f766e] text-[#0f766e] font-medium rounded hover:bg-[#0f766e] hover:text-white transition-colors"
           >
             View All Categories
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -85,4 +71,3 @@ const FeaturedCategoryUi = ({ categories }) => {
 }
 
 export default FeaturedCategoryUi
-

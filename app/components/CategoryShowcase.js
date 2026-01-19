@@ -48,7 +48,7 @@ const CategorySection = ({ category }) => {
             {/* Left: Category Banner */}
             <Link
                 href={categoryLink}
-                className="relative w-full aspect-square min-h-[300px] lg:min-h-0 overflow-hidden rounded-lg group bg-white border border-gray-100 shadow-sm"
+                className="relative w-full aspect-[11/10]  lg:min-h-0 overflow-hidden rounded-lg group bg-white border border-gray-100 shadow-sm"
             >
                 <Image
                     src={categoryImage}
@@ -121,7 +121,7 @@ const CategorySection = ({ category }) => {
     );
 };
 
-const CategoryShowcase = () => {
+const CategoryShowcase = ({ startIndex = 0, count = 2 }) => {
     // Fetch categories
     const { data: categoriesData, isLoading: categoriesLoading } = useSWR(
         api.getCategories(),
@@ -129,9 +129,12 @@ const CategoryShowcase = () => {
     );
 
     // Filter categories: products_count >= 6 AND has image_url or banner
-    const validCategories = categoriesData?.data?.filter(
+    // Then slice based on startIndex and count
+    const allValidCategories = categoriesData?.data?.filter(
         (cat) => cat.products_count >= 6 && (cat.image_url || cat.banner)
     ) || [];
+
+    const validCategories = allValidCategories.slice(startIndex, startIndex + count);
 
     if (categoriesLoading) {
         return (

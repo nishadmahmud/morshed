@@ -22,6 +22,25 @@ const sanitizeSlug = (str) => {
 const SliderUi = ({ slider }) => {
   const swiperRef = useRef(null);
 
+  // Static slider images as fallback
+  const staticSlides = [
+    {
+      image: "/slider-1.png",
+      title: "Premium Collection",
+      link: "/new-arrivals"
+    },
+    {
+      image: "/slider-2.png",
+      title: "Signature Shirts",
+      link: "/category/6750?category=Solid%20Shirts"
+    },
+    {
+      image: "/slider-3.png",
+      title: "Shop All Styles",
+      link: "/new-arrivals"
+    }
+  ];
+
   // Custom Navigation function
   const handlePrev = () => {
     if (swiperRef.current && swiperRef.current.swiper) {
@@ -34,6 +53,13 @@ const SliderUi = ({ slider }) => {
       swiperRef.current.swiper.slideNext();
     }
   };
+
+  // Check if we have API slider data
+  // For now, always use static slides
+  const hasApiData = false; // Disabled API data temporarily
+  // const hasApiData = slider?.status === 200 &&
+  //   slider?.data?.length > 0 &&
+  //   slider?.data[0]?.image_path?.length > 0;
 
   return (
     <div className="w-full h-[30vh] md:h-[calc(100vh-100px)] relative group overflow-hidden">
@@ -56,13 +82,11 @@ const SliderUi = ({ slider }) => {
         modules={[Autoplay, EffectFade, Pagination, Navigation]}
         className="h-full w-full custom-swiper-pagination"
       >
-        {slider.status === 200 &&
-          slider?.data.length > 0 &&
+        {hasApiData ? (
+          // Use API slider data
           slider?.data[0]?.image_path?.map((img, idx) => {
             const product = slider?.data[0]?.products?.[0];
-            // Safe check for product to avoid errors if data structure mismatch
             if (!product) {
-              // Fallback if just displaying image without product link
               return (
                 <SwiperSlide key={idx} className="relative w-full h-full">
                   <div className="relative w-full h-full">
@@ -97,7 +121,25 @@ const SliderUi = ({ slider }) => {
                 </Link>
               </SwiperSlide>
             );
-          })}
+          })
+        ) : (
+          // Use static slider images
+          staticSlides.map((slide, idx) => (
+            <SwiperSlide key={idx} className="relative w-full h-full">
+              <Link href={slide.link} className="block w-full h-full relative cursor-pointer">
+                <Image
+                  src={slide.image}
+                  priority={idx === 0}
+                  alt={slide.title}
+                  fill
+                  quality={100}
+                  className="object-cover object-center"
+                  unoptimized
+                />
+              </Link>
+            </SwiperSlide>
+          ))
+        )}
       </Swiper>
 
       {/* Custom Navigation Buttons - Minimalist & Elegant */}

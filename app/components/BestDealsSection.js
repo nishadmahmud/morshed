@@ -37,13 +37,13 @@ const BestDealsSection = () => {
                 {/* Product Grid */}
                 {isLoading ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                        {Array.from({ length: 8 }).map((_, idx) => (
+                        {Array.from({ length: 10 }).map((_, idx) => (
                             <CardSkeleton key={idx} />
                         ))}
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                        {(Array.isArray(bestDeals?.data) ? bestDeals.data : []).slice(0, 8).map((product) => (
+                        {(Array.isArray(bestDeals?.data) ? bestDeals.data : []).slice(0, 10).map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>

@@ -12,20 +12,22 @@ const NewArrivalSection = () => {
         fetcher
     );
 
+    const products = Array.isArray(newArrivals?.data?.data) ? newArrivals.data.data : [];
+
     return (
-        <section className="py-12 md:py-16 bg-white">
+        <section className="py-12 md:py-16 bg-gray-50">
             <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
                 {/* Header */}
                 <div className="flex items-center justify-between mb-8">
                     <div>
-                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
+                        <h2 className="text-2xl md:text-3xl font-bold text-[#0f766e]">
                             New Arrivals
                         </h2>
-                        <p className="mt-1 text-gray-500">Fresh styles just dropped</p>
+                        <p className="mt-1 text-gray-500">Fresh styles just in</p>
                     </div>
                     <Link
                         href="/new-arrivals"
-                        className="hidden md:inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-teal-700 transition-colors"
+                        className="hidden md:inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-[#0f766e] transition-colors"
                     >
                         View All
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -34,16 +36,16 @@ const NewArrivalSection = () => {
                     </Link>
                 </div>
 
-                {/* Product Grid */}
+                {/* Product Grid - 5 per row like BestDeals */}
                 {isLoading ? (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                        {Array.from({ length: 5 }).map((_, idx) => (
+                        {Array.from({ length: 10 }).map((_, idx) => (
                             <CardSkeleton key={idx} />
                         ))}
                     </div>
                 ) : (
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-6">
-                        {(Array.isArray(newArrivals?.data?.data) ? newArrivals.data.data : []).slice(0, 8).map((product) => (
+                        {products.slice(0, 10).map((product) => (
                             <ProductCard key={product.id} product={product} />
                         ))}
                     </div>
@@ -53,7 +55,7 @@ const NewArrivalSection = () => {
                 <div className="md:hidden text-center mt-6">
                     <Link
                         href="/new-arrivals"
-                        className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-teal-700 transition-colors"
+                        className="inline-flex items-center gap-2 text-sm font-medium text-gray-900 hover:text-[#0f766e] transition-colors"
                     >
                         View All New Arrivals
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

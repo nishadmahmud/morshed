@@ -8,7 +8,7 @@ import LifestyleBanner from "../components/LifestyleBanner";
 import ShopByStyle from "../components/ShopByStyle";
 import CategoryShowcase from "../components/CategoryShowcase";
 import ValuePropositionBar from "../components/ValuePropositionBar";
-import Newsletter from "../components/Newsletter";
+import QuickNavBar from "../components/QuickNavBar";
 import { api, fetcher, userId } from "../lib/api";
 
 // Re-export for backwards compatibility with other files that might import from here
@@ -31,45 +31,51 @@ export default async function Home() {
       {/* Hero Slider */}
       <HeroSlider slider={slider} />
 
+      {/* Quick Navigation Bar */}
+      <QuickNavBar />
+
+      {/* New Arrivals Section */}
+      <NewArrivalSection />
+
+      <ShopByStyle />
+
       {/* Value Proposition Bar */}
-      <ValuePropositionBar />
+      {/* <ValuePropositionBar /> */}
 
       <main className="bg-white">
         {/* Shop by Category Grid */}
         <FeaturedCategories />
 
-        {/* New Arrivals Section */}
-        <NewArrivalSection />
-
         {/* Lifestyle Banner */}
         <LifestyleBanner
-          title="Elevate Your Style"
-          subtitle="Premium collection for the modern man"
-          ctaText="Explore Collection"
-          ctaLink="/category/6749?category=Stripe%20Pattern%20Shirt"
+          brandName="Morshed Mart"
+          tagline="Because comfort and confidence go hand in hand."
+          description="We focus on carefully selecting the best clothing that is comfortable, looks great, and makes you confident. Apart from the fabric, design and fit, we go through strict quality control parameters to give you what you truly deserve."
+          ctaLink="/new-arrivals"
           bannerIndex={2}
         />
 
-        {/* Best Deals Section */}
-        <BestDealsSection />
 
         {/* Shop by Style Section */}
-        <ShopByStyle />
 
-        {/* Category Showcase Section */}
-        <CategoryShowcase />
+
+        {/* Category Showcase Section - First 2 categories */}
+        <CategoryShowcase startIndex={0} count={2} />
 
         {/* Second Lifestyle Banner (Full Width) - Banner Index 3 */}
         <LifestyleBanner
-          title="Urban Elegance"
-          subtitle="Discover the city look"
-          ctaText="Shop Now"
+          brandName="Morshed Mart"
+          tagline="Urban Elegance"
+          description="Discover the city look"
           ctaLink="/category/6749?category=Stripe%20Pattern%20Shirt"
           bannerIndex={3}
         />
 
-        {/* Newsletter Signup */}
-        <Newsletter />
+        {/* Category Showcase Section - Next 2 categories */}
+        <CategoryShowcase startIndex={2} count={2} />
+
+        {/* Best Deals Section */}
+        <BestDealsSection />
 
         {/* Brand Logos Bar - Trusted Brands */}
         <BrandMarquee />

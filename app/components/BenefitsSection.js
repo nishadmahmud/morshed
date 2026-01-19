@@ -25,18 +25,20 @@ const BenefitsSection = () => {
   ];
 
   return (
-    <section className="bg-gray-900 text-white py-12 md:py-16">
+    <section className="bg-white border-t border-gray-100 py-10 md:py-14">
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6">
           {benefits.map((benefit, index) => {
             const IconComponent = benefit.icon;
             return (
               <div key={index} className="text-center">
-                <IconComponent className="w-8 h-8 mx-auto mb-4 text-teal-400" />
-                <h3 className="text-base md:text-lg font-semibold mb-2">
+                <div className="w-12 h-12 mx-auto mb-4 rounded-full bg-[#0f766e]/10 flex items-center justify-center">
+                  <IconComponent className="w-6 h-6 text-[#0f766e]" />
+                </div>
+                <h3 className="text-base md:text-lg font-bold text-gray-900 mb-1">
                   {benefit.title}
                 </h3>
-                <p className="text-gray-400 text-sm">
+                <p className="text-gray-500 text-sm">
                   {benefit.description}
                 </p>
               </div>

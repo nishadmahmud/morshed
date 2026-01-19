@@ -46,12 +46,12 @@ const ShopByStyle = ({ startBannerIndex = 0 }) => {
         return (
             <section className="py-12 md:py-16 bg-white">
                 <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
-                    <div className="text-center mb-10">
+                    {/* <div className="text-center mb-10">
                         <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                             Shop By Style
                         </h2>
                         <p className="mt-2 text-gray-500">Find your perfect look</p>
-                    </div>
+                    </div> */}
                     <div className="grid md:grid-cols-2 gap-6">
                         {[1, 2].map((i) => (
                             <div key={i} className="aspect-[4/3] md:aspect-[3/2] bg-gray-200 animate-pulse rounded-lg" />
@@ -66,12 +66,12 @@ const ShopByStyle = ({ startBannerIndex = 0 }) => {
         <section className="py-12 md:py-16 bg-white">
             <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8">
                 {/* Header */}
-                <div className="text-center mb-10">
+                {/* <div className="text-center mb-10">
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900">
                         Shop By Style
                     </h2>
                     <p className="mt-2 text-gray-500">Find your perfect look</p>
-                </div>
+                </div> */}
 
                 {/* Two Column Grid */}
                 <div className="grid md:grid-cols-2 gap-6">
