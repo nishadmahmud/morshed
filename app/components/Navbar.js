@@ -14,6 +14,10 @@ const Navbar = ({ data }) => {
 
   const { getCartItems, refetch, setRefetch, wishlist } = useStore();
 
+  // State for client-side only values (to avoid hydration mismatch)
+  const [cartTotal, setCartTotal] = useState(0);
+  const [wishlistCount, setWishlistCount] = useState(0);
+
   const handleCategoryClose = (event) => {
     if (categoryRef.current && !categoryRef.current.contains(event.target)) {
       setShowCategory(false);
@@ -34,16 +38,17 @@ const Navbar = ({ data }) => {
     }
   }, []);
 
+  // Update cart count after mount (client-side only)
   useEffect(() => {
-    getCartItems();
-    if (refetch) {
-      getCartItems();
-      setRefetch(false);
-    }
-  }, [refetch, getCartItems, setRefetch]);
+    const items = getCartItems();
+    const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
+    setCartTotal(total);
+  }, [refetch, getCartItems]);
 
-  const items = getCartItems();
-  const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
+  // Update wishlist count after mount (client-side only)
+  useEffect(() => {
+    setWishlistCount(wishlist?.length || 0);
+  }, [wishlist]);
 
   // Check if current path matches nav item
   const isActive = (path) => {
@@ -53,8 +58,8 @@ const Navbar = ({ data }) => {
 
   const navItems = [
     { href: "/", icon: House, label: "Home" },
-    { href: "/wishlist", icon: Heart, label: "Wishlist", badge: wishlist?.length },
-    { href: "/cart", icon: ShoppingCart, label: "Cart", badge: total },
+    { href: "/wishlist", icon: Heart, label: "Wishlist", badge: wishlistCount },
+    { href: "/cart", icon: ShoppingCart, label: "Cart", badge: cartTotal },
   ];
 
   return (
@@ -70,8 +75,8 @@ const Navbar = ({ data }) => {
                   key={item.href}
                   href={item.href}
                   className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 ${active
-                      ? "text-[#0f766e]"
-                      : "text-gray-500 hover:text-gray-700 active:scale-95"
+                    ? "text-[#0f766e]"
+                    : "text-gray-500 hover:text-gray-700 active:scale-95"
                     }`}
                 >
                   <div className="relative">
@@ -97,8 +102,8 @@ const Navbar = ({ data }) => {
               <Link
                 href="/profile-dashboard"
                 className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 ${isActive("/profile-dashboard")
-                    ? "text-[#0f766e]"
-                    : "text-gray-500 hover:text-gray-700 active:scale-95"
+                  ? "text-[#0f766e]"
+                  : "text-gray-500 hover:text-gray-700 active:scale-95"
                   }`}
               >
                 <div className={`p-1.5 rounded-full transition-colors duration-200 ${isActive("/profile-dashboard") ? "bg-[#0f766e]/10" : ""
@@ -113,8 +118,8 @@ const Navbar = ({ data }) => {
               <Link
                 href="/login"
                 className={`flex flex-col items-center gap-1 py-1 px-3 rounded-xl transition-all duration-200 ${isActive("/login")
-                    ? "text-[#0f766e]"
-                    : "text-gray-500 hover:text-gray-700 active:scale-95"
+                  ? "text-[#0f766e]"
+                  : "text-gray-500 hover:text-gray-700 active:scale-95"
                   }`}
               >
                 <div className={`p-1.5 rounded-full transition-colors duration-200 ${isActive("/login") ? "bg-[#0f766e]/10" : ""

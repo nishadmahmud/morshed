@@ -49,9 +49,16 @@ const HeaderUi = ({ data }) => {
   const debounceRef = useRef(null);
   const searchBarRef = useRef(null);
 
-  // Mock user and cart data
-  const items = getCartItems();
-  const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
+  // Cart count state - initialized to 0 to avoid hydration mismatch
+  const [cartTotal, setCartTotal] = useState(0);
+
+  // Update cart count after mount (client-side only)
+  useEffect(() => {
+    const items = getCartItems();
+    const total = items?.reduce((acc, curr) => (acc += curr.quantity), 0) || 0;
+    setCartTotal(total);
+  }, [getCartItems]);
+
   const toggleSidebar = () => {
     setIsSidebarOpen((prev) => !prev);
     // Also reset store state when closing
@@ -326,9 +333,9 @@ const HeaderUi = ({ data }) => {
               aria-label="Cart"
             >
               <ShoppingBag size={21} className="text-gray-700 group-hover:text-[#0f766e] transition-colors" />
-              {total > 0 && (
+              {cartTotal > 0 && (
                 <span className="absolute -top-0.5 -right-0.5 bg-[#0f766e] text-white text-[9px] font-bold rounded-full min-w-[18px] h-[18px] flex items-center justify-center">
-                  {total > 99 ? "99+" : total}
+                  {cartTotal > 99 ? "99+" : cartTotal}
                 </span>
               )}
               {/* Tooltip */}
