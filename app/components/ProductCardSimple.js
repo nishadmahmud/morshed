@@ -16,7 +16,8 @@ const ProductCardSimple = ({ product }) => {
     const badgeText = product?.brands?.name || product?.category?.name || "New";
 
     // Price logic
-    const countrySign = country?.value === "BD" ? "৳" : "$";
+    // Always use Taka for Bangladesh store
+    const countrySign = "৳";
     const productPrice = prices?.[product?.id];
 
     const currentPrice = country?.value === "BD"

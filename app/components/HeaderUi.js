@@ -162,7 +162,8 @@ const HeaderUi = ({ data }) => {
   const handleModalClose = () => setIsLoginModal(false);
 
 
-  const countrySign = country?.value === "BD" ? "৳" : "$";
+  // Always use Taka for Bangladesh store
+  const countrySign = "৳";
 
 
   // utils/pricing.js (or right above your component)

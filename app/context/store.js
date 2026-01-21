@@ -38,7 +38,7 @@ const StoreProvider = ({ children }) => {
   const [userInfo, setUserInfo] = useState(null);
   const [isRegistered, setIsRegistered] = useState(false);
   const [prices, setPrices] = useState({});
-  const [country, setCountry] = useState("BD");
+  const [country, setCountry] = useState({ value: "BD", label: "Bangladesh", symbol: "৳" });
   const [wishlist, setWishlist] = useState([]);
   const [selectedSizeCart, setSelectedSizeCart] = useState("")
 

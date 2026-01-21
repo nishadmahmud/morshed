@@ -18,7 +18,8 @@ const ProductCard = ({ product, compact = false }) => {
   const [selectedSize, setSelectedSize] = useState(null);
   const [isAdding, setIsAdding] = useState(false);
 
-  const countrySign = country?.value === "BD" ? "৳" : "$"
+  // Always use Taka for Bangladesh store
+  const countrySign = "৳";
 
   useEffect(() => {
     if (product?.id && product?.retails_price) {

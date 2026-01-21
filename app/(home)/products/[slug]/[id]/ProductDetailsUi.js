@@ -220,7 +220,8 @@ const ProductDetailsUi = ({ id, userId }) => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const countrySign = country?.value === "BD" ? "৳" : "$";
+  // Always use Taka for Bangladesh store
+  const countrySign = "৳";
 
   const incrementQuantity = () => {
     // Check if product has variants
