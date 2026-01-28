@@ -146,6 +146,8 @@ const DeliveryForm = ({
   const userDataRef = useRef(null);
   const [selectedCity, setSelectedCity] = useState('Select your address');
   const [selectedDistrict, setSelectedDistrict] = useState([]);
+  const [cityId, setCityId] = useState(null);
+  const [zoneId, setZoneId] = useState(null);
   const [totalDiscount, setTotalDiscount] = useState(0);
 
 
@@ -311,6 +313,8 @@ const DeliveryForm = ({
       delivery_method_id: 1,
       delivery_city: selectedCity,
       delivery_district: selectedDistrict,
+      city_id: cityId,
+      zone_id: zoneId,
       delivery_note: deliveryNote,
       donation_amount:
         selectedDonate === "Not now" ? 0 : Number(selectedDonate),
@@ -367,6 +371,8 @@ const DeliveryForm = ({
     paymentMethods?.data?.data,
     date,
     customerId,
+    cityId,
+    zoneId,
   ]);
 
   const [orderSchemaState, setOrderSchema] = useState(orderSchema);
@@ -755,7 +761,14 @@ const DeliveryForm = ({
             </div>
 
             <div className="col-span-2">
-              <AddressSelect selectedCity={selectedCity} setSelectedCity={setSelectedCity} selectedDistrict={selectedDistrict} setSelectedDistrict={setSelectedDistrict}></AddressSelect>
+              <AddressSelect
+                selectedCity={selectedCity}
+                setSelectedCity={setSelectedCity}
+                selectedDistrict={selectedDistrict}
+                setSelectedDistrict={setSelectedDistrict}
+                setCityId={setCityId}
+                setZoneId={setZoneId}
+              ></AddressSelect>
 
             </div>
             {/* <p className="text-black">{JSON.stringify(selected)}</p> */}
@@ -854,8 +867,8 @@ const DeliveryForm = ({
           <div className="space-y-3">
             <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "inside"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
+                ? "border-blue-500 bg-blue-50"
+                : "border-gray-200 hover:border-gray-300"
                 }`}
             >
               <input
@@ -869,8 +882,8 @@ const DeliveryForm = ({
               <div className="flex items-center space-x-4 flex-1">
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "inside"
-                      ? "border-blue-500"
-                      : "border-gray-300"
+                    ? "border-blue-500"
+                    : "border-gray-300"
                     }`}
                 >
                   {location === "inside" && (
@@ -893,8 +906,8 @@ const DeliveryForm = ({
 
             <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "outside"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
+                ? "border-blue-500 bg-blue-50"
+                : "border-gray-200 hover:border-gray-300"
                 }`}
             >
               <input
@@ -908,8 +921,8 @@ const DeliveryForm = ({
               <div className="flex items-center space-x-4 flex-1">
                 <div
                   className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "outside"
-                      ? "border-blue-500"
-                      : "border-gray-300"
+                    ? "border-blue-500"
+                    : "border-gray-300"
                     }`}
                 >
                   {location === "outside" && (
@@ -957,8 +970,8 @@ const DeliveryForm = ({
           <div className="space-y-3">
             <label
               className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${payment === "Cash"
-                  ? "border-blue-500 bg-blue-50"
-                  : "border-gray-200 hover:border-gray-300"
+                ? "border-blue-500 bg-blue-50"
+                : "border-gray-200 hover:border-gray-300"
                 }`}
             >
               <input
@@ -1008,9 +1021,9 @@ const DeliveryForm = ({
                           onClick={() => handlePaymentMethod(item)}
                           key={item.id}
                           className={`flex flex-col items-center p-3 rounded-lg cursor-pointer transition-all border-2 ${item?.payment_type_category[0]
-                              ?.payment_category_name === payment
-                              ? "border-blue-500 bg-blue-50"
-                              : "border-gray-200 hover:border-gray-300"
+                            ?.payment_category_name === payment
+                            ? "border-blue-500 bg-blue-50"
+                            : "border-gray-200 hover:border-gray-300"
                             }`}
                         >
                           <Image
@@ -1253,8 +1266,8 @@ const DeliveryForm = ({
                     key={donation}
                     onClick={() => handleDonationClick(donation)}
                     className={`px-4 py-2 rounded-full border text-sm ${isSelected
-                        ? "bg-gray-800 text-white border-gray-800"
-                        : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
+                      ? "bg-gray-800 text-white border-gray-800"
+                      : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
                       }`}
                   >
                     {country?.value === "BD"

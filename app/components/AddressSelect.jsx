@@ -12,6 +12,8 @@ export default function AddressSelect({
   setSelectedDistrict,
   selectedCity,
   setSelectedCity,
+  setCityId,
+  setZoneId,
 }) {
   const [menuIsOpen, setMenuIsOpen] = useState(false);
   const [expandedState, setExpandedState] = useState(null);
@@ -65,6 +67,8 @@ export default function AddressSelect({
     if (!last) {
       setSelectedDistrict(null);
       setSelectedCity(null);
+      if (setZoneId) setZoneId(null);
+      if (setCityId) setCityId(null);
       setExpandedState(null);
       return;
     }
@@ -73,6 +77,8 @@ export default function AddressSelect({
     if (last.type === "state") {
       setSelectedDistrict(last.stateName);
       setSelectedCity(null);
+      if (setZoneId) setZoneId(last.stateId);
+      if (setCityId) setCityId(null);
       setExpandedState(last.stateId === expandedState ? null : last.stateId);
       setMenuIsOpen(true);
     }
@@ -81,6 +87,8 @@ export default function AddressSelect({
     if (last.type === "city") {
       setSelectedDistrict(last.stateName);
       setSelectedCity(last.cityName);
+      if (setZoneId) setZoneId(last.stateId);
+      if (setCityId) setCityId(last.cityId);
       setExpandedState(null);
       setMenuIsOpen(false);
     }
@@ -133,20 +141,20 @@ export default function AddressSelect({
       </label>
 
       <Select
-  className="text-black"
-  options={options}
-  components={{ Option }}
-  value={getValue()}
-  onChange={handleChange}
-  isMulti
-  isClearable
-  menuIsOpen={menuIsOpen}
-  onMenuOpen={() => setMenuIsOpen(true)}
-  onMenuClose={() => setMenuIsOpen(false)}
-  closeMenuOnSelect={false}
-  filterOption={filterOption}
-  placeholder="Select your address" // ← Add this
-/>
+        className="text-black"
+        options={options}
+        components={{ Option }}
+        value={getValue()}
+        onChange={handleChange}
+        isMulti
+        isClearable
+        menuIsOpen={menuIsOpen}
+        onMenuOpen={() => setMenuIsOpen(true)}
+        onMenuClose={() => setMenuIsOpen(false)}
+        closeMenuOnSelect={false}
+        filterOption={filterOption}
+        placeholder="Select your address" // ← Add this
+      />
 
     </div>
   );
