@@ -314,7 +314,9 @@ const DeliveryForm = ({
       delivery_city: selectedCity,
       delivery_district: selectedDistrict,
       city_id: cityId,
-      zone_id: zoneId,
+      // zone_id: zoneId,
+
+
       delivery_note: deliveryNote,
       donation_amount:
         selectedDonate === "Not now" ? 0 : Number(selectedDonate),
