@@ -313,7 +313,7 @@ const DeliveryForm = ({
       delivery_method_id: 1,
       delivery_city: selectedCity,
       delivery_district: selectedDistrict,
-      city_id: cityId,
+      // city_id: cityId,
       // zone_id: zoneId,
 
 
