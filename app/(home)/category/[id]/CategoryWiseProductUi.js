@@ -58,7 +58,14 @@ export default function CategoryWiseProductUi({ id }) {
   const [selectedBrand, setSelectedBrand] = useState("")
   const [selectedSize, setSelectedSize] = useState("")
   const [minimum, setMinimum] = useState(0)
+
+  // Custom Dropdown States
+  const [isSizeDropdownOpen, setIsSizeDropdownOpen] = useState(false)
+  const [isSortDropdownOpen, setIsSortDropdownOpen] = useState(false)
+
   const filterRef = useRef(null)
+  const sizeDropdownRef = useRef(null)
+  const sortDropdownRef = useRef(null)
   console.log(products);
   useEffect(() => {
     if (products?.data) {
@@ -82,53 +89,7 @@ export default function CategoryWiseProductUi({ id }) {
   }, [products])
 
 
-  // sort by size
-  useEffect(() => {
-    if (!products?.data) return;
 
-    const productList = Array.isArray(products.data)
-      ? products.data
-      : products.data.data || [];
-
-    setFilteredItems(productList);
-
-    // Extract unique size names (S, M, L, XL, XXL)
-    const sizeSet = new Set();
-
-    productList.forEach((product) => {
-      product.product_variants?.forEach((variant) => {
-        if (variant.quantity > 0) {
-          sizeSet.add(variant.name);
-        }
-      });
-    });
-
-    setSizes([...sizeSet]);
-  }, [products]);
-
-  const handleSizeChange = (size) => {
-    if (!products?.data) return;
-
-    const productList = Array.isArray(products.data)
-      ? products.data
-      : products.data.data || [];
-
-    if (size === selectedSize) {
-      setSelectedSize("");
-      setFilteredItems(productList);
-      return;
-    }
-
-    setSelectedSize(size);
-
-    const filtered = productList.filter((product) =>
-      product.product_variants?.some(
-        (variant) => variant.name === size && variant.quantity > 0
-      )
-    );
-
-    setFilteredItems(filtered);
-  };
 
 
 
@@ -179,10 +140,32 @@ export default function CategoryWiseProductUi({ id }) {
     console.log('✨ Filtered result:', filtered.length, 'products');
 
     // 4. Sort
+    const getEffectivePrice = (product) => {
+      if (country?.value === "BD") {
+        const price = product.retails_price || 0;
+        const discount = product.discount || 0;
+        if (discount > 0) {
+          return product.discount_type === "Percentage"
+            ? price - (price * discount) / 100
+            : price - discount;
+        }
+        return price;
+      } else {
+        const price = product.intl_retails_price || 0;
+        const discount = product.intl_discount || 0;
+        if (discount > 0) {
+          return product.discount_type === "Percentage"
+            ? price - (price * discount) / 100
+            : price - discount;
+        }
+        return price;
+      }
+    };
+
     if (sortBy === "low-to-high") {
-      filtered = [...filtered].sort((a, b) => a.retails_price - b.retails_price)
+      filtered = [...filtered].sort((a, b) => getEffectivePrice(a) - getEffectivePrice(b))
     } else if (sortBy === "high-to-low") {
-      filtered = [...filtered].sort((a, b) => b.retails_price - a.retails_price)
+      filtered = [...filtered].sort((a, b) => getEffectivePrice(b) - getEffectivePrice(a))
     } else if (sortBy === "a-z") {
       filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name))
     } else if (sortBy === "z-a") {
@@ -197,6 +180,12 @@ export default function CategoryWiseProductUi({ id }) {
     const handleClickOutside = (event) => {
       if (filterRef.current && !filterRef.current.contains(event.target) && isFilterOpen) {
         setIsFilterOpen(false)
+      }
+      if (sizeDropdownRef.current && !sizeDropdownRef.current.contains(event.target)) {
+        setIsSizeDropdownOpen(false)
+      }
+      if (sortDropdownRef.current && !sortDropdownRef.current.contains(event.target)) {
+        setIsSortDropdownOpen(false)
       }
     }
 
@@ -311,24 +300,88 @@ export default function CategoryWiseProductUi({ id }) {
             )}
           </button>
 
-          {/* Sort Dropdown */}
-          <div className="relative">
-            <select
-              className="appearance-none bg-white border border-gray-200 rounded-lg py-2.5 pl-4 pr-10 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0f766e]/20 focus:border-[#0f766e] w-[160px] md:w-[180px] cursor-pointer transition-all"
-              value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+          {/* Mobile Quick Size Filter */}
+          <div className="relative md:hidden" ref={sizeDropdownRef}>
+            <button
+              className="flex items-center justify-between gap-2 bg-white border border-gray-200 rounded-lg py-2.5 px-3 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0f766e]/20 focus:border-[#0f766e] w-[90px]"
+              onClick={() => setIsSizeDropdownOpen(!isSizeDropdownOpen)}
             >
-              <option value="">Sort by</option>
-              <option value="low-to-high">Price: Low to High</option>
-              <option value="high-to-low">Price: High to Low</option>
-              <option value="a-z">Name: A to Z</option>
-              <option value="z-a">Name: Z to A</option>
-            </select>
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-gray-500">
-              <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <span className="truncate">{selectedSizes[0] || "Size"}</span>
+              <svg className={`h-4 w-4 text-gray-500 transition-transform ${isSizeDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
               </svg>
-            </div>
+            </button>
+
+            {isSizeDropdownOpen && (
+              <div className="absolute top-full left-0 mt-2 w-[120px] bg-white border border-gray-100 rounded-lg shadow-xl z-50 py-1 max-h-60 overflow-y-auto">
+                <button
+                  className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${!selectedSizes.length ? 'text-[#0f766e] font-medium' : 'text-gray-700'}`}
+                  onClick={() => {
+                    setSelectedSizes([]);
+                    setIsSizeDropdownOpen(false);
+                  }}
+                >
+                  All Sizes
+                </button>
+                {sizes.map((size) => (
+                  <button
+                    key={size}
+                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${selectedSizes.includes(size) ? 'text-[#0f766e] font-medium bg-teal-50' : 'text-gray-700'}`}
+                    onClick={() => {
+                      setSelectedSizes([size]);
+                      setIsSizeDropdownOpen(false);
+                    }}
+                  >
+                    {size}
+                  </button>
+                ))}
+                {sizes.length === 0 && (
+                  <div className="px-4 py-2 text-sm text-gray-400">No sizes</div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Sort Dropdown */}
+          <div className="relative" ref={sortDropdownRef}>
+            <button
+              className="flex items-center justify-between gap-2 bg-white border border-gray-200 rounded-lg py-2.5 px-4 text-sm font-medium focus:outline-none focus:ring-2 focus:ring-[#0f766e]/20 focus:border-[#0f766e] w-[160px] md:w-[180px] transition-all"
+              onClick={() => setIsSortDropdownOpen(!isSortDropdownOpen)}
+            >
+              <span className="truncate">
+                {sortBy === "low-to-high" ? "Price: Low to High" :
+                  sortBy === "high-to-low" ? "Price: High to Low" :
+                    sortBy === "a-z" ? "Name: A to Z" :
+                      sortBy === "z-a" ? "Name: Z to A" :
+                        "Sort by"}
+              </span>
+              <svg className={`h-4 w-4 text-gray-500 transition-transform ${isSortDropdownOpen ? 'rotate-180' : ''}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+
+            {isSortDropdownOpen && (
+              <div className="absolute top-full right-0 mt-2 w-[180px] bg-white border border-gray-100 rounded-lg shadow-xl z-50 py-1">
+                {[
+                  { label: "Sort by", value: "" },
+                  { label: "Price: Low to High", value: "low-to-high" },
+                  { label: "Price: High to Low", value: "high-to-low" },
+                  { label: "Name: A to Z", value: "a-z" },
+                  { label: "Name: Z to A", value: "z-a" },
+                ].map((option) => (
+                  <button
+                    key={option.value}
+                    className={`w-full text-left px-4 py-2 text-sm hover:bg-gray-50 ${sortBy === option.value ? 'text-[#0f766e] font-medium bg-teal-50' : 'text-gray-700'}`}
+                    onClick={() => {
+                      setSortBy(option.value);
+                      setIsSortDropdownOpen(false);
+                    }}
+                  >
+                    {option.label}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -608,20 +661,7 @@ export default function CategoryWiseProductUi({ id }) {
                         : null}
                     </div>
 
-                    <div>
-                      <h2>Size</h2>
 
-                      {sizes.map((item) => (
-                        <div key={item} className="flex items-center gap-3 text-base">
-                          <input
-                            type="checkbox"
-                            checked={item === selectedSize}
-                            onChange={() => handleSizeChange(item)}
-                          />
-                          <label>{item}</label>
-                        </div>
-                      ))}
-                    </div>
 
 
 
