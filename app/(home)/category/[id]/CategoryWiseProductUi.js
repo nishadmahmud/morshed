@@ -6,7 +6,7 @@ import { useQuery, keepPreviousData } from "@tanstack/react-query"
 import { ProductCardSkeleton } from "@/app/components/ProductCardSkeleton"
 import Pagination from "@/app/components/pagination"
 import axios from "axios"
-import { useSearchParams } from "next/navigation"
+import { useSearchParams, useRouter, usePathname } from "next/navigation"
 
 export default function CategoryWiseProductUi({ id }) {
   const searchParams = useSearchParams()
@@ -16,8 +16,20 @@ export default function CategoryWiseProductUi({ id }) {
   // console.log(searchedCategory, searchedTotal, limit, page)
 
 
-  const [currentPage, setCurrentPage] = useState(1);
+
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const currentPage = Number(searchParams.get("page")) || 1;
   const [limit, setLimit] = useState(20);
+
+  const handlePageChange = (page) => {
+    const current = new URLSearchParams(Array.from(searchParams.entries()));
+    current.set("page", page);
+    const search = current.toString();
+    const query = search ? `?${search}` : "";
+    router.push(`${pathname}${query}`);
+  };
 
   const fetchProducts = async () => {
     const res = await axios.get(
@@ -738,7 +750,7 @@ export default function CategoryWiseProductUi({ id }) {
               <Pagination
                 currentPage={pagination?.current_page}
                 lastPage={pagination?.last_page}
-                onPageChange={(page) => setCurrentPage(page)}
+                onPageChange={handlePageChange}
               />
             )
           }
