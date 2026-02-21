@@ -69,7 +69,10 @@ export const metadata = {
   description: "Elevate Your Style – Premium Men’s Fashion for Every Occasion.",
   icons: {
     icon: '/favicon-32x32.png'
-  }
+  },
+  other: {
+    "facebook-domain-verification": "j3g4w7uym86iaeiho54yasspa50mvx",
+  },
 };
 
 export default async function RootLayout({ children }) {
