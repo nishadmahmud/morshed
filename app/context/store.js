@@ -259,6 +259,7 @@ const StoreProvider = ({ children }) => {
     const restItems = items.filter((item) => item.id !== id);
     localStorage.removeItem("cart");
     localStorage.setItem("cart", JSON.stringify(restItems));
+    setCartItems(restItems);
   };
 
   const handleWishlist = (product) => {

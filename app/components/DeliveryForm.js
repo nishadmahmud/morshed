@@ -153,7 +153,7 @@ const DeliveryForm = ({
 
   useEffect(() => {
     if (!selectedDistrict && !selectedCity) {
-      setShippingFee(0); // optional: reset if nothing selected
+      setShippingFee(130); // Default to outside Dhaka shipping if nothing selected
       return;
     }
 
@@ -461,11 +461,6 @@ const DeliveryForm = ({
       e.preventDefault();
 
       const bdPhoneRegex = /^(013|014|015|016|017|018|019)\d{8}$/;
-
-      if (!selectedCity && !selectedDistrict) {
-        toast.error("Please Select City or District!");
-        return;
-      }
 
       if (!bdPhoneRegex.test(formData.phone)) {
         toast.error("Please enter a valid 11-digit Bangladeshi mobile number");

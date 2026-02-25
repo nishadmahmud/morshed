@@ -137,7 +137,7 @@ export default function AddressSelect({
   return (
     <div className="cursor-pointer z-[99999]">
       <label className="mb-2 block text-sm font-medium text-gray-700">
-        Select Address *
+        Select Address (Optional)
       </label>
 
       <Select

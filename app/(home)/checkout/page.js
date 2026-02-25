@@ -3,7 +3,7 @@
 import useStore from "@/app/hooks/useStore"
 import Image from "next/image"
 import { useState, useEffect, Suspense } from "react"
-import { ShoppingCart, Package } from "lucide-react"
+import { ShoppingCart, Package, Trash2 } from "lucide-react"
 import dynamic from "next/dynamic"
 import toast from "react-hot-toast"
 import axios from "axios"
@@ -13,37 +13,37 @@ const DeliveryForm = dynamic(() => import("../../components/DeliveryForm"), {
 })
 
 const CheckoutPage = () => {
-  const { getCartItems, prices, country, setProductPrice, selectedSize } = useStore()
+  const { getCartItems, prices, country, setProductPrice, selectedSize, handleCartItemDelete } = useStore()
 
   const cartItems = getCartItems()
   const quantity = cartItems.reduce((acc, curr) => acc + curr.quantity, 0)
-const discount = cartItems.reduce((prev, item) => {
-      let discountAmount = 0;
-      if (country.value == "BD") {
-        if (item.discount_type === "Fixed") {
-          discountAmount = (item.discount || 0) * item.quantity;
-        } else if (item.discount_type === "Percentage") {
-          discountAmount =
-            ((item?.orginalPrice * (item.discount || 0)) / 100) * item.quantity;
-        }
-      } else {
-        if (item.discount_type === "Fixed") {
-          discountAmount = (item.intl_discount || 0) * item.quantity;
-        } else if (item.discount_type === "Percentage") {
-          discountAmount =
-            ((item.intl_retails_price * (item.intl_discount || 0)) / 100) *
-            item.quantity;
-        }
+  const discount = cartItems.reduce((prev, item) => {
+    let discountAmount = 0;
+    if (country.value == "BD") {
+      if (item.discount_type === "Fixed") {
+        discountAmount = (item.discount || 0) * item.quantity;
+      } else if (item.discount_type === "Percentage") {
+        discountAmount =
+          ((item?.orginalPrice * (item.discount || 0)) / 100) * item.quantity;
       }
-      return prev + discountAmount;
-    }, 0);
+    } else {
+      if (item.discount_type === "Fixed") {
+        discountAmount = (item.intl_discount || 0) * item.quantity;
+      } else if (item.discount_type === "Percentage") {
+        discountAmount =
+          ((item.intl_retails_price * (item.intl_discount || 0)) / 100) *
+          item.quantity;
+      }
+    }
+    return prev + discountAmount;
+  }, 0);
   console.log(cartItems);
- const Subtotal = cartItems.reduce((prev, curr) => {
-  const price = curr?.orginalPrice || 0;
-  return prev + price * curr.quantity;
-}, 0);
+  const Subtotal = cartItems.reduce((prev, curr) => {
+    const price = curr?.orginalPrice || 0;
+    return prev + price * curr.quantity;
+  }, 0);
 
-const SubtotalWithoutDiscount = Subtotal;
+  const SubtotalWithoutDiscount = Subtotal;
 
   const [shippingFee, setShippingFee] = useState(0);
   const [couponCode, setCouponCode] = useState("")
@@ -189,25 +189,33 @@ const SubtotalWithoutDiscount = Subtotal;
                             </div>
 
                             <div className="flex-1 min-w-0">
-                              <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">{item.name}</h3>
+                              <div className="flex justify-between items-start">
+                                <h3 className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">{item.name}</h3>
+                                <button
+                                  onClick={() => handleCartItemDelete(item.id)}
+                                  className="text-red-500 hover:text-red-700 p-1"
+                                >
+                                  <Trash2 className="h-4 w-4" />
+                                </button>
+                              </div>
                               <div className="flex items-center justify-between">
                                 <div className="text-sm text-gray-600">Qty: {item.quantity}</div>
                                 <div className="text-sm text-gray-600">Size: {item.selectedSize || "N/A"}</div>
                                 {
                                   item.discount > 0 ? (
                                     <div className="flex gap-2">
-                                    <div className="text-xs font-medium text-gray-500 line-through">
-                                     ৳{item.orginalPrice}
-                                    </div>
-                                    <div className="text-sm font-semibold text-gray-900">
-                                  {country && country.value === "BD" ? "৳" : "$"}
-                                  {itemPrice}
-                                </div>
+                                      <div className="text-xs font-medium text-gray-500 line-through">
+                                        ৳{item.orginalPrice}
+                                      </div>
+                                      <div className="text-sm font-semibold text-gray-900">
+                                        {country && country.value === "BD" ? "৳" : "$"}
+                                        {itemPrice}
+                                      </div>
                                     </div>
                                   ) : (<div className="text-sm font-semibold text-gray-900">
-                                  {country && country.value === "BD" ? "৳" : "$"}
-                                  {itemPrice}
-                                </div>)
+                                    {country && country.value === "BD" ? "৳" : "$"}
+                                    {itemPrice}
+                                  </div>)
                                 }
                               </div>
                             </div>
@@ -238,7 +246,7 @@ const SubtotalWithoutDiscount = Subtotal;
                       </div>
                     </div>
 
-                    
+
 
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Subtotal ({quantity} items)</span>
@@ -248,7 +256,7 @@ const SubtotalWithoutDiscount = Subtotal;
                       </span>
                     </div>
 
-                    
+
 
                     <div className="flex justify-between text-sm">
                       <span className="text-gray-600">Coupon Discount</span>
@@ -293,7 +301,7 @@ const SubtotalWithoutDiscount = Subtotal;
                             Number.parseInt(Subtotal) +
                             (selectedDonate === "Not now" ? 0 : Number(selectedDonate)) +
                             shippingFee -
-                           (discount + couponAmount)
+                            (discount + couponAmount)
                           ).toFixed(2)}
                         </span>
                       </div>
