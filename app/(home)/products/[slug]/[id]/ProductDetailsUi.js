@@ -699,7 +699,7 @@ const ProductDetailsUi = ({ id, userId }) => {
           <Modal
             open={open}
             onClose={handleClose}
-            title="MEN'S THOBE - REGULAR FIT"
+            title="European Slim Fit Measurement"
             content={
               <div className="w-full">
                 {/* Tabs for Unit Selection */}
