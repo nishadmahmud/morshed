@@ -15,15 +15,12 @@ import {
   MapPin,
   CreditCard,
   Shield,
-  Truck,
-  CheckCircle,
   AlertCircle,
   Phone,
   Mail,
   User,
   Home,
   Building,
-  HandHelping,
 } from "lucide-react";
 import PrizeModal from "./PrizeModal";
 import { Dialog } from "@headlessui/react";
@@ -32,6 +29,7 @@ import useStore from "../hooks/useStore";
 import { GiWorld } from "react-icons/gi";
 import { getNames } from "country-list";
 import AddressSelect from "./AddressSelect";
+import { calculateShippingFee } from "../lib/shippingFee";
 
 const prizeData = [
   {
@@ -100,11 +98,9 @@ const DeliveryForm = ({
   country,
   shippingFee,
   setShippingFee,
+  setShippingZoneLabel,
   couponAmount,
   couponCode,
-  selectedDonate,
-  setSelectedDonate,
-  donations,
 }) => {
   const { data: paymentMethods, error } = useSWR(
     `${process.env.NEXT_PUBLIC_API}/payment-type-list/${userId}`,
@@ -118,7 +114,6 @@ const DeliveryForm = ({
   const [payment, setPayment] = useState("Cash");
   const [isCod, setIsCod] = useState(true);
   const [billingSameAsShipping, setBillingSameAsShipping] = useState(true);
-  const [location, setLocation] = useState("inside");
   const [couponValue, setCouponValue] = useState(couponAmount);
   const [loading, setLoading] = useState(true);
   const [reload, setReload] = useState(false);
@@ -144,38 +139,12 @@ const DeliveryForm = ({
   const [insufficientProducts, setInsufficientProducts] = useState([]);
   // Use refs to prevent recreating objects
   const userDataRef = useRef(null);
-  const [selectedCity, setSelectedCity] = useState('Select your address');
-  const [selectedDistrict, setSelectedDistrict] = useState([]);
+  const [selectedCity, setSelectedCity] = useState(null);
+  const [selectedDistrict, setSelectedDistrict] = useState(null);
   const [cityId, setCityId] = useState(null);
   const [zoneId, setZoneId] = useState(null);
   const [totalDiscount, setTotalDiscount] = useState(0);
-
-
-  useEffect(() => {
-    if (!selectedDistrict && !selectedCity) {
-      setShippingFee(130); // Default to outside Dhaka shipping if nothing selected
-      return;
-    }
-
-    // Priority: specific city rules first
-    if (selectedCity === "Demra" || selectedCity?.includes("Savar")) {
-      setShippingFee(90);
-    }
-    // Then district-specific rules
-    else if (selectedDistrict === "Dhaka") {
-      setShippingFee(70);
-    }
-    else if (selectedDistrict === "Gazipur") {
-      setShippingFee(90);
-    }
-    // Default for other districts/cities
-    else {
-      setShippingFee(130);
-    }
-  }, [selectedDistrict, selectedCity]);
-
-
-
+  const [resolvedShipping, setResolvedShipping] = useState(null);
   const userData = userDataRef.current;
   const date = useMemo(() => new Date().toISOString(), []);
   const deliveryNote = useMemo(
@@ -192,16 +161,6 @@ const DeliveryForm = ({
       lastName: parts.length > 1 ? parts[parts.length - 1] : "",
     };
   }, [userData?.name]);
-
-  // Memoize shipping fee calculation
-  const shippingFees = useMemo(
-    () => (location === "inside" ? 70 : 130),
-    [location]
-  );
-
-  useEffect(() => {
-    setShippingFee(shippingFees);
-  }, [shippingFees, setShippingFee]);
 
   useEffect(() => {
     setCouponValue(couponAmount);
@@ -287,6 +246,31 @@ const DeliveryForm = ({
     setCountries(countryNames);
   }, []);
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const result = calculateShippingFee({
+        address: formData.address,
+        address2: formData.address2,
+        selectedDistrict,
+        selectedCity,
+      });
+
+      setResolvedShipping(result);
+      setShippingFee(result.fee);
+      if (setShippingZoneLabel) {
+        setShippingZoneLabel(result.zoneLabel);
+      }
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [
+    formData.address,
+    formData.address2,
+    selectedDistrict,
+    selectedCity,
+    setShippingFee,
+    setShippingZoneLabel,
+  ]);
 
   console.log(cartTotal);
 
@@ -311,17 +295,10 @@ const DeliveryForm = ({
         product_variant_id: item.product_variant_id,
       })),
       delivery_method_id: 1,
-      delivery_city: selectedCity,
-      delivery_district: selectedDistrict,
-
-
-      // city_id: cityId,
-      // zone_id: zoneId,
-
-
+      delivery_city: resolvedShipping?.city || selectedCity || null,
+      delivery_district: resolvedShipping?.district || selectedDistrict || null,
       delivery_note: deliveryNote,
-      donation_amount:
-        selectedDonate === "Not now" ? 0 : Number(selectedDonate),
+      donation_amount: 0,
       email: formData.email || userData?.email || "N/A",
       delivery_info_id: 1,
       delivery_customer_name:
@@ -362,7 +339,6 @@ const DeliveryForm = ({
     couponCode,
     cartItems,
     deliveryNote,
-    selectedDonate,
     formData.email,
     formData.firstName,
     formData.lastName,
@@ -377,6 +353,9 @@ const DeliveryForm = ({
     customerId,
     cityId,
     zoneId,
+    resolvedShipping,
+    selectedCity,
+    selectedDistrict,
   ]);
 
   const [orderSchemaState, setOrderSchema] = useState(orderSchema);
@@ -445,8 +424,10 @@ const DeliveryForm = ({
   }, [googleLogin, intendedUrl, router, setToken, setUserInfo]);
 
   const handleChange = useCallback((e) => {
-    setSelectedCountry(e.target.value);
     const { name, value } = e.target;
+    if (name === "country") {
+      setSelectedCountry(value);
+    }
     setFormData((prev) => ({ ...prev, [name]: value }));
   }, []);
 
@@ -482,10 +463,7 @@ const DeliveryForm = ({
 
       const finalOrderSchema = {
         ...orderSchemaState,
-        donation_amount:
-          selectedDonate === "Not now" ? 0 : Number(selectedDonate)
-
-
+        donation_amount: 0,
       };
       console.log(finalOrderSchema);
 
@@ -521,7 +499,7 @@ const DeliveryForm = ({
         setLoading(false); // enable button on error
       }
     },
-    [cartItems, orderSchemaState, selectedDonate, router, payment]
+    [cartItems, orderSchemaState, router, payment]
   );
 
 
@@ -620,26 +598,6 @@ const DeliveryForm = ({
       });
     },
     [selectedMethodId]
-  );
-
-  const handleDonationClick = useCallback(
-    (donation) => {
-      if (typeof donation === "number") {
-        setSelectedDonate(donation);
-      } else if (donation === "Other") {
-        setSelectedDonate("");
-      } else {
-        setSelectedDonate(donation);
-      }
-    },
-    [setSelectedDonate]
-  );
-
-  const handleDonationInput = useCallback(
-    (e) => {
-      setSelectedDonate(e.target.value);
-    },
-    [setSelectedDonate]
   );
 
   const modal = useState(false);
@@ -824,10 +782,31 @@ const DeliveryForm = ({
                 name="address"
                 value={formData.address}
                 onChange={handleChange}
-                placeholder="House number and street name"
+                placeholder="House number, street, area, city (e.g. House 12, Dhanmondi, Dhaka)"
                 required
                 className="w-full text-black dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
               />
+              {!formData.address?.trim() && (
+                <p className="mt-2 text-sm text-gray-500">
+                  Shipping is calculated from your address
+                </p>
+              )}
+              {formData.address?.trim() &&
+                resolvedShipping?.confidence === "none" && (
+                  <div className="mt-2 flex items-start gap-2 rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+                    <AlertCircle className="mt-0.5 h-4 w-4 flex-shrink-0" />
+                    <span>
+                      Could not detect your area — using outside Dhaka rate.
+                      Please include city/district in your address.
+                    </span>
+                  </div>
+                )}
+              {resolvedShipping?.confidence === "high" && (
+                <p className="mt-2 text-sm text-teal-700">
+                  Delivery zone: {resolvedShipping.zoneLabel} (৳
+                  {resolvedShipping.fee})
+                </p>
+              )}
             </div>
 
             {/* Address2 */}
@@ -845,108 +824,6 @@ const DeliveryForm = ({
                 className="w-full text-black dark:bg-white px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 transition-colors"
               />
             </div> */}
-          </div>
-        </div>
-
-        {/* Shipping Method */}
-        <div className="bg-white rounded-xl hidden shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center space-x-3 mb-6">
-            <div className="bg-green-100 p-2 rounded-lg">
-              <Truck className="h-6 w-6 text-green-600" />
-            </div>
-            <div>
-              <h3 className="text-xl font-semibold text-gray-900">
-                Shipping Method
-              </h3>
-              <p className="text-sm text-gray-600 hidden md:block">
-                Choose your preferred delivery option
-              </p>
-            </div>
-          </div>
-          <div className="space-y-3">
-            <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "inside"
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
-            >
-              <input
-                type="radio"
-                name="shipping"
-                value="inside"
-                checked={location === "inside"}
-                onChange={() => setLocation("inside")}
-                className="sr-only"
-              />
-              <div className="flex items-center space-x-4 flex-1">
-                <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "inside"
-                    ? "border-blue-500"
-                    : "border-gray-300"
-                    }`}
-                >
-                  {location === "inside" && (
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  )}
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900">
-                      Inside Dhaka
-                    </span>
-                    <span className="font-semibold text-gray-900">৳70</span>
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    Delivery within 1-2 business days
-                  </p>
-                </div>
-              </div>
-            </label>
-
-            <label
-              className={`relative flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all ${location === "outside"
-                ? "border-blue-500 bg-blue-50"
-                : "border-gray-200 hover:border-gray-300"
-                }`}
-            >
-              <input
-                type="radio"
-                name="shipping"
-                value="outside"
-                checked={location === "outside"}
-                onChange={() => setLocation("outside")}
-                className="sr-only"
-              />
-              <div className="flex items-center space-x-4 flex-1">
-                <div
-                  className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${location === "outside"
-                    ? "border-blue-500"
-                    : "border-gray-300"
-                    }`}
-                >
-                  {location === "outside" && (
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  )}
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <span className="font-medium text-gray-900">
-                      Outside Dhaka
-                    </span>
-                    <span className="font-semibold text-gray-900">৳130</span>
-                  </div>
-                  <p className="text-sm text-gray-600">
-                    Delivery within 3-5 business days
-                  </p>
-                </div>
-              </div>
-            </label>
-          </div>
-          <div className="mt-4 p-4 bg-gray-50 rounded-lg">
-            <div className="flex items-center space-x-2 text-sm text-gray-700">
-              <CheckCircle className="h-4 w-4 text-green-500" />
-              <span>Exchange within 3 days</span>
-            </div>
           </div>
         </div>
 
@@ -1229,63 +1106,6 @@ const DeliveryForm = ({
             </div>
           )}
         </div> */}
-
-        {/* Donation */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-          <div className="flex items-center justify-between space-x-3 mb-6">
-            <div className="flex items-center space-x-3">
-              <div className="bg-green-100 p-2 rounded-lg">
-                <HandHelping className="h-6 w-6 text-green-600" />
-              </div>
-              <div>
-                <h3 className="text-xl font-semibold text-gray-900">
-                  Donation
-                </h3>
-                <p className="text-sm hidden md:block text-gray-600">
-                  Your donated money will be distributed among the poor and
-                  needy.
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="flex flex-col gap-4">
-            {/* Quick select buttons */}
-            <div className="flex flex-row flex-wrap gap-2">
-              {donations?.map((donation) => {
-                const isSelected =
-                  selectedDonate === donation ||
-                  (typeof donation === "number" &&
-                    Number(selectedDonate) === donation);
-                const displayText =
-                  typeof donation === "number" ? `${donation}` : donation;
-
-                return (
-                  <button
-                    type="button"
-                    key={donation}
-                    onClick={() => handleDonationClick(donation)}
-                    className={`px-4 py-2 rounded-full border text-sm ${isSelected
-                      ? "bg-gray-800 text-white border-gray-800"
-                      : "bg-white text-gray-800 border-gray-300 hover:bg-gray-100"
-                      }`}
-                  >
-                    {country?.value === "BD"
-                      ? `Tk ${displayText}`
-                      : `$ ${displayText}`}
-                  </button>
-                );
-              })}
-            </div>
-            {/* Manual input */}
-            <input
-              type="number"
-              placeholder="Or enter custom amount"
-              className="px-4 py-2 rounded-full border text-sm bg-white text-gray-800 border-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 w-full"
-              value={selectedDonate ?? ""}
-              onChange={handleDonationInput}
-            />
-          </div>
-        </div>
 
         {/* Complete Order Button */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">

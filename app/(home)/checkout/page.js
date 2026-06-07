@@ -46,7 +46,8 @@ const CheckoutPage = () => {
 
   const SubtotalWithoutDiscount = Subtotal;
 
-  const [shippingFee, setShippingFee] = useState(0);
+  const [shippingFee, setShippingFee] = useState(130);
+  const [shippingZoneLabel, setShippingZoneLabel] = useState("Outside Dhaka");
   const [couponCode, setCouponCode] = useState("")
   const [couponAmount, setCouponAmount] = useState("")
   const [loading, setLoading] = useState(false)
@@ -81,9 +82,6 @@ const CheckoutPage = () => {
       setLoading(false)
     }
   }
-
-  const [selectedDonate, setSelectedDonate] = useState(null)
-  const donations = ["Not now", 10, 20, 30, 50]
 
   // useEffect(() => {
   //   if (cartItems && cartItems.length > 0) {
@@ -120,11 +118,9 @@ const CheckoutPage = () => {
             <Suspense>
               <DeliveryForm
                 country={country}
-                selectedDonate={selectedDonate}
-                setSelectedDonate={setSelectedDonate}
-                donations={donations}
                 shippingFee={shippingFee}
                 setShippingFee={setShippingFee}
+                setShippingZoneLabel={setShippingZoneLabel}
                 cartItems={cartItems}
                 cartTotal={Subtotal}
                 couponCode={couponCode}
@@ -275,18 +271,10 @@ const CheckoutPage = () => {
                       </span>
                     </div>
 
-                    {selectedDonate && selectedDonate !== "Not now" && (
-                      <div className="flex justify-between text-sm">
-                        <span className="text-gray-600">Donation</span>
-                        <span className="font-medium text-gray-900">
-                          {country && country.value === "BD" ? "৳" : "$"}
-                          {selectedDonate}
-                        </span>
-                      </div>
-                    )}
-
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-600">Shipping</span>
+                      <span className="text-gray-600">
+                        Shipping{shippingZoneLabel ? ` (${shippingZoneLabel})` : ""}
+                      </span>
                       <span className="font-medium text-gray-900">
                         {country && country.value === "BD" ? "৳" : "$"}
                         {shippingFee}
@@ -300,7 +288,6 @@ const CheckoutPage = () => {
                           {country && country.value === "BD" ? "৳" : "$"}
                           {(
                             Number.parseInt(Subtotal) +
-                            (selectedDonate === "Not now" ? 0 : Number(selectedDonate)) +
                             shippingFee -
                             (discount + couponAmount)
                           ).toFixed(2)}
