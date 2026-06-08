@@ -17,6 +17,7 @@ const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) 
     <>
       <div
         ref={searchBarRef}
+        data-search-results
         className="bg-white text-black min-w-[25rem] md:w-[20rem] lg:w-[36rem] p-5 absolute lg:top-[5rem] top-[10rem] z-[1000] lg:left-[33rem] lg:z-50 left-1/2 transform -translate-x-1/2 rounded-md max-h-[21.5rem] overflow-y-auto shadow-xl"
       >
         <h5 className="text-right">Products</h5>
@@ -24,10 +25,6 @@ const Search = ({ searchedItem, setSearchText, setSearchedItem, searchBarRef }) 
           {searchedItem && searchedItem.length > 0 ? (
             searchedItem.map((item, idx) => (
               <Link
-                onClick={() => {
-                  setSearchText("");
-                  setSearchedItem([]);
-                }}
                 href={`/products/${sanitizeSlug(item?.brand_name || item?.name)}/${item?.id}`}
                 key={idx}
                 className="flex gap-2 items-center z-50 hover:bg-gray-200"

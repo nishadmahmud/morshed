@@ -18,7 +18,7 @@ const noImg = "/no-image.jpg";
 import Search from "./Search";
 import useStore from "../hooks/useStore";
 import CartItems from "./CartItems";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import Navbar from "./Navbar";
 import { api, userId } from "../lib/api";
 import GlobeModalButton from "./GlobeModalButton";
@@ -135,10 +135,12 @@ const HeaderUi = ({ data }) => {
         setIsSearchSidebarOpen(false);
       }
 
-      // Close desktop search dropdown when clicking outside
+      // Close desktop search dropdown when clicking outside (not mobile search UI)
       if (
         keyword &&
-        !event.target.closest('[data-desktop-search]')
+        !event.target.closest('[data-desktop-search]') &&
+        !event.target.closest('[data-sidebar="search"]') &&
+        !event.target.closest("[data-search-results]")
       ) {
         setKeyword("");
         setSearchedItem([]);
@@ -152,12 +154,20 @@ const HeaderUi = ({ data }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handleClickOutside]);
 
-  const pathname = useSearchParams();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+
   useEffect(() => {
-    if (pathname.get("login") == "false") {
+    if (searchParams.get("login") == "false") {
       setIsLoginModal(true);
     }
-  }, [pathname, setIsLoginModal]);
+  }, [searchParams, setIsLoginModal]);
+
+  useEffect(() => {
+    setKeyword("");
+    setSearchedItem([]);
+    setIsSearchSidebarOpen(false);
+  }, [pathname]);
 
   const handleModalClose = () => setIsLoginModal(false);
 
@@ -559,13 +569,7 @@ const HeaderUi = ({ data }) => {
                           item?.brand_name || item?.name
                         )}/${item?.id}`}
                         key={idx}
-                        onClick={() => {
-                          setKeyword("");
-                          setSearchedItem([]);
-                          toggleSearchSidebar();
-
-
-                        }}
+                        onClick={() => setIsSearchSidebarOpen(false)}
                         className="flex items-center gap-4 p-4 bg-white border border-gray-200 rounded-lg hover:shadow-md transition"
                       >
                         <div className="w-16 h-16 rounded-md overflow-hidden bg-gray-100">
