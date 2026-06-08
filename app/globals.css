@@ -14,10 +14,17 @@
   --font-open-sans: 'Open Sans', serif;
   --font-cinzel: 'Cinzel', serif;
   --font-jost: 'Jost', sans-serif;
+  --mobile-bottom-nav-height: calc(5.5rem + env(safe-area-inset-bottom, 0px));
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+@media (max-width: 1023px) {
+  html {
+    scroll-padding-bottom: var(--mobile-bottom-nav-height);
+  }
 }
 
 * {
